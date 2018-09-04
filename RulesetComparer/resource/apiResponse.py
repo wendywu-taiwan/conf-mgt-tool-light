@@ -1,0 +1,16 @@
+# status code
+STATUS_CODE_SUCCESS = 0
+STATUS_CODE_NO_RESPONSE = 40000
+STATUS_CODE_INVALID_PARAMETER = 40001
+
+# error message
+MESSAGE_NO_RESPONSE = "get data from b2b service but response data is none"
+MESSAGE_INVALID_PARAMETER = "no matching data for parameters"
+
+B2B_RESPONSE_KEY_RETURN_CODE = "returnCode"
+B2B_RESPONSE_KEY_MESSAGE = "message"
+B2B_RESPONSE_KEY_MESSAGE_CODE = "messageCode"
+B2B_RESPONSE_KEY_MESSAGE_TEXT = "text"
+B2B_RESPONSE_KEY_MESSAGE_LOCALIZATION_TEXT = "localizedText"
+B2B_RESPONSE_KEY_PAYLOAD = "payload"
+
