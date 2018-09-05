@@ -9,7 +9,7 @@ from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.modelManager import get_single_model
 from RulesetComparer.resource import apiResponse
 from RulesetComparer.responseModel.downloadRulesetModel import DownloadRulesetModel
-from RulesetComparer.responseModel.downloadSingleRulesetModel import DownlaodSingleRulesetModel
+from RulesetComparer.responseModel.downloadSingleRulesetModel import DownloadSingleRulesetModel
 from RulesetComparer.responseModel.responseModel import ResponseModel
 from django.conf import settings
 
@@ -61,7 +61,7 @@ class RuleSetService(object):
 
         print('======== download rule set %s ========' % rule_set_name)
         response = client.service.exportRuleset(parameter)
-        response_model = DownlaodSingleRulesetModel(response, rule_set_name)
+        response_model = DownloadSingleRulesetModel(response, rule_set_name)
 
         # save file to specific path
         save_file_name = settings.RULESET_SAVED_NAME % (save_file_path, rule_set_name)

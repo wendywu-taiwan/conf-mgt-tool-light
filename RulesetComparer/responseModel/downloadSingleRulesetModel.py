@@ -3,7 +3,7 @@ from RulesetComparer.responseModel.downloadRulesetModel import DownloadRulesetMo
 from RulesetComparer.resource import apiResponse
 
 
-class DownlaodSingleRulesetModel(DownloadRulesetModel):
+class DownloadSingleRulesetModel(DownloadRulesetModel):
 
     def __init__(self, response_data, ruleset_name):
         DownloadRulesetModel.__init__(self, response_data)
@@ -18,6 +18,4 @@ class DownlaodSingleRulesetModel(DownloadRulesetModel):
     def get_content_json(self):
         return {apiResponse.DATA_KEY_RULESET_NAME: self.ruleset_name,
                 apiResponse.DATA_KEY_DOWNLOAD_STATUS: self.status}
-
-
 
