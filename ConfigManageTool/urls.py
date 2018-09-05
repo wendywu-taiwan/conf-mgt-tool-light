@@ -19,4 +19,6 @@ from RulesetComparer import views
 
 urlpatterns = [
     path('RulesetComparer/download/<str:environment>/<str:country>/', views.download_rule_set),
+    path('RulesetComparer/download/git/<str:country>/', views.download_rule_set_from_git),
+    path('RulesetComparer/compare/<str:country>/', views.download_rule_set_from_git),
 ]

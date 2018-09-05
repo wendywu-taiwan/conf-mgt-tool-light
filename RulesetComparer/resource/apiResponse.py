@@ -4,7 +4,7 @@ STATUS_CODE_NO_RESPONSE = 40000
 STATUS_CODE_INVALID_PARAMETER = 40001
 
 # error message
-MESSAGE_NO_RESPONSE = "get data from b2b service but response data is none"
+MESSAGE_NO_RESPONSE = "response data is none"
 MESSAGE_INVALID_PARAMETER = "no matching data for parameters"
 
 B2B_RESPONSE_KEY_RETURN_CODE = "returnCode"
@@ -14,3 +14,18 @@ B2B_RESPONSE_KEY_MESSAGE_TEXT = "text"
 B2B_RESPONSE_KEY_MESSAGE_LOCALIZATION_TEXT = "localizedText"
 B2B_RESPONSE_KEY_PAYLOAD = "payload"
 
+# responseModel
+RESPONSE_KEY_STATUS_CODE = 'api_ret_code'
+RESPONSE_KEY_MESSAGE = 'api_ret_message'
+RESPONSE_KEY_DATA = 'data'
+
+# downloadSingleRulesetModel
+DATA_KEY_RULESET_NAME = 'ruleset_name'
+DATA_KEY_DOWNLOAD_STATUS = 'status'
+
+
+ERROR_MESSAGE_MAP = {
+    STATUS_CODE_NO_RESPONSE: MESSAGE_NO_RESPONSE,
+    STATUS_CODE_INVALID_PARAMETER: MESSAGE_INVALID_PARAMETER,
+
+}
