@@ -1,10 +1,10 @@
-from RulesetComparer.responseModel.responseModel import ResponseModel
+from RulesetComparer.dataModel.responseModel.responseModel import ResponseModel
 from RulesetComparer.resource import apiResponse
 
 
 class DownloadRulesetModel(ResponseModel):
 
-    def __init__(self, response_data, ruleset_list=None):
+    def __init__(self, response_data=None, ruleset_list=None):
         ResponseModel.__init__(self, response_data)
         self.ruleset_list = ruleset_list
         if self.ruleset_list is None:

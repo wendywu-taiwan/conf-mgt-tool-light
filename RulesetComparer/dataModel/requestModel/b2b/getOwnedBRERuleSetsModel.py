@@ -1,5 +1,6 @@
 
-from RulesetComparer.requestModel.b2b.b2bRequestModel import B2BRequestModel
+from RulesetComparer.dataModel.requestModel.b2b.b2bRequestModel import B2BRequestModel
+
 
 
 class GetOwnedBRERuleSetsModel(B2BRequestModel):

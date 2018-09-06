@@ -11,6 +11,9 @@ class ResponseModel:
         self.response_data = response_data
         self.error_code = error_code
 
+    def set_response_data(self,response_data):
+        self.response_data = response_data
+
     def set_error_code(self, error_code):
         self.error_code = error_code
 

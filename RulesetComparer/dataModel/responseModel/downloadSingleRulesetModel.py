@@ -1,4 +1,4 @@
-from RulesetComparer.responseModel.downloadRulesetModel import DownloadRulesetModel
+from RulesetComparer.dataModel.responseModel.downloadRulesetModel import DownloadRulesetModel
 
 from RulesetComparer.resource import apiResponse
 
