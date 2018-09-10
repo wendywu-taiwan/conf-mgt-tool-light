@@ -21,5 +21,5 @@ urlpatterns = [
     path('RulesetComparer/download/rulesets/<str:environment>/<str:country>/', views.download_rule_set),
     path('RulesetComparer/download/ruleset/<str:environment>/<str:country>/<str:rule_set_name>/', views.download_single_rule_set),
     path('RulesetComparer/download/git/<str:country>/', views.download_rule_set_from_git),
-    path('RulesetComparer/compare/<str:country>/', views.download_rule_set_from_git),
+    path('RulesetComparer/compare/<str:country>', views.compare_country_rule_set),
 ]

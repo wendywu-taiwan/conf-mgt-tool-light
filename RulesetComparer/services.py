@@ -1,5 +1,4 @@
 from zeep import Client
-from lxml import etree
 from RulesetComparer.models import Environment
 from RulesetComparer.dataModel.requestModel.b2b.getOwnedBRERuleSetsModel import GetOwnedBRERuleSetsModel
 from RulesetComparer.dataModel.requestModel.b2b.exportRulesetModel import ExportRulesetModel
@@ -8,8 +7,10 @@ from RulesetComparer.utils.modelManager import get_single_model
 from RulesetComparer.resource import apiResponse
 from RulesetComparer.dataModel.responseModel.downloadRulesetModel import DownloadRulesetModel
 from RulesetComparer.dataModel.responseModel.downloadSingleRulesetModel import DownloadSingleRulesetModel
-from RulesetComparer.dataModel.responseModel.responseModel import ResponseModel
+from RulesetComparer.dataModel.responseModel.b2bResponseModel import ResponseModel
 from RulesetComparer.dataModel.xml.ruleListModel import RuleListModel
+from RulesetComparer.utils.rulesetComparer import RulesetComparer
+from RulesetComparer.dataModel.responseModel.rulesCompareModel import RulesCompareModel
 from django.conf import settings
 
 
@@ -90,4 +91,12 @@ class RuleSetService(object):
 
     @staticmethod
     def compare_rule_set(country):
-        pass
+        # file_path = "RulesetComparer/rulesets/Int1/%s/" % country
+        # extension = ".XML"
+        # print(fileManager.load_file_in_folder(file_path, extension))
+
+        ruleset1 = "RulesetComparer/rulesets/Int1/TW/RS_TW_DATA_ENTRY.XML"
+        ruleset2 = "RulesetComparer/rulesets/Local/TW/RS_TW_DATA_ENTRY.XML"
+        comparer = RulesetComparer(ruleset1, ruleset2)
+        rules_compare_model = RulesCompareModel(comparer)
+        return rules_compare_model

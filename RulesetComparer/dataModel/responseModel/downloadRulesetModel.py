@@ -1,4 +1,4 @@
-from RulesetComparer.dataModel.responseModel.responseModel import ResponseModel
+from RulesetComparer.dataModel.responseModel.b2bResponseModel import ResponseModel
 from RulesetComparer.resource import apiResponse
 
 

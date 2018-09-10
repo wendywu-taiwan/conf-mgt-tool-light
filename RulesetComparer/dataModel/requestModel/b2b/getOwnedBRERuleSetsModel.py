@@ -2,7 +2,6 @@
 from RulesetComparer.dataModel.requestModel.b2b.b2bRequestModel import B2BRequestModel
 
 
-
 class GetOwnedBRERuleSetsModel(B2BRequestModel):
     KEY_USER = 'loginId'
     KEY_PASSWORD = 'password'

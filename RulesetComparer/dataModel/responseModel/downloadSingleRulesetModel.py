@@ -16,6 +16,6 @@ class DownloadSingleRulesetModel(DownloadRulesetModel):
             self.status = 'fail'
 
     def get_content_json(self):
-        return {apiResponse.DATA_KEY_RULESET_NAME: self.ruleset_name,
+        return {apiResponse.DATA_KEY_RULES_NAME: self.ruleset_name,
                 apiResponse.DATA_KEY_DOWNLOAD_STATUS: self.status}
 

@@ -18,4 +18,5 @@ def download_rule_set_from_git(request, country):
 
 
 def compare_country_rule_set(request, country):
-    return RuleSetService.compare_rule_set(country)
+    response_model = RuleSetService.compare_rule_set(country)
+    return response_model.get_response_json()
