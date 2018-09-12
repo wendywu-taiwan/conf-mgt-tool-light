@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import abc
-from RulesetComparer.resource import xmlKey as XMLKey
+from RulesetComparer.properties import xmlKey as XMLKey
 
 
 class BaseModel:
@@ -10,6 +10,7 @@ class BaseModel:
 
     def parse_xml_from_string(self):
         if self.valid_data():
+
             return ET.fromstring(self.xml)
 
     def parse_xml_from_file(self):

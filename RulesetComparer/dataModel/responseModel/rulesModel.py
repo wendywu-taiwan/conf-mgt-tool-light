@@ -1,5 +1,5 @@
 from RulesetComparer.dataModel.responseModel.responseModel import ResponseModel
-from RulesetComparer.resource import apiResponse as api
+from RulesetComparer.properties import apiResponse as api
 
 
 class RulesModel(ResponseModel):

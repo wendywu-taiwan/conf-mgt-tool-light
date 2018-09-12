@@ -1,4 +1,4 @@
-from RulesetComparer.resource import apiResponse as api
+from RulesetComparer.properties import apiResponse as api
 from django.http import JsonResponse
 from abc import abstractmethod
 
@@ -21,7 +21,8 @@ class ResponseModel:
             self.key_value_dict[api.RESPONSE_KEY_MESSAGE] = api.MESSAGE_SUCCESS
             self.key_value_dict[api.RESPONSE_KEY_DATA] = self.get_content_json()
 
-        return JsonResponse(self.key_value_dict)
+        return self.key_value_dict
+        # return JsonResponse(self.key_value_dict)
 
     @abstractmethod
     def get_content_json(self):

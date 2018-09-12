@@ -1,6 +1,6 @@
 from RulesetComparer.dataModel.xml.baseModel import BaseModel
-from RulesetComparer.resource import xmlKey as XMLKey
-from RulesetComparer.resource import apiResponse as api
+from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.properties import apiResponse as api
 
 
 # this is for handling rule data

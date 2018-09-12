@@ -1,5 +1,6 @@
 import os
 import shutil
+import glob
 from django.conf import settings
 from codecs import open
 
@@ -33,3 +34,12 @@ def save_file_with_setting(file_name, mode, format, content):
     file = open(file_name, mode, format)
     file.write(content)
     file.close()
+
+
+def load_file(file_name):
+    return open(file_name)
+
+
+def load_file_in_folder(path, extension):
+    name_filter = path + "*"+extension
+    return [glob.glob(name_filter)]

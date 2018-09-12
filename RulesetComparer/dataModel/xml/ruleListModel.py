@@ -1,12 +1,14 @@
 from RulesetComparer.dataModel.xml.baseModel import BaseModel
-from RulesetComparer.resource import xmlKey as XMLKey
+from RulesetComparer.properties import xmlKey as XMLKey
 
 
 class RuleListModel(BaseModel):
     def __init__(self, xml):
         BaseModel.__init__(self, xml)
+        self.root = self.parse_xml_from_string()
+
         self.rulesNameList = []
-        self.parse_xml_from_string()
+        self.parse_data()
 
     def parse_data(self):
         if not self.valid_data():

@@ -18,8 +18,11 @@ from django.urls import path
 from RulesetComparer import views
 
 urlpatterns = [
-    path('RulesetComparer/download/rulesets/<str:environment>/<str:country>/', views.download_rule_set),
-    path('RulesetComparer/download/ruleset/<str:environment>/<str:country>/<str:rule_set_name>/', views.download_single_rule_set),
+    path('RulesetComparer/page/ruleset/header', views.page_header),
+    path('RulesetComparer/page/ruleset/compare', views.page_compare_select),
+    path('RulesetComparer/rule/list/<str:environment>/<str:country>/', views.get_rule_list),
+    path('RulesetComparer/rule/<str:environment>/<str:country>/<str:rule_set_name>/', views.get_rule_set),
     path('RulesetComparer/download/git/<str:country>/', views.download_rule_set_from_git),
     path('RulesetComparer/compare/<str:country>', views.compare_country_rule_set),
+    path('RulesetComparer/temp_query_compare_ruleset.html', views.download_rule_set_test),
 ]
