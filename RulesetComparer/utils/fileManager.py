@@ -7,7 +7,7 @@ from codecs import open
 # codecs save file mode
 SAVE_FILE_MODE_ADD = 'a'
 SAVE_FILE_MODE_WRITE = 'w'
-
+SAVE_FILE_MODE_READ = 'r'
 
 def is_folder_exist(path):
     if os.path.isdir(path):
@@ -37,7 +37,11 @@ def save_file_with_setting(file_name, mode, format, content):
 
 
 def load_file(file_name):
-    return open(file_name)
+    return load_file_with_setting(file_name, SAVE_FILE_MODE_READ, settings.UNICODE_ENCODING)
+
+
+def load_file_with_setting(file_name, mode, format):
+  return open(file_name, mode, format)
 
 
 def load_file_in_folder(path, extension):

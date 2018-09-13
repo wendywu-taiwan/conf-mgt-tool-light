@@ -10,7 +10,6 @@ class BaseModel:
 
     def parse_xml_from_string(self):
         if self.valid_data():
-
             return ET.fromstring(self.xml)
 
     def parse_xml_from_file(self):
@@ -37,16 +36,18 @@ class BaseModel:
 
         if value_node is None:
             return ""
+        elif value_node.text is None:
+            return ""
         else:
             return value_node.text
 
     def value_in_node(self, data, node_key, key):
         if data is None:
-            return None
+            return ""
 
         node = self.node(data, node_key)
         if node is None:
-            return None
+            return ""
 
         return self.value(node, key)
 
@@ -59,4 +60,3 @@ class BaseModel:
     @abc.abstractmethod
     def parse_data(self):
         pass
-

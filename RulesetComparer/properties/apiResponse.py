@@ -39,9 +39,23 @@ RESPONSE_KEY_RULE_STATUS = 'status'
 RESPONSE_KEY_RULE_STATUS_ADD = 'add'
 RESPONSE_KEY_RULE_STATUS_MODIFIED = 'modified'
 
+RESPONSE_KEY_SUCCESS = 'success'
+RESPONSE_KEY_FAIL = 'fail'
+
+# ruleListCompareModel
+RESPONSE_KEY_ENVIRONMENT_NAME = 'environment_name'
+RESPONSE_KEY_ENVIRONMENT_LIST = 'environment_list'
+RESPONSE_KEY_RULESET_FILE_LIST = 'ruleset_file_list'
+RESPONSE_KEY_UNION_FILE_LIST = 'union_file_list'
+
+
 # downloadSingleRulesetModel
 DATA_KEY_RULES_NAME = 'rules_name'
 DATA_KEY_DOWNLOAD_STATUS = 'status'
+
+
+
+
 
 
 ERROR_MESSAGE_MAP = {

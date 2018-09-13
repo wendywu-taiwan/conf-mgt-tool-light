@@ -4,8 +4,11 @@ from RulesetComparer.properties import apiResponse as api
 
 class RulesCompareModel(ResponseModel):
 
-    def __init__(self, rules_comparer):
+    def __init__(self, left_env, right_env, rule_set_name, rules_comparer):
         ResponseModel.__init__(self)
+        self.left_env = left_env
+        self.right_env = right_env
+        self.rule_set_name = rule_set_name
         if rules_comparer is None:
             self.set_error_code(api.STATUS_CODE_INVALID_PARAMETER)
         else:
@@ -16,20 +19,26 @@ class RulesCompareModel(ResponseModel):
             self.different = rules_comparer.get_different()
 
     def get_content_json(self):
-        rules_compare_list = [self.get_rules_compared_json(self.left_rules, self.left_rules_list, self.different),
-                              self.get_rules_compared_json(self.right_rules, self.right_rules_list, self.different)]
-        return rules_compare_list
+        rules_compare_list = [self.get_rules_compared_json(self.left_env,
+                                                           self.left_rules,
+                                                           self.left_rules_list,
+                                                           self.different),
+                              self.get_rules_compared_json(self.right_env,
+                                                           self.right_rules,
+                                                           self.right_rules_list,
+                                                           self.different)]
+        dictionary = {api.RESPONSE_KEY_RULE_SET_NAME: self.rule_set_name,
+                      api.RESPONSE_KEY_ENVIRONMENT_LIST: rules_compare_list}
+        return dictionary
 
-    def get_rules_compared_json(self, rules, only_list, different):
+    def get_rules_compared_json(self, environment, rules, only_list, different):
         if rules is None:
             self.error_code = api.STATUS_CODE_INVALID_PARAMETER
 
         rules_data = {
-            api.RESPONSE_KEY_RULE_SET_NAME: rules.get_rules_name(),
-            api.RESPONSE_KEY_RULE_STATUS_ADD:
-                rules.get_rules_data_array_by_name_list(only_list),
-            api.RESPONSE_KEY_RULE_STATUS_MODIFIED:
-                rules.get_rules_data_array_by_name_list(different)
+            api.RESPONSE_KEY_ENVIRONMENT_NAME: environment,
+            api.RESPONSE_KEY_RULESET_FILE_LIST:
+                rules.get_rules_data_array_by_name_list(only_list)
         }
 
         return rules_data

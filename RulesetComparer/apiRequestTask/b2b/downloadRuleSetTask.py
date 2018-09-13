@@ -17,6 +17,7 @@ class DownloadRuleSetTask(BaseRequestTask):
         self.country = country
         self.rule_set_name = rule_set_name
         self.download_status = apiResponse.RESPONSE_KEY_FAIL
+        self.file_name_with_path = None
         BaseRequestTask.__init__(self)
 
     def request_data(self):
@@ -38,6 +39,7 @@ class DownloadRuleSetTask(BaseRequestTask):
 
         if self.request_fail() is False:
             self.download_status = apiResponse.RESPONSE_KEY_SUCCESS
+            self.save_rule_set()
 
     def get_content(self):
         if self.request_fail():
@@ -49,11 +51,21 @@ class DownloadRuleSetTask(BaseRequestTask):
         return {apiResponse.DATA_KEY_RULES_NAME: self.rule_set_name,
                 apiResponse.DATA_KEY_DOWNLOAD_STATUS: self.download_status}
 
-    def save_rule_set(self, file_name_with_path):
+    def save_rule_set(self):
         if self.request_fail():
             return
 
+        # save file to specific path
+        save_file_path = settings.RULESET_SAVED_PATH % (self.environment, self.country)
+        fileManager.clear_folder(save_file_path)
+        fileManager.create_folder(save_file_path)
+        # save file
+        self.file_name_with_path = settings.RULESET_SAVED_NAME % (save_file_path, self.rule_set_name)
+
         payload = self.b2b_response_data.payload[
                   self.b2b_response_data.payload.index('<BRERuleList'):]
-        fileManager.save_file(file_name_with_path, payload)
+        fileManager.save_file(self.file_name_with_path, payload)
+
+    def get_rule_set_file(self):
+        return fileManager.load_file(self.file_name_with_path)
 
