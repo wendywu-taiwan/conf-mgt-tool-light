@@ -20,6 +20,12 @@ class RuleModel(BaseModel):
     def parse_data(self):
         pass
 
+    def get_rule_value(self):
+        return self.ruleValue
+
+    def get_rule_expression(self):
+        return self.expression
+
     def get_full_value(self):
         return self.fullValue
 

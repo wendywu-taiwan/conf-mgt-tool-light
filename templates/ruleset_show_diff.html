@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+
+<div class="container-rule-diff container-fluid">
+    <div class="table-responsive">
+        <table class="custom-table-show-rule table table-bordered .table-sm">
+            <thead class="thead-gray">
+            <tr>
+                <th class="ruleset-header-text" colspan="3">{{ data.rule_set_name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="td_environment">#</td>
+                {% for environment_data in data.environment_list %}
+                <td class="td_environment">{{ environment_data.environment_name }}</td>
+                {% endfor %}
+            </tr>
+
+            {% for environment_data in data.environment_list %}
+            {% if environment_data.environment_name == data.environment_list.0.environment_name %}
+            {% for rule in environment_data.ruleset_file_list %}
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Process</td>
+                <td class="detail-content">{{ rule.process }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OrganizationId</td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OwnerRole</td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">ProcessStep</td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">RuleType</td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Key</td>
+                <td class="detail-content">{{ rule.key }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Value</td>
+                <td class="detail-content">{{ rule.value }}</td>
+                <td class="detail-content"></td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="border-bottom detail-attribute">Expression</td>
+                <td class="border-bottom detail-content">{{ rule.expression }}</td>
+                <td class="border-bottom detail-content"></td>
+            </tr>
+            {% endfor %}
+            {% elif environment_data.environment_name == data.environment_list.1.environment_name %}
+            {% for rule in environment_data.ruleset_file_list %}
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Process</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.process }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OrganizationId</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OwnerRole</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">ProcessStep</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">RuleType</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Key</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.key }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Value</td>
+                <td class="detail-content"></td>
+                <td class="detail-content">{{ rule.value }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="border-bottom detail-attribute">Expression</td>
+                <td class="border-bottom detail-content"></td>
+                <td class="border-bottom detail-content">{{ rule.expression }}</td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            {% for rule in data.diff_list %}
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Process</td>
+                <td class="detail-content">{{ rule.process }}</td>
+                <td class="detail-content">{{ rule.process }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OrganizationId</td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OwnerRole</td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">ProcessStep</td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">RuleType</td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Key</td>
+                <td class="detail-content">{{ rule.key }}</td>
+                <td class="detail-content">{{ rule.key }}</td>
+            </tr>
+            <tr class="table-warning custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Value</td>
+                <td class="detail-content">{{ rule.value.0 }}</td>
+                <td class="detail-content">{{ rule.value.1 }}</td>
+            </tr>
+            <tr class="table-warning custom-tr-ruleset-detail-table">
+                <td class="border-bottom detail-attribute">Expression</td>
+                <td class="border-bottom detail-content">{{ rule.expression.0 }}</td>
+                <td class="border-bottom detail-content">{{ rule.expression.1 }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="container-rule-detail container-fluid">
+    <div class="table-responsive">
+        <table class="custom-table-show-rule table table-bordered .table-sm">
+            <thead class="thead-gray">
+            <tr>
+                <th class="ruleset-header-text" colspan="2">{{ data.rule_set_name}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rule_data in data.rule_set_array %}
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Process</td>
+                <td class="detail-content">{{ rule_data.process }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OrganizationId</td>
+                <td class="detail-content">{{ rule_data.organization_id }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OwnerRole</td>
+                <td class="detail-content">{{ rule_data.owner_role }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">ProcessStep</td>
+                <td class="detail-content">{{ rule_data.process_step }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">RuleType</td>
+                <td class="detail-content">{{ rule_data.rule_type }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Key</td>
+                <td class="detail-content">{{ rule_data.key }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Value</td>
+                <td class="detail-content">{{ rule_data.value }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="border-bottom detail-attribute">Expression</td>
+                <td class="border-bottom detail-content">{{ rule_data.expression }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

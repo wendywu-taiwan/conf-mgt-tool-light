@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="container-rule-list-compare-result container-fluid">
+    <p class="header-text">Compare Table</p>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-gray">
+            <tr>
+                <th>RuleSet Name</th>
+                {% for list in data.environment_list %}
+                <th>{{ list.environment_name }}</th>
+                {% endfor %}
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for list in data.environment_list %}
+            {% if list.environment_name == data.environment_list.0.environment_name %}
+            {% for rule in list.ruleset_file_list %}
+
+            <tr class="custom-tr-ruleset-table">
+                <td class="custom_td_ruleset_name">{{ rule }}
+                </td>
+                <td class="custom_td_ruleset_icon">
+                    <span class="fui-check"></span>
+                </td>
+                <td class="custom_td_ruleset_icon"></td>
+                <td class="custom_td_ruleset_icon">
+                    <form method="post" action="{% url 'ruleset-compare-rule-detail' %}">
+                        {% csrf_token %}
+                        <input name='detail_rule_name' value="{{ rule }}" type="hidden">
+                        <input name='detail_country' value="TW" type="hidden">
+                        <input name='detail_env' value="{{ data.environment_list.0.environment_name }}" type="hidden">
+                        <button type="submit" class="custom-btn-ruleset-action btn btn-inverse">Detail</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            {% elif list.environment_name == data.environment_list.1.environment_name %}
+            {% for rule in list.ruleset_file_list %}
+            <tr class="custom-tr-ruleset-table">
+                <td class="custom_td_ruleset_name" style="height:30px">{{ rule }}</td>
+                <td class="custom_td_ruleset_icon"></td>
+                <td class="custom_td_ruleset_icon"><span class="fui-check"></span></td>
+                <td class="custom_td_ruleset_icon">
+                    <form method="post" action="{% url 'ruleset-compare-rule-detail' %}">
+                        {% csrf_token %}
+                        <input name='detail_rule_name' value="{{ rule }}" type="hidden">
+                        <input name='detail_country' value="TW" type="hidden">
+                        <input name='detail_env' value="{{ data.environment_list.1.environment_name }}" type="hidden">
+                        <button type="submit" class="custom-btn-ruleset-action btn btn-inverse">Detail</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            {% endfor %}
+            {% for rule in data.union_file_list %}
+            <tr class="custom-tr-ruleset-table">
+                <td class="custom_td_ruleset_name" style="height:30px">{{ rule }}</td>
+                <td class="custom_td_ruleset_icon"><span class="fui-check"></span></td>
+                <td class="custom_td_ruleset_icon"><span class="fui-check"></span></td>
+                <td class="custom_td_ruleset_icon">
+                    <form id="diff" method="post" action="{% url 'ruleset-compare-rule-diff' %}">
+                        {% csrf_token %}
+                        <input name='diff_rule_name' id="diff_rule_name" value="{{ rule }}" type="hidden">
+                        <input name='diff_country' id="diff_country" value="TW" type="hidden">
+                        <input name='diff_env1' id="diff_env1" value="Local" type="hidden">
+                        <input name='diff_env2' id="diff_env2" value="Int1" type="hidden">
+                        <button type="submit" class="custom-btn-ruleset-action btn btn-danger">Diff</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

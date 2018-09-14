@@ -31,23 +31,38 @@ class RulesModel(BaseModel):
     def get_rules_name_list(self):
         return list(self.rulesMap.keys())
 
+    def get_rule_full_value(self, rule_key):
+        rule = self.rulesMap[rule_key]
+
+        if rule is None:
+            return ""
+
+        return rule.get_full_value()
+
     def get_rule_value(self, rule_key):
         rule = self.rulesMap[rule_key]
 
-        if rule is not None:
+        if rule is None:
             return None
-        return rule.get_full_value()
+        value = rule.get_rule_value().split(' ', 1 )
+        return rule.get_rule_value()
+
+    def get_rule_expression(self, rule_key):
+        rule = self.rulesMap[rule_key]
+
+        if rule is None:
+            return None
+
+        return rule.get_rule_expression()
 
     def get_rules_map(self):
         return self.rulesMap
 
-    def get_rules_data_array(self):
-        return self.get_rules_data_array_by_name_list(self.rulesMap)
+    def get_rules_data_array(self, name_list=None):
+        array = list()
 
-    def get_rules_data_array_by_name_list(self, name_list):
-        array = []
         if name_list is None:
-            return None
+            name_list = self.get_rules_name_list()
 
         for rule in name_list:
             rule_model = self.rulesMap[rule]
@@ -55,6 +70,5 @@ class RulesModel(BaseModel):
                 continue
             array.append(rule_model.generate_result_dict())
         return array
-
 
 

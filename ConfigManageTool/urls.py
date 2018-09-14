@@ -18,13 +18,10 @@ from django.urls import path
 from RulesetComparer import views
 
 urlpatterns = [
-    path('RulesetComparer/page/ruleset/compare/', views.page_compare_select),
-    path('RulesetComparer/rule/list/compare/<str:country>/env1/<str:environment1>/env2/<str:environment2>/', views.compare_rule_list),
-    path('RulesetComparer/rule/list/<str:environment>/<str:country>/', views.get_rule_list),
-    path('RulesetComparer/rule/<str:environment>/<str:country>/<str:rule_set_name>/', views.get_rule_set),
-    path('RulesetComparer/compare/<str:country>/env1/<str:environment1>/env2/<str:environment2>/<str:rule_set_name>', views.compare_rule_set),
-
-    path('RulesetComparer/download/git/<str:country>/', views.download_rule_set_from_git),
-    path('RulesetComparer/compare/<str:country>', views.compare_country_rule_set),
-    path('RulesetComparer/temp_query_compare_ruleset.html', views.download_rule_set_test),
+    path('RulesetComparer/page/ruleset/compare/', views.page_compare_select, name="ruleset-compare"),
+    path('RulesetComparer/page/ruleset/compare/list', views.page_compare_rule_list, name="ruleset-compare-list"),
+    path('RulesetComparer/page/ruleset/compare/detail', views.page_compare_rule_detail,
+         name="ruleset-compare-rule-detail"),
+    path('RulesetComparer/page/ruleset/compare/diff', views.page_compare_rule_diff,
+         name="ruleset-compare-rule-diff"),
 ]

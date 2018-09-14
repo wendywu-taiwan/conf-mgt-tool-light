@@ -45,6 +45,7 @@ RESPONSE_KEY_FAIL = 'fail'
 # ruleListCompareModel
 RESPONSE_KEY_ENVIRONMENT_NAME = 'environment_name'
 RESPONSE_KEY_ENVIRONMENT_LIST = 'environment_list'
+RESPONSE_KEY_DIFF_LIST = 'diff_list'
 RESPONSE_KEY_RULESET_FILE_LIST = 'ruleset_file_list'
 RESPONSE_KEY_UNION_FILE_LIST = 'union_file_list'
 

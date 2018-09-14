@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<div class="container-select container-fluid">
+    <p class="header-text">Compare</p>
+    <div class="dropdown-block">
+        <label class="content-text-1" for="select_country">Country</label>
+        <div id="select_country" class="custom-btn-group-1 btn-group">
+            <button id="select-country-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
+                    data-toggle="dropdown">
+                Country
+            </button>
+            <ul id="select-country-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+                <li><a href="#">TW</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown-block">
+        <label class="content-text-1" for="select_env_1">Environment 1</label>
+        <div id="select_env_1" class="custom-btn-group-1 btn-group">
+            <button id="select-env-1-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
+                    data-toggle="dropdown">
+                Environment
+            </button>
+            <ul id="select-env-1-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+                <li><a href="#">Local</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="dropdown-block">
+        <label class="content-text-1" for="select_env_2">Environment 2</label>
+        <div id="select_env_2" class="custom-btn-group-1 btn-group">
+            <button id="select-env-2-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
+                    data-toggle="dropdown">
+                Environment
+            </button>
+            <ul id="select-env-2-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+                <li><a href="#">Int1</a></li>
+            </ul>
+        </div>
+    </div>
+    <form id="compare" method="post" action="{% url 'ruleset-compare-list' %}">
+        {% csrf_token %}
+        <input name='env1' id="country_selected" value="{{ country }}" type="hidden">
+        <input name='env2' id="environment_1_selected" value="{{ env1 }}" type="hidden">
+        <input name='country' id="environment_2_selected" value="{{ env2 }}" type="hidden">
+        <button class="custom-btn-1 btn btn-embossed btn-primary" type="submit" form="compare" value="Submit">
+            Submit
+        </button>
+    </form>
+</div>
+{% endblock %}
+<!--</body>-->
+<!--</html>-->
