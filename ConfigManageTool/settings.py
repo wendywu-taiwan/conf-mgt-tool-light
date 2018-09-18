@@ -131,10 +131,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsdl'
 
-
 UNICODE_ENCODING = 'utf-8'
 
+
+GIT_REMOTE_NAME = 'origin'
 RULESET_SAVED_NAME = '%s/%s.xml'
 RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
 RULESET_LOCAL_GIT_REPOSITORY = RULESET_SAVED_PATH + 'git/'
 RULESET_GIT_REPOSITORY = 'http://10.29.25.73/gitlab/axn/bre_ruleset/tree/develop'
+RULESET_GIT_DEVELOPER_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Develop"
+RULESET_GIT_TESTING_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Test"
