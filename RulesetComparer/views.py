@@ -4,6 +4,9 @@ from RulesetComparer.serializers.serializers import CountrySerializer, Environme
     RuleSerializer, ModifiedRuleValueSerializer
 from RulesetComparer.services.services import RuleSetService
 from RulesetComparer.properties import dataKey as key
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer
+from RulesetComparer.utils.gitManager import GitManager
+from django.conf import settings
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
@@ -102,3 +105,9 @@ def json_rule_detail(request, country, env, rule_set_name):
 # todo : return json rule diff result
 def json_rule_diff(request, base_env_id, compare_env_id, country_id, compare_key):
     pass
+
+
+def git_sync_branch(request, branch):
+    test_git_manager = GitManager(settings.RULESET_GIT_TESTING_BRANCH, 'master')
+    if test_git_manager.status == GitManager.STATUS_NEED_PULL:
+        test_git_manager.pull()

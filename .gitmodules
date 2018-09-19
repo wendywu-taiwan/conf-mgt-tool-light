@@ -1,0 +1,3 @@
+[submodule "RulesetComparer/rulesets/Git_Branch_Test"]
+	path = RulesetComparer/rulesets/Git_Branch_Test
+	url = git@10.29.25.73:wendy_wu/fake_rule_set.git

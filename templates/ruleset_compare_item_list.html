@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="container-rule-list-item container-fluid">
+    <div class="row">
+        <h6 class="header-text">Base Environment:</h6>
+        <h6 class="content-text">{{ base_env }}</h6>
+    </div>
+    <div class="row">
+        <h6 class="header-text">Compared Environment:</h6>
+        <h6 class="content-text"> {{ compare_env }} </h6>
+    </div>
+    <div class="rule_list_item">
+        <div class="add_list">
+            <div class="nav" data-toggle="collapse" data-target=".add_data">
+                <div class="nav_title"> ADD
+                    <span class="fui-triangle-down"></span>
+                </div>
+            </div>
+            {% for data in add_list %}
+            <div class="collapse add_data data row">
+                <div class="col-5">
+                    <h6 class="rule_set_name">{{ data.name }}</h6>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        {{ base_env }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_new btn btn-primary">
+                        {{ compare_env }} <span class="span_new badge badge-light">{{ data.new_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_add btn btn-primary">
+                        Add <span class="span_add badge badge-light">{{ data.add_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Minus <span class="span_origin badge badge-light">{{ data.minus_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Modified <span class="span_origin badge badge-light">{{ data.modify_count }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="rule_list_item">
+        <div class="minus_list">
+            <div class="nav" data-toggle="collapse" data-target=".minus_data" aria-expanded="true"
+                 aria-controls=".minus_data">
+                <div class="nav_title"> Remove
+                    <span class="fui-triangle-down"></span>
+                </div>
+            </div>
+            {% for data in minus_list %}
+            <div class="collapse minus_data data row">
+                <div class="col-5">
+                    <h6 class="rule_set_name">{{ data.name }}</h6>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        {{ base_env }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_new btn btn-primary">
+                        {{ compare_env }} <span class="span_new badge badge-light">{{ data.new_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Add <span class="span_origin badge badge-light">{{ data.add_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_minus btn btn-primary">
+                        Minus <span class="span_minus badge badge-light">{{ data.minus_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Modified <span class="span_origin badge badge-light">{{ data.modify_count }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="rule_list_item">
+        <div class="modify_list">
+            <div class="nav" data-toggle="collapse" data-target=".modify_data">
+                <div class="nav_title"> Modify
+                    <span class="fui-triangle-down"></span>
+                </div>
+            </div>
+            {% for data in modify_list %}
+            <div class="collapse modify_data data row">
+                <div class="col-5">
+                    <h6 class="rule_set_name">{{ data.name }}</h6>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        {{ base_env }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_new btn btn-primary">
+                        {{ compare_env }} <span class="span_new badge badge-light">{{ data.new_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_add btn btn-primary">
+                        Add <span class="span_add badge badge-light">{{ data.add_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_minus btn btn-primary">
+                        Minus <span class="span_minus badge badge-light">{{ data.minus_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_modify btn btn-primary">
+                        Modified <span class="span_modify badge badge-light">{{ data.modify_count }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="rule_list_item">
+        <div class="normal_list">
+            <div class="nav" data-toggle="collapse" data-target=".normal_data">
+                <div class="nav_title"> Normal
+                    <span class="fui-triangle-down"></span>
+                </div>
+            </div>
+            {% for data in normal_list %}
+            <div class="collapse normal_data data row">
+                <div class="col-5">
+                    <h6 class="rule_set_name">{{ data.name }}</h6>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        {{ base_env }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        New <span class="span_origin badge badge-light">{{ data.new_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Add <span class="span_origin badge badge-light">{{ data.add_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Minus <span class="span_origin badge badge-light">{{ data.minus_count }}</span>
+                    </button>
+                </div>
+                <div class="col count_div">
+                    <button type="button" class="button_origin btn btn-primary">
+                        Modified <span class="span_origin badge badge-light">{{ data.modify_count }}</span>
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

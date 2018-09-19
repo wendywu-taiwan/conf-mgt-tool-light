@@ -1,7 +1,7 @@
 from git import Repo
 from RulesetComparer.utils.timeManager import compare_commit_time
 from django.conf import settings
-from RulesetComparer.properties import errorMessage
+from RulesetComparer.properties import logMessage
 
 
 class GitManager:
@@ -20,13 +20,13 @@ class GitManager:
     def _repo(self):
         repo_path = self.REPOSITORY_PATH
         repo = Repo(repo_path)
-        assert repo, errorMessage.GIT_NO_REPO_MSG
+        assert repo, logMessage.GIT_NO_REPO_MSG
         return repo
 
     def _remote_repo(self):
         repo = self._repo()
         remote = repo.remote(settings.GIT_REMOTE_NAME)
-        assert remote, errorMessage.GIT_NO_REMOTE_REPOSITORY
+        assert remote, logMessage.GIT_NO_REMOTE_REPOSITORY
         return remote
 
     def pull(self):
