@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-
 {% block content %}
 
 <div class="container-select container-fluid">
@@ -8,42 +7,48 @@
     <div class="dropdown-block">
         <label class="content-text-1" for="select_country">Country</label>
         <div id="select_country" class="custom-btn-group-1 btn-group">
-            <button id="select-country-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
-                    data-toggle="dropdown">
+            <button id="select-country-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+                    type="button" data-toggle="dropdown">
                 Country
             </button>
             <ul id="select-country-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
-                <li><a href="#">TW</a></li>
+                {% for data in countries %}
+                <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </div>
 
     <div class="dropdown-block">
-        <label class="content-text-1" for="select_env_1">Environment 1</label>
+        <label class="content-text-1" for="select_env_1">Base Environment</label>
         <div id="select_env_1" class="custom-btn-group-1 btn-group">
             <button id="select-env-1-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
                     data-toggle="dropdown">
                 Environment
             </button>
             <ul id="select-env-1-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
-                <li><a href="#">Local</a></li>
+                {% for data in environments %}
+                <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </div>
 
     <div class="dropdown-block">
-        <label class="content-text-1" for="select_env_2">Environment 2</label>
+        <label class="content-text-1" for="select_env_2">Compare Environment</label>
         <div id="select_env_2" class="custom-btn-group-1 btn-group">
             <button id="select-env-2-btn" class="custom-dropdown-btn-1 btn btn-inverse dropdown-toggle" type="button"
                     data-toggle="dropdown">
                 Environment
             </button>
             <ul id="select-env-2-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
-                <li><a href="#">Int1</a></li>
+                {% for data in environments %}
+                <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
+                {% endfor %}
             </ul>
         </div>
     </div>
-    <form id="compare" method="post" action="{% url 'ruleset-compare-list' %}">
+    <form id="compare" method="post">
         {% csrf_token %}
         <input name='env1' id="country_selected" value="{{ country }}" type="hidden">
         <input name='env2' id="environment_1_selected" value="{{ env1 }}" type="hidden">
@@ -54,5 +59,3 @@
     </form>
 </div>
 {% endblock %}
-<!--</body>-->
-<!--</html>-->
