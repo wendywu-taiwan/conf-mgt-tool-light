@@ -1,11 +1,13 @@
 from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.downloadCompareRuleListTask import DownloadCompareRuleListTask as RuleListItemTask
+from RulesetComparer.b2bRequestTask.compareWithGitRuleListTask import CompareWithGitRuleListTask as CompareWithGitTask
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils import rulesetUtil
 from RulesetComparer.dataModel.dataBuilder.rulesCompareBuilder import RulesCompareModel
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
+from RulesetComparer.models import Country, Environment
 
 
 class RuleSetService(object):
@@ -25,7 +27,12 @@ class RuleSetService(object):
 
     @staticmethod
     def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
-        task = RuleListItemTask(base_env_id, compare_env_id, country_id)
+        git_env_id = Environment.objects.get(name='Git').id
+        if base_env_id == str(git_env_id) or compare_env_id == str(git_env_id):
+            task = CompareWithGitTask(base_env_id, compare_env_id, country_id)
+        else:
+            task = RuleListItemTask(base_env_id, compare_env_id, country_id)
+
         return task
 
     @staticmethod

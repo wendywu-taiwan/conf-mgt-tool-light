@@ -136,8 +136,14 @@ UNICODE_ENCODING = 'utf-8'
 
 GIT_REMOTE_NAME = 'origin'
 RULESET_SAVED_NAME = '%s/%s.xml'
+
+GIT_RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s'
 RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
-RULESET_LOCAL_GIT_REPOSITORY = RULESET_SAVED_PATH + 'git/'
-RULESET_GIT_REPOSITORY = 'http://10.29.25.73/gitlab/axn/bre_ruleset/tree/develop'
+
+LOCAL_INT1_GIT_BRE_RULE_SET_REPOSITORY_NAME = 'Git_BRE_Rule_Set'
+LOCAL_INT1_GIT_BRE_RULE_SET_REPOSITORY = BASE_DIR + "/RulesetComparer/rulesets/Git_BRE_Rule_Set"
 RULESET_GIT_DEVELOPER_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Develop"
 RULESET_GIT_TESTING_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Test"
+
+GIT_BRANCH_MASTER = 'master'
+GIT_BRANCH_DEVELOP = 'develop'

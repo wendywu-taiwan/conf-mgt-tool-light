@@ -41,9 +41,17 @@ def load_file(file_name):
 
 
 def load_file_with_setting(file_name, mode, format):
-  return open(file_name, mode, format)
+    return open(file_name, mode, format)
 
 
 def load_file_in_folder(path, extension):
     name_filter = path + "*"+extension
     return [glob.glob(name_filter)]
+
+
+def get_rule_name_list(path):
+    rule_name_list = list()
+    for file_name in os.listdir(path):
+        file_name = file_name.strip(".xml")
+        rule_name_list.append(file_name)
+    return rule_name_list
