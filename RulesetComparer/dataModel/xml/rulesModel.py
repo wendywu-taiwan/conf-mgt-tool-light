@@ -1,6 +1,7 @@
 from RulesetComparer.dataModel.xml.baseModel import BaseModel
-from RulesetComparer.properties import xmlKey as XMLKey
 from RulesetComparer.dataModel.xml.ruleModel import RuleModel
+from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.properties import parserKey as key
 
 
 # this is for handling rules data, rules file contains many rules
@@ -27,6 +28,9 @@ class RulesModel(BaseModel):
 
     def get_rules_name(self):
         return self.rulesName
+
+    def get_rules_count(self):
+        return len(self.rulesMap.keys())
 
     def get_rules_name_list(self):
         return list(self.rulesMap.keys())
@@ -70,5 +74,3 @@ class RulesModel(BaseModel):
                 continue
             array.append(rule_model.generate_result_dict())
         return array
-
-

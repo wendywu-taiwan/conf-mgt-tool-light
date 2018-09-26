@@ -35,7 +35,8 @@ class EnvironmentSerializer(serializers.Serializer):
 
 class RuleListItemSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=200)
-    rule_count = serializers.IntegerField()
+    base_count = serializers.IntegerField()
+    new_count = serializers.IntegerField()
     add_count = serializers.IntegerField()
     minus_count = serializers.IntegerField()
     modify_count = serializers.IntegerField()

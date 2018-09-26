@@ -1,15 +1,16 @@
-from RulesetComparer.apiRequestTask.b2b.downloadRuleSetTask import DownloadRuleSetTask
+from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
+from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
+from RulesetComparer.b2bRequestTask.downloadCompareRuleListTask import DownloadCompareRuleListTask as RuleListItemTask
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.dataModel.responseModel.rulesCompareModel import RulesCompareModel
-from RulesetComparer.apiRequestTask.b2b.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.dataModel.responseModel.ruleListCompareModel import RuleListCompareModel
 from RulesetComparer.dataModel.xml.rulesModel import RulesModel as ParseRuleModel
 from RulesetComparer.dataModel.responseModel.rulesModel import RulesModel as ResponseRulesModel
+from RulesetComparer.serializers.serializers import RuleSerializer, RuleListItemSerializer
 
 
 class RuleSetService(object):
-
     @staticmethod
     def get_rule_list_from_b2b(environment, country):
         task = DownloadRuleListTask(environment, country)
@@ -22,7 +23,13 @@ class RuleSetService(object):
         ruleset = task.get_rule_set_file()
         rules_model = ParseRuleModel(ruleset)
         response_model = ResponseRulesModel(rules_model)
+        rule_data = RuleSerializer(rules_model.get_rules_data_array())
         return response_model
+
+    @staticmethod
+    def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
+        task = RuleListItemTask(base_env_id, compare_env_id, country_id)
+        return task
 
     def compare_rule_list(self, environment1, environment2, country):
         rule_list_1 = self.get_rule_list_from_b2b(environment1, country).get_content()

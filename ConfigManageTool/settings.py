@@ -133,6 +133,6 @@ B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsd
 UNICODE_ENCODING = 'utf-8'
 
 RULESET_SAVED_NAME = '%s/%s.XML'
-RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s'
+RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
 RULESET_LOCAL_GIT_REPOSITORY = RULESET_SAVED_PATH + 'git/'
 RULESET_GIT_REPOSITORY = 'http://10.29.25.73/gitlab/axn/bre_ruleset/tree/develop'

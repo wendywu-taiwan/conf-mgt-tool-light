@@ -31,7 +31,7 @@ class BaseRequestTask:
     def compose_key_value(key, value):
         return {'name': key, 'value': value}
 
-    # b2b response
+    # b2bRequestTask response
     def status_code(self):
         return self.b2b_response_data[api.B2B_RESPONSE_KEY_RETURN_CODE]
 
@@ -63,7 +63,7 @@ class BaseRequestTask:
             self.response_data[api.RESPONSE_KEY_STATUS_CODE] = self.status_code()
             self.response_data[api.RESPONSE_KEY_MESSAGE] = self.success_message()
             self.response_data[api.RESPONSE_KEY_DATA] = self.get_content_json()
-        # failure response from b2b service
+        # failure response from b2bRequestTask service
         elif self.error_code == self.status_code():
             self.response_data[api.RESPONSE_KEY_STATUS_CODE] = self.status_code()
             self.response_data[api.RESPONSE_KEY_MESSAGE] = self.error_message()

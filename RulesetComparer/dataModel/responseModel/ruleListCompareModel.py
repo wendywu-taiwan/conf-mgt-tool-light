@@ -4,7 +4,7 @@ from RulesetComparer.properties import apiResponse as api
 
 class RuleListCompareModel(ResponseModel):
 
-    def __init__(self,left_env_name, right_env_name, rule_file_list_comparer):
+    def __init__(self, left_env_name, right_env_name, rule_file_list_comparer):
         ResponseModel.__init__(self)
         if rule_file_list_comparer is None:
             self.set_error_code(api.STATUS_CODE_INVALID_PARAMETER)

@@ -1,5 +1,4 @@
 from RulesetComparer.properties import apiResponse as api
-from django.http import JsonResponse
 from abc import abstractmethod
 
 

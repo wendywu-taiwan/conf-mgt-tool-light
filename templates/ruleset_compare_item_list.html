@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="container-rule-list-item container-fluid">
+    <p class="header-text">Compare Table</p>
+    <div class="rule_list_item_add">
+        <div class="nav" data-toggle="collapse" data-target=".add_data">
+            <div class="nav_title"> ADD
+            <span class="fui-triangle-down"></span>
+            </div>
+        </div>
+        {% for data in add_list %}
+        <div class="add_data data row">
+            <div class="col-4">
+                <h6 class="rule_set_name">{{ data.name }}</h6>
+            </div>
+            <div class="col">
+                <button type="button" class="button_origin btn btn-primary">
+                    Origin <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="button_new btn btn-primary">
+                    New <span class="span_new badge badge-light">{{ data.new_count }}</span>
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="button_add btn btn-primary">
+                    Add <span class="span_add badge badge-light">{{ data.add_count }}</span>
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="button_origin btn btn-primary">
+                    Minus <span class="span_origin badge badge-light">{{ data.minus_count }}</span>
+                </button>
+            </div>
+            <div class="col">
+                <button type="button" class="button_origin btn btn-primary">
+                    Modified <span class="span_origin badge badge-light">{{ data.modify_count }}</span>
+                </button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

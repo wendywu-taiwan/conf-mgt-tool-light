@@ -19,10 +19,140 @@
     text-align: center;
 }
 
+.container-rule-list-item {
+    max-width: 90%;
+    text-align: center;
+}
+
+.container-rule-list-item .nav {
+    background: #3498db;
+    color: white;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+}
+
 /* button */
 .custom-btn-group-1 {
     display: initial;
 }
+
+.rule_list_item_add{
+    border: #ffc107;
+    border-radius: 5px;
+    border-width: 1px;
+    border-style: solid;
+    padding-bottom: 10px;
+}
+
+.rule_list_item_add .nav{
+    background: #ffc107;
+    color: white;
+    width: 100%;
+    padding: 5px 10px 5px 15px;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.rule_list_item_add .rule_set_name{
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 500;
+    color: #34495d;
+    margin-left: 10px;
+    text-align: left;
+}
+
+.rule_list_item_add .button_origin{
+    margin-top: 10px;
+    font-size: 12px;
+    color: var(--gray);
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item_add .span_origin{
+    background-color: var(--gray);
+    border: var(--gray);
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
+.rule_list_item_add .button_new{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #0995f0;
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item_add .span_new{
+    background-color:#0995f0;
+    border: #0995f0;
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
+.rule_list_item_add .button_add{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #1abc9c;
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item_add .span_add{
+    background-color: #1abc9c;
+    border: #1abc9c;
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
+.rule_list_item_add .button_minus{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #c43a45;
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item_add .span_minus{
+    background-color:#c43a45;
+    border: #c43a45;
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
+.rule_list_item_add .button_modify{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #f9ba05;
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item_add .span_modify{
+    background-color:#f9ba05;
+    border: #f9ba05;
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
 
 .custom-btn-1 {
     font-size: 18px;

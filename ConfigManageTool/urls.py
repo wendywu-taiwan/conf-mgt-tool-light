@@ -24,4 +24,6 @@ urlpatterns = [
          name="ruleset-compare-rule-detail"),
     path('RulesetComparer/page/ruleset/compare/diff', views.page_compare_rule_diff,
          name="ruleset-compare-rule-diff"),
+path('RulesetComparer/ruleset/compare/detail/<str:country>/<str:env>/<str:rule_set_name>', views.compare_rule_detail,
+         name="ruleset-compare-rule-detail"),
 ]
