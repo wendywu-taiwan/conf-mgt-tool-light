@@ -19,7 +19,7 @@ from RulesetComparer import views
 
 urlpatterns = [
     path('RulesetComparer/page/ruleset/compare/', views.page_compare_select, name="ruleset-compare"),
-    path('RulesetComparer/page/ruleset/compare/list', views.page_compare_rule_list, name="ruleset-compare-list"),
+    path('RulesetComparer/page/ruleset/compare/list', views.page_compare_rule_list_item, name="ruleset-compare-list"),
     path('RulesetComparer/page/ruleset/compare/detail', views.page_compare_rule_detail,
          name="ruleset-compare-rule-detail"),
     path('RulesetComparer/page/ruleset/compare/diff', views.page_compare_rule_diff,

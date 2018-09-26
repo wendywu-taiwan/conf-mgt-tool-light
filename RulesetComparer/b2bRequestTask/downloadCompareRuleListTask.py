@@ -35,33 +35,21 @@ class DownloadCompareRuleListTask:
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
 
-    def execute(self):
-        base_rule_list_task = DownloadRuleListTask(self.baseEnv.id, self.country.id)
-        compare_rule_list_task = DownloadRuleListTask(self.comparedEnv.id, self.country.id)
-
-        base_rule_list = base_rule_list_task.get_rule_list()
-        compare_rule_list = compare_rule_list_task.get_rule_list()
-
-        # self.download_rules(self.baseEnv, base_rule_list)
-        # self.download_rules(self.comparedEnv, compare_rule_list)
-
-        comparer = RuleListComparer(base_rule_list, compare_rule_list)
-        add_list = comparer.get_compare_rules_list()
-        minus_list = comparer.get_base_rules_list()
-        union_list = comparer.get_union_list()
-
+    def __parse_add_list(self, add_list):
         for rule_name in add_list:
             rule_module = self.__load_rule_set(self.comparedEnv, rule_name)
             rule_list_item_parser = RuleListItemModel()
             rule_list_item_parser.set_add_rule(rule_module)
             self.add_rule_list.append(rule_list_item_parser.get_data())
 
+    def __parse_minus_list(self, minus_list):
         for rule_name in minus_list:
             rule_module = self.__load_rule_set(self.baseEnv, rule_name)
             rule_list_item_parser = RuleListItemModel()
             rule_list_item_parser.set_minus_rule(rule_module)
             self.minus_rule_list.append(rule_list_item_parser.get_data())
 
+    def __parse_normal_and_modify_list(self, union_list):
         for rule_name in union_list:
             base_rules_module = self.__load_rule_set(self.baseEnv, rule_name)
             compared_rules_module = self.__load_rule_set(self.comparedEnv, rule_name)
@@ -79,6 +67,25 @@ class DownloadCompareRuleListTask:
                                                       comparer.get_base_key_count(),
                                                       comparer.get_difference_count())
                 self.modify_rule_list.append(rule_list_item_parser.get_data())
+
+    def execute(self):
+        base_rule_list_task = DownloadRuleListTask(self.baseEnv.id, self.country.id)
+        compare_rule_list_task = DownloadRuleListTask(self.comparedEnv.id, self.country.id)
+
+        base_rule_list = base_rule_list_task.get_rule_list()
+        compare_rule_list = compare_rule_list_task.get_rule_list()
+
+        # self.download_rules(self.baseEnv, base_rule_list)
+        # self.download_rules(self.comparedEnv, compare_rule_list)
+
+        comparer = RuleListComparer(base_rule_list, compare_rule_list)
+        add_list = comparer.get_compare_rules_list()
+        minus_list = comparer.get_base_rules_list()
+        union_list = comparer.get_union_list()
+
+        self.__parse_add_list(add_list)
+        self.__parse_minus_list(minus_list)
+        self.__parse_normal_and_modify_list(union_list)
 
     def get_add_rule_list(self):
         return self.add_rule_list

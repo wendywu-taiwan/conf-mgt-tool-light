@@ -23,9 +23,9 @@ def page_compare_select(request):
         return render(request, "ruleset_compare_select.html", response)
 
     elif request.method == REQUEST_POST:
-        country = request.POST['env1']
-        environment1 = request.POST['env2']
-        environment2 = request.POST['country']
+        country = request.POST['country']
+        environment1 = request.POST['env1']
+        environment2 = request.POST['env2']
 
         if not country or not environment1 or not environment2 or environment1 == environment2:
             return render(request, "ruleset_compare_select.html", response)
@@ -34,18 +34,26 @@ def page_compare_select(request):
 
 
 def page_compare_rule_list_item(request):
-    country = request.POST['env1']
-    environment1 = request.POST['env2']
-    environment2 = request.POST['country']
-    task = RuleSetService.compare_rule_list_rule_set(environment1,
-                                                     environment2,
+    country = request.POST['country']
+    base_env = request.POST['env1']
+    compare_env = request.POST['env2']
+    task = RuleSetService.compare_rule_list_rule_set(base_env,
+                                                     compare_env,
                                                      country)
+
+    base_env = Environment.objects.get(id=base_env)
+    compare_env = Environment.objects.get(id=compare_env)
 
     add_list = RuleListItemSerializer(task.get_add_rule_list(), many=True).data
     minus_list = RuleListItemSerializer(task.get_minus_rule_list(), many=True).data
     normal_list = RuleListItemSerializer(task.get_normal_rule_list(), many=True).data
     modify_list = RuleListItemSerializer(task.get_modify_rule_list(), many=True).data
-    data = {"add_list": add_list, "minus_list": minus_list, "normal_list": normal_list, "modify_list": modify_list}
+    data = {"base_env": base_env.name,
+            "compare_env": compare_env.name,
+            "add_list": add_list,
+            "minus_list": minus_list,
+            "normal_list": normal_list,
+            "modify_list": modify_list}
     return render(request, "ruleset_compare_item_list.html", data)
 
 
