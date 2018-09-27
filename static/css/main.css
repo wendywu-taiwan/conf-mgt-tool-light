@@ -5,7 +5,7 @@
 }
 
 .container-rule-detail {
-    max-width: 50%;
+    max-width: 70%;
     text-align: center;
 }
 
@@ -29,6 +29,10 @@
     display: initial;
 }
 
+.unclickable{
+    cursor:initial !important; ;
+}
+
 /* ruleset_compare_item_list */
 .container-rule-list-item .content-text{
     font-size: 20px;
@@ -38,6 +42,10 @@
 
 .rule_list_item{
     margin-bottom: 10px;
+}
+
+.rule_list_item .count_div{
+    text-align: left;
 }
 
 .rule_list_item .add_list{

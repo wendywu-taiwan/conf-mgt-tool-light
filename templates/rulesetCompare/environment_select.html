@@ -51,8 +51,8 @@
     <form id="compare" method="post">
         {% csrf_token %}
         <input name='country' id="country_selected" value="{{ country }}" type="hidden">
-        <input name='env1' id="environment_1_selected" value="{{ env1 }}" type="hidden">
-        <input name='env2' id="environment_2_selected" value="{{ env2 }}" type="hidden">
+        <input name='base_env' id="environment_1_selected" value="{{ env1 }}" type="hidden">
+        <input name='compare_env' id="environment_2_selected" value="{{ env2 }}" type="hidden">
         <button class="custom-btn-1 btn btn-embossed btn-primary" type="submit" form="compare" value="Submit">
             Submit
         </button>

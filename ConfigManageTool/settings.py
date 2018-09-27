@@ -58,7 +58,9 @@ ROOT_URLCONF = 'ConfigManageTool.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': ['templates',
+                 'templates/rulesetCompare',
+                 'templates/rulesetCompare/component'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,7 +134,7 @@ B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsd
 
 UNICODE_ENCODING = 'utf-8'
 
-RULESET_SAVED_NAME = '%s/%s.XML'
+RULESET_SAVED_NAME = '%s/%s.xml'
 RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
 RULESET_LOCAL_GIT_REPOSITORY = RULESET_SAVED_PATH + 'git/'
 RULESET_GIT_REPOSITORY = 'http://10.29.25.73/gitlab/axn/bre_ruleset/tree/develop'

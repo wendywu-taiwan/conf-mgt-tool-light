@@ -1,0 +1,14 @@
+
+<div class="col count_div">
+    {% if data.base_count > 0 %}
+    <a href="{% url 'rule-detail' base_env.id country.id compare_hash_key data.name %}">
+        <button type="submit" class="button_origin btn btn-primary">
+            {{ base_env.name }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+        </button>
+    </a>
+    {% elif data.base_count == 0 %}
+    <button type="submit" class="button_origin unclickable btn btn-primary">
+        {{ base_env.name }} <span class="span_origin badge badge-light">{{ data.base_count }}</span>
+    </button>
+    {% endif %}
+</div>

@@ -2,47 +2,48 @@
 {% load staticfiles %}
 {% block content %}
 
+
 <div class="container-rule-detail container-fluid">
     <div class="table-responsive">
         <table class="custom-table-show-rule table table-bordered .table-sm">
             <thead class="thead-gray">
             <tr>
-                <th class="ruleset-header-text" colspan="2">{{ data.rule_set_name}}</th>
+                <th class="ruleset-header-text" colspan="2">{{ rule_name }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for rule_data in data.rule_set_array %}
+            {% for data in rule_data %}
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Process</td>
-                <td class="detail-content">{{ rule_data.process }}</td>
+                <td class="detail-content">{{ data.process }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content">{{ rule_data.organization_id }}</td>
+                <td class="detail-content">{{ data.organization_id }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content">{{ rule_data.owner_role }}</td>
+                <td class="detail-content">{{ data.owner_role }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content">{{ rule_data.process_step }}</td>
+                <td class="detail-content">{{ data.process_step }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">RuleType</td>
-                <td class="detail-content">{{ rule_data.rule_type }}</td>
+                <td class="detail-content">{{ data.rule_type }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Key</td>
-                <td class="detail-content">{{ rule_data.key }}</td>
+                <td class="detail-content">{{ data.key }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Value</td>
-                <td class="detail-content">{{ rule_data.value }}</td>
+                <td class="detail-content">{{ data.value }}</td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content">{{ rule_data.expression }}</td>
+                <td class="border-bottom detail-content">{{ data.expression }}</td>
             </tr>
             {% endfor %}
             </tbody>
