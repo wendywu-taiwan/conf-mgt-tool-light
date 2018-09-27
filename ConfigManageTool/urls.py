@@ -14,16 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path
+from django.urls import path, include
 from RulesetComparer import views
 
+ruleset_comparer_pattern = [
+    path('select/', views.environment_select, name="environment-select"),
+    path('detail/<str:env_id>/<str:country_id>/<str:compare_key>/<str:rule_name>',
+         views.rule_detail, name="rule-detail"),
+    path('diff/<str:base_env_id>/<str:compare_env_id>/<str:country_id>/<str:compare_key>/<str:rule_name>',
+         views.rule_diff, name="rule-diff"),
+]
+
 urlpatterns = [
-    path('RulesetComparer/page/ruleset/compare/', views.page_compare_select, name="ruleset-compare"),
-    path('RulesetComparer/page/ruleset/compare/list', views.page_compare_rule_list_item, name="ruleset-compare-list"),
-    path('RulesetComparer/page/ruleset/compare/detail', views.page_compare_rule_detail,
-         name="ruleset-compare-rule-detail"),
-    path('RulesetComparer/page/ruleset/compare/diff', views.page_compare_rule_diff,
-         name="ruleset-compare-rule-diff"),
-path('RulesetComparer/ruleset/compare/detail/<str:country>/<str:env>/<str:rule_set_name>', views.compare_rule_detail,
-         name="ruleset-compare-rule-detail"),
+    path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
 ]

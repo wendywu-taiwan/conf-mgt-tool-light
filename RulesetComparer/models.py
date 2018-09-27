@@ -62,11 +62,12 @@ class B2BRuleSetServerManager(models.Manager):
                              )
         return server
 
-    def accessible_data(self):
-        return self.filter(accessible=True)
+    def get_accessible_country_ids(self):
+        return self.filter(accessible=True).values('country_id').distinct()
 
-    def distinct_data(self, key):
-        return self.values(key).distinct()
+    def get_accessible_environment_ids(self):
+        return self.filter(accessible=True).values('environment_id').distinct()
+
 
 
 class B2BRuleSetServer(models.Model):
@@ -78,7 +79,6 @@ class B2BRuleSetServer(models.Model):
     accessible = models.BooleanField(default=False)
 
     objects = B2BRuleSetServerManager()
-
 
 class RuleSetsListItem(models.Model):
     source = models.ForeignKey(B2BRuleSetServer, on_delete=models.CASCADE)
