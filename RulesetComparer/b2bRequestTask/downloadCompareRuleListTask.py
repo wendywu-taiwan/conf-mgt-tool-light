@@ -5,15 +5,15 @@ from RulesetComparer.dataModel.xml.rulesModel import RulesModel as ParseRuleMode
 from RulesetComparer.dataModel.serializerModel.ruleListItemModel import  RuleListItemModel
 from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils import fileManager
+from RulesetComparer.utils import rulesetUtil
 from django.conf import settings
-
+from RulesetComparer.utils import fileManager
 
 class DownloadCompareRuleListTask:
 
     def __init__(self, base_env_id, compare_env_id, country_id):
         # self.compare_hash_key = hash(self)
-        self.compare_hash_key = -9223372036577735175
+        self.compare_hash_key = 284291413
         self.baseEnv = Environment.objects.get(id=base_env_id)
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
@@ -24,44 +24,44 @@ class DownloadCompareRuleListTask:
         self.execute()
 
     def __load_rule_set(self, env, rule_set_name):
-        # save file to specific path
-        file_path = settings.RULESET_SAVED_PATH % (env.name,
-                                                   self.country.name,
-                                                   self.compare_hash_key)
-
-        file_name_with_path = settings.RULESET_SAVED_NAME % (file_path,
-                                                             rule_set_name)
-        rule_set_file = fileManager.load_file(file_name_with_path)
+        rule_set_file = rulesetUtil.load_local_rule_file_with_name(env.name,
+                                                                   self.country.name,
+                                                                   self.compare_hash_key,
+                                                                   rule_set_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
+
+    def __get_rule_list_parser(self, rule_module):
+        return RuleListItemModel(rule_module,
+                                 self.baseEnv.id,
+                                 self.comparedEnv.id,
+                                 self.compare_hash_key)
 
     def __parse_add_list(self, add_list):
         for rule_name in add_list:
             rule_module = self.__load_rule_set(self.comparedEnv, rule_name)
-            rule_list_item_parser = RuleListItemModel()
-            rule_list_item_parser.set_add_rule(rule_module)
+            rule_list_item_parser = self.__get_rule_list_parser(rule_module)
+            rule_list_item_parser.set_add_rule()
             self.add_rule_list.append(rule_list_item_parser.get_data())
 
     def __parse_minus_list(self, minus_list):
         for rule_name in minus_list:
             rule_module = self.__load_rule_set(self.baseEnv, rule_name)
-            rule_list_item_parser = RuleListItemModel()
-            rule_list_item_parser.set_minus_rule(rule_module)
+            rule_list_item_parser = self.__get_rule_list_parser(rule_module)
+            rule_list_item_parser.set_minus_rule()
             self.minus_rule_list.append(rule_list_item_parser.get_data())
 
     def __parse_normal_and_modify_list(self, union_list):
         for rule_name in union_list:
             base_rules_module = self.__load_rule_set(self.baseEnv, rule_name)
             compared_rules_module = self.__load_rule_set(self.comparedEnv, rule_name)
-
+            rule_list_item_parser = self.__get_rule_list_parser(base_rules_module)
             comparer = RulesetComparer(base_rules_module, compared_rules_module)
-            rule_list_item_parser = RuleListItemModel()
             if comparer.no_difference():
-                rule_list_item_parser.set_normal_rule(base_rules_module)
+                rule_list_item_parser.set_normal_rule()
                 self.normal_rule_list.append(rule_list_item_parser.get_data())
             else:
-                rule_list_item_parser.set_modify_rule(rule_name,
-                                                      base_rules_module.get_rules_count(),
+                rule_list_item_parser.set_modify_rule(base_rules_module.get_rules_count(),
                                                       compared_rules_module.get_rules_count(),
                                                       comparer.get_compare_key_count(),
                                                       comparer.get_base_key_count(),

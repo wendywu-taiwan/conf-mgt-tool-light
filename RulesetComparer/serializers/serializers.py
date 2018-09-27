@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from RulesetComparer.utils.customField import StringArrayField
 from RulesetComparer.models import Country, Environment
 
 
@@ -49,15 +48,14 @@ class RuleListItemSerializer(serializers.Serializer):
 
 
 class RuleSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
     process = serializers.CharField(max_length=200)
     process_step = serializers.CharField(max_length=200)
     organization_id = serializers.CharField(max_length=200)
     owner_role = serializers.CharField(max_length=200)
     rule_type = serializers.CharField(max_length=200)
-    rule_key = serializers.CharField(max_length=200)
-    rule_value = StringArrayField()
-    expression = StringArrayField()
+    key = serializers.CharField(max_length=200)
+    value = serializers.CharField(max_length=200)
+    expression = serializers.CharField(max_length=200)
 
     def create(self, validated_data):
         pass
@@ -74,8 +72,10 @@ class ModifiedRuleValueSerializer(serializers.Serializer):
     owner_role = serializers.CharField(max_length=200)
     rule_type = serializers.CharField(max_length=200)
     rule_key = serializers.CharField(max_length=200)
-    rule_value = StringArrayField()
-    expression = StringArrayField()
+    base_value = serializers.CharField(max_length=200)
+    base_expression = serializers.CharField(max_length=200)
+    compare_value = serializers.CharField(max_length=200)
+    compare_expression = serializers.CharField(max_length=200)
 
     def create(self, validated_data):
         pass

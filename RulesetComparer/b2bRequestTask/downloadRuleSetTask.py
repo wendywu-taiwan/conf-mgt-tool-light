@@ -12,9 +12,9 @@ class DownloadRuleSetTask(BaseRequestTask):
     KEY_PASSWORD = 'password'
     KEY_RULE_SET_NAME = 'rulesetName'
 
-    def __init__(self, environment, country, rule_set_name, compare_hash_key):
-        self.environment = environment
-        self.country = country
+    def __init__(self, env_id, country_id, rule_set_name, compare_hash_key):
+        self.b2b_server = B2BRuleSetServer.objects.get(country_id=country_id,
+                                                       environment_id = env_id)
         self.rule_set_name = rule_set_name
         self.download_status = apiResponse.RESPONSE_KEY_FAIL
         self.compare_hash_key = compare_hash_key
@@ -22,18 +22,13 @@ class DownloadRuleSetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
 
     def request_data(self):
-        environment = Environment.objects.get(name=self.environment)
-        country = Country.objects.get(name=self.country)
-        b2b_service = B2BRuleSetServer.objects.get(country_id=country.id,
-                                                   environment_id=environment.id)
-
-        if b2b_service is None:
+        if self.b2b_server is None:
             self.error_code(apiResponse.STATUS_CODE_INVALID_PARAMETER)
 
-        client = Client(settings.B2B_RULE_SET_CLIENT % b2b_service.url)
+        client = Client(settings.B2B_RULE_SET_CLIENT % self.b2b_server.url)
 
-        self.add_request_parameter(self.KEY_USER, b2b_service.user_id)
-        self.add_request_parameter(self.KEY_PASSWORD, b2b_service.password)
+        self.add_request_parameter(self.KEY_USER, self.b2b_server.user_id)
+        self.add_request_parameter(self.KEY_PASSWORD, self.b2b_server.password)
         self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
 
         print('======== download rule set %s ========' % self.rule_set_name)
