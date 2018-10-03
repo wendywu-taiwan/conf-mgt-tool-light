@@ -1,0 +1,5 @@
+<td class="border-bottom detail-content">
+    {% for expression in data.expression %}
+    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+    {% endfor %}
+</td>

@@ -2,15 +2,11 @@ from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTa
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.downloadCompareRuleListTask import DownloadCompareRuleListTask as RuleListItemTask
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils import fileManager, rulesetUtil
-from RulesetComparer.dataModel.responseModel.rulesCompareModel import RulesCompareModel
-from RulesetComparer.dataModel.responseModel.ruleListCompareModel import RuleListCompareModel
-from RulesetComparer.dataModel.xml.rulesModel import RulesModel as ParseRuleModel
-from RulesetComparer.dataModel.responseModel.rulesModel import RulesModel as ResponseRulesModel
+from RulesetComparer.dataModel.dataBuilder.rulesCompareBuilder import RulesCompareModel
+from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
-from RulesetComparer.models import Environment, Country
-from django.conf import settings
+from RulesetComparer.models import Environment
 
 
 class RuleSetService(object):
@@ -25,9 +21,8 @@ class RuleSetService(object):
 
         ruleset = task.get_rule_set_file()
         rules_model = ParseRuleModel(ruleset)
-        response_model = ResponseRulesModel(rules_model)
         rule_data = RuleSerializer(rules_model.get_rules_data_array())
-        return response_model
+        return rule_data
 
     @staticmethod
     def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
@@ -36,8 +31,6 @@ class RuleSetService(object):
 
     @staticmethod
     def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set_name):
-        base_env = Environment.objects.get(id=base_env_id)
-        compare_env = Environment.objects.get(id=compare_env_id)
         base_rule = rulesetUtil.load_local_rule_file_with_id(base_env_id, country_id,
                                                              compare_key, rule_set_name)
         compare_rule = rulesetUtil.load_local_rule_file_with_id(compare_env_id, country_id,
@@ -47,16 +40,9 @@ class RuleSetService(object):
         compare_module = ParseRuleModel(compare_rule)
 
         comparer = RulesetComparer(base_module, compare_module)
-        response_model = RulesCompareModel(base_env.name, compare_env.name, rule_set_name, comparer)
-
-        return response_model
-
-    def compare_rule_list(self, environment1, environment2, country):
-        rule_list_1 = self.get_rule_list_from_b2b(environment1, country).get_content()
-        rule_list_2 = self.get_rule_list_from_b2b(environment2, country).get_content()
-        comparer = RuleListComparer(rule_list_1, rule_list_2)
-        response_model = RuleListCompareModel(environment1, environment2, comparer)
-        return response_model
+        data = comparer.get_diff_data()
+        # response_model = RulesCompareModel(base_env.name, compare_env.name, rule_set_name, comparer)
+        return data
 
     @staticmethod
     def download_rule_set_from_git(country):

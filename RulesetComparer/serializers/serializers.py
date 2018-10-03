@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from RulesetComparer.models import Country, Environment
+from RulesetComparer.properties import dataKey
 
 
 class CountrySerializer(serializers.Serializer):
@@ -34,10 +35,11 @@ class EnvironmentSerializer(serializers.Serializer):
 
 class RuleListItemSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=200)
+    table_type = serializers.CharField(max_length=200)
     base_count = serializers.IntegerField()
     new_count = serializers.IntegerField()
     add_count = serializers.IntegerField()
-    minus_count = serializers.IntegerField()
+    remove_count = serializers.IntegerField()
     modify_count = serializers.IntegerField()
 
     def create(self, validated_data):
@@ -54,8 +56,16 @@ class RuleSerializer(serializers.Serializer):
     owner_role = serializers.CharField(max_length=200)
     rule_type = serializers.CharField(max_length=200)
     key = serializers.CharField(max_length=200)
-    value = serializers.CharField(max_length=200)
-    expression = serializers.CharField(max_length=200)
+    value = serializers.SerializerMethodField()
+    expression = serializers.SerializerMethodField()
+
+    def get_value(self, data):
+        result = data[dataKey.RULE_KEY_RULE_VALUE].split(",")
+        return result
+
+    def get_expression(self, data):
+        result = data[dataKey.RULE_KEY_RULE_EXPRESSION].split(",")
+        return result
 
     def create(self, validated_data):
         pass
@@ -65,17 +75,32 @@ class RuleSerializer(serializers.Serializer):
 
 
 class ModifiedRuleValueSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
     process = serializers.CharField(max_length=200)
     process_step = serializers.CharField(max_length=200)
     organization_id = serializers.CharField(max_length=200)
     owner_role = serializers.CharField(max_length=200)
     rule_type = serializers.CharField(max_length=200)
-    rule_key = serializers.CharField(max_length=200)
-    base_value = serializers.CharField(max_length=200)
-    base_expression = serializers.CharField(max_length=200)
-    compare_value = serializers.CharField(max_length=200)
-    compare_expression = serializers.CharField(max_length=200)
+    key = serializers.CharField(max_length=200)
+    base_value = serializers.SerializerMethodField()
+    base_expression = serializers.SerializerMethodField()
+    compare_value = serializers.SerializerMethodField()
+    compare_expression = serializers.SerializerMethodField()
+
+    def get_base_value(self, data):
+        result = data[dataKey.RULE_MODIFIED_KEY_BASE_VALUE].split(",")
+        return result
+
+    def get_base_expression(self, data):
+        result = data[dataKey.RULE_MODIFIED_KEY_BASE_EXPRESSION].split(",")
+        return result
+
+    def get_compare_value(self, data):
+        result = data[dataKey.RULE_MODIFIED_KEY_COMPARE_VALUE].split(",")
+        return result
+
+    def get_compare_expression(self, data):
+        result = data[dataKey.RULE_MODIFIED_KEY_COMPARE_EXPRESSION].split(",")
+        return result
 
     def create(self, validated_data):
         pass

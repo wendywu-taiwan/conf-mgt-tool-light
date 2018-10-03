@@ -1,6 +1,6 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.properties import apiResponse
-from RulesetComparer.dataModel.xml.ruleListModel import RuleListModel
+from RulesetComparer.dataModel.xml.ruleSetFileListParser import RuleListModel
 from RulesetComparer.models import B2BRuleSetServer, Country, Environment
 from django.conf import settings
 from zeep import Client

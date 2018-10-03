@@ -39,11 +39,11 @@
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Value</td>
-                <td class="detail-content">{{ data.value }}</td>
+                {% include 'rule_show_value.html' %}
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content">{{ data.expression }}</td>
+                {% include 'rule_show_expression.html' %}
             </tr>
             {% endfor %}
             </tbody>

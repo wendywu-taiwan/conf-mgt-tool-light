@@ -1,4 +1,4 @@
-from RulesetComparer.dataModel.xml.baseModel import BaseModel
+from RulesetComparer.dataModel.xml.baseParser import BaseModel
 from RulesetComparer.properties import xmlKey as XMLKey
 
 

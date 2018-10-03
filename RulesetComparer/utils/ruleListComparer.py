@@ -15,11 +15,13 @@ class RuleListComparer:
 
         # get rule key only in left rules
         self.baseOnly = list(base_key_set - compared_key_set)
+        self.baseOnly.sort()
         # get rule key only in right rules
         self.comparedOnly = list(compared_key_set - base_key_set)
-
+        self.comparedOnly.sort()
         # get union key in two rules
         self.union = list(base_key_set & compared_key_set)
+        self.union.sort()
 
     def get_base_rules_list(self):
         return self.baseOnly

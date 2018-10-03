@@ -17,46 +17,23 @@ B2B_RESPONSE_KEY_MESSAGE_TEXT = "text"
 B2B_RESPONSE_KEY_MESSAGE_LOCALIZATION_TEXT = "localizedText"
 B2B_RESPONSE_KEY_PAYLOAD = "payload"
 
-# responseModel
+# baseRequestTask
 RESPONSE_KEY_STATUS_CODE = 'api_ret_code'
 RESPONSE_KEY_MESSAGE = 'api_ret_message'
 RESPONSE_KEY_DATA = 'data'
 
-# rulesetModel
-RESPONSE_KEY_RULE_SET_NAME = 'rule_set_name'
-RESPONSE_KEY_RULE_SET_ARRAY = 'rule_set_array'
-RESPONSE_KEY_RULE = 'rule'
-RESPONSE_KEY_RULE_KEY = 'key'
-RESPONSE_KEY_RULE_VALUE = 'value'
-RESPONSE_KEY_RULE_PROCESS = 'process'
-RESPONSE_KEY_RULE_ORGANIZATION_ID = 'organization_id'
-RESPONSE_KEY_RULE_OWNER_ROLE = 'owner_role'
-RESPONSE_KEY_RULE_PROCESS_STEP = 'process_step'
-RESPONSE_KEY_RULE_TYPE = 'rule_type'
-RESPONSE_KEY_RULE_EXPRESSION = 'expression'
-
-RESPONSE_KEY_RULE_STATUS = 'status'
-RESPONSE_KEY_RULE_STATUS_ADD = 'add'
-RESPONSE_KEY_RULE_STATUS_MODIFIED = 'modified'
-
+# downloadRuleSetTask
 RESPONSE_KEY_SUCCESS = 'success'
 RESPONSE_KEY_FAIL = 'fail'
+DATA_KEY_RULES_NAME = 'rules_name'
+DATA_KEY_DOWNLOAD_STATUS = 'status'
 
-# ruleListCompareModel
+# ruleListCompareBuilder
 RESPONSE_KEY_ENVIRONMENT_NAME = 'environment_name'
 RESPONSE_KEY_ENVIRONMENT_LIST = 'environment_list'
 RESPONSE_KEY_DIFF_LIST = 'diff_list'
 RESPONSE_KEY_RULESET_FILE_LIST = 'ruleset_file_list'
 RESPONSE_KEY_UNION_FILE_LIST = 'union_file_list'
-
-
-# downloadSingleRulesetModel
-DATA_KEY_RULES_NAME = 'rules_name'
-DATA_KEY_DOWNLOAD_STATUS = 'status'
-
-
-
-
 
 
 ERROR_MESSAGE_MAP = {

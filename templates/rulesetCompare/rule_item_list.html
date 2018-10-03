@@ -26,7 +26,7 @@
                 {% include 'rule_item_list_base_count.html' %}
                 {% include 'rule_item_list_compare_count.html' %}
                 {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_minus_count.html' %}
+                {% include 'rule_item_list_remove_count.html' %}
                 {% include 'rule_item_list_modify_count.html' %}
             </div>
             {% endfor %}
@@ -39,7 +39,7 @@
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
-            {% for data in minus_list %}
+            {% for data in remove_list %}
             <div class="collapse minus_data data row">
                 <div class="col-5">
                     <h6 class="rule_set_name">{{ data.name }}</h6>
@@ -47,7 +47,7 @@
                 {% include 'rule_item_list_base_count.html' %}
                 {% include 'rule_item_list_compare_count.html' %}
                 {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_minus_count.html' %}
+                {% include 'rule_item_list_remove_count.html' %}
                 {% include 'rule_item_list_modify_count.html' %}
             </div>
             {% endfor %}
@@ -68,7 +68,7 @@
                 {% include 'rule_item_list_base_count.html' %}
                 {% include 'rule_item_list_compare_count.html' %}
                 {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_minus_count.html' %}
+                {% include 'rule_item_list_remove_count.html' %}
                 {% include 'rule_item_list_modify_count.html' %}
             </div>
             {% endfor %}
@@ -89,7 +89,7 @@
                 {% include 'rule_item_list_base_count.html' %}
                 {% include 'rule_item_list_compare_count.html' %}
                 {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_minus_count.html' %}
+                {% include 'rule_item_list_remove_count.html' %}
                 {% include 'rule_item_list_modify_count.html' %}
             </div>
             {% endfor %}

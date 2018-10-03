@@ -1,0 +1,5 @@
+<td class="detail-content">
+    {% for value in data.value %}
+    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+    {% endfor %}
+</td>

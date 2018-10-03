@@ -1,7 +1,5 @@
-from RulesetComparer.dataModel.xml.baseModel import BaseModel
+from RulesetComparer.dataModel.xml.baseParser import BaseModel
 from RulesetComparer.properties import xmlKey as XMLKey
-from RulesetComparer.properties import apiResponse as api
-
 
 # this is for handling rule data
 class RuleModel(BaseModel):
@@ -40,16 +38,3 @@ class RuleModel(BaseModel):
 
     def value_in_context(self, key):
         return self.value_in_node(self.xml, XMLKey.NODE_KEY_CONTEXT, key)
-
-    def generate_result_dict(self):
-        dictionary = {
-            api.RESPONSE_KEY_RULE_KEY: self.ruleKey,
-            api.RESPONSE_KEY_RULE_VALUE: self.ruleValue,
-            api.RESPONSE_KEY_RULE_PROCESS: self.process,
-            api.RESPONSE_KEY_RULE_PROCESS_STEP: self.processStep,
-            api.RESPONSE_KEY_RULE_ORGANIZATION_ID: self.organizationId,
-            api.RESPONSE_KEY_RULE_OWNER_ROLE: self.ownerRole,
-            api.RESPONSE_KEY_RULE_TYPE: self.ruleType,
-            api.RESPONSE_KEY_RULE_EXPRESSION: self.expression,
-        }
-        return dictionary

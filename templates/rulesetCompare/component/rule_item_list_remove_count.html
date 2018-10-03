@@ -1,18 +1,18 @@
 <div class="col count_div">
-    {% if data.minus_count == 0 %}
+    {% if data.remove_count == 0 %}
     <button type="submit" class="button_minus unclickable btn btn-primary">
-        Minus <span class="span_minus badge badge-light">{{ data.minus_count }}</span>
+        Minus <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
     </button>
-    {% elif data.minus_count == data.base_count %}
+    {% elif data.remove_count == data.base_count %}
     <a href="{% url 'rule-detail' base_env.id country.id compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
-            Minus <span class="span_minus badge badge-light">{{ data.minus_count }}</span>
+            Minus <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
         </button>
     </a>
-    {% elif data.minus_count != data.base_count %}
+    {% elif data.remove_count != data.base_count %}
     <a href="{% url 'rule-diff' base_env.id compare_env.id country.id compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
-            Minus <span class="span_minus badge badge-light">{{ data.minus_count }}</span>
+            Minus <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
         </button>
     </a>
     {% endif %}

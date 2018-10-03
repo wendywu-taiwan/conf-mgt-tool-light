@@ -1,7 +1,8 @@
-from RulesetComparer.dataModel.xml.baseModel import BaseModel
-from RulesetComparer.dataModel.xml.ruleModel import RuleModel
+from RulesetComparer.dataModel.xml.baseParser import BaseModel
+from RulesetComparer.dataModel.xml.ruleParser import RuleModel
+from RulesetComparer.dataModel.dataBuilder.ruleSetBuilder import RuleSetBuilder
+from RulesetComparer.dataModel.dataBuilder.ruleModifiedBuilder import RuleModifiedBuilder
 from RulesetComparer.properties import xmlKey as XMLKey
-from RulesetComparer.properties import parserKey as key
 
 
 # this is for handling rules data, rules file contains many rules
@@ -26,6 +27,9 @@ class RulesModel(BaseModel):
             rule_model = RuleModel(rule)
             self.rulesMap[rule_key] = rule_model
 
+    def get_rule_by_key(self, rule_key):
+        return self.rulesMap[rule_key]
+
     def get_rules_name(self):
         return self.rulesName
 
@@ -48,7 +52,7 @@ class RulesModel(BaseModel):
 
         if rule is None:
             return None
-        value = rule.get_rule_value().split(' ', 1 )
+        value = rule.get_rule_value().split(' ', 1)
         return rule.get_rule_value()
 
     def get_rule_expression(self, rule_key):
@@ -58,9 +62,6 @@ class RulesModel(BaseModel):
             return None
 
         return rule.get_rule_expression()
-
-    def get_rules_map(self):
-        return self.rulesMap
 
     def get_rules_data_array(self, name_list=None):
         array = list()
@@ -72,5 +73,6 @@ class RulesModel(BaseModel):
             rule_model = self.rulesMap[rule]
             if rule_model is None:
                 continue
-            array.append(rule_model.generate_result_dict())
+            data_builder = RuleSetBuilder(rule_model)
+            array.append(data_builder.get_data())
         return array

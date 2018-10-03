@@ -2,27 +2,24 @@
 {% load staticfiles %}
 {% block content %}
 
-
+{{ data }}
 <div class="container-rule-diff container-fluid">
     <div class="table-responsive">
         <table class="custom-table-show-rule table table-bordered .table-sm">
             <thead class="thead-gray">
             <tr>
-                <th class="ruleset-header-text" colspan="3">{{ data.rule_set_name}}</th>
+                <th class="ruleset-header-text" colspan="3">{{ rule_name }}</th>
             </tr>
             </thead>
             <tbody>
 
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="td_environment">#</td>
-                {% for environment_data in data.environment_list %}
-                <td class="td_environment">{{ environment_data.environment_name }}</td>
-                {% endfor %}
+                <td class="td_environment">{{ base_env_name }}</td>
+                <td class="td_environment">{{ compare_env_name }}</td>
             </tr>
 
-            {% for environment_data in data.environment_list %}
-            {% if environment_data.environment_name == data.environment_list.0.environment_name %}
-            {% for rule in environment_data.ruleset_file_list %}
+            {% for rule in remove_list %}
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Process</td>
                 <td class="detail-content">{{ rule.process }}</td>
@@ -55,17 +52,16 @@
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Value</td>
-                <td class="detail-content">{{ rule.value }}</td>
+                {% include 'rule_show_value.html' %}
                 <td class="detail-content"></td>
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content">{{ rule.expression }}</td>
+                {% include 'rule_show_expression.html' %}
                 <td class="border-bottom detail-content"></td>
             </tr>
             {% endfor %}
-            {% elif environment_data.environment_name == data.environment_list.1.environment_name %}
-            {% for rule in environment_data.ruleset_file_list %}
+            {% for rule in add_list %}
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Process</td>
                 <td class="detail-content"></td>
@@ -99,17 +95,15 @@
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Value</td>
                 <td class="detail-content"></td>
-                <td class="detail-content">{{ rule.value }}</td>
+                {% include 'rule_show_value.html' %}
             </tr>
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="border-bottom detail-attribute">Expression</td>
                 <td class="border-bottom detail-content"></td>
-                <td class="border-bottom detail-content">{{ rule.expression }}</td>
+                {% include 'rule_show_expression.html' %}
             </tr>
             {% endfor %}
-            {% endif %}
-            {% endfor %}
-            {% for rule in data.diff_list %}
+            {% for rule in modify_list %}
             <tr class="custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Process</td>
                 <td class="detail-content">{{ rule.process }}</td>
@@ -142,13 +136,71 @@
             </tr>
             <tr class="table-warning custom-tr-ruleset-detail-table">
                 <td class="detail-attribute">Value</td>
-                <td class="detail-content">{{ rule.value.0 }}</td>
-                <td class="detail-content">{{ rule.value.1 }}</td>
+                <td class="detail-content">
+                    {% for value in rule.base_value %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </td>
+                <td class="detail-content">
+                    {% for value in rule.compare_value %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </td>
             </tr>
             <tr class="table-warning custom-tr-ruleset-detail-table">
                 <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content">{{ rule.expression.0 }}</td>
-                <td class="border-bottom detail-content">{{ rule.expression.1 }}</td>
+                <td class="border-bottom detail-content">
+                    {% for expression in data.base_expression %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </td>
+                <td class="border-bottom detail-content">
+                    {% for expression in data.compare_expression %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% for rule in normal_list %}
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Process</td>
+                <td class="detail-content">{{ rule.process }}</td>
+                <td class="detail-content">{{ rule.process }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OrganizationId</td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+                <td class="detail-content">{{ rule.organization_id }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">OwnerRole</td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+                <td class="detail-content">{{ rule.owner_role }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">ProcessStep</td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+                <td class="detail-content">{{ rule.process_step }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">RuleType</td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+                <td class="detail-content">{{ rule.rule_type }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Key</td>
+                <td class="detail-content">{{ rule.key }}</td>
+                <td class="detail-content">{{ rule.key }}</td>
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="detail-attribute">Value</td>
+                {% include 'rule_show_value.html' %}
+                {% include 'rule_show_value.html' %}
+            </tr>
+            <tr class="custom-tr-ruleset-detail-table">
+                <td class="border-bottom detail-attribute">Expression</td>
+                {% include 'rule_show_expression.html' %}
+                {% include 'rule_show_expression.html' %}
             </tr>
             {% endfor %}
             </tbody>
