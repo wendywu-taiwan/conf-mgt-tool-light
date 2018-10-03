@@ -123,6 +123,24 @@
     text-align: left;
 }
 
+.rule_list_item .button_inactive{
+    margin-top: 10px;
+    font-size: 12px;
+    color: #dcdcdc;
+    background: white;
+    padding: 0px 0px 0px 0px !important;
+}
+
+.rule_list_item .span_inactive{
+    background-color: #dcdcdc;
+    border: #dcdcdc;
+    border-style: solid;
+    border-width: 0.5px;
+    color: white;
+    border-radius: 10px;
+    font-size: 4px;
+}
+
 .rule_list_item .button_origin{
     margin-top: 10px;
     font-size: 12px;

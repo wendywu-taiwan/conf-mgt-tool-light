@@ -20,14 +20,7 @@
             </div>
             {% for data in add_list %}
             <div class="collapse add_data data row">
-                <div class="col-5">
-                    <h6 class="rule_set_name">{{ data.name }}</h6>
-                </div>
-                {% include 'rule_item_list_base_count.html' %}
-                {% include 'rule_item_list_compare_count.html' %}
-                {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_remove_count.html' %}
-                {% include 'rule_item_list_modify_count.html' %}
+                {% include 'rule_item_list_count.html' %}
             </div>
             {% endfor %}
         </div>
@@ -41,14 +34,7 @@
             </div>
             {% for data in remove_list %}
             <div class="collapse minus_data data row">
-                <div class="col-5">
-                    <h6 class="rule_set_name">{{ data.name }}</h6>
-                </div>
-                {% include 'rule_item_list_base_count.html' %}
-                {% include 'rule_item_list_compare_count.html' %}
-                {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_remove_count.html' %}
-                {% include 'rule_item_list_modify_count.html' %}
+                {% include 'rule_item_list_count.html' %}
             </div>
             {% endfor %}
         </div>
@@ -62,14 +48,7 @@
             </div>
             {% for data in modify_list %}
             <div class="collapse modify_data data row">
-                <div class="col-5">
-                    <h6 class="rule_set_name">{{ data.name }}</h6>
-                </div>
-                {% include 'rule_item_list_base_count.html' %}
-                {% include 'rule_item_list_compare_count.html' %}
-                {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_remove_count.html' %}
-                {% include 'rule_item_list_modify_count.html' %}
+                {% include 'rule_item_list_count.html' %}
             </div>
             {% endfor %}
         </div>
@@ -83,14 +62,7 @@
             </div>
             {% for data in normal_list %}
             <div class="collapse normal_data data row">
-                <div class="col-5">
-                    <h6 class="rule_set_name">{{ data.name }}</h6>
-                </div>
-                {% include 'rule_item_list_base_count.html' %}
-                {% include 'rule_item_list_compare_count.html' %}
-                {% include 'rule_item_list_add_count.html' %}
-                {% include 'rule_item_list_remove_count.html' %}
-                {% include 'rule_item_list_modify_count.html' %}
+                {% include 'rule_item_list_count.html' %}
             </div>
             {% endfor %}
         </div>

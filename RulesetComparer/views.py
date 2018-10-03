@@ -101,12 +101,4 @@ def json_rule_detail(request, country, env, rule_set_name):
 
 # todo : return json rule diff result
 def json_rule_diff(request, base_env_id, compare_env_id, country_id, compare_key):
-    country = request.POST.get('diff_country')
-    environment1 = request.POST.get('diff_env1')
-    environment2 = request.POST.get('diff_env2')
-    rule_set_name = request.POST.get('diff_rule_name')
-    response_model = RuleSetService.compare_rule_set(environment1,
-                                                     environment2,
-                                                     country,
-                                                     rule_set_name)
-    return render(request, "rule_show_diff.html", response_model.get_response_json())
+    pass

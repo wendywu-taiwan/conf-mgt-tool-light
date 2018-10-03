@@ -2,11 +2,10 @@ from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTa
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.downloadCompareRuleListTask import DownloadCompareRuleListTask as RuleListItemTask
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils import fileManager, rulesetUtil
+from RulesetComparer.utils import rulesetUtil
 from RulesetComparer.dataModel.dataBuilder.rulesCompareBuilder import RulesCompareModel
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
-from RulesetComparer.models import Environment
 
 
 class RuleSetService(object):
@@ -41,7 +40,6 @@ class RuleSetService(object):
 
         comparer = RulesetComparer(base_module, compare_module)
         data = comparer.get_diff_data()
-        # response_model = RulesCompareModel(base_env.name, compare_env.name, rule_set_name, comparer)
         return data
 
     @staticmethod

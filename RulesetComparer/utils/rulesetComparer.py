@@ -18,8 +18,10 @@ class RulesetComparer:
 
         # get rule key only in left rules
         self.baseKeyOnly = list(base_key_set - compare_key_set)
+        self.baseKeyOnly.sort()
         # get rule key only in right rules
         self.compareKeyOnly = list(compare_key_set - base_key_set)
+        self.compareKeyOnly.sort()
 
         # get union key in two rules
         tmp = list(base_key_set & compare_key_set)
@@ -30,6 +32,8 @@ class RulesetComparer:
                 self.different.append(rule_key)
             else:
                 self.normal.append(rule_key)
+        self.different.sort()
+        self.normal.sort()
 
     def no_difference(self):
         if len(self.baseKeyOnly) == 0 and len(self.compareKeyOnly) == 0 and len(self.different) == 0:
@@ -59,20 +63,6 @@ class RulesetComparer:
             compare_rule_model = self.compare_rule_set.get_rule_by_key(rule_key)
             data_builder = RuleModifiedBuilder(base_rule_model, compare_rule_model)
             data_array.append(data_builder.get_data())
-
-            # rule_value_list = list()
-            # rule_expression_list = list()
-            # rule_key = rule[apiKey.RESPONSE_KEY_RULE_KEY]
-            # rule_value_list.append(self.base_rule.get_rule_value(rule_key))
-            # rule_value_list.append(self.compare_rule.get_rule_value(rule_key))
-            # rule_expression_list.append(self.base_rule.get_rule_expression(rule_key))
-            # rule_expression_list.append(self.compare_rule.get_rule_expression(rule_key))
-            #
-            # if len(rule_value_list) != 0:
-            #     rule[apiKey.RESPONSE_KEY_RULE_VALUE] = rule_value_list
-            #
-            # if len(rule_expression_list) != 0:
-            #     rule[apiKey.RESPONSE_KEY_RULE_EXPRESSION] = rule_expression_list
 
         return data_array
 
