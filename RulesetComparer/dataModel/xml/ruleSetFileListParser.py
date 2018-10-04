@@ -15,14 +15,14 @@ class RuleListModel(BaseModel):
             return
 
         # get data array in <Rule></Rule>
-        for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
+        for rule in self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE):
             # get data object in
             # <Context>
             #   <OrganizationId></OrganizationId>
             # </Context>
-            rules_name = self.value_in_node(rule,
-                                            XMLKey.NODE_KEY_CONTEXT,
-                                            XMLKey.ORGANIZATION_ID)
+            rules_name = self.value_in_node_with_xml(rule,
+                                                     XMLKey.NODE_KEY_CONTEXT,
+                                                     XMLKey.ORGANIZATION_ID)
             self.rulesNameList.append(rules_name)
 
     def get_rules_file_name_list(self):

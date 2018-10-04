@@ -52,6 +52,6 @@ def load_file_in_folder(path, extension):
 def get_rule_name_list(path):
     rule_name_list = list()
     for file_name in os.listdir(path):
-        file_name = file_name.strip(".xml")
+        file_name = file_name[:-4]
         rule_name_list.append(file_name)
     return rule_name_list

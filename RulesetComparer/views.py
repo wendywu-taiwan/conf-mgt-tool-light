@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from RulesetComparer.models import B2BRuleSetServer, Country, Environment
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer, \
-    RuleSerializer, ModifiedRuleValueSerializer
+from RulesetComparer.serializers.serializers import RuleSerializer, ModifiedRuleValueSerializer
 from RulesetComparer.services.services import RuleSetService
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer
@@ -10,7 +9,6 @@ from django.conf import settings
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
-
 
 def environment_select(request):
     country_ids = B2BRuleSetServer.objects.get_accessible_country_ids()
@@ -55,7 +53,7 @@ def rule_diff(request, base_env_id, compare_env_id, country_id, compare_key, rul
     normal_list = RuleSerializer(compare_result[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL], many=True).data
 
     data = {
-        key.RULE_KEY_RULE_DATA: rule_name,
+        key.RULE_KEY_RULE_NAME: rule_name,
         key.RULE_DIFF_KEY_BASE_ENV_NAME: base_env.name,
         key.RULE_DIFF_KEY_COMPARED_ENV_NAME: compare_env.name,
         key.RULE_DIFF_KEY_ADD_LIST: add_list,
@@ -108,6 +106,6 @@ def json_rule_diff(request, base_env_id, compare_env_id, country_id, compare_key
 
 
 def git_sync_branch(request, branch):
-    test_git_manager = GitManager(settings.RULESET_GIT_TESTING_BRANCH, 'master')
+    test_git_manager = GitManager(settings.INT1_RULE_SET_LOCAL_REPOSITORY, 'master')
     if test_git_manager.status == GitManager.STATUS_NEED_PULL:
         test_git_manager.pull()

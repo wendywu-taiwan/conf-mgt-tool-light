@@ -1,7 +1,6 @@
 from RulesetComparer.dataModel.xml.baseParser import BaseModel
 from RulesetComparer.dataModel.xml.ruleParser import RuleModel
 from RulesetComparer.dataModel.dataBuilder.ruleSetBuilder import RuleSetBuilder
-from RulesetComparer.dataModel.dataBuilder.ruleModifiedBuilder import RuleModifiedBuilder
 from RulesetComparer.properties import xmlKey as XMLKey
 
 
@@ -17,15 +16,26 @@ class RulesModel(BaseModel):
     def parse_data(self):
         if not self.valid_data():
             return None
+
+        self.check_xml_tag()
+
         # get data array in <Rule></Rule>
-        for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
-            self.rulesName = self.value_in_node(rule,
-                                                XMLKey.NODE_KEY_CONTEXT,
-                                                XMLKey.ORGANIZATION_ID)
-            # get data array in <Key></Key>
-            rule_key = self.value(rule, XMLKey.RULE_KEY)
-            rule_model = RuleModel(rule)
-            self.rulesMap[rule_key] = rule_model
+        if self.has_xml_tag:
+            for rule in self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE):
+                self.rulesName = self.value_in_node_with_xml(rule,
+                                                             XMLKey.NODE_KEY_CONTEXT,
+                                                             XMLKey.ORGANIZATION_ID)
+                rule_key = self.value_with_xml(rule, XMLKey.RULE_KEY)
+                rule_model = RuleModel(rule, self.has_xml_tag)
+                self.rulesMap[rule_key] = rule_model
+        else:
+            for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
+                self.rulesName = self.value(rule,
+                                            XMLKey.NODE_KEY_CONTEXT+"/"+XMLKey.ORGANIZATION_ID)
+                # get data array in <Key></Key>
+                rule_key = self.value(rule, XMLKey.RULE_KEY)
+                rule_model = RuleModel(rule, self.has_xml_tag)
+                self.rulesMap[rule_key] = rule_model
 
     def get_rule_by_key(self, rule_key):
         return self.rulesMap[rule_key]
@@ -52,7 +62,6 @@ class RulesModel(BaseModel):
 
         if rule is None:
             return None
-        value = rule.get_rule_value().split(' ', 1)
         return rule.get_rule_value()
 
     def get_rule_expression(self, rule_key):

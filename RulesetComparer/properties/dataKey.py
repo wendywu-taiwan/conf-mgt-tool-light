@@ -61,3 +61,6 @@ RULE_DIFF_KEY_ADD_LIST = 'add_list'
 RULE_DIFF_KEY_REMOVE_LIST = 'remove_list'
 RULE_DIFF_KEY_MODIFY_LIST = 'modify_list'
 RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
+
+# environment model key
+ENVIRONMENT_KEY_GIT = 'Git'

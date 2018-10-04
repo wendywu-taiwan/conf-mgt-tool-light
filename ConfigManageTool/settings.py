@@ -140,8 +140,8 @@ RULESET_SAVED_NAME = '%s/%s.xml'
 GIT_RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s'
 RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
 
-LOCAL_INT1_GIT_BRE_RULE_SET_REPOSITORY_NAME = 'Git_BRE_Rule_Set'
-LOCAL_INT1_GIT_BRE_RULE_SET_REPOSITORY = BASE_DIR + "/RulesetComparer/rulesets/Git_BRE_Rule_Set"
+INT1_RULE_SET_LOCAL_REPOSITORY_NAME = 'Git'
+INT1_RULE_SET_LOCAL_REPOSITORY = BASE_DIR + "/RulesetComparer/rulesets/" + INT1_RULE_SET_LOCAL_REPOSITORY_NAME
 RULESET_GIT_DEVELOPER_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Develop"
 RULESET_GIT_TESTING_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Test"
 
