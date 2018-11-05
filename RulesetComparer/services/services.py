@@ -37,10 +37,10 @@ class RuleSetService(object):
 
     @staticmethod
     def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set_name):
-        base_rule = rulesetUtil.load_local_rule_file_with_id(base_env_id, country_id,
-                                                             compare_key, rule_set_name)
-        compare_rule = rulesetUtil.load_local_rule_file_with_id(compare_env_id, country_id,
-                                                                compare_key, rule_set_name)
+        base_rule = rulesetUtil.load_rule_file_with_id(base_env_id, country_id,
+                                                       compare_key, rule_set_name)
+        compare_rule = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
+                                                          compare_key, rule_set_name)
 
         base_module = ParseRuleModel(base_rule)
         compare_module = ParseRuleModel(compare_rule)
@@ -68,10 +68,10 @@ class RuleSetService(object):
 
     @staticmethod
     def get_detail_rule_data(env_id, country_id, compare_key, rule_set_name):
-        rule_set_file = rulesetUtil.load_local_rule_file_with_id(env_id,
-                                                                 country_id,
-                                                                 compare_key,
-                                                                 rule_set_name)
+        rule_set_file = rulesetUtil.load_rule_file_with_id(env_id,
+                                                           country_id,
+                                                           compare_key,
+                                                           rule_set_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
 

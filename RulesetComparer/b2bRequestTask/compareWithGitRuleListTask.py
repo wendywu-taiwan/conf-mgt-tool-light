@@ -8,6 +8,7 @@ from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.properties import dataKey as key
+from RulesetComparer.properties.config import get_rule_set_git_path
 from RulesetComparer.utils import rulesetUtil
 
 
@@ -28,7 +29,8 @@ class CompareWithGitRuleListTask:
 
     @staticmethod
     def _check_git_status():
-        manager = GitManager(settings.INT1_RULE_SET_LOCAL_REPOSITORY, settings.GIT_BRANCH_DEVELOP)
+        path = get_rule_set_git_path("")
+        manager = GitManager(path, settings.GIT_BRANCH_DEVELOP)
         if manager.status == GitManager.STATUS_NEED_PULL:
             manager.pull()
 
@@ -38,15 +40,15 @@ class CompareWithGitRuleListTask:
         return False
 
     def __load_rule_set(self, env, rule_set_name):
-        rule_set_file = rulesetUtil.load_local_rule_file_with_name(env.name,
-                                                                   self.country.name,
-                                                                   self.compare_hash_key,
-                                                                   rule_set_name)
+        rule_set_file = rulesetUtil.load_rule_file_with_name(env.name,
+                                                             self.country.name,
+                                                             self.compare_hash_key,
+                                                             rule_set_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
 
     def __load_git_rule_set(self, rule_set_name):
-        rule_set_file = rulesetUtil.load_local_git_file_with_name(self.country.name, rule_set_name)
+        rule_set_file = rulesetUtil.load_git_file_with_name(self.country.name, rule_set_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
 
@@ -95,8 +97,7 @@ class CompareWithGitRuleListTask:
                 self.modify_rule_list.append(rule_list_item_parser.get_data())
 
     def execute(self):
-        file_path = settings.GIT_RULESET_SAVED_PATH % (settings.INT1_RULE_SET_LOCAL_REPOSITORY_NAME,
-                                                       self.country.name)
+        file_path = get_rule_set_git_path(self.country.name)
 
         if self.is_base_git():
             base_rule_list = fileManager.get_rule_name_list(file_path)

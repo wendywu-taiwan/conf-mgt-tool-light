@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'RulesetComparer',
     'zeep',
     'lxml',
+    'xhtml2pdf',
 ]
 
 MIDDLEWARE = [
@@ -134,16 +135,12 @@ B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsd
 UNICODE_ENCODING = 'utf-8'
 
 
+
+
+COMPARE_RESULT_PATH = BASE_DIR + "/RulesetComparer/compare_result/%s"
+
+
 GIT_REMOTE_NAME = 'origin'
-RULESET_SAVED_NAME = '%s/%s.xml'
-
-GIT_RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s'
-RULESET_SAVED_PATH = 'RulesetComparer/rulesets/%s/%s/%s'
-
-INT1_RULE_SET_LOCAL_REPOSITORY_NAME = 'Git'
-INT1_RULE_SET_LOCAL_REPOSITORY = BASE_DIR + "/RulesetComparer/rulesets/" + INT1_RULE_SET_LOCAL_REPOSITORY_NAME
-RULESET_GIT_DEVELOPER_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Develop"
-RULESET_GIT_TESTING_BRANCH = BASE_DIR + "/RulesetComparer/rulesets/Git_Branch_Test"
-
 GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
+

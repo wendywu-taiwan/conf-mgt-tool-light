@@ -23,10 +23,10 @@ class DownloadCompareRuleListTask:
         self.execute()
 
     def __load_rule_set(self, env, rule_set_name):
-        rule_set_file = rulesetUtil.load_local_rule_file_with_name(env.name,
-                                                                   self.country.name,
-                                                                   self.compare_hash_key,
-                                                                   rule_set_name)
+        rule_set_file = rulesetUtil.load_rule_file_with_name(env.name,
+                                                             self.country.name,
+                                                             self.compare_hash_key,
+                                                             rule_set_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
 

@@ -1,9 +1,11 @@
 from django.conf import settings
 from zeep import Client
 
+from RulesetComparer.properties.config import get_rule_set_path
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.models import Environment, Country, B2BRuleSetServer
 from RulesetComparer.properties import apiResponse
+from RulesetComparer.properties.config import get_rule_set_full_file_name
 from RulesetComparer.utils import fileManager
 
 
@@ -14,7 +16,7 @@ class DownloadRuleSetTask(BaseRequestTask):
 
     def __init__(self, env_id, country_id, rule_set_name, compare_hash_key):
         self.b2b_server = B2BRuleSetServer.objects.get(country_id=country_id,
-                                                       environment_id = env_id)
+                                                       environment_id=env_id)
         self.rule_set_name = rule_set_name
         self.download_status = apiResponse.RESPONSE_KEY_FAIL
         self.compare_hash_key = compare_hash_key
@@ -55,21 +57,19 @@ class DownloadRuleSetTask(BaseRequestTask):
             return
 
         # save file to specific path
-        save_file_path = settings.RULESET_SAVED_PATH % (self.environment,
-                                                        self.country,
-                                                        self.compare_hash_key)
+        save_file_path = get_rule_set_path(self.b2b_server.environment.name,
+                                           self.b2b_server.country.name,
+                                           self.compare_hash_key)
         fileManager.create_folder(save_file_path)
         # save file
-        self.file_name_with_path = settings.RULESET_SAVED_NAME % (save_file_path,
-                                                                  self.rule_set_name)
 
         payload = self.b2b_response_data.payload[
                   self.b2b_response_data.payload.index('<BRERuleList'):]
-        fileManager.save_file(self.file_name_with_path, payload)
+        fileManager.save_file(get_rule_set_full_file_name(save_file_path, self.rule_set_name),
+                              payload)
 
     def get_rule_set_file(self):
         if self.request_fail():
             return None
 
         return fileManager.load_file(self.file_name_with_path)
-
