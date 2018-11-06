@@ -3,7 +3,7 @@ from zeep import Client
 
 from RulesetComparer.properties.config import get_rule_set_path
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
-from RulesetComparer.models import Environment, Country, B2BRuleSetServer
+from RulesetComparer.models import B2BRuleSetServer
 from RulesetComparer.properties import apiResponse
 from RulesetComparer.properties.config import get_rule_set_full_file_name
 from RulesetComparer.utils import fileManager

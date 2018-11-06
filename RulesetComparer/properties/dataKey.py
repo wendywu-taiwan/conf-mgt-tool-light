@@ -51,6 +51,10 @@ COMPARE_RULE_COMPARE_ADD_LIST = 'add_list'
 COMPARE_RULE_COMPARE_REMOVE_LIST = 'remove_list'
 COMPARE_RULE_COMPARE_NORMAL_LIST = 'normal_list'
 COMPARE_RULE_COMPARE_MODIFY_LIST = 'modify_list'
+COMPARE_RESULT_LIST_DATA = 'list_data'
+COMPARE_RESULT_DETAIL_DATA = 'detail_data'
+COMPARE_RESULT_DIFF_DATA = 'diff_data'
+
 
 # view.rule_detail, view.rule_diff
 RULE_KEY_RULE_NAME = 'rule_name'
@@ -64,3 +68,8 @@ RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
 
 # environment model key
 ENVIRONMENT_KEY_GIT = 'Git'
+NO_ENVIRONMENT_GIT = 0
+BASE_ENVIRONMENT_GIT = 1
+COMPARE_ENVIRONMENT_GIT = 2
+
+
