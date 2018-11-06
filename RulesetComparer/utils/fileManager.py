@@ -78,6 +78,10 @@ def load_file_in_folder(path, extension):
 def get_rule_name_list(path):
     rule_name_list = list()
     for file_name in os.listdir(path):
+        full_path = path + "/" + file_name
+        if os.path.isdir(full_path):
+            continue
+
         file_name = file_name[:-4]
         rule_name_list.append(file_name)
     return rule_name_list

@@ -9,7 +9,7 @@ from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils import fileManager, rulesetUtil
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.properties import config
-from RulesetComparer.properties.config import get_rule_set_git_path
+from RulesetComparer.properties.config import get_rule_set_git_path, get_rule_set_path
 from django.conf import settings
 
 
@@ -46,6 +46,8 @@ class CompareRuleListTask:
 
         self.check_git_status()
         self.execute()
+        self.save_result_file()
+        self.remove_rule_files()
 
     def check_git_environment(self):
         if self.baseEnv.name == key.ENVIRONMENT_KEY_GIT:
@@ -84,9 +86,29 @@ class CompareRuleListTask:
         self.parse_remove_list_rule(minus_list)
         self.parse_union_list_rule(union_list)
 
+    def save_result_file(self):
+        compare_list_data = {
+            key.COMPARE_RESULT_ADD_LIST: self.add_rule_list,
+            key.COMPARE_RESULT_REMOVE_LIST: self.remove_rule_list,
+            key.COMPARE_RESULT_NORMAL_LIST: self.normal_rule_list,
+            key.COMPARE_RESULT_MODIFY_LIST: self.modify_rule_list
+        }
+
+        compare_result_data = {
+            key.COMPARE_RESULT_LIST_DATA: compare_list_data,
+            key.COMPARE_RESULT_DETAIL_DATA: self.get_rule_detail_map(),
+            key.COMPARE_RESULT_DIFF_DATA: self.get_rule_diff_map()
+        }
+
+        fileManager.save_compare_result_file(self.compare_hash_key, compare_result_data)
+
+    def remove_rule_files(self):
+        file_path = get_rule_set_path("", "", self.compare_hash_key)
+        fileManager.clear_folder(file_path)
+
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_rule_list()
-        # self.download_rules(environment, updated_list)
+        self.download_rules(environment, updated_list)
         return updated_list
 
     def updated_rule_list_from_git(self):
@@ -161,5 +183,3 @@ class CompareRuleListTask:
 
     def get_rule_diff_map(self):
         return self.rule_diff_map
-
-

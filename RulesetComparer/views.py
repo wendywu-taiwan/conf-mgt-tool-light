@@ -1,14 +1,18 @@
+from django.http import HttpResponse
 from django.shortcuts import render
+from django.template.loader import get_template
 from RulesetComparer.models import B2BRuleSetServer, Country, Environment
+from RulesetComparer.properties import dataKey as key
+from RulesetComparer.properties import config
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer
 from RulesetComparer.serializers.serializers import RuleSerializer, ModifiedRuleValueSerializer
 from RulesetComparer.services.services import RuleSetService
-from RulesetComparer.properties import dataKey as key
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer
-from RulesetComparer.utils.gitManager import GitManager
-from django.conf import settings
+from RulesetComparer.utils import fileManager
+from RulesetComparer.utils.mailSender import MailSender
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
+
 
 def environment_select(request):
     country_ids = B2BRuleSetServer.objects.get_accessible_country_ids()
@@ -34,23 +38,26 @@ def environment_select(request):
             return render(request, "rule_item_list.html", data)
 
 
-def rule_detail(request, env_id, country_id, compare_key, rule_name):
-    rules_model = RuleSetService.get_detail_rule_data(env_id, country_id, compare_key, rule_name)
-    rules_data = RuleSerializer(rules_model.get_rules_data_array(), many=True).data
+def rule_detail(request, compare_key, rule_name):
+    compare_result_data = fileManager.load_compare_result_file(compare_key)
+    rule_detail_map = compare_result_data[key.COMPARE_RESULT_DETAIL_DATA]
+    rule_json = rule_detail_map[rule_name]
+    rules_data = RuleSerializer(rule_json, many=True).data
     data = {key.RULE_KEY_RULE_NAME: rule_name,
             key.RULE_KEY_RULE_DATA: rules_data}
     return render(request, "rule_show_detail.html", data)
 
 
-def rule_diff(request, base_env_id, compare_env_id, country_id, compare_key, rule_name):
-    compare_result = RuleSetService.diff_rule_set(base_env_id, compare_env_id, country_id,
-                                                  compare_key, rule_name)
+def rule_diff(request, base_env_id, compare_env_id, compare_key, rule_name):
+    compare_result_data = fileManager.load_compare_result_file(compare_key)
+    rule_diff_map = compare_result_data[key.COMPARE_RESULT_DIFF_DATA]
+    rule_json = rule_diff_map[rule_name]
     base_env = Environment.objects.get(id=base_env_id)
     compare_env = Environment.objects.get(id=compare_env_id)
-    add_list = RuleSerializer(compare_result[key.RULE_LIST_ITEM_TABLE_TYPE_ADD], many=True).data
-    remove_list = RuleSerializer(compare_result[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE], many=True).data
-    modify_list = ModifiedRuleValueSerializer(compare_result[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY], many=True).data
-    normal_list = RuleSerializer(compare_result[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL], many=True).data
+    add_list = RuleSerializer(rule_json[key.RULE_LIST_ITEM_TABLE_TYPE_ADD], many=True).data
+    remove_list = RuleSerializer(rule_json[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE], many=True).data
+    modify_list = ModifiedRuleValueSerializer(rule_json[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY], many=True).data
+    normal_list = RuleSerializer(rule_json[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL], many=True).data
 
     data = {
         key.RULE_KEY_RULE_NAME: rule_name,
@@ -64,28 +71,52 @@ def rule_diff(request, base_env_id, compare_env_id, country_id, compare_key, rul
     return render(request, "rule_show_diff.html", data)
 
 
+def send_mail_test(request, compare_key):
+    mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
+    mail_sender.compose_msg()
+
+    file_path = fileManager.get_compare_result_full_file_name("_html", compare_key)
+    file_name = "test_report.html"
+    application = "text"
+    mail_sender.add_attachment(file_path, file_name, application)
+
+    mail_sender.send()
+    mail_sender.quit()
+
+
+def generate_compare_result_html(request, compare_key):
+    data = fileManager.load_compare_result_file(compare_key)
+    template = get_template("rule_item_list.html")
+    html = template.render(data)
+    fileManager.save_compare_result_html(compare_key, html)
+    return HttpResponse(html, content_type='text/html')
+
+
 def compare_rule_list_item_data(country_id, base_env_id, compare_env_id):
     task = RuleSetService.compare_rule_list_rule_set(base_env_id,
                                                      compare_env_id,
                                                      country_id)
 
+    compare_result_data = fileManager.load_compare_result_file(task.compare_hash_key)
+    list_data_map = compare_result_data[key.COMPARE_RESULT_LIST_DATA]
     base_env_data = EnvironmentSerializer(Environment.objects.get(id=base_env_id)).data
     compare_env_data = EnvironmentSerializer(Environment.objects.get(id=compare_env_id)).data
     country_data = CountrySerializer(Country.objects.get(id=country_id)).data
-    add_list = RuleListItemSerializer(task.get_add_rule_list(), many=True).data
-    remove_list = RuleListItemSerializer(task.get_remove_rule_list(), many=True).data
-    normal_list = RuleListItemSerializer(task.get_normal_rule_list(), many=True).data
-    modify_list = RuleListItemSerializer(task.get_modify_rule_list(), many=True).data
 
-    data = {key.COMPARE_RULE_LIST_COUNTRY: country_data,
-            key.COMPARE_RULE_BASE_ENV: base_env_data,
-            key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
-            key.COMPARE_RULE_COMPARE_HASH_KEY: task.compare_hash_key,
-            key.COMPARE_RULE_COMPARE_ADD_LIST: add_list,
-            key.COMPARE_RULE_COMPARE_REMOVE_LIST: remove_list,
-            key.COMPARE_RULE_COMPARE_NORMAL_LIST: normal_list,
-            key.COMPARE_RULE_COMPARE_MODIFY_LIST: modify_list}
-    return data
+    add_list = RuleListItemSerializer(list_data_map[key.COMPARE_RESULT_ADD_LIST], many=True).data
+    remove_list = RuleListItemSerializer(list_data_map[key.COMPARE_RESULT_REMOVE_LIST], many=True).data
+    normal_list = RuleListItemSerializer(list_data_map[key.COMPARE_RESULT_NORMAL_LIST], many=True).data
+    modify_list = RuleListItemSerializer(list_data_map[key.COMPARE_RESULT_MODIFY_LIST], many=True).data
+
+    compare_list_data = {key.COMPARE_RULE_LIST_COUNTRY: country_data,
+                         key.COMPARE_RULE_BASE_ENV: base_env_data,
+                         key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
+                         key.COMPARE_RULE_COMPARE_HASH_KEY: task.compare_hash_key,
+                         key.COMPARE_RESULT_ADD_LIST: add_list,
+                         key.COMPARE_RESULT_REMOVE_LIST: remove_list,
+                         key.COMPARE_RESULT_NORMAL_LIST: normal_list,
+                         key.COMPARE_RESULT_MODIFY_LIST: modify_list}
+    return compare_list_data
 
 
 # todo : return json rule list response
@@ -103,9 +134,3 @@ def json_rule_detail(request, country, env, rule_set_name):
 # todo : return json rule diff result
 def json_rule_diff(request, base_env_id, compare_env_id, country_id, compare_key):
     pass
-
-
-def git_sync_branch(request, branch):
-    test_git_manager = GitManager(settings.INT1_RULE_SET_LOCAL_REPOSITORY, 'master')
-    if test_git_manager.status == GitManager.STATUS_NEED_PULL:
-        test_git_manager.pull()
