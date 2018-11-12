@@ -4,7 +4,7 @@
         {{ compare_env.name }} <span class="span_inactive badge badge-light">{{ data.new_count }}</span>
     </button>
     {% else %}
-    <a href="{% url 'rule-detail' compare_env.id country.id compare_hash_key data.name %}">
+    <a href="{% url 'rule-detail' compare_hash_key data.name %}">
         <button type="submit" class="button_new btn btn-primary">
             {{ compare_env.name }} <span class="span_new badge badge-light">{{ data.new_count }}</span>
         </button>

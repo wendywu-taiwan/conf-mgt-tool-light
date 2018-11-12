@@ -8,13 +8,13 @@
         Remove <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
     </button>
     {% elif data.remove_count == data.base_count %}
-    <a href="{% url 'rule-detail' base_env.id country.id compare_hash_key data.name %}">
+    <a href="{% url 'rule-detail' compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
             Remove <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
         </button>
     </a>
     {% elif data.remove_count != data.base_count %}
-    <a href="{% url 'rule-diff' base_env.id compare_env.id country.id compare_hash_key data.name %}">
+    <a href="{% url 'rule-diff' compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
             Remove <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
         </button>

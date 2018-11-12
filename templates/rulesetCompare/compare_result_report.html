@@ -1,0 +1,905 @@
+{% load staticfiles %}
+{% load filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+          integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+          integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"
+            integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
+            crossorigin="anonymous"></script>
+    <style>
+        .container-compare-report {
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .container-compare-report .unclickable {
+            cursor: initial !important;;
+        }
+
+        .container-compare-report .ruleset_name_line {
+            height: 35px;
+            margin-bottom: 3px;
+        }
+
+        .container-compare-report .ruleset_name_div {
+            margin: auto;
+        }
+
+        .vertical_distance {
+            margin-top: 50px;
+        }
+
+        #title_text {
+            text-align: center;
+            width: -webkit-fill-available;
+            color: #000126;
+            margin-bottom: 50px;
+        }
+
+        #compare_info_table {
+            margin: auto;
+        }
+
+        .compare_info_table .table_content {
+            color: #080808;
+            font-weight: 600;
+        }
+
+        .container-compare-report .add_list {
+            width: 60%;
+            margin: auto;
+            border: #1abc9c;
+            border-radius: 5px;
+            border-width: 1px;
+            border-style: solid;
+            padding-bottom: 10px;
+        }
+
+        .container-compare-report .add_list .nav {
+            background: #1abc9c;
+            color: white;
+            width: 100%;
+            padding: 5px 10px 5px 15px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .container-compare-report .minus_list {
+            width: 60%;
+            margin: auto;
+            border: #c43a45;
+            border-radius: 5px;
+            border-width: 1px;
+            border-style: solid;
+            padding-bottom: 10px;
+        }
+
+        .container-compare-report .minus_list .nav {
+            background: #c43a45;
+            color: white;
+            width: 100%;
+            padding: 5px 10px 5px 15px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .container-compare-report .modify_list {
+            width: 60%;
+            margin: auto;
+            border: #ffc107;
+            border-radius: 5px;
+            border-width: 1px;
+            border-style: solid;
+            padding-bottom: 10px;
+        }
+
+        .container-compare-report .modify_list .nav {
+            background: #ffc107;
+            color: white;
+            width: 100%;
+            padding: 5px 10px 5px 15px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .container-compare-report .modify_rule_list {
+            width: 80%;
+            margin: auto;
+            border: #ffc107;
+            border-radius: 5px;
+            border-width: 1px;
+            border-style: solid;
+            padding-bottom: 10px;
+        }
+
+        .container-compare-report .modify_rule_list .nav {
+            background: #ffc107;
+            color: white;
+            width: 100%;
+            padding: 5px 10px 5px 15px;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+
+        .container-compare-report .count_div {
+            text-align: left;
+        }
+
+        .container-compare-report .rule_set_name {
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-left: 10px;
+            text-align: left;
+        }
+
+        .container-compare-report .ruleset_name_line .rule_set_name {
+            font-size: 14px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin: auto;
+            margin-left: 10px;
+            text-align: left;
+        }
+
+        .container-compare-report .button_inactive {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #dcdcdc;
+            background: white;
+            padding: 0px 0px 0px 0px !important;
+        }
+
+        .container-compare-report .span_inactive {
+            background-color: #dcdcdc;
+            border: #dcdcdc;
+            border-style: solid;
+            border-width: 0.5px;
+            color: white;
+            border-radius: 10px;
+            font-size: 4px;
+        }
+
+        .container-compare-report .button_add {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #1abc9c;
+            background: white;
+            padding: 0px 0px 0px 0px !important;
+        }
+
+        .container-compare-report .span_add {
+            background-color: #1abc9c;
+            border: #1abc9c;
+            border-style: solid;
+            border-width: 0.5px;
+            color: white;
+            border-radius: 10px;
+            font-size: 4px;
+        }
+
+        .container-compare-report .button_minus {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #c43a45;
+            background: white;
+            padding: 0px 0px 0px 0px !important;
+        }
+
+        .container-compare-report .span_minus {
+            background-color: #c43a45;
+            border: #c43a45;
+            border-style: solid;
+            border-width: 0.5px;
+            color: white;
+            border-radius: 10px;
+            font-size: 4px;
+        }
+
+        .container-compare-report .button_modify {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #f9ba05;
+            background: white;
+            padding: 0px 0px 0px 0px !important;
+        }
+
+        .container-compare-report .span_modify {
+            background-color: #f9ba05;
+            border: #f9ba05;
+            border-style: solid;
+            border-width: 0.5px;
+            color: white;
+            border-radius: 10px;
+            font-size: 4px;
+        }
+
+        .container-compare-report .file_icon {
+            color: white;
+            margin-right: 10px;
+        }
+
+        .container-compare-report .file_title {
+            font-weight: 600;
+        }
+
+        .container-compare-report .rule_data_line {
+            margin: 10px;
+        }
+
+        .add_list .add_line_divider {
+            background-color: #1abc9c2e;
+            height: 3px;
+            margin-left: 20%;
+            margin-right: 8%;
+            border-radius: 50px;
+        }
+
+        .modify_rule_list .add_line_divider {
+            background-color: #1abc9c2e;
+            height: 3px;
+            margin-right: 3%;
+            border-radius: 50px;
+            width: 45%;
+        }
+
+        .modify_rule_list .normal_line_divider {
+            background-color: #a7a49e1f;
+            height: 3px;
+            margin-right: 3%;
+            border-radius: 50px;
+            width: 45%;
+        }
+
+        .container-compare-report .add_end_divider {
+            background-color: #1abc9c;
+            height: 8px;
+            margin-left: 2%;
+            margin-right: 2%;
+            border-radius: 50px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .minus_list .remove_line_divider {
+            background-color: #c43a4530;
+            height: 3px;
+            margin-left: 20%;
+            margin-right: 8%;
+            border-radius: 50px;
+        }
+
+        .modify_rule_list .remove_line_divider {
+            background-color: #c43a4530;
+            height: 3px;
+            margin-right: 3%;
+            border-radius: 50px;
+            width: 45%;
+        }
+
+        .container-compare-report .remove_end_divider {
+            background-color: #c43a45;
+            height: 8px;
+            margin-left: 2%;
+            margin-right: 2%;
+            border-radius: 50px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .modify_rule_list .modify_line_divider {
+            background-color: #ffc1071f;
+            height: 3px;
+            margin-right: 3%;
+            border-radius: 50px;
+            width: 45%;
+        }
+
+        .modify_rule_list .modify_end_divider {
+            background-color: #f9ba05;
+            height: 8px;
+            margin-left: 2%;
+            margin-right: 2%;
+            border-radius: 50px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .container-compare-report .rule_data_title {
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-left: 10px;
+            text-align: left;
+            width: 16%;
+        }
+
+        .modify_rule_list .rule_data_title {
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-left: 25px;
+            text-align: left;
+            width: 15%;
+            word-wrap: break-word;
+        }
+
+        .container-compare-report .rule_data_value {
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-left: 10px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .modify_rule_list .rule_data_value {
+            width: 37%;
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-right: 3%;
+            margin-left: 10px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .modify_rule_list .rule_env_text {
+            width: 80px;
+            text-align: center;
+            border-radius: 10px;
+            color: #7d7d777d;
+            border: #7d7d777d;
+            border-style: solid;
+            border-width: 1px;
+            margin: auto;
+        }
+
+        .modify_rule_list .highlight_data_value {
+            border-radius: 8px;
+            background-color: #f9ba052b;
+            width: 37%;
+            font-size: 15px;
+            font-family: inherit;
+            font-weight: 500;
+            color: #34495d;
+            margin-right: 3%;
+            margin-left: 10px;
+            text-align: left;
+            word-wrap: break-word;
+        }
+
+        .modify_rule_list .divider_line {
+            margin-left: 18%;
+        }
+    </style>
+</head>
+<body>
+<div class="container-compare-report container-fluid">
+    <div class="row">
+        <h2 id="title_text">Ruleset Compare Result</h2>
+    </div>
+    <div>
+        <table id="compare_info_table" class="table-sm">
+            <tr>
+                <th scope="row">Base Environment:</th>
+                <td class="table_content">{{ base_env.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Compared Environment:</th>
+                <td class="table_content">{{ compare_env.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Compared Time:</th>
+                <td class="table_content">{{ list_data.current_time }}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="vertical_distance"></div>
+    <!-- file list compare result -->
+    <div class="add_list">
+        <div class="nav" data-target=".add_data">
+            <div class="nav_title"> Added Files
+            </div>
+        </div>
+        {% for data in list_data.add_list %}
+        <div class="add_data data row ruleset_name_line">
+            {% include 'report_list_count.html' %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="minus_list">
+        <div class="nav" data-target=".minus_data">
+            <div class="nav_title"> Removed Files
+            </div>
+        </div>
+        {% for data in list_data.remove_list %}
+        <div class="minus_data data row ruleset_name_line">
+            {% include 'report_list_count.html' %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="modify_list">
+        <div class="nav" data-target=".modify_data">
+            <div class="nav_title"> Modified Files
+            </div>
+        </div>
+        {% for data in list_data.modify_list %}
+        <div class=" modify_data data row ruleset_name_line">
+            {% include 'report_list_count.html' %}
+        </div>
+        {% endfor %}
+    </div>
+    <div class="vertical_distance"></div>
+
+    <!-- list each rule in add files -->
+    {% for data in list_data.add_list %}
+    <div class="add_list">
+        <div class="nav" data-target=".add_data">
+            <div>
+                <i class="file_icon fas fa-plus"></i>
+            </div>
+            <div class="nav_title file_title"> {{ data.name }}
+            </div>
+        </div>
+        <div class="add_rules">
+            {% for data in detail_data|get_item:data.name %}
+            <div id="process_line" class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="col-9 rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="process_step_line" class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="col-9 rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="org_id_line" class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="owner_role_line" class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="rule_type_line" class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="rule_key_line" class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="col-9 rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="rule_value_line" class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="col-9 rule_data_value">
+                    {% for value in data.value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="add_line_divider"></div>
+            <div id="rule_expression_line" class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="col-9 rule_data_value">
+                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <div class="add_end_divider"></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="vertical_distance"></div>
+    {% endfor %}
+
+    <div class="vertical_distance"></div>
+
+    <!-- list each rule in remove files -->
+    {% for data in list_data.remove_list %}
+    <div class="minus_list">
+        <div class="nav" data-target=".minus_data">
+            <div>
+                <i class="file_icon fas fa-times"></i>
+            </div>
+            <div class="nav_title file_title"> {{ data.name }}
+            </div>
+        </div>
+        <div class="removed_rules">
+            {% for data in detail_data|get_item:data.name %}
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="col-9 rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="col-9 rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="col-9 rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="col-9 rule_data_value">
+                    {% for value in data.value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="remove_line_divider"></div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="col-9 rule_data_value">
+                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <div class="remove_end_divider"></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="vertical_distance"></div>
+    {% endfor %}
+
+    <div class="vertical_distance"></div>
+
+    <!-- list each rule in modify files -->
+    {% for data in list_data.modify_list %}
+    <div class="modify_rule_list">
+        <div class="nav" data-target=".modify_data">
+            <div>
+                <i class="file_icon fas fa-align-justify"></i>
+            </div>
+            <div class="nav_title file_title"> {{ data.name }}
+            </div>
+        </div>
+        <div class="modified_rules">
+            {% for data in diff_data|get_map_add_array:data.name %}
+            <!-- parse rule in modify add list -->
+            <div class="row rule_data_line">
+                <div class="rule_data_title"></div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env.name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="col-9 rule_data_value"></div>
+                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">
+                    {% for value in data.value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">
+                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <div class="modify_end_divider"></div>
+            {% endif %}
+            {% endfor %}
+
+            <!-- parse rule in modify remove list -->
+            {% for data in diff_data|get_map_remove_array:data.name %}
+            <div class="row rule_data_line">
+                <div class="rule_data_title"></div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env.name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="rule_data_value">
+                    {% for value in data.value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="rule_data_value">
+                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="rule_data_value"></div>
+            </div>
+            {% if not forloop.last %}
+            <div class="modify_end_divider"></div>
+            {% endif %}
+            {% endfor %}
+
+            <!-- parse rule in modify modify list -->
+            {% for data in diff_data|get_map_modify_array:data.name %}
+            <div class="row rule_data_line">
+                <div class="rule_data_title">
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env.name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env.name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="highlight_data_value">
+                    {% for value in data.base_value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="highlight_data_value">
+                    {% for value in data.compare_value|get_array_split_by_comma %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="highlight_data_value">
+                    {% for expression in data.base_expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="highlight_data_value">
+                    {% for expression in data.compare_expression|get_array_split_by_comma %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+            <div class="modify_end_divider"></div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    <div class="vertical_distance"></div>
+    {% endfor %}
+</div>
+</body>
+</html>
