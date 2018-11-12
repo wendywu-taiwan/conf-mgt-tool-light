@@ -2,7 +2,7 @@ from django.conf import settings
 
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
-    "rule_set_git": "/RulesetComparer/rulesets/Git/%s",
+    "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result"
 
 }
@@ -12,32 +12,43 @@ FILE_NAME = {
     "_xml": "%s.xml"
 }
 
-
 GIT = {
-    "environment_name": "git",
+    "environment_name": "Git",
     "remote_name": "origin",
     "master_branch": "master",
     "develop_branch": "develop"
 }
 
+TIME_FORMAT = {
+    "year_month_date_hour_minute_second": "'%Y/%m/%d %H:%M:%S"
+}
+
+TIME_ZONE = {
+    "asia_taipei": "Asia/Taipei"
+}
+
 SMTP = {
-    "login_username": "7759563f9cf606",
-    "login_password": "878057bb65bedc",
-    "host": "10.29.25.73",
+    "login_username": "mailtest20181112@gmail.com",
+    "login_password": "shqkvjarskvbkigv",
+    # "login_username": "7759563f9cf606",
+    # "login_password": "878057bb65bedc",
+    "host": "smtp.gmail.com",
+    # "host": "10.29.25.73",
     # "host": "smtp.mailtrap.io",
-    "port": "25"
+    "port": "465"
+    # "port": "25"
 }
 
 SEND_COMPARE_RESULT_MAIL = {
     "sender": "no-reply@audatex.com",
-    "receivers": ["wendy.wu@audatex.com"],
+    "receivers": ["engle6030@gmail.com", "wendy.wu@audatex.com", "Josh.Cheng@solera.com", "Tommy.Lin@solera.com", "Owen.Yang@solera.com"],
     "title": "Ruleset Compare Report",
     "content": "this is the compare result",
 }
 
 
 def get_rule_set_path(environment, country, compare_key):
-    return FILE_PATH.get("rule_set_environment") % (environment, country, compare_key)
+    return FILE_PATH.get("rule_set_environment") % (compare_key, environment, country)
 
 
 def get_rule_set_git_path(country):
