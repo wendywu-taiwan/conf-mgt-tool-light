@@ -14,15 +14,20 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from django.urls import path, include
+from django.urls import path
 from RulesetComparer import views
+from django.conf.urls import url, include
 
 ruleset_comparer_pattern = [
     path('select/', views.environment_select, name="environment-select"),
-    path('detail/<str:env_id>/<str:country_id>/<str:compare_key>/<str:rule_name>',
+    path('detail/<str:compare_key>/<str:rule_name>',
          views.rule_detail, name="rule-detail"),
-    path('diff/<str:base_env_id>/<str:compare_env_id>/<str:country_id>/<str:compare_key>/<str:rule_name>',
+    path('diff/<str:compare_key>/<str:rule_name>',
          views.rule_diff, name="rule-diff"),
+    path('rule/list/diff/pdf/<str:compare_key>',
+         views.send_mail, name="rule-list-pdf"),
+    path('report/download/<str:compare_key>',
+         views.download_compare_report, name="report-download"),
 ]
 
 urlpatterns = [

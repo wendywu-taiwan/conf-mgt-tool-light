@@ -11,7 +11,8 @@ def get_current_time():
 
 def get_format_locale_time(format, time_zone):
     time = utc_to_locale_time(time_zone)
-    return time.strftime(format)
+    time_str = time.strftime(format)
+    return time_str.strip("'")
 
 
 def utc_to_locale_time(time_zone):

@@ -23,6 +23,7 @@
     cursor: initial !important;
 }
 
+/* rule list item */
 .container-rule-list-item {
     max-width: 90%;
     text-align: center;
@@ -32,11 +33,6 @@
     font-size: 20px;
     margin-left: 10px;
     font-weight: 300;
-}
-
-/* rule list item */
-.container-rule-list-item {
-    margin-bottom: 10px;
 }
 
 .container-rule-list-item .rule_list_item_header {
@@ -75,6 +71,7 @@
 }
 
 .container-rule-list-item .icon_mail_border {
+    border-color: #34495d;
     border-style: solid;
     border-radius: 30px;
     padding: 5px;
@@ -86,11 +83,14 @@
 }
 
 .container-rule-list-item .icon_mail {
+    color: #34495d;
     font-size: 24px;
     vertical-align: middle;
 }
 
 .container-rule-list-item .icon_download_border {
+    cursor: pointer;
+    border-color: #34495d;
     border-style: solid;
     border-radius: 30px;
     padding: 3px;
@@ -101,6 +101,7 @@
 }
 
 .container-rule-list-item .icon_download {
+    color: #34495d;
     font-size: 24px;
     vertical-align: middle;
 }
