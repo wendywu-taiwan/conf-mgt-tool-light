@@ -141,6 +141,7 @@
     color: #dcdcdc;
     background: white;
     padding: 0px 0px 0px 0px !important;
+    cursor: auto;
 }
 
 .container-compare-report .span_inactive {
@@ -159,6 +160,7 @@
     color: #1abc9c;
     background: white;
     padding: 0px 0px 0px 0px !important;
+    cursor: auto;
 }
 
 .container-compare-report .span_add {
@@ -177,6 +179,7 @@
     color: #c43a45;
     background: white;
     padding: 0px 0px 0px 0px !important;
+    cursor: auto;
 }
 
 .container-compare-report .span_minus {
@@ -195,6 +198,7 @@
     color: #f9ba05;
     background: white;
     padding: 0px 0px 0px 0px !important;
+    cursor: auto;
 }
 
 .container-compare-report .span_modify {
@@ -306,6 +310,7 @@
     margin-left: 10px;
     text-align: left;
     width: 16%;
+    word-wrap: break-word;
 }
 
 .modify_rule_list .rule_data_title {

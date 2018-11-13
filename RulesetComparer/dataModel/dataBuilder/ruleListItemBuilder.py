@@ -26,13 +26,11 @@ class RuleListItemBuilder(BaseBuilder):
         self.result_dict[key.RULE_LIST_ITEM_NEW_COUNT] = self.rule_module.get_rules_count()
 
     def set_add_rule(self):
-        self.result_dict[key.RULE_LIST_ITEM_COMPARED_ENV_DATA] = self.rule_module.get_rules_data_array()
         self.result_dict[key.RULE_LIST_ITEM_TABLE_TYPE] = key.RULE_LIST_ITEM_TABLE_TYPE_ADD
         self.result_dict[key.RULE_LIST_ITEM_NEW_COUNT] = self.rule_module.get_rules_count()
         self.result_dict[key.RULE_LIST_ITEM_ADD_COUNT] = self.rule_module.get_rules_count()
 
     def set_remove_rule(self):
-        self.result_dict[key.RULE_LIST_ITEM_BASE_ENV_DATA] = self.rule_module.get_rules_data_array()
         self.result_dict[key.RULE_LIST_ITEM_TABLE_TYPE] = key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE
         self.result_dict[key.RULE_LIST_ITEM_BASE_COUNT] = self.rule_module.get_rules_count()
         self.result_dict[key.RULE_LIST_ITEM_REMOVE_COUNT] = self.rule_module.get_rules_count()

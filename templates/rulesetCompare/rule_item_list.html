@@ -3,18 +3,47 @@
 {% block content %}
 
 <div class="container-rule-list-item container-fluid">
-    <div class="row">
-        <h6 class="header-text">Base Environment:</h6>
-        <h6 class="content-text">{{ base_env.name }}</h6>
+    <div class="row rule_list_item_header">
+        <div class="rule_list_info">
+            <table id="compare_info_table" class="table-sm">
+                <tr>
+                    <th scope="row" class="info_title">Base Environment:</th>
+                    <td class="table_content">{{ base_env.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="info_title">Compared Environment:</th>
+                    <td class="table_content">{{ compare_env.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="info_title">Compared Time:</th>
+                    <td class="table_content">{{ current_time }}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="search_bar">
+            <div class="input-group">
+                <input type="text" class="search_bar_input form-control" placeholder="Search" id="search-query-3">
+                <span class="input-group-btn">
+                    <button type="submit" class="search_bar_button btn"><span class="fui-search"></span></button>
+                  </span>
+            </div>
+        </div>
+        <div class="icon_list">
+            <div class="row icon_row">
+                <div class="icon_mail_border">
+                    <i class="icon_mail far fa-envelope"></i>
+                </div>
+                <div class="icon_download_border">
+                    <i class="icon_download fas fa-download"></i>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-        <h6 class="header-text">Compared Environment:</h6>
-        <h6 class="content-text"> {{ compare_env.name}} </h6>
-    </div>
+
     <div class="rule_list_item">
         <div class="add_list">
             <div class="nav" data-toggle="collapse" data-target=".add_data">
-                <div class="nav_title"> Added
+                <div class="nav_title"> Added ({{ add_list|length }})
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -28,7 +57,7 @@
     <div class="rule_list_item">
         <div class="minus_list">
             <div class="nav" data-toggle="collapse" data-target=".minus_data">
-                <div class="nav_title"> Removed
+                <div class="nav_title"> Removed ({{ remove_list|length }})
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -42,7 +71,7 @@
     <div class="rule_list_item">
         <div class="modify_list">
             <div class="nav" data-toggle="collapse" data-target=".modify_data">
-                <div class="nav_title"> Modified
+                <div class="nav_title"> Modified ({{ modify_list|length }})
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -56,7 +85,7 @@
     <div class="rule_list_item">
         <div class="normal_list">
             <div class="nav" data-toggle="collapse" data-target=".normal_data">
-                <div class="nav_title"> Normal
+                <div class="nav_title"> Normal ({{ normal_list|length }})
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>

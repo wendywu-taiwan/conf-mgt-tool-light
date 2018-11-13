@@ -14,9 +14,13 @@
     text-align: center;
 }
 
-.container-rule-list-compare-result {
-    max-width: 50%;
-    text-align: center;
+/* button */
+.custom-btn-group-1 {
+    display: initial;
+}
+
+.unclickable {
+    cursor: initial !important;
 }
 
 .container-rule-list-item {
@@ -24,31 +28,106 @@
     text-align: center;
 }
 
-/* button */
-.custom-btn-group-1 {
-    display: initial;
-}
-
-.unclickable{
-    cursor:initial !important; ;
-}
-
-/* ruleset_compare_item_list */
-.container-rule-list-item .content-text{
+.container-rule-list-item .content-text {
     font-size: 20px;
     margin-left: 10px;
     font-weight: 300;
 }
 
-.rule_list_item{
+/* rule list item */
+.container-rule-list-item {
     margin-bottom: 10px;
 }
 
-.rule_list_item .count_div{
+.container-rule-list-item .rule_list_item_header {
+    margin-left: 1px;
+    margin-right: 1px;
+    margin-bottom: 30px;
+}
+
+.container-rule-list-item .rule_list_info {
+    width: 35%;
+}
+
+.container-rule-list-item .search_bar {
+    width: 40%;
+    padding-right: 20px;
+    margin: auto;
+}
+
+.container-rule-list-item .search_bar_input {
+    border: 2px solid #3e5469a6 !important;
+}
+
+.container-rule-list-item .search_bar_button {
+    background-color: #1abc9c;
+    color: white;
+    border: 2px solid #3e5469a6 !important;
+}
+
+.container-rule-list-item .icon_list {
+    margin: auto;
+    width: 20%;
+}
+
+.container-rule-list-item .icon_row {
+    float: right;
+}
+
+.container-rule-list-item .icon_mail_border {
+    border-style: solid;
+    border-radius: 30px;
+    padding: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-width: 1.5px;
+    margin-right: 15px;
+    background: #1abc9c;
+}
+
+.container-rule-list-item .icon_mail {
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.container-rule-list-item .icon_download_border {
+    border-style: solid;
+    border-radius: 30px;
+    padding: 3px;
+    padding-left: 9px;
+    padding-right: 8px;
+    border-width: 1.5px;
+    background-color: #f4817c;
+}
+
+.container-rule-list-item .icon_download {
+    font-size: 24px;
+    vertical-align: middle;
+}
+
+.container-rule-list-item .info_title {
     text-align: left;
 }
 
-.rule_list_item .add_list{
+.container-rule-list-item .table_content {
+    text-align: left;
+}
+
+.container-rule-list-item .count_div {
+    text-align: left;
+}
+
+.container-rule-list-item .environment_detail_text {
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.container-rule-list-item .environment_detail_icon {
+    vertical-align: middle;
+    margin: auto;
+}
+
+.container-rule-list-item .add_list {
     border: #1abc9c;
     border-radius: 5px;
     border-width: 1px;
@@ -56,7 +135,7 @@
     padding-bottom: 10px;
 }
 
-.rule_list_item .add_list .nav{
+.container-rule-list-item .add_list .nav {
     background: #1abc9c;
     color: white;
     width: 100%;
@@ -65,7 +144,7 @@
     font-size: 14px;
 }
 
-.rule_list_item .minus_list{
+.container-rule-list-item .minus_list {
     border: #c43a45;
     border-radius: 5px;
     border-width: 1px;
@@ -73,7 +152,7 @@
     padding-bottom: 10px;
 }
 
-.rule_list_item .minus_list .nav{
+.container-rule-list-item .minus_list .nav {
     background: #c43a45;
     color: white;
     width: 100%;
@@ -81,7 +160,8 @@
     border-radius: 3px;
     font-size: 14px;
 }
-.rule_list_item .modify_list{
+
+.container-rule-list-item .modify_list {
     border: #ffc107;
     border-radius: 5px;
     border-width: 1px;
@@ -89,7 +169,7 @@
     padding-bottom: 10px;
 }
 
-.rule_list_item .modify_list .nav{
+.container-rule-list-item .modify_list .nav {
     background: #ffc107;
     color: white;
     width: 100%;
@@ -97,7 +177,8 @@
     border-radius: 3px;
     font-size: 14px;
 }
-.rule_list_item .normal_list{
+
+.container-rule-list-item .normal_list {
     border: #0995f0;
     border-radius: 5px;
     border-width: 1px;
@@ -105,7 +186,7 @@
     padding-bottom: 10px;
 }
 
-.rule_list_item .normal_list .nav{
+.container-rule-list-item .normal_list .nav {
     background: #0995f0;
     color: white;
     width: 100%;
@@ -114,7 +195,7 @@
     font-size: 14px;
 }
 
-.rule_list_item .rule_set_name{
+.container-rule-list-item .rule_set_name {
     font-size: 13px;
     font-family: inherit;
     font-weight: 500;
@@ -123,7 +204,7 @@
     text-align: left;
 }
 
-.rule_list_item .button_inactive{
+.container-rule-list-item .button_inactive {
     margin-top: 10px;
     font-size: 12px;
     color: #dcdcdc;
@@ -131,7 +212,7 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_inactive{
+.container-rule-list-item .span_inactive {
     background-color: #dcdcdc;
     border: #dcdcdc;
     border-style: solid;
@@ -141,7 +222,7 @@
     font-size: 4px;
 }
 
-.rule_list_item .button_origin{
+.container-rule-list-item .button_origin {
     margin-top: 10px;
     font-size: 12px;
     color: var(--gray);
@@ -149,7 +230,7 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_origin{
+.container-rule-list-item .span_origin {
     background-color: var(--gray);
     border: var(--gray);
     border-style: solid;
@@ -159,7 +240,7 @@
     font-size: 4px;
 }
 
-.rule_list_item .button_new{
+.container-rule-list-item .button_new {
     margin-top: 10px;
     font-size: 12px;
     color: #0995f0;
@@ -167,8 +248,8 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_new{
-    background-color:#0995f0;
+.container-rule-list-item .span_new {
+    background-color: #0995f0;
     border: #0995f0;
     border-style: solid;
     border-width: 0.5px;
@@ -177,7 +258,7 @@
     font-size: 4px;
 }
 
-.rule_list_item .button_add{
+.container-rule-list-item .button_add {
     margin-top: 10px;
     font-size: 12px;
     color: #1abc9c;
@@ -185,7 +266,7 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_add{
+.container-rule-list-item .span_add {
     background-color: #1abc9c;
     border: #1abc9c;
     border-style: solid;
@@ -195,7 +276,7 @@
     font-size: 4px;
 }
 
-.rule_list_item .button_minus{
+.container-rule-list-item .button_minus {
     margin-top: 10px;
     font-size: 12px;
     color: #c43a45;
@@ -203,8 +284,8 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_minus{
-    background-color:#c43a45;
+.container-rule-list-item .span_minus {
+    background-color: #c43a45;
     border: #c43a45;
     border-style: solid;
     border-width: 0.5px;
@@ -213,7 +294,7 @@
     font-size: 4px;
 }
 
-.rule_list_item .button_modify{
+.container-rule-list-item .button_modify {
     margin-top: 10px;
     font-size: 12px;
     color: #f9ba05;
@@ -221,8 +302,8 @@
     padding: 0px 0px 0px 0px !important;
 }
 
-.rule_list_item .span_modify{
-    background-color:#f9ba05;
+.container-rule-list-item .span_modify {
+    background-color: #f9ba05;
     border: #f9ba05;
     border-style: solid;
     border-width: 0.5px;
@@ -230,7 +311,6 @@
     border-radius: 10px;
     font-size: 4px;
 }
-
 
 .custom-btn-1 {
     font-size: 18px;
