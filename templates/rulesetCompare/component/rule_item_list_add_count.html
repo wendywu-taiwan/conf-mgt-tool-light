@@ -9,7 +9,7 @@
         Add <span class="span_add badge badge-light">{{ data.add_count }}</span>
     </button>
     {% elif data.add_count == data.new_count %}
-    <a href="{% url 'rule-detail' compare_hash_key data.name %}">
+    <a href="{% url 'rule-detail' compare_env.name compare_hash_key data.name %}">
         <button type="submit" class="button_add btn btn-primary">
             Add <span class="span_add badge badge-light">{{ data.add_count }}</span>
         </button>

@@ -20,7 +20,7 @@ from django.conf.urls import url, include
 
 ruleset_comparer_pattern = [
     path('select/', views.environment_select, name="environment-select"),
-    path('detail/<str:compare_key>/<str:rule_name>',
+    path('detail/<str:environment_name>/<str:compare_key>/<str:rule_name>',
          views.rule_detail, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.rule_diff, name="rule-diff"),

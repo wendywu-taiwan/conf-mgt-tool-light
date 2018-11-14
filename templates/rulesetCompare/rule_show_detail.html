@@ -1,54 +1,114 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% load filters %}
 {% block content %}
-
-
 <div class="container-rule-detail container-fluid">
-    <div class="table-responsive">
-        <table class="custom-table-show-rule table table-bordered .table-sm">
-            <thead class="thead-gray">
-            <tr>
-                <th class="ruleset-header-text" colspan="2">{{ rule_name }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for data in rule_data %}
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Process</td>
-                <td class="detail-content">{{ data.process }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">RuleType</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Key</td>
-                <td class="detail-content">{{ data.key }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Value</td>
-                {% include 'rule_show_value.html' %}
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="border-bottom detail-attribute">Expression</td>
-                {% include 'rule_show_expression.html' %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+    <div class="row rule_detail_header">
+        <div class="search_bar">
+            <div class="input-group">
+                <input type="text" class="search_bar_input form-control" placeholder="Search" id="search-query-3">
+                <span class="input-group-btn">
+                    <button type="submit" class="search_bar_button btn"><span class="fui-search"></span></button>
+                  </span>
+            </div>
+        </div>
+        <div class="icon_list">
+            <div class="row icon_row">
+                <div class="icon_download_border">
+                    <i class="icon_download fas fa-download"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rule_detail_info">
+        <div class="green_boarder_info_div">
+            <div class="nav green_boarder_nav" data-target=".add_data">
+                <div>
+                    <i class="info_nav_icon fas fa-align-justify"></i>
+                </div>
+                <div class="info_nav_title file_title"> Information
+                </div>
+            </div>
+            <div class="content">
+                <div class="custom-row info_row">
+                    <div class="info_title">Environment</div>
+                    <div class="info_content">{{ environment }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Name</div>
+                    <div class="info_content">{{ rule_name }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Total</div>
+                    <div class="info_content">{{ rule_data|length }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row rule_detail_list">
+        <div class="green_boarder_list_div">
+            <div class="nav green_boarder_nav" data-target=".add_data">
+                <div>
+                    <i class="info_nav_icon fas fa-align-justify"></i>
+                </div>
+                <div class="info_nav_title file_title"> Rules
+                </div>
+            </div>
+            <div class="add_rules">
+                {% for data in rule_data %}
+                <div id="process_line" class="row rule_data_line">
+                    <div class="rule_data_title">Process</div>
+                    <div class="col-9 rule_data_value">{{ data.process }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="process_step_line" class="row rule_data_line">
+                    <div class="rule_data_title">Process Step</div>
+                    <div class="col-9 rule_data_value">{{ data.process_step }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="org_id_line" class="row rule_data_line">
+                    <div class="rule_data_title">Organization ID</div>
+                    <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="owner_role_line" class="row rule_data_line">
+                    <div class="rule_data_title">Owner Role</div>
+                    <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="rule_type_line" class="row rule_data_line">
+                    <div class="rule_data_title">Rule Type</div>
+                    <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="rule_key_line" class="row rule_data_line">
+                    <div class="rule_data_title">Rule Key</div>
+                    <div class="col-9 rule_data_value">{{ data.key }}</div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="rule_value_line" class="row rule_data_line">
+                    <div class="rule_data_title">Rule Value</div>
+                    <div class="col-9 rule_data_value">
+                        {% for value in data.value %}
+                        {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="line_divider"></div>
+                <div id="rule_expression_line" class="row rule_data_line">
+                    <div class="rule_data_title">Rule Expression</div>
+                    <div class="col-9 rule_data_value">
+                        {% for expression in data.expression %}
+                        {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if not forloop.last %}
+                <div class="end_divider"></div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
-
 {% endblock %}

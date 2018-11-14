@@ -8,7 +8,7 @@
         Remove <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
     </button>
     {% elif data.remove_count == data.base_count %}
-    <a href="{% url 'rule-detail' compare_hash_key data.name %}">
+    <a href="{% url 'rule-detail' compare_env.name compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
             Remove <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
         </button>

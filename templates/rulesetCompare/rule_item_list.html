@@ -4,22 +4,6 @@
 
 <div class="container-rule-list-item container-fluid">
     <div class="row rule_list_item_header">
-        <div class="rule_list_info">
-            <table id="compare_info_table" class="table-sm">
-                <tr>
-                    <th scope="row" class="info_title">Base Environment:</th>
-                    <td class="table_content">{{ base_env.name }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="info_title">Compared Environment:</th>
-                    <td class="table_content">{{ compare_env.name }}</td>
-                </tr>
-                <tr>
-                    <th scope="row" class="info_title">Compared Time:</th>
-                    <td class="table_content">{{ current_time }}</td>
-                </tr>
-            </table>
-        </div>
         <div class="search_bar">
             <div class="input-group">
                 <input type="text" class="search_bar_input form-control" placeholder="Search" id="search-query-3">
@@ -42,10 +26,48 @@
         </div>
     </div>
 
+    <div class="rule_list_item_info">
+        <div class="green_boarder_info_div">
+            <div class="nav green_boarder_nav" data-target=".add_data">
+                <div>
+                    <i class="info_nav_icon fas fa-align-justify"></i>
+                </div>
+                <div class="info_nav_title file_title"> Information
+                </div>
+            </div>
+            <div class="content">
+                <div class="custom-row info_row">
+                    <div class="info_title">Base Environment</div>
+                    <div class="info_content">{{ base_env.name }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Compared Environment</div>
+                    <div class="info_content">{{ compare_env.name }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Compared Time</div>
+                    <div class="info_content">{{ current_time }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Added Files</div>
+                    <div class="info_content">{{ add_list|length }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Removed Files</div>
+                    <div class="info_content">{{ remove_list|length }}</div>
+                </div>
+                <div class="custom-row info_row">
+                    <div class="info_title">Modified Files</div>
+                    <div class="info_content">{{ modify_list|length }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="rule_list_item">
         <div class="add_list">
             <div class="nav" data-toggle="collapse" data-target=".add_data">
-                <div class="nav_title"> Added ({{ add_list|length }})
+                <div class="nav_title"> Added Files
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -59,7 +81,7 @@
     <div class="rule_list_item">
         <div class="minus_list">
             <div class="nav" data-toggle="collapse" data-target=".minus_data">
-                <div class="nav_title"> Removed ({{ remove_list|length }})
+                <div class="nav_title"> Removed Files
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -73,7 +95,7 @@
     <div class="rule_list_item">
         <div class="modify_list">
             <div class="nav" data-toggle="collapse" data-target=".modify_data">
-                <div class="nav_title"> Modified ({{ modify_list|length }})
+                <div class="nav_title"> Modified Files
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>
@@ -87,7 +109,7 @@
     <div class="rule_list_item">
         <div class="normal_list">
             <div class="nav" data-toggle="collapse" data-target=".normal_data">
-                <div class="nav_title"> Normal ({{ normal_list|length }})
+                <div class="nav_title"> Normal Files
                     <span class="fui-triangle-down"></span>
                 </div>
             </div>

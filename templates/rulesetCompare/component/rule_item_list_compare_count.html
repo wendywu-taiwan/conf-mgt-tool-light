@@ -9,7 +9,7 @@
         </div>
     </button>
     {% else %}
-    <a href="{% url 'rule-detail' compare_hash_key data.name %}">
+    <a href="{% url 'rule-detail' compare_env.name compare_hash_key data.name %}">
         <button type="submit" class="button_new btn btn-primary">
             <div class="row">
                 <div class="environment_detail_text">
