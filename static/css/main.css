@@ -100,10 +100,14 @@
     vertical-align: middle;
 }
 
-.container-rule-list-item .rule_list_item_info {
+.container-rule-list-item .rule_list_item_header_information {
     max-width: 70%;
     margin: auto;
     margin-bottom: 30px;
+}
+
+.container-rule-list-item .rule_list_item_info {
+    width: 50%;
 }
 
 .container-rule-list-item .green_boarder_info_div {
@@ -154,11 +158,12 @@
 }
 
 .container-rule-list-item .info_row_bg_blue {
-    background: #0484a826;
+    background: #3d5368;
+    color:white;
 }
 
 .container-rule-list-item .info_title {
-    width: 30%;
+    width: 45%;
     font-size: 16px;
     margin-left: 8px;
     text-align: left;
@@ -166,10 +171,60 @@
 
 .container-rule-list-item .info_content {
     float: right;
-    width: 68%;
+    width: 50%;
     text-align: right;
     font-size: 16px;
     font-weight: 500;
+}
+
+.container-rule-list-item .rule_list_item_summary {
+    width: 45%;
+    margin-left: 5%;
+}
+
+.container-rule-list-item .summary_header_content {
+    width: 30%;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.container-rule-list-item .summary_header_content_text {
+    border-bottom: 1px solid;
+}
+
+.container-rule-list-item .summary_title {
+    width: 40%;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 8px;
+    border-right: 1px solid;
+    border-bottom: 1px solid;
+}
+
+.container-rule-list-item .summary_title_last {
+    border-bottom: none;
+}
+
+.container-rule-list-item .summary_content_highlight{
+    color: red;
+}
+
+.container-rule-list-item .summary_content {
+    width: 30%;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid #3d5368;
+}
+
+.container-rule-list-item .summary_content_column_two {
+    width: 60%;
+    font-size: 14px;
+    font-weight: 500;
+    border-bottom: 1px solid #3d5368;
+}
+
+.container-rule-list-item .summary_content_last {
+    border-bottom: none;
 }
 
 /* in rule_item_list_count */
@@ -445,10 +500,6 @@
     margin: auto;
 }
 
-.container-rule-detail .info_title {
-    text-align: left;
-}
-
 .container-rule-detail .table_content {
     text-align: left;
 }
@@ -498,6 +549,7 @@
     width: 30%;
     font-size: 16px;
     margin-left: 8px;
+    text-align: left;
 }
 
 .container-rule-detail .info_content {
