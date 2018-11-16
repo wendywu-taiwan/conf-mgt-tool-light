@@ -24,8 +24,8 @@ ruleset_comparer_pattern = [
          views.rule_detail, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.rule_diff, name="rule-diff"),
-    path('rule/list/diff/pdf/<str:compare_key>',
-         views.send_mail, name="rule-list-pdf"),
+    path('report/mail/<str:compare_key>',
+         views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
          views.download_compare_report, name="report-download"),
 ]

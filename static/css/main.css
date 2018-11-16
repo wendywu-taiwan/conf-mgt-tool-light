@@ -138,9 +138,27 @@
     margin-bottom: 10px;
 }
 
+.container-rule-list-item .info_row_no_margin {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.container-rule-list-item .info_row_margin_top {
+    margin-top: 10px;
+    margin-bottom: 1px;
+}
+
+.container-rule-list-item .info_row_margin_bottom {
+    margin-top: 1px;
+    margin-bottom: 10px;
+}
+
+.container-rule-list-item .info_row_bg_blue {
+    background: #0484a826;
+}
+
 .container-rule-list-item .info_title {
     width: 30%;
-    font-weight: 600;
     font-size: 16px;
     margin-left: 8px;
     text-align: left;
@@ -478,7 +496,6 @@
 
 .container-rule-detail .info_title {
     width: 30%;
-    font-weight: 600;
     font-size: 16px;
     margin-left: 8px;
 }

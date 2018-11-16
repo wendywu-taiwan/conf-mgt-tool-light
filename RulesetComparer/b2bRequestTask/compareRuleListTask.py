@@ -3,10 +3,12 @@ from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleList
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.dataModel.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer, RuleSerializer, ModifiedRuleValueSerializer
 from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils import fileManager, rulesetUtil
+from RulesetComparer.utils.timeUtil import get_current_time
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.properties import config
 from RulesetComparer.properties.config import get_rule_set_git_path, get_rule_set_path
@@ -31,6 +33,10 @@ class CompareRuleListTask:
         # list for saving rule has same version in base and compared env
         self.normal_rule_list = list()
 
+        self.add_rules_count = 0
+        self.remove_rules_count = 0
+        self.modify_rules_count = 0
+
         # map for saving rule details for each rule file.
         # key = rule file name
         # value = rule list
@@ -47,7 +53,7 @@ class CompareRuleListTask:
         self.check_git_status()
         self.execute()
         self.save_result_file()
-        self.remove_rule_files()
+        # self.remove_rule_files()
 
     def check_git_environment(self):
         if self.baseEnv.name == key.ENVIRONMENT_KEY_GIT:
@@ -87,17 +93,33 @@ class CompareRuleListTask:
         self.parse_union_list_rule(union_list)
 
     def save_result_file(self):
+        current_time = get_current_time()
+        base_env_data = EnvironmentSerializer(Environment.objects.get(id=self.baseEnv.id)).data
+        compare_env_data = EnvironmentSerializer(Environment.objects.get(id=self.comparedEnv.id)).data
+        country_data = CountrySerializer(Country.objects.get(id=self.country.id)).data
+
         compare_list_data = {
+            key.COMPARE_RULE_COMPARE_HASH_KEY: self.compare_hash_key,
+            key.COMPARE_RESULT_DATE_TIME: current_time,
             key.COMPARE_RESULT_ADD_LIST: self.add_rule_list,
             key.COMPARE_RESULT_REMOVE_LIST: self.remove_rule_list,
             key.COMPARE_RESULT_NORMAL_LIST: self.normal_rule_list,
-            key.COMPARE_RESULT_MODIFY_LIST: self.modify_rule_list
+            key.COMPARE_RESULT_MODIFY_LIST: self.modify_rule_list,
+            key.COMPARE_RESULT_ADD_FILE_COUNT: len(self.add_rule_list),
+            key.COMPARE_RESULT_REMOVE_FILE_COUNT: len(self.remove_rule_list),
+            key.COMPARE_RESULT_MODIFY_FILE_COUNT: len(self.modify_rule_list),
+            key.COMPARE_RESULT_ADD_RULE_COUNT: self.add_rules_count,
+            key.COMPARE_RESULT_REMOVE_RULE_COUNT: self.remove_rules_count,
+            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.modify_rules_count
         }
 
         compare_result_data = {
+            key.COMPARE_RULE_LIST_COUNTRY: country_data,
+            key.COMPARE_RULE_BASE_ENV: base_env_data,
+            key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
             key.COMPARE_RESULT_LIST_DATA: compare_list_data,
-            key.COMPARE_RESULT_DETAIL_DATA: self.get_rule_detail_map(),
-            key.COMPARE_RESULT_DIFF_DATA: self.get_rule_diff_map()
+            key.COMPARE_RESULT_DETAIL_DATA: self.rule_detail_map,
+            key.COMPARE_RESULT_DIFF_DATA: self.rule_diff_map
         }
 
         fileManager.save_compare_result_file(self.compare_hash_key, compare_result_data)
@@ -108,7 +130,7 @@ class CompareRuleListTask:
 
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_rule_list()
-        self.download_rules(environment, updated_list)
+        # self.download_rules(environment, updated_list)
         return updated_list
 
     def updated_rule_list_from_git(self):
@@ -126,6 +148,7 @@ class CompareRuleListTask:
             rule_list_item_parser.set_add_rule()
             self.add_rule_list.append(rule_list_item_parser.get_data())
             self.rule_detail_map[rule_name] = rule_module.get_rules_data_array()
+            self.add_rules_count += rule_module.get_rules_count()
 
     def parse_remove_list_rule(self, remove_list):
         for rule_name in remove_list:
@@ -134,6 +157,7 @@ class CompareRuleListTask:
             rule_list_item_parser.set_remove_rule()
             self.remove_rule_list.append(rule_list_item_parser.get_data())
             self.rule_detail_map[rule_name] = rule_module.get_rules_data_array()
+            self.remove_rules_count += rule_module.get_rules_count()
 
     def parse_union_list_rule(self, union_list):
         for rule_name in union_list:
@@ -154,6 +178,9 @@ class CompareRuleListTask:
                                                       comparer.get_difference_count())
                 self.modify_rule_list.append(rule_list_item_parser.get_data())
                 self.rule_diff_map[rule_name] = comparer.get_diff_data()
+                self.add_rules_count += comparer.get_compare_key_count()
+                self.remove_rules_count += comparer.get_base_key_count()
+                self.modify_rules_count += comparer.get_difference_count()
 
     def load_rule_module(self, env, rule_name):
         if env.name == config.GIT.get("environment_name"):
@@ -165,21 +192,3 @@ class CompareRuleListTask:
                                                                  rule_name)
         rules_module = ParseRuleModel(rule_set_file)
         return rules_module
-
-    def get_add_rule_list(self):
-        return self.add_rule_list
-
-    def get_remove_rule_list(self):
-        return self.remove_rule_list
-
-    def get_modify_rule_list(self):
-        return self.modify_rule_list
-
-    def get_normal_rule_list(self):
-        return self.normal_rule_list
-
-    def get_rule_detail_map(self):
-        return self.rule_detail_map
-
-    def get_rule_diff_map(self):
-        return self.rule_diff_map

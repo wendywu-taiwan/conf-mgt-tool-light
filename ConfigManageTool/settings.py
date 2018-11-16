@@ -134,13 +134,8 @@ B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsd
 
 UNICODE_ENCODING = 'utf-8'
 
-
-
-
 COMPARE_RESULT_PATH = BASE_DIR + "/RulesetComparer/compare_result/%s"
-
 
 GIT_REMOTE_NAME = 'origin'
 GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
-

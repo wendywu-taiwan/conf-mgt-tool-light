@@ -15,7 +15,9 @@
         <div class="icon_list">
             <div class="row icon_row">
                 <div class="icon_mail_border">
-                    <i class="icon_mail far fa-envelope"></i>
+                    <a href="{% url 'report-send' compare_hash_key %}">
+                        <i class="icon_mail far fa-envelope"></i>
+                    </a>
                 </div>
                 <div class="icon_download_border">
                     <a href="{% url 'report-download' compare_hash_key %}">
@@ -48,17 +50,29 @@
                     <div class="info_title">Compared Time</div>
                     <div class="info_content">{{ current_time }}</div>
                 </div>
-                <div class="custom-row info_row">
+                <div class="custom-row info_row_margin_top">
                     <div class="info_title">Added Files</div>
-                    <div class="info_content">{{ add_list|length }}</div>
+                    <div class="info_content">{{ add_file_count }}</div>
                 </div>
-                <div class="custom-row info_row">
+                 <div class="custom-row info_row_no_margin info_row_bg_blue">
+                    <div class="info_title">Added Rules</div>
+                    <div class="info_content">{{ add_rule_count }}</div>
+                </div>
+                <div class="custom-row info_row_margin_top">
                     <div class="info_title">Removed Files</div>
-                    <div class="info_content">{{ remove_list|length }}</div>
+                    <div class="info_content">{{ remove_file_count }}</div>
                 </div>
-                <div class="custom-row info_row">
+                <div class="custom-row info_row_no_margin info_row_bg_blue">
+                    <div class="info_title">Removed Rules</div>
+                    <div class="info_content">{{ remove_rule_count }}</div>
+                </div>
+                <div class="custom-row info_row_margin_top">
                     <div class="info_title">Modified Files</div>
-                    <div class="info_content">{{ modify_list|length }}</div>
+                    <div class="info_content">{{ modify_file_count }}</div>
+                </div>
+                <div class="custom-row info_row_margin_bottom info_row_bg_blue">
+                    <div class="info_title">Modified Rules</div>
+                    <div class="info_content">{{ modify_rule_count }}</div>
                 </div>
             </div>
         </div>

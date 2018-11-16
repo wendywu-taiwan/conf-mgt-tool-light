@@ -41,7 +41,7 @@ SMTP = {
 
 SEND_COMPARE_RESULT_MAIL = {
     "sender": "no-reply@audatex.com",
-    "receivers": ["engle6030@gmail.com", "wendy.wu@audatex.com", "Josh.Cheng@solera.com", "Tommy.Lin@solera.com", "Owen.Yang@solera.com"],
+    "receivers": ["wendy.wu@audatex.com", "engle6030@gmail.com"],
     "title": "Ruleset Compare Report",
     "content": "this is the compare result",
 }

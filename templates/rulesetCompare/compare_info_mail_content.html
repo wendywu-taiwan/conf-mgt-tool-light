@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, th, td {
+            border: 1.5px solid white;
+        }
+
+        .header {
+            background: #34495d;
+            color: white;
+            font-size: 10.0pt;
+            font-family: "Arial", sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .td_title {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+        }
+
+        .td_content {
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+        }
+
+        .env_text {
+            margin-left: 5px;
+            color: #4285f4;
+        }
+
+        .same_line_dive {
+            display: inline-block;
+        }
+
+        .td_bg_blue{
+            background-color: #bcd7f16b;
+        }
+    </style>
+</head>
+<body>
+<p>
+<div class="same_line_dive">This is the rule sets compare result for two environment on</div>
+<div class="same_line_dive env_text">{{ current_time }}</div>
+</p>
+<p>
+<div class="same_line_dive">Base environment :</div>
+<div class="same_line_dive env_text">{{ base_env.name }}</div>
+</p>
+<p>
+<div class="same_line_dive">Compared environment :</div>
+<div class="same_line_dive env_text"> {{ compare_env.name }}</div>
+</p>
+<p>there are files and rules information in following table,
+<p>you can check out the attached report for more details,</p>
+<p>Thank you.</p>
+<br>
+<br>
+<table style=" border-collapse: collapse; border: 1px solid black;">
+    <tr>
+        <td class="td_title header"></td>
+        <td class="header">{{ base_env.name }}</td>
+        <td class="header">{{ compare_env.name }}</td>
+    </tr>
+    <tr>
+        <td class="td_title">Common Rule Set</td>
+        <td class="td_content" colspan="2">{{ normal_list|length }}</td>
+    </tr>
+    <tr>
+        <td class="td_title td_bg_blue">Rule Set only in</td>
+        <td class="td_content td_bg_blue">{{ remove_file_count }}</td>
+        <td class="td_content td_bg_blue">{{ add_file_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title">Rule only in</td>
+        <td class="td_content">{{ remove_rule_count }}</td>
+        <td class="td_content">{{ add_rule_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title td_bg_blue">Rule Set Different</td>
+        <td class="td_content td_bg_blue" colspan="2">{{ modify_file_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title">Rule Different</td>
+        <td class="td_content" colspan="2">{{ modify_rule_count }}</td>
+    </tr>
+</table>
+</body>
+</html>
