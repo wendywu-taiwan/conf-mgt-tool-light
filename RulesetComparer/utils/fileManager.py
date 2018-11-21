@@ -47,7 +47,13 @@ def save_compare_result_file(compare_key, data):
 
 def load_compare_result_file(compare_key):
     file_name_with_path = get_compare_result_full_file_name("_json", compare_key)
-    with open(file_name_with_path) as json_file:
+    return load_json_file(file_name_with_path)
+
+
+def load_json_file(file_path):
+    if file_path is None:
+        return None
+    with open(file_path) as json_file:
         data = json.load(json_file)
         return data
 

@@ -1,32 +1,42 @@
-from RulesetComparer.models import B2BRuleSetServer, Country, Environment
-from RulesetComparer.utils.modelManager import create_model
+from RulesetComparer.models import Country, Environment
+from RulesetComparer.utils import fileManager
+from RulesetComparer.properties import config
+from django.conf import settings
 
 
-class InsertDataService(object):
+class InitDataService(object):
+    def __init__(self):
+        preload_data_path = settings.BASE_DIR + config.get_file_path("preload_data")
+        preload_data = fileManager.load_json_file(preload_data_path)
+        self.ruleset_data = preload_data["ruleset_data"]
+        self.init_country_data()
+        self.init_environment_data()
 
-    def init_b2b_rule_set_server_db_data(self):
-        tw_country_id = Country.objects.get(name="TW").id
-        local_env_id = Environment.objects.get(name="Local").id
-        int1_env_id = Environment.objects.get(name="Int1").id
-        int2_env_id = Environment.objects.get(name="Int2").id
-        git_env_id = Environment.objects.get(name="Git").id
+    def init_country_data(self):
+        country_list = self.ruleset_data["country"]
+        db_countries = Country.objects.all()
+        if len(db_countries) == 0:
+            try:
+                for country_obj in country_list:
+                    name = country_obj["name"]
+                    full_name = country_obj["full_name"]
+                    Country.objects.create_country(name, full_name)
+            except Exception as err:
+                Country.objects.all().delete()
+                print("insert preload country data to DB fail , error:", err)
 
-        init_data_list = [
-            [tw_country_id, local_env_id, "inside_TWadmin", "audatex", "localhost:8181", True],
-            [tw_country_id, int1_env_id, "inside_TWadmin", "audatex", "www-int1.audatex.sg", True],
-            [tw_country_id, int2_env_id, "inside_TWadmin", "audatex", "www-int2.audatex.sg", False],
-            [tw_country_id, git_env_id, "inside_TWadmin", "audatex", "", True]
-        ]
-
-        for data in init_data_list:
-            self.create_b2b_server(data[0], data[1], data[2], data[3], data[4], data[5])
-
-    @staticmethod
-    def create_b2b_server(country_id, env_id, user_id, password, url, accessible):
-        create_model(B2BRuleSetServer,
-                     country_id=country_id,
-                     environment_id=env_id,
-                     user_id=user_id,
-                     password=password,
-                     url=url,
-                     accessible=accessible)
+    def init_environment_data(self):
+        environment_list = self.ruleset_data["environment"]
+        db_environments = Environment.objects.all()
+        if len(db_environments) == 0:
+            try:
+                for environment_obj in environment_list:
+                    name = environment_obj["name"]
+                    full_name = environment_obj["full_name"]
+                    client = environment_obj['b2b_rule_set_client']
+                    account = environment_obj['account']
+                    password = environment_obj['password']
+                    Environment.objects.create_environment(name, full_name, client, account, password)
+            except Exception as err:
+                Environment.objects.all().delete()
+                print("insert preload country data to DB fail , error:", err)

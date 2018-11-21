@@ -21,7 +21,11 @@ class CountrySerializer(serializers.Serializer):
 
 class EnvironmentSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    name = serializers.CharField(max_length=200)
+    name = serializers.CharField(max_length=128)
+    full_name = serializers.CharField(max_length=128)
+    b2b_rule_set_client = serializers.CharField(max_length=128)
+    account = serializers.CharField(max_length=128)
+    password = serializers.CharField(max_length=128)
 
     def create(self, validated_data):
         return Environment(validated_data)
@@ -29,6 +33,10 @@ class EnvironmentSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.id = validated_data.get('id', instance.id)
         instance.name = validated_data.get("name", instance.name)
+        instance.full_name = validated_data.get("full_name", instance.full_name)
+        instance.b2b_rule_set_client = validated_data.get("b2b_rule_set_client", instance.b2b_rule_set_client)
+        instance.account = validated_data.get("account", instance.account)
+        instance.password = validated_data.get("password", instance.password)
         instance.save()
         return instance
 
