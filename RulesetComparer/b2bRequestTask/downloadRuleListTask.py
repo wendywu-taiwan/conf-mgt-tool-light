@@ -1,7 +1,6 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
-from RulesetComparer.properties import apiResponse
 from RulesetComparer.dataModel.xml.ruleSetFileListParser import RuleListModel
-from RulesetComparer.models import B2BRuleSetServer, Country, Environment
+from RulesetComparer.models import Country, Environment
 from django.conf import settings
 from zeep import Client
 
@@ -17,21 +16,17 @@ class DownloadRuleListTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
 
     def request_data(self):
-        b2b_server = B2BRuleSetServer.objects.get(country_id=self.country_id,
-                                                  environment_id=self.environment_id)
+
         country = Country.objects.get(id=self.country_id)
         environment = Environment.objects.get(id=self.environment_id)
 
-        if b2b_server is None:
-            self.error_code(apiResponse.STATUS_CODE_INVALID_PARAMETER)
-            return
-        self.add_request_parameter(self.KEY_USER, b2b_server.user_id)
-        self.add_request_parameter(self.KEY_PASSWORD, b2b_server.password)
+        self.add_request_parameter(self.KEY_USER, environment.account)
+        self.add_request_parameter(self.KEY_PASSWORD, environment.password)
         self.add_request_parameter(self.KEY_COUNTRY, country.name)
 
         print("call download_rule_set in service\n environment = %s , country = %s" % (environment,country))
 
-        client = Client(settings.B2B_RULE_SET_CLIENT % b2b_server.url)
+        client = Client(environment.b2b_rule_set_client)
 
         response = client.service.getOwnedBRERuleSets(self.request_parameter())
         self.b2b_response_data = response

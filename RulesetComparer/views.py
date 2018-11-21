@@ -2,7 +2,7 @@ import os
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
 from django.template.loader import get_template, render_to_string
-from RulesetComparer.models import B2BRuleSetServer, Country, Environment
+from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.properties import config
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer, \
@@ -10,16 +10,17 @@ from RulesetComparer.serializers.serializers import CountrySerializer, Environme
 from RulesetComparer.services.services import RuleSetService
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.mailSender import MailSender
+from RulesetComparer.services.initDataService import InitDataService
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
 
 def environment_select(request):
-    country_ids = B2BRuleSetServer.objects.get_accessible_country_ids()
-    environments_ids = B2BRuleSetServer.objects.get_accessible_environment_ids()
-    country_list = Country.objects.country_list(country_ids)
-    environment_list = Environment.objects.environment_list(environments_ids)
+    InitDataService()
+
+    country_list = Country.objects.all()
+    environment_list = Environment.objects.all()
 
     response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
                 key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}

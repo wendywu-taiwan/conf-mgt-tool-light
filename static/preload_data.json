@@ -1,0 +1,163 @@
+{
+  "ruleset_data": {
+    "environment": [
+      {
+        "full_name": "production",
+        "name": "PROD",
+        "b2b_rule_set_client": "http://www.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
+        "account": "",
+        "password": ""
+      },
+      {
+        "full_name": "ct",
+        "name": "CT",
+        "b2b_rule_set_client": "http://www.audatex.cn/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
+        "account": "",
+        "password": ""
+      },
+      {
+        "full_name": "int1",
+        "name": "INT1",
+        "b2b_rule_set_client": "http://www-int1.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
+        "account": "inside_TWadmin",
+        "password": "audatex"
+      },
+      {
+        "full_name": "int2",
+        "name": "INT2",
+        "b2b_rule_set_client": "http://www-int2.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
+        "account": "inside_TWadmin",
+        "password": "audatex"
+      },
+      {
+        "full_name": "git",
+        "b2b_rule_set_client": "",
+        "account": "",
+        "password": "",
+        "name": "GIT"
+      }
+    ],
+    "country": [
+      {
+        "full_name": "Austria",
+        "name": "AT"
+      },
+      {
+        "full_name": "Brazil",
+        "name": "BR"
+      },
+      {
+        "full_name": "Bulgaria",
+        "name": "BG"
+      },
+      {
+        "full_name": "China",
+        "name": "CN"
+      },
+      {
+        "full_name": "Colombia",
+        "name": "CO"
+      },
+      {
+        "full_name": "Czech Republic",
+        "name": "CZ"
+      },
+      {
+        "full_name": "Deutschland",
+        "name": "DE"
+      },
+      {
+        "full_name": "FinLand",
+        "name": "FI"
+      },
+      {
+        "full_name": "Hong Kong",
+        "name": "HK"
+      },
+      {
+        "full_name": "Hungary",
+        "name": "HU"
+      },
+      {
+        "full_name": "IN",
+        "name": "IN"
+      },
+      {
+        "full_name": "Indonesia",
+        "name": "ID"
+      },
+      {
+        "full_name": "Japan",
+        "name": "JP"
+      },
+      {
+        "full_name": "Korea",
+        "name": "KR"
+      },
+      {
+        "full_name": "Mexico",
+        "name": "MX"
+      },
+      {
+        "full_name": "NET",
+        "name": "DE"
+      },
+      {
+        "full_name": "Netherlands",
+        "name": "NL"
+      },
+      {
+        "full_name": "Poland",
+        "name": "PL"
+      },
+      {
+        "full_name": "Portugal",
+        "name": "PT"
+      },
+      {
+        "full_name": "Romania",
+        "name": "RO"
+      },
+      {
+        "full_name": "Russia",
+        "name": "RU"
+      },
+      {
+        "full_name": "Schweiz",
+        "name": "CH"
+      },
+      {
+        "full_name": "Slovakia",
+        "name": "SK"
+      },
+      {
+        "full_name": "South Africa",
+        "name": "ZA"
+      },
+      {
+        "full_name": "Spain",
+        "name": "ES"
+      },
+      {
+        "full_name": "Taiwan",
+        "name": "TW"
+      },
+      {
+        "full_name": "Thailand",
+        "name": "TH"
+      },
+      {
+        "full_name": "UK",
+        "name": "GB"
+      },
+      {
+        "full_name": "USA",
+        "name": "US"
+      },
+      {
+        "full_name": "Ukraine",
+        "name": "UA"
+      }
+    ]
+  }
+}

@@ -3,8 +3,8 @@ from django.conf import settings
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
-    "compare_result": "/RulesetComparer/compare_result"
-
+    "compare_result": "/RulesetComparer/compare_result",
+    "preload_data": "/static/preload_data.json"
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -13,7 +13,7 @@ FILE_NAME = {
 }
 
 GIT = {
-    "environment_name": "Git",
+    "environment_name": "GIT",
     "remote_name": "origin",
     "master_branch": "master",
     "develop_branch": "develop"

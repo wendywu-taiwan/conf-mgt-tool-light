@@ -28,5 +28,6 @@ PROCESS_STEP = 'ProcessStep'
 
 XML_PATH_MAP = {SAXIF_PATH_KEY: SAXIF_PATH}
 
+
 def filter_with_key(key):
     return SAXIF_PATH_KEY + ":" + key

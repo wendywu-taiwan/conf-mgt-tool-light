@@ -7,7 +7,6 @@ from RulesetComparer.utils import rulesetUtil
 from RulesetComparer.dataModel.dataBuilder.rulesCompareBuilder import RulesCompareModel
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
-from RulesetComparer.models import Country, Environment
 
 
 class RuleSetService(object):

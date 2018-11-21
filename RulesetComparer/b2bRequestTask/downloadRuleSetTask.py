@@ -3,7 +3,7 @@ from zeep import Client
 
 from RulesetComparer.properties.config import get_rule_set_path
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
-from RulesetComparer.models import B2BRuleSetServer
+from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import apiResponse
 from RulesetComparer.properties.config import get_rule_set_full_file_name
 from RulesetComparer.utils import fileManager
@@ -15,8 +15,8 @@ class DownloadRuleSetTask(BaseRequestTask):
     KEY_RULE_SET_NAME = 'rulesetName'
 
     def __init__(self, env_id, country_id, rule_set_name, compare_hash_key):
-        self.b2b_server = B2BRuleSetServer.objects.get(country_id=country_id,
-                                                       environment_id=env_id)
+        self.environment = Environment.objects.get(id=env_id)
+        self.country = Country.objects.get(id=country_id)
         self.rule_set_name = rule_set_name
         self.download_status = apiResponse.RESPONSE_KEY_FAIL
         self.compare_hash_key = compare_hash_key
@@ -24,13 +24,10 @@ class DownloadRuleSetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
 
     def request_data(self):
-        if self.b2b_server is None:
-            self.error_code(apiResponse.STATUS_CODE_INVALID_PARAMETER)
+        client = Client(self.environment.b2b_rule_set_client)
 
-        client = Client(settings.B2B_RULE_SET_CLIENT % self.b2b_server.url)
-
-        self.add_request_parameter(self.KEY_USER, self.b2b_server.user_id)
-        self.add_request_parameter(self.KEY_PASSWORD, self.b2b_server.password)
+        self.add_request_parameter(self.KEY_USER, self.environment.account)
+        self.add_request_parameter(self.KEY_PASSWORD, self.environment.password)
         self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
 
         print('======== download rule set %s ========' % self.rule_set_name)
@@ -57,8 +54,8 @@ class DownloadRuleSetTask(BaseRequestTask):
             return
 
         # save file to specific path
-        save_file_path = get_rule_set_path(self.b2b_server.environment.name,
-                                           self.b2b_server.country.name,
+        save_file_path = get_rule_set_path(self.environment.name,
+                                           self.country.name,
                                            self.compare_hash_key)
         fileManager.create_folder(save_file_path)
         # save file

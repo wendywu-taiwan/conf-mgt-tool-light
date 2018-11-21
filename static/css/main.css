@@ -18,6 +18,13 @@
     cursor: initial !important;
 }
 
+/* environment select */
+.container-select .dropdown-limit{
+    height: auto;
+    max-height: 180px;
+    overflow-x: hidden;
+}
+
 /* rule list item */
 .container-rule-list-item {
     max-width: 90%;

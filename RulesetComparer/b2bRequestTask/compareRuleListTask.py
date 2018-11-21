@@ -56,9 +56,9 @@ class CompareRuleListTask:
         # self.remove_rule_files()
 
     def check_git_environment(self):
-        if self.baseEnv.name == key.ENVIRONMENT_KEY_GIT:
+        if self.baseEnv.name == config.GIT.get("environment_name"):
             return key.BASE_ENVIRONMENT_GIT
-        elif self.comparedEnv.name == key.ENVIRONMENT_KEY_GIT:
+        elif self.comparedEnv.name == config.GIT.get("environment_name"):
             return key.COMPARE_ENVIRONMENT_GIT
         else:
             return key.NO_ENVIRONMENT_GIT

@@ -11,7 +11,7 @@
                     type="button" data-toggle="dropdown">
                 Country
             </button>
-            <ul id="select-country-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+            <ul id="select-country-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse" role="menu">
                 {% for data in countries %}
                 <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
                 {% endfor %}
@@ -26,7 +26,7 @@
                     data-toggle="dropdown">
                 Environment
             </button>
-            <ul id="select-env-1-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+            <ul id="select-env-1-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse" role="menu">
                 {% for data in environments %}
                 <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
                 {% endfor %}
@@ -41,7 +41,7 @@
                     data-toggle="dropdown">
                 Environment
             </button>
-            <ul id="select-env-2-list" class="dropdown-menu dropdown-menu-inverse" role="menu">
+            <ul id="select-env-2-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse" role="menu">
                 {% for data in environments %}
                 <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
                 {% endfor %}
