@@ -4,7 +4,8 @@ FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result",
-    "preload_data": "/static/preload_data.json"
+    "preload_data": "/static/preload_data.json",
+    "server_log": "/RulesetComparer/serverlog"
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -20,11 +21,15 @@ GIT = {
 }
 
 TIME_FORMAT = {
-    "year_month_date_hour_minute_second": "'%Y/%m/%d %H:%M:%S"
+    "db_time_format": '%Y-%m-%d %H:%M:%S',
+    "year_month_date_hour_minute_second": '%Y/%m/%d %H:%M:%S',
+    "git_time_format": '%Y-%m-%d %H:%M:%S',
+    "year_month_date": '%Y/%m/%d',
+    "hour_minute_second": '%H:%M:%S'
 }
 
 TIME_ZONE = {
-    "asia_taipei": "Asia/Taipei"
+    "asia_taipei": "Asia/Taipei",
 }
 
 SMTP = {
