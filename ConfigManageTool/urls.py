@@ -28,8 +28,26 @@ ruleset_comparer_pattern = [
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
          views.download_compare_report, name="report-download"),
+    path('test', views.test_page),
+]
+
+admin_console_pattern = [
+    path('admin_console/module/list', views.get_module_list),
+    path('admin_console/module/create', views.create_module),
+    path('admin_console/ruleset', views.admin_console),
+    path('admin_console/ruleset/server_log/', views.admin_console_server_log),
+    path('admin_console/ruleset/server_log/<int:log_type>', views.admin_console_server_log, name="server-log"),
+]
+
+scheduler_pattern = [
+    path('create', views.create_scheduler_report_task),
+    path('update', views.update_scheduler_report_task),
+    path('list', views.get_scheduler_report_task_list),
 ]
 
 urlpatterns = [
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
+    path('ConfigManageTool/', include(admin_console_pattern)),
+    path('ConfigManageTool/scheduler/report/', include(scheduler_pattern)),
+
 ]

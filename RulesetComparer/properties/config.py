@@ -51,6 +51,14 @@ SEND_COMPARE_RESULT_MAIL = {
     "content": "this is the compare result",
 }
 
+DEFAULT_LOG_TYPE = 0
+
+LOG_TYPE_FILE = {
+    0: "debug.log",
+    1: "info.log",
+    2: "error.log"
+}
+
 
 def get_rule_set_path(environment, country, compare_key):
     return FILE_PATH.get("rule_set_environment") % (compare_key, environment, country)
