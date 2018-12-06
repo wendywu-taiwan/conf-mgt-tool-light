@@ -35,8 +35,9 @@ admin_console_pattern = [
     path('admin_console/module/list', views.get_module_list),
     path('admin_console/module/create', views.create_module),
     path('admin_console/ruleset', views.admin_console),
-    path('admin_console/ruleset/server_log/', views.admin_console_server_log),
-    path('admin_console/ruleset/server_log/<int:log_type>', views.admin_console_server_log, name="server-log"),
+    path('admin_console/ruleset/server_log/', views.admin_console_server_log, name="server-log"),
+    path('admin_console/ruleset/server_log/<int:log_type>', views.admin_console_server_log, name="server-log-type"),
+    path('admin_console/ruleset/task_manager/list', views.admin_console_task_manager, name="task-manager-list"),
 ]
 
 scheduler_pattern = [

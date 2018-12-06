@@ -1,24 +1,65 @@
 import os
-from django.http import HttpResponse, Http404
+import traceback
+
+from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
-from django.template.loader import get_template, render_to_string
-from RulesetComparer.models import Country, Environment
-from RulesetComparer.properties import dataKey as key
+from django.template.loader import render_to_string
+from rest_framework.utils import json
+from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo
 from RulesetComparer.properties import config
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer, \
-    RuleSerializer, ModifiedRuleValueSerializer
-from RulesetComparer.services.services import RuleSetService
-from RulesetComparer.utils import fileManager
+from RulesetComparer.properties import dataKey as key
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
+    ModifiedRuleValueSerializer, ModuleSerializer
+from RulesetComparer.services import services
+from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
-from RulesetComparer.services.initDataService import InitDataService
+
+from RulesetComparer.dataModel.dataBuilder.responseBuilder import ResponseBuilder
+from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
+from RulesetComparer.utils.logger import *
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
 
-def environment_select(request):
-    InitDataService()
+def admin_console(request):
+    return render(request, "admin_console_base.html")
 
+
+def admin_console_server_log(request, log_type=None):
+    if log_type is None:
+        log_type = DEFAULT_LOG_TYPE
+
+    log_dir = settings.BASE_DIR + get_file_path("server_log")
+    log_file_name = LOG_TYPE_FILE[log_type]
+    full_name = log_dir + "/" + log_file_name
+    file = fileManager.load_file(full_name)
+    file_content = file.read().split("\n")
+    data = {
+        "log_type_key": log_type,
+        "log_type": log_file_name,
+        "log_content": file_content
+    }
+    return render(request, "admin_console_server_log.html", data)
+
+
+def admin_console_task_manager(request):
+    try:
+        scheduler_info_list = ReportSchedulerInfo.objects.all()
+        data_list = list()
+        for scheduler_info in scheduler_info_list:
+            data_builder = ReportSchedulerInfoBuilder(scheduler_info)
+            data_list.append(data_builder.get_data())
+
+        return render(request, "admin_console_task_manager.html", {"data": data_list})
+    except Exception as e:
+        traceback.print_exc()
+        logging.error(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def environment_select(request):
     country_list = Country.objects.all()
     environment_list = Environment.objects.all()
 
@@ -114,11 +155,9 @@ def download_compare_report(request, compare_key):
 
 
 def compare_rule_list_item_data(country_id, base_env_id, compare_env_id):
-    task = RuleSetService.compare_rule_list_rule_set(base_env_id,
-                                                     compare_env_id,
-                                                     country_id)
-
-    generate_compare_result_html(task.compare_hash_key)
+    task = services.compare_rule_list_rule_set(base_env_id,
+                                               compare_env_id,
+                                               country_id)
 
     result_data = fileManager.load_compare_result_file(task.compare_hash_key)
     base_env_data = result_data[key.COMPARE_RULE_BASE_ENV]
@@ -132,25 +171,92 @@ def compare_rule_list_item_data(country_id, base_env_id, compare_env_id):
     return list_data
 
 
-def generate_compare_result_html(compare_key):
-    data = fileManager.load_compare_result_file(compare_key)
-    template = get_template("compare_result_report.html")
-    html = template.render(data)
-    fileManager.save_compare_result_html(compare_key, html)
+def get_module_list(request):
+    module_list = ModuleSerializer(Module.objects.all(), many=True)
+    result = ResponseBuilder(data=module_list.data).get_data()
+    return JsonResponse(result.get_data())
+
+
+def create_module(request):
+    request_json = get_post_request_json(request)
+    serializer = ModuleSerializer(data=request_json)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
+
+
+def get_scheduler_report_task_list(request):
+    try:
+        scheduler_info_list = ReportSchedulerInfo.objects.all()
+        data_list = list()
+        for scheduler_info in scheduler_info_list:
+            data_builder = ReportSchedulerInfoBuilder(scheduler_info)
+            data_list.append(data_builder.get_data())
+        result = ResponseBuilder(data=data_list).get_data()
+        response = JsonResponse(data=result)
+        return response
+    except Exception as e:
+        traceback.print_exc()
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        response = JsonResponse(result)
+        return JsonResponse(result)
+
+
+def create_scheduler_report_task(request):
+    request_json = get_post_request_json(request)
+    scheduler_info = services.create_report_scheduler_task(request_json)
+    info_data = ReportSchedulerInfoBuilder(scheduler_info)
+    result = ResponseBuilder(data=info_data).get_data()
+    print("create_report_scheduler_task, request json =" + str(request_json))
+    return JsonResponse(data=result)
+
+
+def update_scheduler_report_task(request):
+    request_json = get_post_request_json(request)
+    print("update_report_scheduler_task, request json =" + str(request_json))
+    scheduler_info = services.update_report_scheduler_task(request_json)
+    info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+    result = ResponseBuilder(data=info_data).get_data()
+    return JsonResponse(data=result)
+
+
+def delete_scheduler_report_task(request):
+    pass
+
+
+def test_page(request):
+    string_time = "2018/11/28 15:20:00"
+    time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
+    time_stamp = timeUtil.time_to_timestamp(string_time, time_format)
+    final_time = timeUtil.timestamp_to_time(time_stamp, time_format)
+    print("test_page, origin time:" + string_time)
+    print("test_page, time_stamp:" + str(time_stamp))
+    print("test_page, final_time:" + final_time)
+    return HttpResponse()
 
 
 # todo : return json rule list response
 def json_rule_list(request, environment, country):
-    response_model = RuleSetService.get_rule_list_from_b2b(environment, country)
+    response_model = services.get_rule_list_from_b2b(environment, country)
     return response_model.get_response_json()
 
 
 # todo : return json rule detail
 def json_rule_detail(request, country, env, rule_set_name):
-    response_model = RuleSetService.get_rule_from_b2b(env, country, rule_set_name)
+    response_model = services.get_rule_from_b2b(env, country, rule_set_name)
     return render(request, "rule_show_detail.html", response_model.get_response_json())
 
 
 # todo : return json rule diff result
 def json_rule_diff(request, base_env_id, compare_env_id, country_id, compare_key):
     pass
+
+
+def get_post_request_json(request):
+    if request.method != REQUEST_POST:
+        return HttpResponseBadRequest
+    else:
+        try:
+            request_json = json.loads(request.body.decode())
+            return request_json
+        except BaseException:
+            traceback.print_exc()

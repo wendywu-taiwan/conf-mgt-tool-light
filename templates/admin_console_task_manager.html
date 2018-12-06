@@ -1,0 +1,89 @@
+{% extends "admin_console_base.html" %}
+{% load static from staticfiles %}
+{% block content %}
+<div id="task_list_container" class="custom_container">
+    <div id="title_row" class="row">
+        <div class="component_title">TASK</div>
+        <div id="create_task_button_div">
+            <a href="#fakelink" class="btn btn-block btn-lg btn-primary">Create</a>
+        </div>
+    </div>
+    <div class="title_div row">
+        <div id="task_title_key" class="title_text vertical_align_middle">
+            ID
+        </div>
+        <div id="task_title_environment" class="title_text vertical_align_middle">
+            Environment
+        </div>
+        <div id="task_title_country" class="title_text vertical_align_middle">
+            Countries
+        </div>
+        <div id="task_title_last_time" class="title_text vertical_align_middle">
+            Last Proceed Time
+        </div>
+        <div id="task_title_next_time" class="title_text vertical_align_middle">
+            Next Proceed Time
+        </div>
+        <div id="task_title_status" class="title_text vertical_align_middle">
+            Status
+        </div>
+        <div id="task_title_action" class="title_text vertical_align_middle">
+        </div>
+    </div>
+
+    {% for task in data %}
+    <div class="scheduler_task row">
+        <div id="task_key_div" class="vertical_align_middle">{{ task.task_id }}</div>
+        <div id="task_environment_div" class="vertical_align_middle">
+            <div id="base_env_div" class="row">
+                <img class="task_environment_icon" src="{% static '/icons/environment_blue.png' %}">
+                <div class="environment_text vertical_align_middle">
+                    {{ task.base_environment_id.name }}
+                </div>
+            </div>
+            <div id="compare_env_div" class="row">
+                <img class="task_environment_icon" src="{% static '/icons/environment_blue.png' %}">
+                <div class="environment_text vertical_align_middle">
+                    {{ task.compare_environment_id.name }}
+                </div>
+            </div>
+
+        </div>
+        <div class="country_list_div">
+            <div>
+                {% for country in task.country_list %}
+                <img class="task_nation_flag" src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
+                {% endfor %}
+            </div>
+        </div>
+        <div id="task_last_proceed_time_div" class="task_proceed_time_div">
+            <div id="last_proceed_time" class="vertical_align_middle">
+                <div class="task_proceed_time_text">
+                    {{ task.last_proceed_time }}
+                </div>
+            </div>
+        </div>
+        <div id="task_next_proceed_time_div" class="task_proceed_time_div">
+            <div id="next_proceed_time" class="vertical_align_middle">
+                <div class="task_proceed_time_text">
+                    {{ task.next_proceed_time }}
+                </div>
+            </div>
+        </div>
+        <div id="task_status_div">
+            {% if task.status%}
+            <div id="task_status_in_progress">In Progress</div>
+            {% else %}
+            <div id="task_status_stop">Stop</div>
+            {% endif %}
+        </div>
+        <div id="task_action_div">
+            <img class="task_action_icon" src="{% static '/icons/edit.png' %}">
+        </div>
+    </div>
+    <div class="task_divider"></div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}

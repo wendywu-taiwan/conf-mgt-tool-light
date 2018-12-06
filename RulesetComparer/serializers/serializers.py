@@ -1,44 +1,39 @@
 from rest_framework import serializers
-from RulesetComparer.models import Country, Environment
+
+from RulesetComparer.models import Country, Environment, Function, Module, UserRole
 from RulesetComparer.properties import dataKey
 
 
-class CountrySerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField(max_length=200)
-    full_name = serializers.CharField(max_length=200)
-
-    def create(self, validated_data):
-        return Country(validated_data)
-
-    def update(self, instance, validated_data):
-        instance.id = validated_data.get('id', instance.id)
-        instance.name = validated_data.get("name", instance.name)
-        instance.full_name = validated_data("full_name", instance.full_name)
-        instance.save()
-        return instance
+class UserRoleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserRole
+        fields = ('id', 'name', 'modules')
 
 
-class EnvironmentSerializer(serializers.Serializer):
-    id = serializers.IntegerField()
-    name = serializers.CharField(max_length=128)
-    full_name = serializers.CharField(max_length=128)
-    b2b_rule_set_client = serializers.CharField(max_length=128)
-    account = serializers.CharField(max_length=128)
-    password = serializers.CharField(max_length=128)
+class FunctionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Function
+        fields = ('id', 'name', 'icon_file_name')
 
-    def create(self, validated_data):
-        return Environment(validated_data)
 
-    def update(self, instance, validated_data):
-        instance.id = validated_data.get('id', instance.id)
-        instance.name = validated_data.get("name", instance.name)
-        instance.full_name = validated_data.get("full_name", instance.full_name)
-        instance.b2b_rule_set_client = validated_data.get("b2b_rule_set_client", instance.b2b_rule_set_client)
-        instance.account = validated_data.get("account", instance.account)
-        instance.password = validated_data.get("password", instance.password)
-        instance.save()
-        return instance
+class ModuleSerializer(serializers.ModelSerializer):
+    functions = FunctionSerializer(many=True)
+
+    class Meta:
+        model = Module
+        fields = ('name', 'icon_file_name', 'functions')
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ('id', 'name', 'full_name', "icon_file_name")
+
+
+class EnvironmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Environment
+        fields = ('id', 'name', 'full_name')
 
 
 class RuleListItemSerializer(serializers.Serializer):

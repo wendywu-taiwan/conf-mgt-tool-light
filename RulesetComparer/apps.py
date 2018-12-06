@@ -7,3 +7,5 @@ class RulesetcomparerConfig(AppConfig):
 
     def ready(self):
         initialize_logger()
+        from RulesetComparer.services import initDataService
+        initDataService.init_data()

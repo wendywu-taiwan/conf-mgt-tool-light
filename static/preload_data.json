@@ -40,123 +40,180 @@
     "country": [
       {
         "full_name": "Austria",
-        "name": "AT"
+        "name": "AT",
+        "icon_file_name": "austria.png"
       },
       {
         "full_name": "Brazil",
-        "name": "BR"
+        "name": "BR",
+        "icon_file_name": "brazil.png"
       },
       {
         "full_name": "Bulgaria",
-        "name": "BG"
+        "name": "BG",
+        "icon_file_name": "bulgaria.png"
       },
       {
         "full_name": "China",
-        "name": "CN"
+        "name": "CN",
+        "icon_file_name": "china.png"
       },
       {
         "full_name": "Colombia",
-        "name": "CO"
+        "name": "CO",
+        "icon_file_name": "colombia.png"
       },
       {
         "full_name": "Czech Republic",
-        "name": "CZ"
+        "name": "CZ",
+        "icon_file_name": "czech-republic.png"
       },
       {
         "full_name": "Deutschland",
-        "name": "DE"
+        "name": "DE",
+        "icon_file_name": "germany.png"
       },
       {
         "full_name": "FinLand",
-        "name": "FI"
+        "name": "FI",
+        "icon_file_name": "finland.png"
       },
       {
         "full_name": "Hong Kong",
-        "name": "HK"
+        "name": "HK",
+        "icon_file_name": "hong-kong.png"
       },
       {
         "full_name": "Hungary",
-        "name": "HU"
+        "name": "HU",
+        "icon_file_name": "hungary.png"
       },
       {
         "full_name": "IN",
-        "name": "IN"
+        "name": "IN",
+        "icon_file_name": ""
       },
       {
         "full_name": "Indonesia",
-        "name": "ID"
+        "name": "ID",
+        "icon_file_name": "indonesia.png"
       },
       {
         "full_name": "Japan",
-        "name": "JP"
+        "name": "JP",
+        "icon_file_name": "japan.png"
       },
       {
         "full_name": "Korea",
-        "name": "KR"
+        "name": "KR",
+        "icon_file_name": "south-korea.png"
       },
       {
         "full_name": "Mexico",
-        "name": "MX"
+        "name": "MX",
+        "icon_file_name": "mexico.png"
       },
       {
         "full_name": "NET",
-        "name": "DE"
+        "name": "DE",
+        "icon_file_name": ""
       },
       {
         "full_name": "Netherlands",
-        "name": "NL"
+        "name": "NL",
+        "icon_file_name": "netherlands.png"
       },
       {
         "full_name": "Poland",
-        "name": "PL"
+        "name": "PL",
+        "icon_file_name": "poland.png"
       },
       {
         "full_name": "Portugal",
-        "name": "PT"
+        "name": "PT",
+        "icon_file_name": "portugal.png"
       },
       {
         "full_name": "Romania",
-        "name": "RO"
+        "name": "RO",
+        "icon_file_name": "romania.png"
       },
       {
         "full_name": "Russia",
-        "name": "RU"
+        "name": "RU",
+        "icon_file_name": "russia.png"
       },
       {
         "full_name": "Schweiz",
-        "name": "CH"
+        "name": "CH",
+        "icon_file_name": "switzerland.png"
       },
       {
         "full_name": "Slovakia",
-        "name": "SK"
+        "name": "SK",
+        "icon_file_name": "slovakia.png"
       },
       {
         "full_name": "South Africa",
-        "name": "ZA"
+        "name": "ZA",
+        "icon_file_name": "south-africa.png"
       },
       {
         "full_name": "Spain",
-        "name": "ES"
+        "name": "ES",
+        "icon_file_name": "spain.png"
       },
       {
         "full_name": "Taiwan",
-        "name": "TW"
+        "name": "TW",
+        "icon_file_name": "taiwan.png"
       },
       {
         "full_name": "Thailand",
-        "name": "TH"
+        "name": "TH",
+        "icon_file_name": "thailand.png"
       },
       {
-        "full_name": "UK",
-        "name": "GB"
+        "full_name": "United Kingdom",
+        "name": "UK",
+        "icon_file_name": "united-kingdom.png"
       },
       {
-        "full_name": "USA",
-        "name": "US"
+        "full_name": "United States",
+        "name": "USA",
+        "icon_file_name": ""
       },
       {
         "full_name": "Ukraine",
-        "name": "UA"
+        "name": "UA",
+        "icon_file_name": "ukraine.png"
+      }
+    ],
+    "function": [
+      {
+        "name": "Server Log",
+        "icon_file_name": "server_log_white.png"
+      },
+      {
+        "name": "Task Manager",
+        "icon_file_name": "task_manage_white.png"
+      }
+    ],
+    "module": [
+      {
+        "name": "Ruleset",
+        "functions": [
+          "Server Log",
+          "Task Manager"
+        ]
+      }
+    ],
+    "user_role": [
+      {
+        "name": "Admin",
+        "modules": [
+          "Ruleset"
+        ]
       }
     ]
   }

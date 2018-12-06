@@ -83,7 +83,6 @@ html, body {
     margin: 30px;
     background-color: white;
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
-    height: 85%;
 }
 
 #server_log_container {
@@ -123,10 +122,126 @@ html, body {
     color: white;
 }
 
+#task_list_container {
+    padding: 20px;
+    height: 100%;
+}
+
+#task_clock_icon {
+    width: 28px;
+    margin-right: 20px;
+}
+
+#task_clock_icon_div {
+    width: 5%;
+}
+
+#task_key_div {
+    width: 8%;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#task_environment_div {
+    width: 12%;
+}
+
+#base_env_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#compare_env_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#task_status_div {
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+#task_status_in_progress {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #1abc9c;
+}
+
+#task_status_stop {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #f4817c;
+}
+
+#task_title_key {
+    width: 8%;
+}
+
+#task_title_environment {
+    width: 12%;
+}
+
+#task_title_country {
+    width: 18%;
+    margin-right: 3%;
+}
+
+#task_title_last_time {
+    width: 17%;
+}
+
+#task_title_next_time {
+    width: 17%;
+}
+
+#task_title_status {
+    width: 10%;
+}
+
+#task_action_div{
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 10%;
+    text-align: right;
+}
+
+#title_row{
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+}
+
+#create_task_button_div{
+    margin-left: auto;
+}
+
+.country_list_div {
+    width: 18%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 3%;
+}
+
 .component_title {
     font-size: 13px;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .button_div {
@@ -207,4 +322,63 @@ html, body {
     font-size: 16px;
     font-family: sans-serif;
     font-weight: 800;
+}
+
+.task_nation_flag {
+    width: 32px;
+    margin-right: 10px;
+}
+
+.scheduler_task {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.vertical_align_middle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.task_environment_icon {
+    width: 23px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.task_proceed_time_text {
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.task_divider {
+    height: 1px;
+    width: 95%;
+    background-color: #eef0f2;
+}
+
+.custom_container .title_div {
+    background: #eaeef0;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 50px;
+    padding-left: 15px;
+}
+
+.custom_container .title_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #849aa4;
+}
+
+.task_proceed_time_div {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 17%;
+}
+
+.task_action_icon{
+    width: 24px;
 }

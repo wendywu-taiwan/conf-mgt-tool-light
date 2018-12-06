@@ -5,7 +5,7 @@
     <div class="component_title">LOG TYPE</div>
     <div id="button_list" class="row">
         <div id="debug_log" class="button_div">
-            <a href="{% url 'server-log' 0 %}">
+            <a href="{% url 'server-log-type' 0 %}">
                 {% if log_type_key == 0 %}
                 <button id="debug_log_btn_on_select" type="button" class="btn btn-outline-primary">Debug Log</button>
                 {% else %}
@@ -14,7 +14,7 @@
             </a>
         </div>
         <div id="info_log" class="button_div">
-            <a href="{% url 'server-log' 1 %}">
+            <a href="{% url 'server-log-type' 1 %}">
                 {% if log_type_key == 1 %}
                 <button id="info_log_btn_on_select" type="button" class="btn btn-outline-info">Info Log</button>
                 {% else %}
@@ -23,7 +23,7 @@
             </a>
         </div>
         <div id="error_log" class="button_div">
-            <a href="{% url 'server-log' 2 %}">
+            <a href="{% url 'server-log-type' 2 %}">
                 {% if log_type_key == 2 %}
                 <button id="error_log_btn_on_select" type="button" class="btn btn-outline-danger">Error Log</button>
                 {% else %}

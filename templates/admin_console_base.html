@@ -39,18 +39,22 @@
             </div>
         </div>
         <div id="function_list">
-            <div class="function row">
-                <div class="function_icon_div">
-                    <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
+            <a href="{% url 'server-log' %}">
+                <div class="function row">
+                    <div class="function_icon_div">
+                        <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
+                    </div>
+                    <div class="function_text">Server Log</div>
                 </div>
-                <div class="function_text">Server Log</div>
-            </div>
-            <div class="function row">
-                <div class="function_icon_div">
-                    <img class="function_icon" src="{% static '/icons/task_manage_white.png' %}">
+            </a>
+            <a href="{% url 'task-manager-list' %}">
+                <div class="function row">
+                    <div class="function_icon_div">
+                        <img class="function_icon" src="{% static '/icons/task_manage_white.png' %}">
+                    </div>
+                    <div class="function_text">Task Manager</div>
                 </div>
-                <div class="function_text">Task Manager</div>
-            </div>
+            </a>
         </div>
     </div>
     <div id="right_area">

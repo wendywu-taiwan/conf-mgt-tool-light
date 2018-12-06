@@ -61,7 +61,7 @@ COMPARE_RESULT_MODIFY_RULE_COUNT = 'modify_rule_count'
 COMPARE_RESULT_LIST_DATA = 'list_data'
 COMPARE_RESULT_DETAIL_DATA = 'detail_data'
 COMPARE_RESULT_DIFF_DATA = 'diff_data'
-
+COMPARE_RESULT_INFO_DATA = 'info_data'
 
 # view.rule_detail, view.rule_diff
 RULE_KEY_ENVIRONMENT = 'environment'
@@ -78,5 +78,15 @@ RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
 NO_ENVIRONMENT_GIT = 0
 BASE_ENVIRONMENT_GIT = 1
 COMPARE_ENVIRONMENT_GIT = 2
+
+
+# task status
+STATUS_ENABLE = 1
+STATUS_DISABLE = 0
+
+# response builder
+SUCCESS_MESSAGE = "success"
+
+
 
 
