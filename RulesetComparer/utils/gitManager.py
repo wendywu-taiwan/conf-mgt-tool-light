@@ -1,5 +1,5 @@
 from git import Repo
-from RulesetComparer.utils.timeManager import compare_commit_time
+from RulesetComparer.utils.timeUtil import compare_git_time
 from django.conf import settings
 from RulesetComparer.properties import logMessage
 
@@ -52,7 +52,7 @@ class GitManager:
         local_commit_time = str(local_commit.authored_datetime)
         remote_commit_time = str(remote_commit.authored_datetime)
 
-        return_time = compare_commit_time(local_commit_time, remote_commit_time)
+        return_time = compare_git_time(local_commit_time, remote_commit_time)
 
         if return_time == local_commit_time:
             self.status = self.STATUS_NEED_PUSH

@@ -204,7 +204,7 @@ def get_scheduler_report_task_list(request):
 def create_scheduler_report_task(request):
     request_json = get_post_request_json(request)
     scheduler_info = services.create_report_scheduler_task(request_json)
-    info_data = ReportSchedulerInfoBuilder(scheduler_info)
+    info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
     result = ResponseBuilder(data=info_data).get_data()
     print("create_report_scheduler_task, request json =" + str(request_json))
     return JsonResponse(data=result)

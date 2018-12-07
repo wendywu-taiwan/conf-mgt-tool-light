@@ -20,7 +20,7 @@ class MailSender:
         self.receiver = mail_config.get('receivers')
         self.title = mail_config.get('title')
         self.content = mail_config.get('content')
-        self.msg = None
+        self.msg = MIMEMultipart()
 
         self.connect()
         self.login()
@@ -35,10 +35,14 @@ class MailSender:
         except Exception as e:
             print(e)
 
+    def set_receiver(self, receivers=None):
+        if receivers is None or len(receivers) == 0:
+            self.msg['To'] = ", ".join(self.receiver)
+        else:
+            self.msg['To'] = ", ".join(receivers)
+
     def compose_msg(self, email_title=None, email_content=None, html_content=None):
-        self.msg = MIMEMultipart()
         self.msg['From'] = self.sender
-        self.msg['To'] = ", ".join(self.receiver)
 
         if email_title is not None:
             self.msg['Subject'] = Header(email_title, 'utf-8')

@@ -43,7 +43,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
 
     def get_mail_list(self):
         try:
-            return self.info_module.mail_list.split(",")
+            return self.info_module.mail_list
         except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())
@@ -54,9 +54,10 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             if date_time is None:
                 return None
 
-            time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
-            format_time = timeUtil.date_time_to_time(date_time, time_format)
-            return format_time
+            time_format = config.TIME_FORMAT.get('db_time_format')
+            # format_time = timeUtil.time_to_date_time(str_time, time_format)
+            # format_time = timeUtil.date(str_time, time_format)
+            return date_time
         except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())

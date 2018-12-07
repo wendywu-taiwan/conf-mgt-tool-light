@@ -13,6 +13,7 @@ from RulesetComparer.properties import dataKey as key
 from RulesetComparer.properties import config
 from RulesetComparer.properties.config import get_rule_set_git_path, get_rule_set_path
 from django.conf import settings
+from django.template.loader import get_template
 
 
 class CompareRuleListTask:
@@ -123,6 +124,9 @@ class CompareRuleListTask:
         }
 
         fileManager.save_compare_result_file(self.compare_hash_key, compare_result_data)
+        template = get_template("compare_result_report.html")
+        html = template.render(compare_result_data)
+        fileManager.save_compare_result_html(self.compare_hash_key, html)
 
     def remove_rule_files(self):
         file_path = get_rule_set_path("", "", self.compare_hash_key)

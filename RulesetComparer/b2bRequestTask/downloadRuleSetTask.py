@@ -1,4 +1,3 @@
-from django.conf import settings
 from zeep import Client
 
 from RulesetComparer.properties.config import get_rule_set_path
