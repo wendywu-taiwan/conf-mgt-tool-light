@@ -4,36 +4,26 @@
       {
         "full_name": "production",
         "name": "PROD",
-        "b2b_rule_set_client": "http://www.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
-        "account": "",
-        "password": ""
+        "b2b_rule_set_client": "http://www.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
       },
       {
         "full_name": "ct",
         "name": "CT",
-        "b2b_rule_set_client": "http://www.audatex.cn/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
-        "account": "",
-        "password": ""
+        "b2b_rule_set_client": "http://www.audatex.cn/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
       },
       {
         "full_name": "int1",
         "name": "INT1",
-        "b2b_rule_set_client": "http://www-int1.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
-        "account": "inside_TWadmin",
-        "password": "audatex"
+        "b2b_rule_set_client": "http://www-int1.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
       },
       {
         "full_name": "int2",
         "name": "INT2",
-        "b2b_rule_set_client": "http://www-int2.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl",
-        "account": "inside_TWadmin",
-        "password": "audatex"
+        "b2b_rule_set_client": "http://www-int2.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
       },
       {
         "full_name": "git",
         "b2b_rule_set_client": "",
-        "account": "",
-        "password": "",
         "name": "GIT"
       }
     ],

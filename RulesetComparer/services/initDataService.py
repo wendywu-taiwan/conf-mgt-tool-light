@@ -45,9 +45,7 @@ def init_environment_data(environment_data):
                 name = environment_obj["name"]
                 full_name = environment_obj["full_name"]
                 client = environment_obj['b2b_rule_set_client']
-                account = environment_obj['account']
-                password = environment_obj['password']
-                Environment.objects.create_environment(name, full_name, client, account, password)
+                Environment.objects.create_environment(name, full_name, client)
             logging.info("init environment data success")
         except Exception as err:
             Environment.objects.all().delete()

@@ -1,6 +1,7 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.dataModel.xml.ruleSetFileListParser import RuleListModel
 from RulesetComparer.models import Country, Environment
+from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
 from django.conf import settings
 from zeep import Client
 
@@ -19,9 +20,10 @@ class DownloadRuleListTask(BaseRequestTask):
 
         country = Country.objects.get(id=self.country_id)
         environment = Environment.objects.get(id=self.environment_id)
+        auth_data = AuthDataParser(environment.name)
 
-        self.add_request_parameter(self.KEY_USER, environment.account)
-        self.add_request_parameter(self.KEY_PASSWORD, environment.password)
+        self.add_request_parameter(self.KEY_USER, auth_data.get_account())
+        self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
         self.add_request_parameter(self.KEY_COUNTRY, country.name)
 
         print("call download_rule_set in service\n environment = %s , country = %s" % (environment,country))

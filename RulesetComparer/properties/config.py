@@ -5,6 +5,7 @@ FILE_PATH = {
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result",
     "preload_data": "/static/preload_data.json",
+    "auth_data": "/static/auth_data.json",
     "server_log": "/RulesetComparer/serverlog"
 }
 FILE_NAME = {

@@ -29,9 +29,8 @@ class Country(models.Model):
 
 
 class EnvironmentManager(models.Manager):
-    def create_environment(self, name, full_name, client, account, password):
-        environment = self.create(name=name, full_name=full_name, b2b_rule_set_client=client, account=account,
-                                  password=password)
+    def create_environment(self, name, full_name, client):
+        environment = self.create(name=name, full_name=full_name, b2b_rule_set_client=client)
         return environment
 
     def environment_list(self, ids):
@@ -47,8 +46,6 @@ class Environment(models.Model):
     name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=128)
     b2b_rule_set_client = models.URLField()
-    account = models.CharField(max_length=128)
-    password = models.CharField(max_length=128)
 
     objects = EnvironmentManager()
 

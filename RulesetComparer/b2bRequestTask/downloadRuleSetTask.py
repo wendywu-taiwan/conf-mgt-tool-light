@@ -6,6 +6,7 @@ from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import apiResponse
 from RulesetComparer.properties.config import get_rule_set_full_file_name
 from RulesetComparer.utils import fileManager
+from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
 
 
 class DownloadRuleSetTask(BaseRequestTask):
@@ -24,9 +25,10 @@ class DownloadRuleSetTask(BaseRequestTask):
 
     def request_data(self):
         client = Client(self.environment.b2b_rule_set_client)
+        auth_data = AuthDataParser(self.environment.name)
 
-        self.add_request_parameter(self.KEY_USER, self.environment.account)
-        self.add_request_parameter(self.KEY_PASSWORD, self.environment.password)
+        self.add_request_parameter(self.KEY_USER, auth_data.get_account())
+        self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
         self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
 
         print('======== download rule set %s ========' % self.rule_set_name)

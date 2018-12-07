@@ -134,7 +134,7 @@ class CompareRuleListTask:
 
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_rule_list()
-        # self.download_rules(environment, updated_list)
+        self.download_rules(environment, updated_list)
         return updated_list
 
     def updated_rule_list_from_git(self):
