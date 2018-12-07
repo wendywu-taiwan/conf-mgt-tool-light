@@ -61,34 +61,36 @@
 <p>Thank you.</p>
 <br>
 <br>
+{% for data in info_data %}
 <table style=" border-collapse: collapse; border: 1px solid black;">
     <tr>
-        <td class="td_title header"></td>
+        <td class="header">{{ data.country.name }}</td>
         <td class="header">{{ base_env.name }}</td>
         <td class="header">{{ compare_env.name }}</td>
     </tr>
     <tr>
         <td class="td_title">Common Rule Set</td>
-        <td class="td_content" colspan="2">{{ normal_list|length }}</td>
+        <td class="td_content" colspan="2">{{ data.normal_list|length }}</td>
     </tr>
     <tr>
         <td class="td_title td_bg_blue">Rule Set only in</td>
-        <td class="td_content td_bg_blue">{{ remove_file_count }}</td>
-        <td class="td_content td_bg_blue">{{ add_file_count }}</td>
+        <td class="td_content td_bg_blue">{{ data.remove_file_count }}</td>
+        <td class="td_content td_bg_blue">{{ data.add_file_count }}</td>
     </tr>
     <tr>
         <td class="td_title">Rule only in</td>
-        <td class="td_content">{{ remove_rule_count }}</td>
-        <td class="td_content">{{ add_rule_count }}</td>
+        <td class="td_content">{{ data.remove_rule_count }}</td>
+        <td class="td_content">{{ data.add_rule_count }}</td>
     </tr>
     <tr>
         <td class="td_title td_bg_blue">Rule Set Different</td>
-        <td class="td_content td_bg_blue" colspan="2">{{ modify_file_count }}</td>
+        <td class="td_content td_bg_blue" colspan="2">{{ data.modify_file_count }}</td>
     </tr>
     <tr>
         <td class="td_title">Rule Different</td>
-        <td class="td_content" colspan="2">{{ modify_rule_count }}</td>
+        <td class="td_content" colspan="2">{{ data.modify_rule_count }}</td>
     </tr>
 </table>
+{% endfor %}
 </body>
 </html>
