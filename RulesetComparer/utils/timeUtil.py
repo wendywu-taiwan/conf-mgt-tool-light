@@ -1,8 +1,5 @@
 import pytz
 from datetime import datetime, timezone, timedelta
-
-from django.utils.timezone import make_aware
-
 from RulesetComparer.properties import config
 
 
@@ -96,6 +93,25 @@ def get_date_time(time_zone, year=None, month=None, day=None, hour=None, minute=
     return new_date_time
 
 
+def get_naive_time(year=None, month=None, day=None, hour=None, minute=None, second=None):
+    current_date_time = get_current_date_time()
+    if year is None:
+        year = current_date_time.year
+    if month is None:
+        month = current_date_time.month
+    if day is None:
+        day = current_date_time.day
+    if hour is None:
+        hour = current_date_time.hour
+    if minute is None:
+        minute = current_date_time.minute
+    if second is None:
+        second = current_date_time.second
+
+    new_date_time = datetime(year, month, day, hour, minute, second)
+    return new_date_time
+
+
 # return current time in format ex 1990/12/11 10:32:30
 def get_current_time():
     time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
@@ -128,9 +144,18 @@ def get_format_time(date_time, time_format):
 
 
 # transfer utc time to specific timezone
-def utc_to_locale_time(utc_date_time, time_zone):
-    time_zone = pytz.timezone(time_zone)
-    time = utc_date_time.replace(tzinfo=timezone.utc).astimezone(tz=time_zone)
+def utc_to_locale_time(utc_date_time, target_time_zone):
+    current_time_zone = pytz.timezone('UTC')
+    target_time_zone = pytz.timezone(target_time_zone)
+    time = current_time_zone.localize(utc_date_time).astimezone(target_time_zone)
+    return time
+
+
+# transfer utc time to specific timezone
+def local_time_to_utc(local_time, current_time_zone):
+    current_time_zone = pytz.timezone(current_time_zone)
+    target_time_zone = pytz.timezone('UTC')
+    time = current_time_zone.localize(local_time).astimezone(target_time_zone)
     return time
 
 

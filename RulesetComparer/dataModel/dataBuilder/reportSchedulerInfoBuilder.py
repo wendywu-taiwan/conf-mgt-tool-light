@@ -49,15 +49,20 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             logging.error(traceback.format_exc())
 
     @staticmethod
-    def get_format_time(date_time):
+    def get_format_time(utc_date_time):
         try:
-            if date_time is None:
+            if utc_date_time is None:
                 return None
 
+            time_zone = config.TIME_ZONE.get('asia_taipei')
             time_format = config.TIME_FORMAT.get('db_time_format')
-            # format_time = timeUtil.time_to_date_time(str_time, time_format)
-            # format_time = timeUtil.date(str_time, time_format)
-            return date_time
+
+            naive_time = timeUtil.get_naive_time(utc_date_time.year, utc_date_time.month, utc_date_time.day,
+                                                 utc_date_time.hour, utc_date_time.minute, utc_date_time.second)
+
+            local_date_time = timeUtil.utc_to_locale_time(naive_time, time_zone)
+            str_time = timeUtil.date_time_to_time(local_date_time, time_format)
+            return str_time
         except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())
