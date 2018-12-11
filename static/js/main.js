@@ -23,5 +23,7 @@ $(function () {
         $("#environment_2_selected").val($(this).val());
     });
 
+    $('.clockpicker').clockpicker();
+
 
 });

@@ -213,20 +213,20 @@ html, body {
     width: 10%;
 }
 
-#task_action_div{
+#task_action_div {
     margin-top: auto;
     margin-bottom: auto;
     width: 10%;
     text-align: right;
 }
 
-#title_row{
+#title_row {
     margin-left: 0px;
     margin-right: 0px;
     margin-bottom: 15px;
 }
 
-#create_task_button_div{
+#create_task_button_div {
     margin-left: auto;
 }
 
@@ -237,11 +237,10 @@ html, body {
     margin-right: 3%;
 }
 
-.component_title {
-    font-size: 13px;
-    font-weight: 600;
-    margin-top: auto;
-    margin-bottom: auto;
+.component_title_modify_data {
+    font-size: 18px;
+    font-weight: 800;
+    color: #088587;
 }
 
 .button_div {
@@ -324,6 +323,17 @@ html, body {
     font-weight: 800;
 }
 
+.vertical_align_middle {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.no_row_margin {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/* admin console task list */
 .task_nation_flag {
     width: 32px;
     margin-right: 10px;
@@ -337,9 +347,8 @@ html, body {
     padding-top: 10px;
 }
 
-.vertical_align_middle {
-    margin-top: auto;
-    margin-bottom: auto;
+.task_action_icon {
+    width: 24px;
 }
 
 .task_environment_icon {
@@ -379,6 +388,116 @@ html, body {
     width: 17%;
 }
 
-.task_action_icon{
-    width: 24px;
+/* end admin console task list */
+
+/* admin console task create */
+.env_select_div {
+    width: 35%;
 }
+
+.env_select_title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #868686;
+    margin-bottom: 5px;
+    font-family: "Lato";
+}
+
+.env_select_dropdown_div {
+    width: 100%;
+}
+
+.env_select_dropdown {
+    width: 60%;
+    background-color: #088587;
+}
+
+.env_select_dropdown_list_ul {
+    width: 60%;
+    background: #4fb99f;
+}
+
+.env_select_dropdown_list_item_text {
+    color: white !important;
+    font-size: 15px;
+}
+
+.country_check_box_group {
+    width: 15%;
+}
+
+.time_select_div {
+    width: 35%;
+}
+
+.time_input_div {
+    width: 60%;
+}
+
+.time_input {
+    border-color: #049092;
+}
+
+.time_input_right_span {
+    margin: auto;
+    padding: 3px;
+    border: 2px solid #049092;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #049092;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+.time_input_icon_span {
+    color: white;
+}
+
+.create_task_action_button_div {
+    width: 10%;
+}
+
+#create_task_container {
+    padding: 20px;
+    height: 100%;
+}
+
+#country_select_div {
+    margin-bottom: 50px;
+}
+
+#env_select_group_div {
+    margin-bottom: 50px;
+}
+
+#hour_input_right_span {
+    margin: auto;
+    padding: 4px;
+    border: 2px solid #049092;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #049092;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+#action_button_div {
+    width: 10%;
+    margin-left: auto;
+}
+
+#create_button_div {
+    width: 80%;
+    margin-left: auto;
+}
+
+#create_button {
+    font-family: "Lato";
+    font-weight: 700;
+}
+
+/* end admin console create task */
