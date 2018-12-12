@@ -2358,7 +2358,7 @@ fieldset[disabled] .input-group-btn .btn-default.active {
   margin: 0;
   width: auto !important;
   max-width: inherit;
-  min-width: 80px;
+  min-width: 250px;
   vertical-align: top;
   height: 29px;
   color: #34495e;
@@ -2386,12 +2386,14 @@ fieldset[disabled] .input-group-btn .btn-default.active {
 }
 
 .tagsinput-primary .bootstrap-tagsinput {
-  border-color: #1abc9c;
+  border-color: #049092;
+  /*border-color: #1abc9c;*/
   margin-bottom: 0;
 }
 
 .tagsinput-primary .badge {
-  background-color: #1abc9c;
+  background-color: #049092;
+  /*background-color: #1abc9c;*/
   color: white;
 }
 

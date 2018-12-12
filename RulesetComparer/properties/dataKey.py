@@ -37,7 +37,7 @@ RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
 
 
-# view.environment_select
+# view.environment_select , view.admin_console_create_task
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
 
@@ -87,6 +87,7 @@ STATUS_DISABLE = 0
 # response builder
 SUCCESS_MESSAGE = "success"
 
-
+# view.admin_console_create_task
+ADMIN_CONSOLE_INFO = "admin_console_info"
 
 

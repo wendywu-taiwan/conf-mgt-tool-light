@@ -21,7 +21,7 @@ class ModuleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Module
-        fields = ('name', 'icon_file_name', 'functions')
+        fields = ('id', 'name', 'icon_file_name', 'functions')
 
 
 class CountrySerializer(serializers.ModelSerializer):

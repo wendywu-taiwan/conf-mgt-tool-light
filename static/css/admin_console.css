@@ -220,12 +220,6 @@ html, body {
     text-align: right;
 }
 
-#title_row {
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 15px;
-}
-
 #create_task_button_div {
     margin-left: auto;
 }
@@ -235,6 +229,13 @@ html, body {
     margin-top: auto;
     margin-bottom: auto;
     margin-right: 3%;
+}
+
+.component_title {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
 }
 
 .component_title_modify_data {
@@ -388,6 +389,10 @@ html, body {
     width: 17%;
 }
 
+#task_list_header_div {
+    margin-bottom: 15px;
+}
+
 /* end admin console task list */
 
 /* admin console task create */
@@ -404,16 +409,18 @@ html, body {
 }
 
 .env_select_dropdown_div {
-    width: 100%;
+    width: 60%;
 }
 
-.env_select_dropdown {
-    width: 60%;
+.env_select_dropdown_btn {
+    width: 100%;
     background-color: #088587;
 }
 
 .env_select_dropdown_list_ul {
     width: 60%;
+    max-height: 150px;
+    overflow: scroll;
     background: #4fb99f;
 }
 
@@ -455,8 +462,13 @@ html, body {
     color: white;
 }
 
-.create_task_action_button_div {
-    width: 10%;
+.checkbox_input_div {
+    width: 18%;
+}
+
+.checkbox_input {
+    width: 24px;
+    height: 24px;
 }
 
 #create_task_container {
@@ -485,6 +497,12 @@ html, body {
     border-left: 0px;
 }
 
+#content_header_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+}
+
 #action_button_div {
     width: 10%;
     margin-left: auto;
@@ -495,9 +513,22 @@ html, body {
     margin-left: auto;
 }
 
-#create_button {
+#create_btn {
+    color: white;
     font-family: "Lato";
     font-weight: 700;
+}
+
+#time_select_group_div {
+    margin-bottom: 50px;
+}
+
+#mail_receiver_input_div {
+    width: 56%;
+}
+
+#mail_receiver_input {
+    width: 100%;
 }
 
 /* end admin console create task */

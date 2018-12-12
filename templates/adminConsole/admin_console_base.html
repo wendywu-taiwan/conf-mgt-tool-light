@@ -7,9 +7,8 @@
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
@@ -19,10 +18,14 @@
     <link href="{% static '/css/flat-ui.css' %}" rel="stylesheet">
     <link href="{% static '/css/bootstrap-clockpicker.min.css' %}" rel="stylesheet">
     <link href="{% static '/css/admin_console.css' %}" rel="stylesheet">
+    <link href="{% static '/css/sweetalert.css' %}" rel="stylesheet">
+    <script src="{% static '/js/sweetalert.min.js' %}"></script>
     <script src="{% static '/js/flat-ui.js' %}"></script>
     <script src="{% static '/js/application.js' %}"></script>
     <script src="{% static '/js/main.js' %}"></script>
     <script src="{% static '/js/bootstrap-clockpicker.min.js' %}"></script>
+    <script src="{% static '/js/adminConsole/create-scheduler-task.js' %}"></script>
+    <script src="{% static '/js/rest-client.js' %}"></script>
 </head>
 <body>
 <div class="base_container row">
@@ -33,11 +36,11 @@
         <div id="info">
             <div id="user_info" class="info_block">
                 <div class="info_title">USER ROLE</div>
-                <div class="info_content">Admin</div>
+                <div class="info_content">{{ admin_console_info.user_role.name }}</div>
             </div>
             <div id="module_info" class="info_block">
                 <div class="info_title">MODULE</div>
-                <div class="info_content">Ruleset</div>
+                <div class="info_content">{{ admin_console_info.module.name }}</div>
             </div>
         </div>
         <div id="function_list">

@@ -98,19 +98,19 @@ class UserRole(models.Model):
 class ReportSchedulerInfoManager(models.Manager):
     def create_task(self, base_env_id, compared_env_id, module_id,
                     country_list, mail_list_str, interval, next_proceed_time):
-        test_task = self.create(base_environment_id=base_env_id,
-                                compare_environment_id=compared_env_id,
-                                module_id=module_id,
-                                mail_list=mail_list_str,
-                                interval_hour=interval,
-                                last_proceed_time=None,
-                                next_proceed_time=next_proceed_time,
-                                enable=1)
+        task = self.create(base_environment_id=base_env_id,
+                           compare_environment_id=compared_env_id,
+                           module_id=module_id,
+                           mail_list=mail_list_str,
+                           interval_hour=interval,
+                           last_proceed_time=None,
+                           next_proceed_time=next_proceed_time,
+                           enable=1)
 
         for country in country_list:
-            test_task.country_list.add(country)
+            task.country_list.add(country)
 
-        return test_task
+        return task
 
 
 class ReportSchedulerInfo(models.Model):

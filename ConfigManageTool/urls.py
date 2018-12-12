@@ -19,11 +19,11 @@ from RulesetComparer import views
 from django.conf.urls import url, include
 
 ruleset_comparer_pattern = [
-    path('select/', views.environment_select, name="environment-select"),
+    path('select/', views.environment_select_page, name="environment-select"),
     path('detail/<str:environment_name>/<str:compare_key>/<str:rule_name>',
-         views.rule_detail, name="rule-detail"),
+         views.rule_detail_page, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
-         views.rule_diff, name="rule-diff"),
+         views.rule_diff_page, name="rule-diff"),
     path('report/mail/<str:compare_key>',
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
@@ -34,21 +34,24 @@ ruleset_comparer_pattern = [
 admin_console_pattern = [
     path('admin_console/module/list', views.get_module_list),
     path('admin_console/module/create', views.create_module),
-    path('admin_console/ruleset', views.admin_console),
-    path('admin_console/ruleset/server_log/', views.admin_console_server_log, name="server-log"),
-    path('admin_console/ruleset/server_log/<int:log_type>', views.admin_console_server_log, name="server-log-type"),
-    path('admin_console/ruleset/task_manager/list', views.admin_console_task_manager, name="task-manager-list"),
 ]
 
-scheduler_pattern = [
-    path('create', views.create_scheduler_report_task),
-    path('update', views.update_scheduler_report_task),
-    path('list', views.get_scheduler_report_task_list),
+admin_console_ruleset_pattern = [
+    path('', views.admin_console_page),
+    path('server_log', views.admin_console_server_log_page, name="server-log"),
+    path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
+    path('scheduler/list', views.admin_console_scheduler_list_page, name="task-manager-list"),
+    path('scheduler/create', views.admin_console_scheduler_create_page, name="task-create"),
+]
+
+ruleset_scheduler_pattern = [
+    path('create', views.create_scheduler, name="create-scheduler-task"),
+    path('update', views.update_scheduler, name="update-scheduler-task"),
+    path('list', views.get_scheduler_list),
 ]
 
 urlpatterns = [
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
-    path('ConfigManageTool/', include(admin_console_pattern)),
-    path('ConfigManageTool/scheduler/report/', include(scheduler_pattern)),
-
+    path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),
+    path('ConfigManageTool/admin_console/ruleset/', include(admin_console_ruleset_pattern)),
 ]

@@ -70,7 +70,7 @@ def create_report_scheduler_task(json_data):
                                                              parser.country_list,
                                                              parser.mail_list,
                                                              parser.interval_hour,
-                                                             parser.start_date_time)
+                                                             parser.next_proceed_time_utc)
 
         daily_task = DailyCompareReportTask(info_model.id,
                                             parser.base_env_id,
@@ -79,7 +79,7 @@ def create_report_scheduler_task(json_data):
                                             parser.mail_list)
 
         scheduler = SendMailScheduler(daily_task.scheduler_listener)
-        job = scheduler.test_job(daily_task.run_task, 1, parser.start_date_time)
+        job = scheduler.test_job(daily_task.run_task, 1, parser.next_proceed_time_locale)
         daily_task.set_scheduled_job(job)
         return info_model
     except BaseException as e:
