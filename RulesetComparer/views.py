@@ -88,7 +88,6 @@ def admin_console_scheduler_update_page(request, scheduler_id):
         scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
 
         data = {
-            key.SCHEDULER_MODIFY_TYPE: key.SCHEDULER_UPDATE,
             key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
             key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
             key.ADMIN_CONSOLE_INFO: info_data,

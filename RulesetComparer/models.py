@@ -127,6 +127,7 @@ class ReportSchedulerInfoManager(models.Manager):
             task.country_list.add(country_id)
 
         task.save()
+        return task
 
 
 class ReportSchedulerInfo(models.Model):

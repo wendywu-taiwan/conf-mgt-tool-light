@@ -104,10 +104,11 @@
 </div>
 
 <script>
+    init("{{ admin_console_info.module.id }}",
+        "{% url 'create-scheduler' %}",
+        "{% url 'task-manager-list' %}");
     createBtnOnClick = function () {
-        createTask("{% url 'create-scheduler' %}",
-                   "{{ admin_console_info.module.id }}",
-                   "{% url 'task-manager-list' %}");
+        createTask();
     }
 </script>
 {% endblock %}

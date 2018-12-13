@@ -16,14 +16,20 @@ $(function () {
 });
 
 
-let baseEnvId, compareEnvId, moduleId, interval_hour, start_date_time;
-let country_list = [];
-let mail_list = [];
+let baseEnvId, compareEnvId, intervalHour, startDateTime;
+let countryList = [];
+let mailList = [];
+let moduleId, postUrl, taskListUrl;
 
-createTask = function (url, module_id, task_list_url) {
+function init(module_id, post_url, list_url) {
+    moduleId = module_id;
+    postUrl = post_url;
+    taskListUrl = list_url;
+}
+
+createTask = function () {
     showWaitingDialog();
-    console.log("url" + url);
-    let validData = checkInputValid(module_id);
+    let validData = checkInputValid();
     if (!validData)
         return;
 
@@ -31,25 +37,24 @@ createTask = function (url, module_id, task_list_url) {
         "base_environment_id": baseEnvId,
         "compare_environment_id": compareEnvId,
         "module_id": moduleId,
-        "country_list": country_list,
-        "mail_list": mail_list,
-        "interval_hour": interval_hour,
-        "start_date_time": start_date_time
+        "country_list": countryList,
+        "mail_list": mailList,
+        "interval_hour": intervalHour,
+        "start_date_time": startDateTime
     }
 
-    doPOST(url, post_body, function (response) {
+    doPOST(postUrl, post_body, function (response) {
         successDialog("create task success", function () {
-            window.location = task_list_url;
+            window.location = taskListUrl;
         });
     }, function (response) {
         showErrorDialog("create task fail")
     });
 };
 
-updateTask = function (url, module_id, task_id) {
+updateTask = function (task_id) {
     showWaitingDialog();
-    console.log("url" + url);
-    let validData = checkInputValid(module_id);
+    let validData = checkInputValid();
     if (!validData)
         return;
 
@@ -58,27 +63,27 @@ updateTask = function (url, module_id, task_id) {
         "base_environment_id": baseEnvId,
         "compare_environment_id": compareEnvId,
         "module_id": moduleId,
-        "country_list": country_list,
-        "mail_list": mail_list,
-        "interval_hour": interval_hour,
-        "start_date_time": start_date_time
-    }
+        "country_list": countryList,
+        "mail_list": mailList,
+        "interval_hour": intervalHour,
+        "start_date_time": startDateTime
+    };
 
-    doPOST(url, post_body, function (response) {
-        showSuccessDialog("update task success")
+    doPOST(postUrl, post_body, function (response) {
+        successDialog("update task success", function () {
+            window.location = taskListUrl;
+        });
     }, function (response) {
         showErrorDialog("update task fail")
     });
 }
 
-checkInputValid = function (module_id) {
+checkInputValid = function () {
     baseEnvId = $("#select_base_env_btn:first-child").val();
     compareEnvId = $("#select_compare_env_btn:first-child").val();
-    moduleId = module_id;
-    interval_hour = $("#hour_input").val();
-    start_date_time = getStartDateTime();
-    mail_list = $("#mail_receiver_input").tagsinput('items');
-    console.log("interval_hour:" + interval_hour);
+    intervalHour = $("#hour_input").val();
+    startDateTime = getStartDateTime();
+    mailList = $("#mail_receiver_input").tagsinput('items');
 
     if (!baseEnvId || !compareEnvId) {
         showEWarningDialog("please select environment");
@@ -89,25 +94,25 @@ checkInputValid = function (module_id) {
         return false;
     }
 
-    if (country_list.length == 0) {
+    if (countryList.length == 0) {
         showEWarningDialog("please select country");
         return false;
     }
 
-    if (!interval_hour) {
+    if (!intervalHour) {
         showEWarningDialog("please enter hour interval");
         return false;
-    } else if (Number(interval_hour) % 1 != 0) {
+    } else if (Number(intervalHour) % 1 != 0) {
         showEWarningDialog("please enter integer hour interval");
         return false;
     }
 
-    if (!start_date_time) {
+    if (!startDateTime) {
         showEWarningDialog("please enter daily start time");
         return false;
     }
 
-    if (mail_list.length == 0) {
+    if (mailList.length == 0) {
         showEWarningDialog("please enter receiver");
         return false;
     }
@@ -115,7 +120,7 @@ checkInputValid = function (module_id) {
 };
 
 checkboxOnClick = function (country_id) {
-    country_list.push(country_id);
+    countryList.push(country_id);
 };
 
 getStartDateTime = function () {

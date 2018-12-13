@@ -365,7 +365,8 @@ html, body {
 
 .task_divider {
     height: 1px;
-    width: 95%;
+    width: 98%;
+    margin: auto;
     background-color: #eef0f2;
 }
 

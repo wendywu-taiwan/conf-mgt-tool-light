@@ -1,4 +1,5 @@
 import traceback
+import ast
 import RulesetComparer.properties.dataKey as key
 from RulesetComparer.properties import config
 from RulesetComparer.utils import timeUtil
@@ -16,8 +17,8 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
     def __generate_data__(self):
         try:
             self.result_dict["task_id"] = self.info_module.id
-            self.result_dict["base_environment_id"] = EnvironmentSerializer(self.info_module.base_environment).data
-            self.result_dict["compare_environment_id"] = EnvironmentSerializer(
+            self.result_dict["base_environment"] = EnvironmentSerializer(self.info_module.base_environment).data
+            self.result_dict["compare_environment"] = EnvironmentSerializer(
                 self.info_module.compare_environment).data
             self.result_dict["module"] = self.get_module_data()
             self.result_dict["country_list"] = CountrySerializer(self.info_module.country_list, many=True).data
@@ -43,10 +44,9 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
 
     def get_mail_list(self):
         try:
-            return self.info_module.mail_list
+            return ast.literal_eval(self.info_module.mail_list)
         except Exception:
-            traceback.print_exc()
-            logging.error(traceback.format_exc())
+            return self.info_module.mail_list
 
     @staticmethod
     def get_format_time(utc_date_time):

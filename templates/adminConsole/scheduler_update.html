@@ -7,7 +7,7 @@
         <div class="component_title_modify_data">UPDATE TASK</div>
         <div id="action_button_div" class="row no_row_margin">
             <div id="create_button_div">
-                <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="createBtnOnClick()">SAVE
+                <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="updateBtnOnClick()">SAVE
                 </a>
             </div>
         </div>
@@ -104,6 +104,9 @@
     </div>
 </div>
 <script>
+    init("{{ admin_console_info.module.id }}",
+        "{% url 'update-scheduler' %}",
+        "{% url 'task-manager-list' %}");
     setBaseEnvSelected('{{ scheduler_data.base_environment.id}}', '{{ scheduler_data.base_environment.name}}');
     setCompareEnvSelected('{{ scheduler_data.compare_environment.id}}', '{{ scheduler_data.compare_environment.name}}');
     '{% for country in scheduler_data.country_list %}'
@@ -116,9 +119,8 @@
     '{% endfor %}'
     setReceivers()
 
-    createBtnOnClick = function () {
-        createTask("{% url 'update-scheduler' %}",
-            "{{ admin_console_info.module.id }}");
+    updateBtnOnClick = function () {
+        updateTask('{{ scheduler_data.task_id }}');
     }
 </script>
 {% endblock %}

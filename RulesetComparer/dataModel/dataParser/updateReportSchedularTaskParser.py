@@ -16,7 +16,7 @@ class UpdateReportSchedulerTaskParser:
             self.mail_list = json_data.get("mail_list")
             self.interval_hour = json_data.get("interval_hour")
             # hh:mm:ss
-            self.start_date_time = self.parse_start_date_time(json_data.get("proceed_time"))
+            self.start_date_time = self.parse_start_date_time(json_data.get("start_date_time"))
             self.enable = dataKey.STATUS_ENABLE
         except BaseException as e:
             traceback.print_exc()
