@@ -38,8 +38,9 @@ createTask = function (url, module_id, task_list_url) {
     }
 
     doPOST(url, post_body, function (response) {
-        showSuccessDialog("create task success");
-        window.location = task_list_url;
+        successDialog("create task success", function () {
+            window.location = task_list_url;
+        });
     }, function (response) {
         showErrorDialog("create task fail")
     });

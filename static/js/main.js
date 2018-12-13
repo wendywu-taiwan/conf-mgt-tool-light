@@ -24,23 +24,31 @@ $(function () {
 });
 
 
-showWaitingDialog = function () {
+function showWaitingDialog() {
     swal({
         title: "Please Wait..",
         imageUrl: "../../../../static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false
     });
-};
+}
 
-showSuccessDialog = function (text) {
+function showSuccessDialog(text) {
     swal("Success", text, "success");
-};
+}
 
-showErrorDialog = function (text) {
-    swal({ type: 'error', title: 'Error', text: text})
-};
+function successDialog(text, onConfirmClick) {
+    swal({
+        title: "Success",
+        text: text,
+        type: "success",
+    }, onConfirmClick);
+}
 
-showEWarningDialog = function (text) {
-    swal({ type: 'warning', title: 'Warning', text: text})
-};
+function showErrorDialog(text) {
+    swal({type: 'error', title: 'Error', text: text})
+}
+
+function showEWarningDialog(text) {
+    swal({type: 'warning', title: 'Warning', text: text})
+}
