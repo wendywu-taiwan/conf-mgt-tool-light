@@ -112,6 +112,22 @@ class ReportSchedulerInfoManager(models.Manager):
 
         return task
 
+    def update_task(self, task_id, base_env_id, compared_env_id, country_list,
+                    mail_list_str, interval, next_proceed_time):
+        task = self.get(id=task_id)
+        task.base_environment_id = base_env_id
+        task.compare_environment_id = compared_env_id
+        task.mail_list = mail_list_str
+        task.interval_hour = interval
+        task.next_proceed_time = next_proceed_time
+        task.enable = 1
+
+        task.country_list.clear()
+        for country_id in country_list:
+            task.country_list.add(country_id)
+
+        task.save()
+
 
 class ReportSchedulerInfo(models.Model):
     id = models.AutoField(primary_key=True)

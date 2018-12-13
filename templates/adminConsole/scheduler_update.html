@@ -1,9 +1,10 @@
 {% extends "admin_console_base.html" %}
 {% load static from staticfiles %}
 {% block content %}
+
 <div id="create_task_container" class="custom_container">
     <div id="content_header_div" class="row">
-        <div class="component_title_modify_data">CREATE TASK</div>
+        <div class="component_title_modify_data">UPDATE TASK</div>
         <div id="action_button_div" class="row no_row_margin">
             <div id="create_button_div">
                 <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="createBtnOnClick()">SAVE
@@ -59,8 +60,8 @@
             <div class="checkbox_input_div form-check form-check-inline">
                 <input onclick="checkboxOnClick('{{ data.id }}')" class="form-check-input checkbox_input"
                        type="checkbox"
-                       id="{{'checkbox_input_'|add:data.id}}" value="{{ data.id }}">
-                <label class="form-check-label" for="{{'checkbox_input_'|add:data.id}}"> {{ data.full_name }}</label>
+                       id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
+                <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
             </div>
             {% endfor %}
         </div>
@@ -102,11 +103,22 @@
         </div>
     </div>
 </div>
-
 <script>
+    setBaseEnvSelected('{{ scheduler_data.base_environment.id}}', '{{ scheduler_data.base_environment.name}}');
+    setCompareEnvSelected('{{ scheduler_data.compare_environment.id}}', '{{ scheduler_data.compare_environment.name}}');
+    '{% for country in scheduler_data.country_list %}'
+    setCountryChecked('{{ country.id }}');
+    '{% endfor %}'
+    setDailyProceedTime('{{ scheduler_data.next_proceed_time }}');
+    setIntervalHour('{{ scheduler_data.interval_hour }}');
+    '{% for receiver in scheduler_data.mail_list %}'
+    addReceivers('{{ receiver }}');
+    '{% endfor %}'
+    setReceivers()
+
     createBtnOnClick = function () {
-        createTask("{% url 'create-scheduler-task' %}",
-                   "{{ admin_console_info.module.id }}");
+        createTask("{% url 'update-scheduler' %}",
+            "{{ admin_console_info.module.id }}");
     }
 </script>
 {% endblock %}

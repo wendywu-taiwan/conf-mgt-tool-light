@@ -159,6 +159,10 @@ def local_time_to_utc(local_time, current_time_zone):
     return time
 
 
+def get_current_utc_time():
+    return datetime.utcnow()
+
+
 def compare_git_time(left, right):
     format = config.TIME_FORMAT.get('git_time_format')
     time_zone = -7

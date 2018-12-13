@@ -27,8 +27,7 @@ ruleset_comparer_pattern = [
     path('report/mail/<str:compare_key>',
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
-         views.download_compare_report, name="report-download"),
-    path('test', views.test_page),
+         views.download_compare_report, name="report-download")
 ]
 
 admin_console_pattern = [
@@ -42,12 +41,15 @@ admin_console_ruleset_pattern = [
     path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
     path('scheduler/list', views.admin_console_scheduler_list_page, name="task-manager-list"),
     path('scheduler/create', views.admin_console_scheduler_create_page, name="task-create"),
+    path('scheduler/update/<int:scheduler_id>', views.admin_console_scheduler_update_page, name="task-update"),
+
 ]
 
 ruleset_scheduler_pattern = [
-    path('create', views.create_scheduler, name="create-scheduler-task"),
-    path('update', views.update_scheduler, name="update-scheduler-task"),
+    path('create', views.create_scheduler, name="create-scheduler"),
+    path('update', views.update_scheduler, name="update-scheduler"),
     path('list', views.get_scheduler_list),
+    path('<int:id>', views.get_scheduler),
 ]
 
 urlpatterns = [

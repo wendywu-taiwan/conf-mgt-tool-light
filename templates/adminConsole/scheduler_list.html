@@ -5,7 +5,7 @@
     <div id="task_list_header_div" class="row no_row_margin">
         <div class="component_title">TASK</div>
         <div id="create_task_button_div">
-            <a href="#fakelink" class="btn btn-block btn-lg btn-primary">Create</a>
+            <a href="{% url 'task-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
         </div>
     </div>
     <div class="title_div row">
@@ -71,14 +71,16 @@
             </div>
         </div>
         <div id="task_status_div">
-            {% if task.status%}
+            {% if task.status %}
             <div id="task_status_in_progress">In Progress</div>
             {% else %}
             <div id="task_status_stop">Stop</div>
             {% endif %}
         </div>
         <div id="task_action_div">
-            <img class="task_action_icon" src="{% static '/icons/edit.png' %}">
+            <a href="{% url 'task-update' task.task_id %}" class="btn">
+                <img class="task_action_icon" src="{% static '/icons/edit.png' %}">
+            </a>
         </div>
     </div>
     <div class="task_divider"></div>

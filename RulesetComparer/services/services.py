@@ -8,7 +8,7 @@ from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.updateReportSchedularTaskParser import UpdateReportSchedulerTaskParser
 
-from RulesetComparer.models import ReportSchedulerInfo
+from RulesetComparer.models import ReportSchedulerInfo,Country
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils import rulesetUtil, fileManager
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
@@ -79,8 +79,8 @@ def create_report_scheduler_task(json_data):
                                             parser.mail_list)
 
         scheduler = SendMailScheduler(daily_task.scheduler_listener)
-        job = scheduler.test_job(daily_task.run_task, 1, parser.next_proceed_time_locale)
-        daily_task.set_scheduled_job(job)
+        # job = scheduler.test_job(daily_task.run_task, 1, parser.next_proceed_time_locale)
+        # daily_task.set_scheduled_job(job)
         return info_model
     except BaseException as e:
         traceback.print_exc()
@@ -91,13 +91,6 @@ def update_report_scheduler_task(json_data):
         parser = UpdateReportSchedulerTaskParser(json_data)
 
         info_model = ReportSchedulerInfo.objects.get(id=parser.task_id)
-        info_model.base_environment_id = parser.base_env_id
-        info_model.compare_environment_id = parser.compare_env_id
-        info_model.country_list.clear()
-        info_model.mail_list = parser.mail_list
-        info_model.interval_hour = parser.interval_hour
-        info_model.next_proceed_time = parser.start_date_time
-
         origin_status = info_model.enable
         new_status = parser.enable
 
@@ -112,8 +105,14 @@ def update_report_scheduler_task(json_data):
             job = scheduler.test_job(daily_task.run_task, 1, parser.start_date_time)
             daily_task.set_scheduled_job(job)
 
-        info_model.enable = parser.enable
-        info_model.save()
+        info_model = ReportSchedulerInfo.objects.update_task(parser.task_id,
+                                                             parser.base_env_id,
+                                                             parser.compare_env_id,
+                                                             parser.country_list,
+                                                             parser.mail_list,
+                                                             parser.interval_hour,
+                                                             parser.start_date_time)
+
         return info_model
     except BaseException:
         traceback.print_exc()

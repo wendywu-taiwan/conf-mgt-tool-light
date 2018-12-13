@@ -20,7 +20,7 @@ let baseEnvId, compareEnvId, moduleId, interval_hour, start_date_time;
 let country_list = [];
 let mail_list = [];
 
-createTask = function (url, module_id) {
+createTask = function (url, module_id, task_list_url) {
     showWaitingDialog();
     console.log("url" + url);
     let validData = checkInputValid(module_id);
@@ -38,11 +38,37 @@ createTask = function (url, module_id) {
     }
 
     doPOST(url, post_body, function (response) {
-        showSuccessDialog("create task success")
+        showSuccessDialog("create task success");
+        window.location = task_list_url;
     }, function (response) {
         showErrorDialog("create task fail")
     });
 };
+
+updateTask = function (url, module_id, task_id) {
+    showWaitingDialog();
+    console.log("url" + url);
+    let validData = checkInputValid(module_id);
+    if (!validData)
+        return;
+
+    let post_body = {
+        "id": task_id,
+        "base_environment_id": baseEnvId,
+        "compare_environment_id": compareEnvId,
+        "module_id": moduleId,
+        "country_list": country_list,
+        "mail_list": mail_list,
+        "interval_hour": interval_hour,
+        "start_date_time": start_date_time
+    }
+
+    doPOST(url, post_body, function (response) {
+        showSuccessDialog("update task success")
+    }, function (response) {
+        showErrorDialog("update task fail")
+    });
+}
 
 checkInputValid = function (module_id) {
     baseEnvId = $("#select_base_env_btn:first-child").val();

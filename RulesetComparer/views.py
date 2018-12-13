@@ -53,7 +53,7 @@ def admin_console_scheduler_list_page(request):
             data_builder = ReportSchedulerInfoBuilder(scheduler_info)
             data_list.append(data_builder.get_data())
 
-        return render(request, "scheduler_task_list.html", {"data": data_list})
+        return render(request, "scheduler_list.html", {"data": data_list})
     except Exception as e:
         traceback.print_exc()
         logging.error(traceback.format_exc())
@@ -70,8 +70,32 @@ def admin_console_scheduler_create_page(request):
         data = {key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
                 key.ADMIN_CONSOLE_INFO: info_data}
-        return render(request, "create_scheduler_task.html", data)
+        return render(request, "scheduler_create.html", data)
     except Exception as e:
+        traceback.print_exc()
+        logging.error(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_scheduler_update_page(request, scheduler_id):
+    try:
+        environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
+        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        info_data = AdminConsoleInfoBuilder().get_data()
+
+        scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
+        scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+
+        data = {
+            key.SCHEDULER_MODIFY_TYPE: key.SCHEDULER_UPDATE,
+            key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
+            key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.SCHEDULER_DATA: scheduler_data
+        }
+        return render(request, "scheduler_update.html", data)
+    except Exception:
         traceback.print_exc()
         logging.error(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -256,10 +280,23 @@ def get_scheduler_list(request):
         return JsonResponse(result)
 
 
+def get_scheduler(request, scheduler_id):
+    try:
+        scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
+        scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+        result = ResponseBuilder(data=scheduler_data).get_data()
+        response = JsonResponse(data=result)
+        return response
+    except Exception as e:
+        traceback.print_exc()
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def create_scheduler(request):
     try:
         request_json = get_post_request_json(request)
-        print("create_report_scheduler_task, request json =" + str(request_json))
+        print("create_scheduler, request json =" + str(request_json))
         scheduler_info = services.create_report_scheduler_task(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
@@ -271,12 +308,17 @@ def create_scheduler(request):
 
 
 def update_scheduler(request):
-    request_json = get_post_request_json(request)
-    print("update_report_scheduler_task, request json =" + str(request_json))
-    scheduler_info = services.update_report_scheduler_task(request_json)
-    info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
-    result = ResponseBuilder(data=info_data).get_data()
-    return JsonResponse(data=result)
+    try:
+        request_json = get_post_request_json(request)
+        print("update_scheduler, request json =" + str(request_json))
+        scheduler_info = services.update_report_scheduler_task(request_json)
+        info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+        result = ResponseBuilder(data=info_data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        traceback.print_exc()
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
 
 def delete_scheduler(request):
