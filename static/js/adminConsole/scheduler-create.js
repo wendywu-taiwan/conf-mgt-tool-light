@@ -45,9 +45,11 @@ createTask = function () {
 
     doPOST(postUrl, post_body, function (response) {
         successDialog("create task success", function () {
+            console.log(response);
             window.location = taskListUrl;
         });
     }, function (response) {
+        console.log(response);
         showErrorDialog("create task fail")
     });
 };
@@ -71,9 +73,11 @@ updateTask = function (task_id) {
 
     doPOST(postUrl, post_body, function (response) {
         successDialog("update task success", function () {
+            console.log(response);
             window.location = taskListUrl;
         });
     }, function (response) {
+        console.log(response);
         showErrorDialog("update task fail")
     });
 }

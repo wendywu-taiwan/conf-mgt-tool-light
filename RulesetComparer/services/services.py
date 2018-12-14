@@ -1,4 +1,5 @@
 import traceback
+from RulesetComparer.utils.logger import *
 from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
@@ -8,7 +9,7 @@ from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.updateReportSchedularTaskParser import UpdateReportSchedulerTaskParser
 
-from RulesetComparer.models import ReportSchedulerInfo,Country
+from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils import rulesetUtil, fileManager
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
@@ -61,7 +62,7 @@ def download_rule_set_from_git(country):
     pass
 
 
-def create_report_scheduler_task(json_data):
+def create_report_scheduler(json_data):
     try:
         parser = CreateReportSchedulerTaskParser(json_data)
         info_model = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
@@ -70,23 +71,18 @@ def create_report_scheduler_task(json_data):
                                                              parser.country_list,
                                                              parser.mail_list,
                                                              parser.interval_hour,
-                                                             parser.next_proceed_time_utc)
+                                                             parser.utc_time)
 
-        daily_task = DailyCompareReportTask(info_model.id,
-                                            parser.base_env_id,
-                                            parser.compare_env_id,
-                                            parser.country_list,
-                                            parser.mail_list)
-
-        scheduler = SendMailScheduler(daily_task.scheduler_listener)
-        # job = scheduler.test_job(daily_task.run_task, 1, parser.next_proceed_time_locale)
-        # daily_task.set_scheduled_job(job)
+        run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
+                             parser.country_list, parser.mail_list, parser.local_time,
+                             parser.interval_hour)
         return info_model
-    except BaseException as e:
+    except BaseException:
         traceback.print_exc()
+        logging.error(traceback.format_exc())
 
 
-def update_report_scheduler_task(json_data):
+def update_report_scheduler(json_data):
     try:
         parser = UpdateReportSchedulerTaskParser(json_data)
 
@@ -95,15 +91,9 @@ def update_report_scheduler_task(json_data):
         new_status = parser.enable
 
         if origin_status == dataKey.STATUS_DISABLE and new_status == dataKey.STATUS_ENABLE:
-            daily_task = DailyCompareReportTask(info_model.id,
-                                                parser.base_env_id,
-                                                parser.compare_env_id,
-                                                parser.country_list,
-                                                parser.mail_list)
-
-            scheduler = SendMailScheduler(daily_task.scheduler_listener)
-            job = scheduler.test_job(daily_task.run_task, 1, parser.start_date_time)
-            daily_task.set_scheduled_job(job)
+            run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
+                                 parser.country_list, parser.mail_list, parser.local_time,
+                                 parser.interval_hour)
 
         info_model = ReportSchedulerInfo.objects.update_task(parser.task_id,
                                                              parser.base_env_id,
@@ -111,8 +101,21 @@ def update_report_scheduler_task(json_data):
                                                              parser.country_list,
                                                              parser.mail_list,
                                                              parser.interval_hour,
-                                                             parser.start_date_time)
-
+                                                             parser.utc_time)
         return info_model
     except BaseException:
         traceback.print_exc()
+        logging.error(traceback.format_exc())
+
+
+def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
+                         mail_list, next_proceed_time, interval):
+    daily_task = DailyCompareReportTask(model_id,
+                                        base_env_id,
+                                        compare_env_id,
+                                        country_list,
+                                        mail_list)
+
+    scheduler = SendMailScheduler(daily_task.scheduler_listener)
+    job = scheduler.test_job(daily_task.run_task, interval, next_proceed_time)
+    daily_task.set_scheduled_job(job)
