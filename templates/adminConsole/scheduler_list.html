@@ -55,7 +55,7 @@
                 <div class="country_image_div">
                     <img class="task_nation_flag" src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
                     <div class="country_name_tips">{{ country.name }}</div>
-                    </div>
+                </div>
                 {% endfor %}
             </div>
         </div>
@@ -80,15 +80,46 @@
             <div id="task_status_stop">Stop</div>
             {% endif %}
         </div>
-        <div id="task_action_div">
-            <a href="{% url 'task-update' task.task_id %}" class="btn">
-                <img class="task_action_icon" src="{% static '/icons/edit.png' %}">
-            </a>
+        <div id="task_action_div" class="row no_row_margin">
+            <div>
+                <a href="{% url 'task-update' task.task_id %}" class="btn">
+                    <img id="task_edit_icon" src="{% static '/icons/edit.png' %}">
+                </a>
+            </div>
+            <div>
+                <a onclick="deleteScheduler('{{ task.task_id }}')" class="btn">
+                    <img class="task_action_icon" src="{% static '/icons/delete_yellow.png' %}">
+                </a>
+            </div>
         </div>
     </div>
     <div class="task_divider"></div>
     {% endfor %}
 
 </div>
+<script>
+    function deleteScheduler(task_id) {
+        warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
+            function () {
+                console.log("deleteScheduler confirm");
+                showWaitingDialog();
+
+                let post_body = {
+                    "id": task_id
+                };
+
+                doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {
+                    successDialog("delete task success", function () {
+                        console.log(response);
+                        window.location = "{% url 'task-manager-list' %}";
+                    });
+                }, function (response) {
+                    console.log(response);
+                    showErrorDialog("delete task fail")
+                });
+            })
+    }
+
+</script>
 
 {% endblock %}

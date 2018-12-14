@@ -214,10 +214,8 @@ html, body {
 }
 
 #task_action_div {
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 10%;
-    text-align: right;
+    margin: auto;
+    margin-right: 10px;
 }
 
 #create_task_button_div {
@@ -387,6 +385,10 @@ html, body {
     margin-top: auto;
     margin-bottom: auto;
     width: 17%;
+}
+
+#task_edit_icon{
+    width: 22px;
 }
 
 #task_list_header_div {

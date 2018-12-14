@@ -85,24 +85,17 @@ def create_report_scheduler(json_data):
 def update_report_scheduler(json_data):
     try:
         parser = UpdateReportSchedulerTaskParser(json_data)
-
-        info_model = ReportSchedulerInfo.objects.get(id=parser.task_id)
-        origin_status = info_model.enable
-        new_status = parser.enable
-
-        if origin_status == dataKey.STATUS_DISABLE and new_status == dataKey.STATUS_ENABLE:
-            run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
-                                 parser.country_list, parser.mail_list, parser.local_time,
-                                 parser.interval_hour)
-
-        info_model = ReportSchedulerInfo.objects.update_task(parser.task_id,
-                                                             parser.base_env_id,
-                                                             parser.compare_env_id,
-                                                             parser.country_list,
-                                                             parser.mail_list,
-                                                             parser.interval_hour,
-                                                             parser.utc_time)
+        delete_scheduler(parser.task_id)
+        info_model = create_report_scheduler(json_data)
         return info_model
+    except BaseException:
+        traceback.print_exc()
+        logging.error(traceback.format_exc())
+
+
+def delete_scheduler(task_id):
+    try:
+        ReportSchedulerInfo.objects.filter(id=task_id).delete()
     except BaseException:
         traceback.print_exc()
         logging.error(traceback.format_exc())

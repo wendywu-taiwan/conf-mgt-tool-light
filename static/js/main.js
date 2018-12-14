@@ -29,7 +29,9 @@ function showWaitingDialog() {
         title: "Please Wait..",
         imageUrl: "../../../../static/icons/loading.gif",
         closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnCancel: false,
+        showCancelButton:false,
+        showConfirmButton:false
     });
 }
 
@@ -49,6 +51,29 @@ function showErrorDialog(text) {
     swal({type: 'error', title: 'Error', text: text})
 }
 
-function showEWarningDialog(text) {
+function showWarningDialog(text) {
     swal({type: 'warning', title: 'Warning', text: text})
+}
+
+function warningDialog(title, text, confirmButtonText, onConfirmClick) {
+    swal({
+        title: title,
+        text: text,
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: confirmButtonText,
+        closeOnConfirm: false,
+        cancelButtonText: "Cancel"
+    }, onConfirmClick);
+}
+
+function confirmDialog(text, confirmButtonText, onConfirmClick) {
+    swal({
+        title: text,
+        type: "info",
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: confirmButtonText,
+        closeOnConfirm: true
+    }, onConfirmClick);
 }
