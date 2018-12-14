@@ -337,7 +337,6 @@ html, body {
 /* admin console task list */
 .task_nation_flag {
     width: 32px;
-    margin-right: 10px;
 }
 
 .scheduler_task {
@@ -392,6 +391,16 @@ html, body {
 
 #task_list_header_div {
     margin-bottom: 15px;
+}
+
+.country_image_div {
+    width: 25%;
+    text-align: center;
+}
+
+.country_name_tips{
+    font-size: 12px;
+    font-weight: 600;
 }
 
 /* end admin console task list */

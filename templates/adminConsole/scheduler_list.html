@@ -50,9 +50,12 @@
 
         </div>
         <div class="country_list_div">
-            <div>
+            <div class="row no_row_margin">
                 {% for country in task.country_list %}
-                <img class="task_nation_flag" src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
+                <div class="country_image_div">
+                    <img class="task_nation_flag" src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
+                    <div class="country_name_tips">{{ country.name }}</div>
+                    </div>
                 {% endfor %}
             </div>
         </div>
