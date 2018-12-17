@@ -43,13 +43,12 @@ class DailyCompareReportTask:
                 # build compare info list data to show in email content
                 result_data = fileManager.load_compare_result_file(task.compare_hash_key)
                 self.info_builder.add_data(result_data)
-        except Exception as e:
+        except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())
 
     def send_mail(self):
         try:
-            print("test send mail")
             self.mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
             self.compare_data()
 
@@ -60,37 +59,38 @@ class DailyCompareReportTask:
             self.mail_sender.compose_msg(None, None, html_content)
             self.mail_sender.send()
             self.mail_sender.quit()
-        except Exception as e:
+        except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())
 
     def run_task(self):
+        logging.info("DailyCompareReportTask,run task id :" + str(self.id))
         task_exist = ReportSchedulerInfo.objects.filter(id=self.id).count()
 
         if task_exist == 0:
             self.scheduled_job.remove()
-            print(
-                "remove scheduled work," + self.id + " base env =" + self.base_env.name + " compared env=" + self.compare_env)
+            logging.info("DailyCompareReportTask remove task, id:" + str(self.id))
         else:
             self.send_mail()
 
     def scheduler_listener(self, event):
         if event.exception:
             # send mail to wendy
-            logging.info("send mail task success")
-            print('The job crashed')
+            logging.error('DailyCompareReportTask job crashed, task id =' + str(self.id))
+            logging.error(traceback.format_exc())
         else:
             try:
-                print('The job worked')
+                logging.info('DailyCompareReportTask job worked, task id =' + str(self.id))
+                time_zone = config.TIME_ZONE.get('asia_taipei')
                 time_format = config.TIME_FORMAT.get('db_time_format')
                 next_date_time = self.scheduled_job.next_run_time
-
                 next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
-                current_date_time = timeUtil.date_time_change_format(timeUtil.get_current_date_time(), time_format)
+                utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, time_zone)
 
                 task = ReportSchedulerInfo.objects.get(id=self.id)
-                task.next_proceed_time = next_proceed_time
-                task.last_proceed_time = current_date_time
+                task.last_proceed_time = task.next_proceed_time
+                task.next_proceed_time = utc_next_proceed_time
+
                 task.save()
             except BaseException:
                 traceback.print_exc()

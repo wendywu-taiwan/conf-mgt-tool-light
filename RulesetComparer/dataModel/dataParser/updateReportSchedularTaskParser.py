@@ -34,8 +34,7 @@ class UpdateReportSchedulerTaskParser:
             traceback.print_exc()
             logging.error(traceback.format_exc())
 
-    @staticmethod
-    def get_compare_time(start_date_time):
+    def get_compare_time(self, start_date_time):
         try:
             time_zone = config.TIME_ZONE.get('asia_taipei')
             frontend_time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
@@ -44,19 +43,16 @@ class UpdateReportSchedulerTaskParser:
             local_date_time = timeUtil.date_time_change_time_zone(date_time, time_zone)
             current_date_time = timeUtil.get_current_date_time()
 
-            local_time_hour = local_date_time.hour
-            current_time_hour = current_date_time.hour
-
             # compare local time and current time
             if local_date_time > current_date_time:
                 result_time = local_date_time
             else:
                 local_date_time = local_date_time.replace(year=current_date_time.year)
                 local_date_time = local_date_time.replace(month=current_date_time.month)
-                if local_time_hour < current_time_hour:
-                    local_date_time = local_date_time.replace(day=current_date_time.day + 1)
-                else:
+                if self.local_date_time_valid(local_date_time, current_date_time):
                     local_date_time = local_date_time.replace(day=current_date_time.day)
+                else:
+                    local_date_time = local_date_time.replace(day=current_date_time.day + 1)
                 result_time = local_date_time
 
             naive_result_time = datetime(result_time.year, result_time.month, result_time.day,
@@ -82,6 +78,29 @@ class UpdateReportSchedulerTaskParser:
             # transfer time zone to utc
             utc_time = timeUtil.local_time_to_utc(naive_result_time, time_zone)
             return utc_time
+        except Exception:
+            traceback.print_exc()
+            logging.error(traceback.format_exc())
+
+    @staticmethod
+    def local_date_time_valid(local_date_time, current_date_time):
+        try:
+            if local_date_time.hour < current_date_time.hour:
+                return False
+            elif local_date_time.hour > current_date_time.hour:
+                return True
+            # if same hour, compare minutes
+            else:
+                if local_date_time.minute < current_date_time.minute:
+                    return False
+                elif local_date_time.minute > current_date_time.minute:
+                    return True
+                # if same minute, compare second
+                else:
+                    if local_date_time.second > current_date_time.second:
+                        return True
+                    else:
+                        return False
         except Exception:
             traceback.print_exc()
             logging.error(traceback.format_exc())
