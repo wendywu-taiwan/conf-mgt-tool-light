@@ -47,13 +47,17 @@ def admin_console_server_log_page(request, log_type=None):
 
 def admin_console_scheduler_list_page(request):
     try:
+        info_data = AdminConsoleInfoBuilder().get_data()
         scheduler_info_list = ReportSchedulerInfo.objects.all()
         data_list = list()
         for scheduler_info in scheduler_info_list:
             data_builder = ReportSchedulerInfoBuilder(scheduler_info)
             data_list.append(data_builder.get_data())
 
-        return render(request, "scheduler_list.html", {"data": data_list})
+        data = {key.ADMIN_CONSOLE_INFO: info_data,
+                key.SCHEDULER_LIST: data_list}
+
+        return render(request, "scheduler_list.html", data)
     except Exception as e:
         traceback.print_exc()
         logging.error(traceback.format_exc())
@@ -321,7 +325,16 @@ def update_scheduler(request):
 
 
 def delete_scheduler(request):
-    pass
+    try:
+        request_json = get_post_request_json(request)
+        task_id = request_json["id"]
+        services.delete_scheduler(task_id)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        traceback.print_exc()
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
 
 # todo : return json rule list response

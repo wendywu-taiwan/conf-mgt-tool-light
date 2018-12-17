@@ -90,34 +90,34 @@ checkInputValid = function () {
     mailList = $("#mail_receiver_input").tagsinput('items');
 
     if (!baseEnvId || !compareEnvId) {
-        showEWarningDialog("please select environment");
+        showWarningDialog("please select environment");
         return false;
     }
     if (baseEnvId === compareEnvId) {
-        showEWarningDialog("please select different environment");
+        showWarningDialog("please select different environment");
         return false;
     }
 
     if (countryList.length == 0) {
-        showEWarningDialog("please select country");
+        showWarningDialog("please select country");
         return false;
     }
 
     if (!intervalHour) {
-        showEWarningDialog("please enter hour interval");
+        showWarningDialog("please enter hour interval");
         return false;
     } else if (Number(intervalHour) % 1 != 0) {
-        showEWarningDialog("please enter integer hour interval");
+        showWarningDialog("please enter integer hour interval");
         return false;
     }
 
     if (!startDateTime) {
-        showEWarningDialog("please enter daily start time");
+        showWarningDialog("please enter daily start time");
         return false;
     }
 
     if (mailList.length == 0) {
-        showEWarningDialog("please enter receiver");
+        showWarningDialog("please enter receiver");
         return false;
     }
     return true;

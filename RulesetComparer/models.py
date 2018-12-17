@@ -129,6 +129,13 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
+    def update_next_proceed_time(self, task_id,  next_proceed_time):
+        task = self.get(id=task_id)
+        task.next_proceed_time = next_proceed_time
+
+        task.save()
+        return task
+
 
 class ReportSchedulerInfo(models.Model):
     id = models.AutoField(primary_key=True)

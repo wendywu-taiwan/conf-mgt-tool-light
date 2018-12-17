@@ -87,6 +87,9 @@ STATUS_DISABLE = 0
 # response builder
 SUCCESS_MESSAGE = "success"
 
+# view.admin_console_scheduler_list
+SCHEDULER_LIST = "task_list"
+
 # view.admin_console_create_scheduler
 ADMIN_CONSOLE_INFO = "admin_console_info"
 

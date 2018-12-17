@@ -29,59 +29,29 @@
     ],
     "country": [
       {
-        "full_name": "Austria",
-        "name": "AT",
-        "icon_file_name": "austria.png"
-      },
-      {
-        "full_name": "Brazil",
-        "name": "BR",
-        "icon_file_name": "brazil.png"
-      },
-      {
-        "full_name": "Bulgaria",
-        "name": "BG",
-        "icon_file_name": "bulgaria.png"
-      },
-      {
         "full_name": "China",
         "name": "CN",
         "icon_file_name": "china.png"
       },
       {
-        "full_name": "Colombia",
-        "name": "CO",
-        "icon_file_name": "colombia.png"
+        "full_name": "Singapore",
+        "name": "SG",
+        "icon_file_name": "singapore.png"
       },
       {
-        "full_name": "Czech Republic",
-        "name": "CZ",
-        "icon_file_name": "czech-republic.png"
+        "full_name": "Malaysia",
+        "name": "MY",
+        "icon_file_name": "malaysia.png"
       },
       {
-        "full_name": "Deutschland",
-        "name": "DE",
-        "icon_file_name": "germany.png"
-      },
-      {
-        "full_name": "FinLand",
-        "name": "FI",
-        "icon_file_name": "finland.png"
+        "full_name": "Vietnam",
+        "name": "VN",
+        "icon_file_name": "vietnam.png"
       },
       {
         "full_name": "Hong Kong",
         "name": "HK",
         "icon_file_name": "hong-kong.png"
-      },
-      {
-        "full_name": "Hungary",
-        "name": "HU",
-        "icon_file_name": "hungary.png"
-      },
-      {
-        "full_name": "IN",
-        "name": "IN",
-        "icon_file_name": ""
       },
       {
         "full_name": "Indonesia",
@@ -99,61 +69,6 @@
         "icon_file_name": "south-korea.png"
       },
       {
-        "full_name": "Mexico",
-        "name": "MX",
-        "icon_file_name": "mexico.png"
-      },
-      {
-        "full_name": "NET",
-        "name": "DE",
-        "icon_file_name": ""
-      },
-      {
-        "full_name": "Netherlands",
-        "name": "NL",
-        "icon_file_name": "netherlands.png"
-      },
-      {
-        "full_name": "Poland",
-        "name": "PL",
-        "icon_file_name": "poland.png"
-      },
-      {
-        "full_name": "Portugal",
-        "name": "PT",
-        "icon_file_name": "portugal.png"
-      },
-      {
-        "full_name": "Romania",
-        "name": "RO",
-        "icon_file_name": "romania.png"
-      },
-      {
-        "full_name": "Russia",
-        "name": "RU",
-        "icon_file_name": "russia.png"
-      },
-      {
-        "full_name": "Schweiz",
-        "name": "CH",
-        "icon_file_name": "switzerland.png"
-      },
-      {
-        "full_name": "Slovakia",
-        "name": "SK",
-        "icon_file_name": "slovakia.png"
-      },
-      {
-        "full_name": "South Africa",
-        "name": "ZA",
-        "icon_file_name": "south-africa.png"
-      },
-      {
-        "full_name": "Spain",
-        "name": "ES",
-        "icon_file_name": "spain.png"
-      },
-      {
         "full_name": "Taiwan",
         "name": "TW",
         "icon_file_name": "taiwan.png"
@@ -162,21 +77,6 @@
         "full_name": "Thailand",
         "name": "TH",
         "icon_file_name": "thailand.png"
-      },
-      {
-        "full_name": "United Kingdom",
-        "name": "UK",
-        "icon_file_name": "united-kingdom.png"
-      },
-      {
-        "full_name": "United States",
-        "name": "USA",
-        "icon_file_name": ""
-      },
-      {
-        "full_name": "Ukraine",
-        "name": "UA",
-        "icon_file_name": "ukraine.png"
       }
     ],
     "function": [

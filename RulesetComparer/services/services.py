@@ -6,6 +6,8 @@ from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTa
 from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
 
 from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
+from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
+from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.updateReportSchedularTaskParser import UpdateReportSchedulerTaskParser
 
@@ -112,3 +114,26 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
     scheduler = SendMailScheduler(daily_task.scheduler_listener)
     job = scheduler.test_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)
+
+
+def restart_all_scheduler():
+    try:
+        logging.info("restart all scheduler")
+        scheduler_model_list = ReportSchedulerInfo.objects.all()
+        for scheduler in scheduler_model_list:
+            country_list = scheduler.country_list.values("id")
+            parser = DBReportSchedulerParser(scheduler, country_list)
+            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id,
+                                                                 parser.utc_time)
+            run_report_scheduler(parser.task_id,
+                                 parser.base_env_id,
+                                 parser.compare_env_id,
+                                 parser.country_list,
+                                 parser.mail_list,
+                                 parser.local_time,
+                                 parser.interval_hour)
+
+        logging.info("restart all scheduler success")
+    except BaseException:
+        traceback.print_exc()
+        logging.error(traceback.format_exc())
