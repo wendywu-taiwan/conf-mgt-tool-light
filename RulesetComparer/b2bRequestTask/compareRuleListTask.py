@@ -19,8 +19,7 @@ from django.template.loader import get_template
 class CompareRuleListTask:
 
     def __init__(self, base_env_id, compare_env_id, country_id):
-        # self.compare_hash_key = hash(self)
-        self.compare_hash_key = 284291413
+        self.compare_hash_key = hash(self)
         self.baseEnv = Environment.objects.get(id=base_env_id)
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
@@ -54,7 +53,7 @@ class CompareRuleListTask:
         self.check_git_status()
         self.execute()
         self.save_result_file()
-        # self.remove_rule_files()
+        self.remove_rule_files()
 
     def check_git_environment(self):
         if self.baseEnv.name == config.GIT.get("environment_name"):
