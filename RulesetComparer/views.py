@@ -75,7 +75,7 @@ def admin_console_scheduler_create_page(request):
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
                 key.ADMIN_CONSOLE_INFO: info_data}
         return render(request, "scheduler_create.html", data)
-    except Exception as e:
+    except Exception:
         traceback.print_exc()
         logging.error(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

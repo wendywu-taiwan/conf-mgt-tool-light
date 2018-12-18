@@ -110,7 +110,7 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
                                         compare_env_id,
                                         country_list,
                                         mail_list)
-
+    print("run_report_scheduler, task id:"+str(daily_task.id))
     scheduler = SendMailScheduler(daily_task.scheduler_listener)
     job = scheduler.test_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)

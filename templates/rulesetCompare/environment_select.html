@@ -13,7 +13,7 @@
             </button>
             <ul id="select-country-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse" role="menu">
                 {% for data in countries %}
-                <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
+                <li value="{{ data.id }}"><a href="#">{{ data.full_name }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -48,14 +48,15 @@
             </ul>
         </div>
     </div>
+
     <form id="compare" method="post">
-        {% csrf_token %}
-        <input name='country' id="country_selected" value="{{ country }}" type="hidden">
-        <input name='base_env' id="environment_1_selected" value="{{ env1 }}" type="hidden">
-        <input name='compare_env' id="environment_2_selected" value="{{ env2 }}" type="hidden">
-        <button class="custom-btn-1 btn btn-embossed btn-primary" type="submit" form="compare" value="Submit">
-            Submit
-        </button>
+    {% csrf_token %}
+    <input name='country' id="country_selected" value="{{ country }}" type="hidden">
+    <input name='base_env' id="environment_1_selected" value="{{ env1 }}" type="hidden">
+    <input name='compare_env' id="environment_2_selected" value="{{ env2 }}" type="hidden">
+    <button id="compare_submit_button" class="custom-btn-1 btn btn-embossed btn-primary" type="submit" form="compare" value="Submit">
+    Submit
+    </button>
     </form>
 </div>
 {% endblock %}
