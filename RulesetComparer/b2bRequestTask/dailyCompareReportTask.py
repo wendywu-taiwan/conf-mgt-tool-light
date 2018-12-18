@@ -71,6 +71,7 @@ class DailyCompareReportTask:
             self.scheduled_job.remove()
             logging.info("DailyCompareReportTask remove task, id:" + str(self.id))
         else:
+            self.info_builder.clear_data()
             self.send_mail()
 
     def scheduler_listener(self, event):

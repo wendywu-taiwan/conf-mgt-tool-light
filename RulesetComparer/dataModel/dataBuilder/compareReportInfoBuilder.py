@@ -8,6 +8,10 @@ class CompareReportInfoBuilder(BaseBuilder):
         self.data_list = list()
         BaseBuilder.__init__(self)
 
+    def clear_data(self):
+        self.data_list.clear()
+        self.result_dict.clear()
+
     def add_data(self, result_data):
         list_data = result_data[key.COMPARE_RESULT_LIST_DATA]
         list_data[key.COMPARE_RULE_LIST_COUNTRY] = result_data[key.COMPARE_RULE_LIST_COUNTRY]
