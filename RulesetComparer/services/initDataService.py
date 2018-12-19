@@ -17,9 +17,11 @@ def init_data():
         init_module_data(ruleset_data["module"])
         init_user_role_data(ruleset_data['user_role'])
     except Exception:
-        Country.objects.all().delete()
+        if len(Country.objects.all()) > 0:
+            Country.objects.all().delete()
         traceback.print_exc()
         logging.error(traceback.format_exc())
+
 
 def init_country_data(country_list):
     db_countries = Country.objects.all()

@@ -110,15 +110,18 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
                                         compare_env_id,
                                         country_list,
                                         mail_list)
-    print("run_report_scheduler, task id:"+str(daily_task.id))
+    print("run_report_scheduler, task id:" + str(daily_task.id))
     scheduler = SendMailScheduler(daily_task.scheduler_listener)
-    job = scheduler.test_job(daily_task.run_task, interval, next_proceed_time)
+    job = scheduler.add_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)
 
 
 def restart_all_scheduler():
     try:
         logging.info("restart all scheduler")
+        if len(ReportSchedulerInfo.objects.all()) == 0:
+            return
+
         scheduler_model_list = ReportSchedulerInfo.objects.all()
         for scheduler in scheduler_model_list:
             country_list = scheduler.country_list.values("id")

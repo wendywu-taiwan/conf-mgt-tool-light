@@ -19,7 +19,7 @@ class SendMailScheduler:
         self.scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
     def add_job(self, send_mail_task, interval, start_date):
-        job = self.scheduler.add_job(func=send_mail_task, trigger='interval', hour=interval,
+        job = self.scheduler.add_job(func=send_mail_task, trigger='interval', hours=interval,
                                      start_date=start_date)
         return job
 
