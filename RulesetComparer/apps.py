@@ -12,7 +12,3 @@ class RulesetcomparerConfig(AppConfig):
             return
 
         initialize_logger()
-        from RulesetComparer.services import initDataService
-        from RulesetComparer.services.services import restart_all_scheduler
-        initDataService.init_data()
-        restart_all_scheduler()

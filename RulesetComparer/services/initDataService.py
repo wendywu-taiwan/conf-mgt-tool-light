@@ -1,8 +1,9 @@
 import traceback
-from RulesetComparer.utils import fileManager
+from RulesetComparer.utils import fileManager, modelManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole
+from RulesetComparer.services.services import restart_all_scheduler
 
 
 def init_data():
@@ -11,14 +12,15 @@ def init_data():
         preload_data_path = settings.BASE_DIR + config.get_file_path("preload_data")
         preload_data = fileManager.load_json_file(preload_data_path)
         ruleset_data = preload_data["ruleset_data"]
-        init_country_data(ruleset_data["country"])
-        init_environment_data(ruleset_data["environment"])
-        init_function_data(ruleset_data["function"])
-        init_module_data(ruleset_data["module"])
-        init_user_role_data(ruleset_data['user_role'])
+        has_country = init_country_data(ruleset_data["country"])
+        has_environment = init_environment_data(ruleset_data["environment"])
+        has_function = init_function_data(ruleset_data["function"])
+        has_module = init_module_data(ruleset_data["module"])
+        has_user_role = init_user_role_data(ruleset_data['user_role'])
+        restart_all_scheduler()
+
     except Exception:
-        if len(Country.objects.all()) > 0:
-            Country.objects.all().delete()
+        Country.objects.all().delete()
         traceback.print_exc()
         logging.error(traceback.format_exc())
 
@@ -33,10 +35,12 @@ def init_country_data(country_list):
                 icon_file_name = country_obj["icon_file_name"]
                 Country.objects.create_country(name, full_name, icon_file_name)
             logging.info("init country data success")
+            return True
         except Exception as err:
             Country.objects.all().delete()
             logging.error(traceback.format_exc())
             print("init preload country data to DB fail , error:", err)
+            return False
 
 
 def init_environment_data(environment_data):
@@ -49,10 +53,12 @@ def init_environment_data(environment_data):
                 client = environment_obj['b2b_rule_set_client']
                 Environment.objects.create_environment(name, full_name, client)
             logging.info("init environment data success")
+            return True
         except Exception as err:
             Environment.objects.all().delete()
             logging.error(traceback.format_exc())
             print("init preload country data to DB fail , error:", err)
+            return False
 
 
 def init_function_data(function_data):
@@ -64,10 +70,12 @@ def init_function_data(function_data):
                 icon_file_name = function_obj["icon_file_name"]
                 Function.objects.create(name=name, icon_file_name=icon_file_name)
             logging.info("init function data success")
+            return True
         except Exception as err:
             Function.objects.all().delete()
             logging.error(traceback.format_exc())
             print("init preload function data to DB fail , error:", err)
+            return False
 
 
 def init_module_data(module_data):
@@ -84,10 +92,12 @@ def init_module_data(module_data):
                         continue
                     module.functions.add(db_function)
             logging.info("init module data success")
+            return True
         except Exception as err:
             Module.objects.all().delete()
             logging.error(traceback.format_exc())
             print("init preload module data to DB fail , error:", err)
+            return False
 
 
 def init_user_role_data(user_role_data):
@@ -104,7 +114,9 @@ def init_user_role_data(user_role_data):
                         continue
                     user_role.modules.add(db_module)
             logging.info("init user role data success")
+            return True
         except Exception as err:
             UserRole.objects.all().delete()
             logging.error(traceback.format_exc())
             print("init preload user role data to DB fail , error:", err)
+            return False
