@@ -78,11 +78,11 @@ TEMPLATES = [
 ]
 DATE_INPUT_FORMATS = ["%Y/%m/%d %H:%M:%S"]
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-    os.path.join(BASE_DIR, "resource"),
+    # os.path.join(BASE_DIR, "static"),
+    # os.path.join(BASE_DIR, "resource"),
 ]
 
 WSGI_APPLICATION = 'ConfigManageTool.wsgi.application'
