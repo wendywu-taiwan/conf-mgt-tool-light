@@ -6,7 +6,7 @@ from RulesetComparer.models import Country, Environment, Function, Module, UserR
 from RulesetComparer.services.services import restart_all_scheduler
 
 
-def init_data():
+def init_data(apps, schema_editor):
     try:
         logging.info("init ruleset data")
         preload_data_path = settings.BASE_DIR + config.get_file_path("preload_data")
