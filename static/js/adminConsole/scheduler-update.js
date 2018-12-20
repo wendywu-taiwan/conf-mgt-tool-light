@@ -36,13 +36,11 @@ function setDailyProceedTime(start_time) {
     var start_time_hour_minute = hours + ":" + minute;
     $("#clock_picker_input").text(start_time_hour_minute);
     $("#clock_picker_input").val(start_time_hour_minute);
-    console.log("setDailyProceedTime:" + start_time_hour_minute)
 }
 
 function setIntervalHour(interval_hour) {
     $("#hour_input").text(interval_hour);
     $("#hour_input").val(interval_hour);
-    console.log("setIntervalHour:" + interval_hour)
 }
 
 let receivers = [];
@@ -54,7 +52,6 @@ function addReceivers(receiver) {
 function setReceivers() {
     for (var i = 0; i < receivers.length; i++) {
         var receiver = receivers[i];
-        console.log("addReceivers:" + receiver);
         $('#mail_receiver_input').tagsinput('add', "");
         $('#mail_receiver_input').tagsinput('add', receiver);
     }

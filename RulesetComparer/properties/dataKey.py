@@ -36,11 +36,9 @@ RULE_MODIFIED_KEY_BASE_EXPRESSION = 'base_expression'
 RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
 
-
 # view.environment_select , view.admin_console_create_task
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
-
 
 # view.compare_rule_list_item_data
 COMPARE_RULE_LIST_COUNTRY = 'country'
@@ -79,13 +77,17 @@ NO_ENVIRONMENT_GIT = 0
 BASE_ENVIRONMENT_GIT = 1
 COMPARE_ENVIRONMENT_GIT = 2
 
-
 # task status
 STATUS_ENABLE = 1
 STATUS_DISABLE = 0
 
 # response builder
 SUCCESS_MESSAGE = "success"
+
+# view.server_log
+LOG_TYPE_KEY = "log_type_key"
+LOG_TYPE = "log_type"
+LOG_CONTENT = "log_content"
 
 # view.admin_console_scheduler_list
 SCHEDULER_LIST = "task_list"
@@ -95,5 +97,3 @@ ADMIN_CONSOLE_INFO = "admin_console_info"
 
 # view.admin_console_update_scheduler
 SCHEDULER_DATA = "scheduler_data"
-
-

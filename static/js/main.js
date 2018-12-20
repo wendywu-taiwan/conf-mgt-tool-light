@@ -1,3 +1,8 @@
+$(function () {
+    let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
+    setToken(csrftoken);
+});
+
 function showWaitingDialog() {
     swal({
         title: "Please Wait..",

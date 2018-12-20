@@ -3,13 +3,11 @@ $(function () {
     $(".tagsinput").tagsinput();
 
     $("#base_env_select_list li").click(function () {
-        console.log('select:', $(this).text());
         $("#select_base_env_btn:first-child").text($(this).text());
         $("#select_base_env_btn:first-child").val($(this).val());
     });
 
     $("#compare_env_select_list li").click(function () {
-        console.log('select:', $(this).text());
         $("#select_compare_env_btn:first-child").text($(this).text());
         $("#select_compare_env_btn:first-child").val($(this).val());
     });
