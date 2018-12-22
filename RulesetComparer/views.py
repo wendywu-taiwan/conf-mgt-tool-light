@@ -60,7 +60,7 @@ def admin_console_scheduler_list_page(request):
                 key.SCHEDULER_LIST: data_list}
 
         return render(request, "scheduler_list.html", data)
-    except Exception as e:
+    except Exception:
         traceback.print_exc()
         logging.error(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

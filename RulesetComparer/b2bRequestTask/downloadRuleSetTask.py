@@ -1,5 +1,5 @@
+import traceback
 from zeep import Client
-
 from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_full_file_name
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.models import Country, Environment
@@ -7,6 +7,7 @@ from RulesetComparer.properties import apiResponse
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.logger import *
 from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
+from RulesetComparer.utils.logger import *
 
 
 class DownloadRuleSetTask(BaseRequestTask):
@@ -24,22 +25,26 @@ class DownloadRuleSetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
 
     def request_data(self):
-        client = Client(self.environment.b2b_rule_set_client)
-        auth_data = AuthDataParser(self.environment.name)
+        try:
+            client = Client(self.environment.b2b_rule_set_client)
+            auth_data = AuthDataParser(self.environment.name)
 
-        self.add_request_parameter(self.KEY_USER, auth_data.get_account())
-        self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
-        self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
+            self.add_request_parameter(self.KEY_USER, auth_data.get_account())
+            self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
+            self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
 
-        logging.info('======== download rule set %s ========' % self.rule_set_name)
-        print('======== download rule set %s ========' % self.rule_set_name)
-        response = client.service.exportRuleset(self.request_parameter())
-        self.b2b_response_data = response
-        self.b2b_response_error_check()
+            logging.info('======== download rule set %s ========' % self.rule_set_name)
+            print('======== download rule set %s ========' % self.rule_set_name)
+            response = client.service.exportRuleset(self.request_parameter())
+            self.b2b_response_data = response
+            self.b2b_response_error_check()
 
-        if self.request_fail() is False:
-            self.download_status = apiResponse.RESPONSE_KEY_SUCCESS
-            self.save_rule_set()
+            if self.request_fail() is False:
+                self.download_status = apiResponse.RESPONSE_KEY_SUCCESS
+                self.save_rule_set()
+        except Exception:
+            traceback.print_exc()
+            logging.error(traceback.format_exc())
 
     def get_content(self):
         if self.request_fail():

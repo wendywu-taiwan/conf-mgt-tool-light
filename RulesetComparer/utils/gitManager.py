@@ -2,7 +2,8 @@ from git import Repo
 from RulesetComparer.utils.timeUtil import compare_git_time
 from django.conf import settings
 from RulesetComparer.properties import logMessage
-
+from RulesetComparer.utils.logger import *
+import traceback
 
 class GitManager:
 
@@ -65,24 +66,36 @@ class GitManager:
             print("compare result : nothing change")
 
     def check_branch_status(self):
-        repo = self._repo()
-        remote_repo = self._remote_repo()
-        print("---- check branch status ----")
-        print("local setting branch is {}".format(self.branch))
-        print("current active branch is {}".format(repo.active_branch))
-        if repo.active_branch.name == self.branch:
-            print("setting branch equals active branch, no need to check out")
-            return
+        try:
+            repo = self._repo()
+            remote_repo = self._remote_repo()
+            logging.info("---- check branch status ----")
+            logging.info("local setting branch is {}".format(self.branch))
+            logging.info("current active branch is {}".format(repo.active_branch))
+            print("---- check branch status ----")
+            print("local setting branch is {}".format(self.branch))
+            print("current active branch is {}".format(repo.active_branch))
+            if repo.active_branch.name == self.branch:
+                logging.info("setting branch equals active branch, no need to check out")
+                print("setting branch equals active branch, no need to check out")
+                return
 
-        print("setting branch different with active branch, check out branch")
-        repo.create_head(self.branch, remote_repo.refs[self.branch])
-        current_branch_index = self.get_current_branch_index()
-        remote_branch_index = self.get_remote_branch_index()
-        print("set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
-        repo.heads[current_branch_index].set_tracking_branch(remote_repo.refs[remote_branch_index])
-        repo.heads[current_branch_index].checkout()
+            logging.info("setting branch different with active branch, check out branch")
+            print("setting branch different with active branch, check out branch")
+            repo.create_head(self.branch, remote_repo.refs[self.branch])
+            current_branch_index = self.get_current_branch_index()
+            remote_branch_index = self.get_remote_branch_index()
 
-        print("current active branch is {}".format(repo.active_branch))
+            logging.info("set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
+            print("set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
+            repo.heads[current_branch_index].set_tracking_branch(remote_repo.refs[remote_branch_index])
+            repo.heads[current_branch_index].checkout()
+
+            logging.info("current active branch is {}".format(repo.active_branch))
+            print("current active branch is {}".format(repo.active_branch))
+        except Exception:
+            traceback.print_exc()
+            logging.error(traceback.format_exc())
 
     def get_current_branch_index(self):
         repo = self._repo()
