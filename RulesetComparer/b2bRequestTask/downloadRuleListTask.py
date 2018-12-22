@@ -29,7 +29,7 @@ class DownloadRuleListTask(BaseRequestTask):
             self.add_request_parameter(self.KEY_COUNTRY, country.name)
 
             logging.info("call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
-            logging.info("b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
+            logging.info("call download_rule_set in service, b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
             print("call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
 
             client = Client(environment.b2b_rule_set_client)
