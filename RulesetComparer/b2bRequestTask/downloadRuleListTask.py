@@ -29,14 +29,15 @@ class DownloadRuleListTask(BaseRequestTask):
             self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
             self.add_request_parameter(self.KEY_COUNTRY, country.name)
 
-            debug_log(self.LOG_CLASS,
-                      "call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
-            debug_log(self.LOG_CLASS,
-                      "call download_rule_set in service, b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
+            info_log(self.LOG_CLASS,
+                     "call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
+            info_log(self.LOG_CLASS,
+                     "call download_rule_set in service, b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
 
             client = Client(environment.b2b_rule_set_client)
 
             response = client.service.getOwnedBRERuleSets(self.request_parameter())
+            info_log(self.LOG_CLASS, "getOwnedBRERuleSets response :" + str(response))
             self.b2b_response_data = response
             self.b2b_response_error_check()
         except Exception:
