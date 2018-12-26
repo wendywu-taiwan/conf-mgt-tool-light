@@ -12,6 +12,8 @@ class GitManager:
     STATUS_NO_CHANGED = 2
 
     def __init__(self, path, branch):
+        logging.info("Git Manager init, path:"+str(path))
+        logging.info("branch:" + str(branch))
         self.REPOSITORY_PATH = path
         self.branch = branch
         self.status = None
