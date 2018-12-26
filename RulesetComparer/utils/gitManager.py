@@ -41,31 +41,39 @@ class GitManager:
         pass
 
     def check_commit_status(self):
-        repo = self._repo()
-        remote_repo = self._remote_repo()
+        try:
+            repo = self._repo()
+            remote_repo = self._remote_repo()
 
-        # local last commit
-        local_commit = repo.commit()
-        # remote last commit
-        remote_commit = remote_repo.fetch()[0].commit
+            # local last commit
+            local_commit = repo.commit()
+            # remote last commit
+            remote_commit = remote_repo.fetch()[0].commit
 
-        print_commit(local_commit, "local latest commit")
-        print_commit(remote_commit, "remote latest commit")
-        print("\ncompare local and remote commit time ...")
-        local_commit_time = str(local_commit.authored_datetime)
-        remote_commit_time = str(remote_commit.authored_datetime)
+            print_commit(local_commit, "local latest commit")
+            print_commit(remote_commit, "remote latest commit")
+            logging.info("\ncompare local and remote commit time ...")
+            print("\ncompare local and remote commit time ...")
+            local_commit_time = str(local_commit.authored_datetime)
+            remote_commit_time = str(remote_commit.authored_datetime)
 
-        return_time = compare_git_time(local_commit_time, remote_commit_time)
+            return_time = compare_git_time(local_commit_time, remote_commit_time)
 
-        if return_time == local_commit_time:
-            self.status = self.STATUS_NEED_PUSH
-            print("compare result : need push code")
-        elif return_time == remote_commit_time:
-            self.status = self.STATUS_NEED_PULL
-            print("compare result : need pull code")
-        else:
-            self.status = self.STATUS_NO_CHANGED
-            print("compare result : nothing change")
+            if return_time == local_commit_time:
+                self.status = self.STATUS_NEED_PUSH
+                logging.info("compare result : need push code")
+                print("compare result : need push code")
+            elif return_time == remote_commit_time:
+                self.status = self.STATUS_NEED_PULL
+                logging.info("compare result : need pull code")
+                print("compare result : need pull code")
+            else:
+                self.status = self.STATUS_NO_CHANGED
+                logging.info("compare result : nothing change")
+                print("compare result : nothing change")
+        except Exception:
+            traceback.print_exc()
+            logging.error(traceback.format_exc())
 
     def check_branch_status(self):
         try:

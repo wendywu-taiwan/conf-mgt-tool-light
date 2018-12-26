@@ -29,22 +29,28 @@ def admin_console_page(request):
 
 
 def admin_console_server_log_page(request, log_type=None):
-    if log_type is None:
-        log_type = DEFAULT_LOG_TYPE
+    try:
+        if log_type is None:
+            log_type = DEFAULT_LOG_TYPE
 
-    info_data = AdminConsoleInfoBuilder().get_data()
-    log_dir = settings.BASE_DIR + get_file_path("server_log")
-    log_file_name = LOG_TYPE_FILE[log_type]
-    full_name = log_dir + "/" + log_file_name
-    file = fileManager.load_file(full_name)
-    file_content = file.read().split("\n")
-    data = {
-        key.ADMIN_CONSOLE_INFO: info_data,
-        key.LOG_TYPE_KEY: log_type,
-        key.LOG_TYPE: log_file_name,
-        key.LOG_CONTENT: file_content
-    }
-    return render(request, "server_log.html", data)
+        info_data = AdminConsoleInfoBuilder().get_data()
+        log_dir = settings.BASE_DIR + get_file_path("server_log")
+        log_file_name = LOG_TYPE_FILE[log_type]
+        full_name = log_dir + "/" + log_file_name
+        file = fileManager.load_file(full_name)
+        file_content = file.read().split("\n")
+        data = {
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.LOG_TYPE_KEY: log_type,
+            key.LOG_TYPE: log_file_name,
+            key.LOG_CONTENT: file_content
+        }
+        return render(request, "server_log.html", data)
+    except Exception:
+        traceback.print_exc()
+        logging.error(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
 
 def admin_console_scheduler_list_page(request):

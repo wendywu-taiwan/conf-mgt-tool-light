@@ -1,21 +1,21 @@
 import traceback
-from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
+
+from django.template.loader import get_template
+
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
-from RulesetComparer.models import Country, Environment
-from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
+from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
 from RulesetComparer.dataModel.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleListItemSerializer, RuleSerializer, ModifiedRuleValueSerializer
+from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
+from RulesetComparer.models import Country, Environment
+from RulesetComparer.properties import config
+from RulesetComparer.properties import dataKey as key
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer
+from RulesetComparer.utils import fileManager, rulesetUtil
+from RulesetComparer.utils.gitManager import GitManager
+from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils.gitManager import GitManager
-from RulesetComparer.utils import fileManager, rulesetUtil
 from RulesetComparer.utils.timeUtil import get_current_time
-from RulesetComparer.properties import dataKey as key
-from RulesetComparer.properties import config
-from RulesetComparer.properties.config import get_rule_set_git_path, get_rule_set_path
-from django.conf import settings
-from django.template.loader import get_template
-from RulesetComparer.utils.logger import *
 
 
 class CompareRuleListTask:
