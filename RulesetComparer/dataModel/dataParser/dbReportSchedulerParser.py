@@ -21,7 +21,7 @@ class DBReportSchedulerParser:
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def parse_country(country_id_list):
@@ -33,7 +33,7 @@ class DBReportSchedulerParser:
             return country_list
         except BaseException:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def get_mail_list(mail_list):
@@ -69,7 +69,7 @@ class DBReportSchedulerParser:
 
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def get_utc_time(naive_local_time):
@@ -79,7 +79,7 @@ class DBReportSchedulerParser:
             return utc_time
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def local_date_time_valid(local_date_time, current_date_time):
@@ -102,4 +102,4 @@ class DBReportSchedulerParser:
                         return False
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())

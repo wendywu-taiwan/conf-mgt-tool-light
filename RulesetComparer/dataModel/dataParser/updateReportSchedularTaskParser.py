@@ -20,7 +20,7 @@ class UpdateReportSchedulerTaskParser:
             self.enable = dataKey.STATUS_ENABLE
         except BaseException:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def parse_country(country_id_list):
@@ -32,7 +32,7 @@ class UpdateReportSchedulerTaskParser:
             return country_list
         except BaseException:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_compare_time(self, start_date_time):
         try:
@@ -61,14 +61,14 @@ class UpdateReportSchedulerTaskParser:
 
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def parse_local_time(self, start_date_time):
         try:
             return self.get_compare_time(start_date_time)
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def parse_utc_time(self, start_date_time):
         try:
@@ -80,7 +80,7 @@ class UpdateReportSchedulerTaskParser:
             return utc_time
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     @staticmethod
     def local_date_time_valid(local_date_time, current_date_time):
@@ -103,4 +103,4 @@ class UpdateReportSchedulerTaskParser:
                         return False
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())

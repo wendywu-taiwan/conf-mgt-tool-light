@@ -81,7 +81,7 @@ def create_report_scheduler(json_data):
         return info_model
     except BaseException:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
 
 
 def update_report_scheduler(json_data):
@@ -92,7 +92,7 @@ def update_report_scheduler(json_data):
         return info_model
     except BaseException:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
 
 
 def delete_scheduler(task_id):
@@ -100,7 +100,7 @@ def delete_scheduler(task_id):
         ReportSchedulerInfo.objects.filter(id=task_id).delete()
     except BaseException:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
 
 
 def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
@@ -110,7 +110,7 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
                                         compare_env_id,
                                         country_list,
                                         mail_list)
-    print("run_report_scheduler, task id:" + str(daily_task.id))
+    debug_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
     scheduler = SendMailScheduler(daily_task.scheduler_listener)
     job = scheduler.add_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)
@@ -118,7 +118,7 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
 
 def restart_all_scheduler():
     try:
-        logging.info("restart all scheduler")
+        debug_log(None, "restart all scheduler")
         if len(ReportSchedulerInfo.objects.all()) == 0:
             return
 
@@ -136,7 +136,7 @@ def restart_all_scheduler():
                                  parser.local_time,
                                  parser.interval_hour)
 
-        logging.info("restart all scheduler success")
+        debug_log(None, "restart all scheduler success")
     except BaseException:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())

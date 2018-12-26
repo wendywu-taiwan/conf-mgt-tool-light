@@ -12,25 +12,48 @@ def initialize_logger():
     # create error file handler and set level to error
     handler = logging.FileHandler(os.path.join(log_dir, "error.log"), "w", encoding=None, delay="true")
     handler.setLevel(logging.ERROR)
-    formatter = logging.Formatter("[log-start] %(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
     # create debug file handler and set level to debug
     handler = logging.FileHandler(os.path.join(log_dir, "debug.log"), "w")
     handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter("[log-start] %(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
     # create debug file handler and set level to debug
     handler = logging.FileHandler(os.path.join(log_dir, "info.log"), "w")
     handler.setLevel(logging.INFO)
-    formatter = logging.Formatter("[log-start] %(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
+    formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    logging.debug("initialize logger success")
+
+def info_log(log_class, msg, *args, **kwargs):
+    print_log(log_class, logging.INFO, msg, *args, **kwargs)
+
+
+def error_log(msg, *args, **kwargs):
+    print_log(None, logging.ERROR, msg, *args, **kwargs)
+
+
+def debug_log(log_class, msg, *args, **kwargs):
+    print_log(log_class, logging.DEBUG, msg, *args, **kwargs)
+
+
+def print_log(log_class, level, msg, *args, **kwargs):
+    if logging.getLogger().hasHandlers() is False:
+        initialize_logger()
+
+    if log_class is not None:
+        log_msg = log_class + " :" + msg
+    else:
+        log_msg = msg
+
+    logging.log(level, log_msg, *args, **kwargs)
+    print(log_msg, *args, **kwargs)
 
 
 def local_time(*args):

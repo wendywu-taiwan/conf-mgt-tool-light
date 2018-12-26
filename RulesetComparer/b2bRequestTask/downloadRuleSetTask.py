@@ -14,6 +14,7 @@ class DownloadRuleSetTask(BaseRequestTask):
     KEY_USER = 'loginId'
     KEY_PASSWORD = 'password'
     KEY_RULE_SET_NAME = 'rulesetName'
+    LOG_CLASS = "DownloadRuleSetTask"
 
     def __init__(self, env_id, country_id, rule_set_name, compare_hash_key):
         self.environment = Environment.objects.get(id=env_id)
@@ -33,8 +34,7 @@ class DownloadRuleSetTask(BaseRequestTask):
             self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
             self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
 
-            logging.info('======== download rule set %s ========' % self.rule_set_name)
-            print('======== download rule set %s ========' % self.rule_set_name)
+            info_log(self.LOG_CLASS, '======== download rule set %s ========' % self.rule_set_name)
             response = client.service.exportRuleset(self.request_parameter())
             self.b2b_response_data = response
             self.b2b_response_error_check()
@@ -44,7 +44,7 @@ class DownloadRuleSetTask(BaseRequestTask):
                 self.save_rule_set()
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_content(self):
         if self.request_fail():

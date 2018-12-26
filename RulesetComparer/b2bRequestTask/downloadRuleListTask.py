@@ -12,6 +12,7 @@ class DownloadRuleListTask(BaseRequestTask):
     KEY_USER = 'loginId'
     KEY_PASSWORD = 'password'
     KEY_COUNTRY = 'ownerId'
+    LOG_CLASS = "DownloadRuleListTask"
 
     def __init__(self, environment_id, country_id):
         self.environment_id = environment_id
@@ -28,9 +29,10 @@ class DownloadRuleListTask(BaseRequestTask):
             self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
             self.add_request_parameter(self.KEY_COUNTRY, country.name)
 
-            logging.info("call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
-            logging.info("call download_rule_set in service, b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
-            print("call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
+            debug_log(self.LOG_CLASS,
+                      "call download_rule_set in service\n environment = %s , country = %s" % (environment, country))
+            debug_log(self.LOG_CLASS,
+                      "call download_rule_set in service, b2b_rule_set_client = %s" % environment.b2b_rule_set_client)
 
             client = Client(environment.b2b_rule_set_client)
 
@@ -39,7 +41,7 @@ class DownloadRuleListTask(BaseRequestTask):
             self.b2b_response_error_check()
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_rule_list(self):
         if self.request_fail() is True:

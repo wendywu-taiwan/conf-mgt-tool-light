@@ -10,5 +10,3 @@ class RulesetcomparerConfig(AppConfig):
         # django will run twice when run server
         if os.environ.get('RUN_MAIN', None) == 'true':
             return
-
-        initialize_logger()

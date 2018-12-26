@@ -97,7 +97,7 @@ class CompareRuleListTask:
             self.parse_union_list_rule(union_list)
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def save_result_file(self):
         current_time = get_current_time()

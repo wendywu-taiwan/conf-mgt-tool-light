@@ -10,6 +10,8 @@ from RulesetComparer.dataModel.dataBuilder.compareReportInfoBuilder import Compa
 
 
 class DailyCompareReportTask:
+    LOG_CLASS = "DailyCompareReportTask"
+
     def __init__(self, task_id, base_env_id, compare_env_id, country_list, mail_list):
         self.id = task_id
         self.scheduled_job = None
@@ -45,7 +47,7 @@ class DailyCompareReportTask:
                 self.info_builder.add_data(result_data)
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def send_mail(self):
         try:
@@ -61,15 +63,15 @@ class DailyCompareReportTask:
             self.mail_sender.quit()
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def run_task(self):
-        logging.info("DailyCompareReportTask,run task id :" + str(self.id))
+        error_log("DailyCompareReportTask,run task id :" + str(self.id))
         task_exist = ReportSchedulerInfo.objects.filter(id=self.id).count()
 
         if task_exist == 0:
             self.scheduled_job.remove()
-            logging.info("DailyCompareReportTask remove task, id:" + str(self.id))
+            error_log("DailyCompareReportTask remove task, id:" + str(self.id))
         else:
             self.info_builder.clear_data()
             self.send_mail()
@@ -77,11 +79,11 @@ class DailyCompareReportTask:
     def scheduler_listener(self, event):
         if event.exception:
             # send mail to wendy
-            logging.error('DailyCompareReportTask job crashed, task id =' + str(self.id))
-            logging.error(traceback.format_exc())
+            error_log('DailyCompareReportTask job crashed, task id =' + str(self.id))
+            error_log(traceback.format_exc())
         else:
             try:
-                logging.info('DailyCompareReportTask job worked, task id =' + str(self.id))
+                debug_log(self.LOG_CLASS, 'job worked, task id =' + str(self.id))
                 time_zone = config.TIME_ZONE.get('asia_taipei')
                 time_format = config.TIME_FORMAT.get('db_time_format')
                 next_date_time = self.scheduled_job.next_run_time
@@ -95,4 +97,4 @@ class DailyCompareReportTask:
                 task.save()
             except BaseException:
                 traceback.print_exc()
-                logging.error(traceback.format_exc())
+                error_log(traceback.format_exc())

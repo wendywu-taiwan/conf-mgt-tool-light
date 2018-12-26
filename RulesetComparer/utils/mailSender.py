@@ -1,4 +1,5 @@
 import smtplib
+import traceback
 from email.header import Header
 from email.mime.application import MIMEApplication
 from email.mime.audio import MIMEAudio
@@ -6,6 +7,7 @@ from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from RulesetComparer.properties.config import SMTP
+from RulesetComparer.utils.logger import *
 
 class MailSender:
 
@@ -33,7 +35,8 @@ class MailSender:
         try:
             self.smtp.login(self.login_username, self.login_password)
         except Exception as e:
-            print(e)
+            traceback.print_exc()
+            error_log(traceback.format_exc())
 
     def set_receiver(self, receivers=None):
         if receivers is None or len(receivers) == 0:

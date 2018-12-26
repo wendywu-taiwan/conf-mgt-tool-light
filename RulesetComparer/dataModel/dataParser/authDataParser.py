@@ -12,18 +12,18 @@ class AuthDataParser:
             self.environment_data = auth_data[environment]
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_account(self):
         try:
             return self.environment_data["account"]
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_password(self):
         try:
             return self.environment_data["password"]
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())

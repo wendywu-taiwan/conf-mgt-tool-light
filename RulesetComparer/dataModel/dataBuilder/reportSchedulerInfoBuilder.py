@@ -30,7 +30,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
 
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_module_data(self):
         try:
@@ -40,7 +40,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             return module_map
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_mail_list(self):
         try:
@@ -65,7 +65,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             return str_time
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_status(self):
         try:
@@ -75,4 +75,4 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                 return False
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())

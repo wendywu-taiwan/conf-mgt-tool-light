@@ -5,15 +5,15 @@ from RulesetComparer.properties import logMessage
 from RulesetComparer.utils.logger import *
 import traceback
 
-class GitManager:
 
+class GitManager:
     STATUS_NEED_PULL = 0
     STATUS_NEED_PUSH = 1
     STATUS_NO_CHANGED = 2
+    LOG_CLASS = "GitManager"
 
     def __init__(self, path, branch):
-        logging.info("Git Manager init, path:"+str(path))
-        logging.info("branch:" + str(branch))
+        info_log(self.LOG_CLASS, " init, path :" + str(path) + " ,branch :" + str(branch))
         self.REPOSITORY_PATH = path
         self.branch = branch
         self.status = None
@@ -33,7 +33,7 @@ class GitManager:
         return remote
 
     def pull(self):
-        print("pull code from remote")
+        info_log(self.LOG_CLASS, "pull code from remote")
         self._remote_repo().pull()
         self.check_commit_status()
 
@@ -52,8 +52,7 @@ class GitManager:
 
             print_commit(local_commit, "local latest commit")
             print_commit(remote_commit, "remote latest commit")
-            logging.info("\ncompare local and remote commit time ...")
-            print("\ncompare local and remote commit time ...")
+            info_log(self.LOG_CLASS, "\ncompare local and remote commit time ...")
             local_commit_time = str(local_commit.authored_datetime)
             remote_commit_time = str(remote_commit.authored_datetime)
 
@@ -61,51 +60,41 @@ class GitManager:
 
             if return_time == local_commit_time:
                 self.status = self.STATUS_NEED_PUSH
-                logging.info("compare result : need push code")
-                print("compare result : need push code")
+                info_log(self.LOG_CLASS, "compare result : need push code")
             elif return_time == remote_commit_time:
                 self.status = self.STATUS_NEED_PULL
-                logging.info("compare result : need pull code")
-                print("compare result : need pull code")
+                info_log(self.LOG_CLASS, "compare result : need pull code")
             else:
                 self.status = self.STATUS_NO_CHANGED
-                logging.info("compare result : nothing change")
-                print("compare result : nothing change")
+                info_log(self.LOG_CLASS, "compare result : nothing change")
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(self.LOG_CLASS, traceback.format_exc())
 
     def check_branch_status(self):
         try:
             repo = self._repo()
             remote_repo = self._remote_repo()
-            logging.info("---- check branch status ----")
-            logging.info("local setting branch is {}".format(self.branch))
-            logging.info("current active branch is {}".format(repo.active_branch))
-            print("---- check branch status ----")
-            print("local setting branch is {}".format(self.branch))
-            print("current active branch is {}".format(repo.active_branch))
+            info_log(self.LOG_CLASS, "---- check branch status ----")
+            info_log(self.LOG_CLASS, "local setting branch is {}".format(self.branch))
+            info_log(self.LOG_CLASS, "current active branch is {}".format(repo.active_branch))
             if repo.active_branch.name == self.branch:
-                logging.info("setting branch equals active branch, no need to check out")
-                print("setting branch equals active branch, no need to check out")
+                info_log(self.LOG_CLASS, "setting branch equals active branch, no need to check out")
                 return
 
-            logging.info("setting branch different with active branch, check out branch")
-            print("setting branch different with active branch, check out branch")
+            info_log(self.LOG_CLASS, "setting branch different with active branch, check out branch")
             repo.create_head(self.branch, remote_repo.refs[self.branch])
             current_branch_index = self.get_current_branch_index()
             remote_branch_index = self.get_remote_branch_index()
 
-            logging.info("set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
-            print("set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
+            info_log(self.LOG_CLASS, "set current tracking branch to {}".format(remote_repo.refs[remote_branch_index]))
             repo.heads[current_branch_index].set_tracking_branch(remote_repo.refs[remote_branch_index])
             repo.heads[current_branch_index].checkout()
 
-            logging.info("current active branch is {}".format(repo.active_branch))
-            print("current active branch is {}".format(repo.active_branch))
+            info_log(self.LOG_CLASS, "current active branch is {}".format(repo.active_branch))
         except Exception:
             traceback.print_exc()
-            logging.error(traceback.format_exc())
+            error_log(traceback.format_exc())
 
     def get_current_branch_index(self):
         repo = self._repo()
@@ -113,7 +102,7 @@ class GitManager:
         for head in repo.refs:
             if head.name == self.branch:
                 return i
-            i = i+1
+            i = i + 1
         return i
 
     def get_remote_branch_index(self):
@@ -134,4 +123,3 @@ def print_commit(commit, env):
                                      commit.author.name,
                                      commit.author.email))
     print(str("authored_datetime:{}".format(commit.authored_datetime)))
-

@@ -48,7 +48,7 @@ def admin_console_server_log_page(request, log_type=None):
         return render(request, "server_log.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -68,7 +68,7 @@ def admin_console_scheduler_list_page(request):
         return render(request, "scheduler_list.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -85,7 +85,7 @@ def admin_console_scheduler_create_page(request):
         return render(request, "scheduler_create.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -108,7 +108,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
         return render(request, "scheduler_update.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -136,7 +136,7 @@ def environment_select_page(request):
                 return render(request, "rule_item_list.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -156,7 +156,7 @@ def rule_detail_page(request, environment_name, compare_key, rule_name):
         return render(request, "rule_show_detail.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -187,7 +187,7 @@ def rule_diff_page(request, compare_key, rule_name):
         return render(request, "rule_show_diff.html", data)
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -216,7 +216,7 @@ def send_mail(request, compare_key):
         return response
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -234,7 +234,7 @@ def download_compare_report(request, compare_key):
         raise Http404
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
+        error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
@@ -257,8 +257,7 @@ def compare_rule_list_item_data(country_id, base_env_id, compare_env_id):
         return list_data
     except Exception:
         traceback.print_exc()
-        logging.error(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        error_log(traceback.format_exc())
         return []
 
 
@@ -307,7 +306,7 @@ def get_scheduler(request, scheduler_id):
 def create_scheduler(request):
     try:
         request_json = get_post_request_json(request)
-        print("create_scheduler, request json =" + str(request_json))
+        debug_log("API", "create_scheduler, request json =" + str(request_json))
         scheduler_info = services.create_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
@@ -321,7 +320,7 @@ def create_scheduler(request):
 def update_scheduler(request):
     try:
         request_json = get_post_request_json(request)
-        print("update_scheduler, request json =" + str(request_json))
+        debug_log("API", "update_scheduler, request json =" + str(request_json))
         scheduler_info = services.update_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
