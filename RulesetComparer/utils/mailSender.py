@@ -12,10 +12,12 @@ from RulesetComparer.utils.logger import *
 class MailSender:
 
     def __init__(self, mail_config):
-        # self.smtp = smtplib.SMTP()
-        self.smtp = smtplib.SMTP_SSL()
+        # for google SMTP server
+        # self.smtp = smtplib.SMTP_SSL()
         self.host = SMTP.get('host')
         self.port = SMTP.get('port')
+        # for audatex internal server
+        self.smtp = smtplib.SMTP(self.host, self.port)
         self.login_username = SMTP.get('login_username')
         self.login_password = SMTP.get('login_password')
         self.sender = mail_config.get('sender')
@@ -25,7 +27,6 @@ class MailSender:
         self.msg = MIMEMultipart()
 
         self.connect()
-        self.login()
 
     def connect(self):
         self.smtp.connect(self.host, self.port)

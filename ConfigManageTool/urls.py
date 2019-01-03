@@ -30,11 +30,6 @@ ruleset_comparer_pattern = [
          views.download_compare_report, name="report-download")
 ]
 
-admin_console_pattern = [
-    path('admin_console/module/list', views.get_module_list),
-    path('admin_console/module/create', views.create_module),
-]
-
 admin_console_ruleset_pattern = [
     path('', views.admin_console_page),
     path('server_log', views.admin_console_server_log_page, name="server-log"),
@@ -45,8 +40,13 @@ admin_console_ruleset_pattern = [
 
 ]
 
+admin_console_pattern = [
+    path('admin_console/module/list', views.get_module_list),
+    path('admin_console/module/create', views.create_module),
+]
+
 ruleset_scheduler_pattern = [
-    path('<int:id>', views.get_scheduler),
+    path('<int:scheduler_id>', views.get_scheduler),
     path('list', views.get_scheduler_list),
     path('create', views.create_scheduler, name="create-scheduler"),
     path('update', views.update_scheduler, name="update-scheduler"),
