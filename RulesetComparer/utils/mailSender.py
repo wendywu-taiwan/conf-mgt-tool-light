@@ -43,6 +43,7 @@ class MailSender:
         if receivers is None or len(receivers) == 0:
             self.msg['To'] = ", ".join(self.receiver)
         else:
+            self.receiver = receivers
             self.msg['To'] = ", ".join(receivers)
 
     def compose_msg(self, email_title=None, email_content=None, html_content=None):
