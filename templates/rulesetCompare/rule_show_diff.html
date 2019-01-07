@@ -4,208 +4,326 @@
 
 {{ data }}
 <div class="container-rule-diff container-fluid">
-    <div class="table-responsive">
-        <table class="custom-table-show-rule table table-bordered .table-sm">
-            <thead class="thead-gray">
-            <tr>
-                <th class="ruleset-header-text" colspan="3">{{ rule_name }}</th>
-            </tr>
-            </thead>
-            <tbody>
-
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="td_environment">#</td>
-                <td class="td_environment">{{ base_env_name }}</td>
-                <td class="td_environment">{{ compare_env_name }}</td>
-            </tr>
-
-            {% for data in remove_list %}
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Process</td>
-                <td class="detail-content">{{ data.process }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">RuleType</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Key</td>
-                <td class="detail-content">{{ data.key }}</td>
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Value</td>
-                {% include 'rule_show_value.html' %}
-                <td class="detail-content"></td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="border-bottom detail-attribute">Expression</td>
-                {% include 'rule_show_expression.html' %}
-                <td class="border-bottom detail-content"></td>
-            </tr>
-            {% endfor %}
+    <div class="modify_rule_list">
+        <div class="nav" data-target=".modify_data">
+            <div>
+                <i class="file_icon fas fa-align-justify"></i>
+            </div>
+            <div class="nav_title file_title"> {{ rule_name }}
+            </div>
+        </div>
+        <div class="modified_rules">
             {% for data in add_list %}
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Process</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.process }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.process_step }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">RuleType</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Key</td>
-                <td class="detail-content"></td>
-                <td class="detail-content">{{ data.key }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Value</td>
-                <td class="detail-content"></td>
-                {% include 'rule_show_value.html' %}
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content"></td>
-                {% include 'rule_show_expression.html' %}
-            </tr>
+            <!-- parse rule in modify add list -->
+            <div class="row rule_data_line">
+                <div class="rule_data_title"></div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env_name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env_name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="col-9 rule_data_value"></div>
+                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">
+                    {% for value in data.value %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row divider_line">
+                <div class="normal_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="rule_data_value"></div>
+                <div class="rule_data_value">
+                    {% for expression in data.expression %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="modify_end_divider"></div>
             {% endfor %}
+
+            <!-- parse rule in modify remove list -->
+            {% for data in remove_list %}
+            <div class="row rule_data_line">
+                <div class="rule_data_title"></div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env_name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env_name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                <div class="rule_data_value">
+                    {% for value in data.value %}
+                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="normal_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                <div class="rule_data_value">
+                    {% for expression in data.expression %}
+                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                    {% endfor %}
+                </div>
+                <div class="rule_data_value"></div>
+            </div>
+            <div class="modify_end_divider"></div>
+            {% endfor %}
+
+            <!-- parse rule in modify modify list -->
             {% for data in modify_list %}
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Process</td>
-                <td class="detail-content">{{ data.process }}</td>
-                <td class="detail-content">{{ data.process }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">RuleType</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Key</td>
-                <td class="detail-content">{{ data.key }}</td>
-                <td class="detail-content">{{ data.key }}</td>
-            </tr>
-            <tr class="table-warning custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Value</td>
-                <td class="detail-content">
+            <div class="row rule_data_line">
+                <div class="rule_data_title">
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ base_env_name }}
+                    </div>
+                </div>
+                <div class="rule_data_value">
+                    <div class="rule_env_text">
+                        {{ compare_env_name }}
+                    </div>
+                </div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+                <div class="rule_data_value">{{ data.process }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Process Step</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+                <div class="rule_data_value">{{ data.process_step }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Organization ID</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+                <div class="rule_data_value">{{ data.organization_id }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Owner Role</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+                <div class="rule_data_value">{{ data.owner_role }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Type</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+                <div class="rule_data_value">{{ data.rule_type }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Key</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+                <div class="rule_data_value">{{ data.key }}</div>
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Value</div>
+                {% if data.base_value %}
+                <div class="highlight_data_value">
                     {% for value in data.base_value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
-                </td>
-                <td class="detail-content">
+                </div>
+                {% else %}
+                <div class="rule_data_value"></div>
+                {% endif %}
+                {% if data.compare_value %}
+                <div class="highlight_data_value">
                     {% for value in data.compare_value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
-                </td>
-            </tr>
-            <tr class="table-warning custom-tr-ruleset-detail-table">
-                <td class="border-bottom detail-attribute">Expression</td>
-                <td class="border-bottom detail-content">
+                </div>
+                {% else %}
+                <div class="rule_data_value"></div>
+                {% endif %}
+            </div>
+            <div class="row divider_line">
+                <div class="modify_line_divider"></div>
+                <div class="modify_line_divider"></div>
+            </div>
+            <div class="row rule_data_line">
+                <div class="rule_data_title">Rule Expression</div>
+                {% if data.base_expression %}
+                <div class="highlight_data_value">
                     {% for expression in data.base_expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
-                </td>
-                <td class="border-bottom detail-content">
+                </div>
+                {% else %}
+                <div class="rule_data_value"></div>
+                {% endif %}
+                {% if data.compare_expression %}
+                <div class="highlight_data_value">
                     {% for expression in data.compare_expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
-                </td>
-            </tr>
+                </div>
+                {% else %}
+                <div class="rule_data_value"></div>
+                {% endif %}
+            </div>
+            {% if not forloop.last %}
+            <div class="modify_end_divider"></div>
+            {% endif %}
             {% endfor %}
-            {% for data in normal_list %}
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Process</td>
-                <td class="detail-content">{{ data.process }}</td>
-                <td class="detail-content">{{ data.process }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OrganizationId</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-                <td class="detail-content">{{ data.organization_id }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">OwnerRole</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-                <td class="detail-content">{{ data.owner_role }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">ProcessStep</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-                <td class="detail-content">{{ data.process_step }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">RuleType</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-                <td class="detail-content">{{ data.rule_type }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Key</td>
-                <td class="detail-content">{{ data.key }}</td>
-                <td class="detail-content">{{ data.key }}</td>
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="detail-attribute">Value</td>
-                {% include 'rule_show_value.html' %}
-                {% include 'rule_show_value.html' %}
-            </tr>
-            <tr class="custom-tr-ruleset-detail-table">
-                <td class="border-bottom detail-attribute">Expression</td>
-                {% include 'rule_show_expression.html' %}
-                {% include 'rule_show_expression.html' %}
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+        </div>
     </div>
+    <div class="vertical_distance"></div>
 </div>
 
 {% endblock %}
