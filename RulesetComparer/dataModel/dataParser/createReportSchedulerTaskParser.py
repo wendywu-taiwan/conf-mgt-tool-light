@@ -17,9 +17,10 @@ class CreateReportSchedulerTaskParser:
             self.interval_hour = int(json_data.get("interval_hour"))
             self.local_time = self.parse_local_time(json_data.get("start_date_time"))
             self.utc_time = self.parse_utc_time(json_data.get("start_date_time"))
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def parse_country(country_id_list):
@@ -29,9 +30,10 @@ class CreateReportSchedulerTaskParser:
                 country = Country.objects.get(id=country_id)
                 country_list.append(country)
             return country_list
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def parse_utc_time(start_time):
@@ -44,9 +46,10 @@ class CreateReportSchedulerTaskParser:
             # parse local date time to utc time
             utc_time = timeUtil.local_time_to_utc(date_time, time_zone)
             return utc_time
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def parse_local_time(start_time):
@@ -61,6 +64,7 @@ class CreateReportSchedulerTaskParser:
             naive_time = datetime(local_date_time.year, local_date_time.month, local_date_time.day,
                                   local_date_time.hour, local_date_time.minute, local_date_time.second)
             return naive_time
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e

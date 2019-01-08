@@ -79,9 +79,10 @@ def create_report_scheduler(json_data):
                              parser.country_list, parser.mail_list, parser.local_time,
                              parser.interval_hour)
         return info_model
-    except BaseException:
+    except Exception as e:
         traceback.print_exc()
         error_log(traceback.format_exc())
+        raise e
 
 
 def update_report_scheduler(json_data):
@@ -90,17 +91,19 @@ def update_report_scheduler(json_data):
         delete_scheduler(parser.task_id)
         info_model = create_report_scheduler(json_data)
         return info_model
-    except BaseException:
+    except Exception as e:
         traceback.print_exc()
         error_log(traceback.format_exc())
+        raise e
 
 
 def delete_scheduler(task_id):
     try:
         ReportSchedulerInfo.objects.filter(id=task_id).delete()
-    except BaseException:
+    except Exception as e:
         traceback.print_exc()
         error_log(traceback.format_exc())
+        raise e
 
 
 def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
@@ -137,6 +140,7 @@ def restart_all_scheduler():
                                  parser.interval_hour)
 
         debug_log(None, "restart all scheduler success")
-    except BaseException:
+    except BaseException as e:
         traceback.print_exc()
         error_log(traceback.format_exc())
+        raise e

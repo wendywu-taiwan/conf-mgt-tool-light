@@ -23,7 +23,7 @@ class DownloadRuleListTask(BaseRequestTask):
         try:
             country = Country.objects.get(id=self.country_id)
             environment = Environment.objects.get(id=self.environment_id)
-            auth_data = AuthDataParser(environment.name)
+            auth_data = AuthDataParser(environment.name, country.name)
 
             self.add_request_parameter(self.KEY_USER, auth_data.get_account())
             self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
@@ -37,12 +37,15 @@ class DownloadRuleListTask(BaseRequestTask):
             client = Client(environment.b2b_rule_set_client)
 
             response = client.service.getOwnedBRERuleSets(self.request_parameter())
+            if response.returnCode != 0:
+                raise Exception(response.message[0].text)
             info_log(self.LOG_CLASS, "getOwnedBRERuleSets response :" + str(response))
             self.b2b_response_data = response
             self.b2b_response_error_check()
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_rule_list(self):
         if self.request_fail() is True:

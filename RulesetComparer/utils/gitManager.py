@@ -67,9 +67,10 @@ class GitManager:
             else:
                 self.status = self.STATUS_NO_CHANGED
                 info_log(self.LOG_CLASS, "compare result : nothing change")
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(self.LOG_CLASS, traceback.format_exc())
+            raise e
 
     def check_branch_status(self):
         try:
@@ -92,9 +93,10 @@ class GitManager:
             repo.heads[current_branch_index].checkout()
 
             info_log(self.LOG_CLASS, "current active branch is {}".format(repo.active_branch))
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_current_branch_index(self):
         repo = self._repo()

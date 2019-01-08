@@ -1,18 +1,22 @@
 {
   "PROD": {
-    "account": "",
-    "password": ""
   },
   "CT": {
-    "account": "",
-    "password": ""
   },
   "INT1": {
-    "account": "inside_TWadmin",
-    "password": "audatex"
+    "KR": {
+      "account": "wendy.wu.admin.kr",
+      "password": "audatex"
+    },
+    "TW": {
+      "account": "wendy.wu.admin.tw",
+      "password": "audatex"
+    }
   },
   "INT2": {
-    "account": "inside_TWadmin",
-    "password": "audatex"
+    "ROOT": {
+      "account": "wendy.wu.admin.tw",
+      "password": "admin@gdctpe"
+    }
   }
 }

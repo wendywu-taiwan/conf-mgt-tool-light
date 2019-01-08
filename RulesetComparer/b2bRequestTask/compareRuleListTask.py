@@ -50,14 +50,18 @@ class CompareRuleListTask:
         self.rule_diff_map = {}
 
         # check if environment is git
-        self.git_environment = self.check_git_environment()
+        self.git_environment = self.check_environment()
+        try:
+            self.check_git_status()
+            self.execute()
+            self.save_result_file()
+            self.remove_rule_files()
+        except Exception as e:
+            traceback.print_exc()
+            error_log(traceback.format_exc())
+            raise e
 
-        self.check_git_status()
-        self.execute()
-        self.save_result_file()
-        self.remove_rule_files()
-
-    def check_git_environment(self):
+    def check_environment(self):
         if self.baseEnv.name == config.GIT.get("environment_name"):
             return key.BASE_ENVIRONMENT_GIT
         elif self.comparedEnv.name == config.GIT.get("environment_name"):
@@ -66,7 +70,6 @@ class CompareRuleListTask:
             return key.NO_ENVIRONMENT_GIT
 
     def check_git_status(self):
-
         if self.git_environment == key.NO_ENVIRONMENT_GIT:
             return
 
@@ -76,28 +79,24 @@ class CompareRuleListTask:
             manager.pull()
 
     def execute(self):
-        try:
-            if self.git_environment == key.BASE_ENVIRONMENT_GIT:
-                base_rule_list = self.updated_rule_list_from_git()
-                compare_rule_list = self.updated_rule_list_from_server(self.comparedEnv)
-            elif self.git_environment == key.COMPARE_ENVIRONMENT_GIT:
-                base_rule_list = self.updated_rule_list_from_server(self.baseEnv)
-                compare_rule_list = self.updated_rule_list_from_git()
-            else:
-                base_rule_list = self.updated_rule_list_from_server(self.baseEnv)
-                compare_rule_list = self.updated_rule_list_from_server(self.comparedEnv)
+        if self.git_environment == key.BASE_ENVIRONMENT_GIT:
+            base_rule_list = self.updated_rule_list_from_git()
+            compare_rule_list = self.updated_rule_list_from_server(self.comparedEnv)
+        elif self.git_environment == key.COMPARE_ENVIRONMENT_GIT:
+            base_rule_list = self.updated_rule_list_from_server(self.baseEnv)
+            compare_rule_list = self.updated_rule_list_from_git()
+        else:
+            base_rule_list = self.updated_rule_list_from_server(self.baseEnv)
+            compare_rule_list = self.updated_rule_list_from_server(self.comparedEnv)
 
-            comparer = RuleListComparer(base_rule_list, compare_rule_list)
-            add_list = comparer.get_compare_rules_list()
-            minus_list = comparer.get_base_rules_list()
-            union_list = comparer.get_union_list()
+        comparer = RuleListComparer(base_rule_list, compare_rule_list)
+        add_list = comparer.get_compare_rules_list()
+        minus_list = comparer.get_base_rules_list()
+        union_list = comparer.get_union_list()
 
-            self.parse_add_list_rule(add_list)
-            self.parse_remove_list_rule(minus_list)
-            self.parse_union_list_rule(union_list)
-        except Exception:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
+        self.parse_add_list_rule(add_list)
+        self.parse_remove_list_rule(minus_list)
+        self.parse_union_list_rule(union_list)
 
     def save_result_file(self):
         current_time = get_current_time()

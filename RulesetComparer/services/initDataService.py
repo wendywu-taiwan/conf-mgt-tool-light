@@ -21,10 +21,11 @@ def init_data(apps, schema_editor):
         has_user_role = init_user_role_data(ruleset_data['user_role'])
         restart_all_scheduler()
 
-    except Exception:
+    except Exception as e:
         Country.objects.all().delete()
         traceback.print_exc()
         error_log(traceback.format_exc())
+        raise e
 
 
 def init_country_data(country_list):

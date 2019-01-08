@@ -5,25 +5,38 @@ from RulesetComparer.utils.logger import *
 
 
 class AuthDataParser:
-    def __init__(self, environment):
+    ROOT_KEY = "ROOT"
+    ACCOUNT_KEY = "account"
+    PASSWORD_KEY = "password"
+
+    def __init__(self, environment, country):
         try:
             file_path = settings.BASE_DIR + config.get_file_path("auth_data")
             auth_data = fileManager.load_json_file(file_path)
-            self.environment_data = auth_data[environment]
-        except Exception:
+            environment_obj = auth_data[environment]
+            if self.ROOT_KEY in environment_obj:
+                self.data = environment_obj[self.ROOT_KEY]
+                print("root data:" + str(self.data))
+            else:
+                self.data = environment_obj[country]
+                print("country data:" + str(self.data))
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_account(self):
         try:
-            return self.environment_data["account"]
-        except Exception:
+            return self.data[self.ACCOUNT_KEY]
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_password(self):
         try:
-            return self.environment_data["password"]
-        except Exception:
+            return self.data[self.PASSWORD_KEY]
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e

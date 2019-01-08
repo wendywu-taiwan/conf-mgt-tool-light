@@ -26,6 +26,17 @@ class DailyCompareReportTask:
     def set_scheduled_job(self, scheduled_job):
         self.scheduled_job = scheduled_job
 
+    def run_task(self):
+        error_log("DailyCompareReportTask,run task id :" + str(self.id))
+        task_exist = ReportSchedulerInfo.objects.filter(id=self.id).count()
+
+        if task_exist == 0:
+            self.scheduled_job.remove()
+            error_log("DailyCompareReportTask remove task, id:" + str(self.id))
+        else:
+            self.info_builder.clear_data()
+            self.send_mail()
+
     def compare_data(self):
         try:
             current_time = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date"))
@@ -45,14 +56,20 @@ class DailyCompareReportTask:
                 # build compare info list data to show in email content
                 result_data = fileManager.load_compare_result_file(task.compare_hash_key)
                 self.info_builder.add_data(result_data)
-        except Exception:
+            return None
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            return e
 
     def send_mail(self):
         try:
             self.mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
-            self.compare_data()
+            error = self.compare_data()
+
+            if error is not None:
+                error_log(error)
+                return
 
             content_json = self.info_builder.get_data()
             html_content = render_to_string('compare_info_mail_content.html', content_json)
@@ -64,17 +81,6 @@ class DailyCompareReportTask:
         except Exception:
             traceback.print_exc()
             error_log(traceback.format_exc())
-
-    def run_task(self):
-        error_log("DailyCompareReportTask,run task id :" + str(self.id))
-        task_exist = ReportSchedulerInfo.objects.filter(id=self.id).count()
-
-        if task_exist == 0:
-            self.scheduled_job.remove()
-            error_log("DailyCompareReportTask remove task, id:" + str(self.id))
-        else:
-            self.info_builder.clear_data()
-            self.send_mail()
 
     def scheduler_listener(self, event):
         if event.exception:

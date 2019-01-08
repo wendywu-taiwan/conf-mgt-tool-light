@@ -28,9 +28,10 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             self.result_dict["next_proceed_time"] = self.get_format_time(self.info_module.next_proceed_time)
             self.result_dict["status"] = self.get_status()
 
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_module_data(self):
         try:
@@ -38,9 +39,10 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                           "name": self.info_module.module.name,
                           "icon_file_name": self.info_module.module.icon_file_name}
             return module_map
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_mail_list(self):
         try:
@@ -63,9 +65,10 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             local_date_time = timeUtil.utc_to_locale_time(naive_time, time_zone)
             str_time = timeUtil.date_time_to_time(local_date_time, time_format)
             return str_time
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_status(self):
         try:
@@ -73,6 +76,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                 return True
             else:
                 return False
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e

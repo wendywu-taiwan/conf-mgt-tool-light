@@ -19,9 +19,10 @@ class DBReportSchedulerParser:
             self.interval_hour = scheduler.interval_hour
             self.local_time = self.get_local_time(scheduler.next_proceed_time)
             self.utc_time = self.get_utc_time(self.local_time)
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def parse_country(country_id_list):
@@ -31,9 +32,10 @@ class DBReportSchedulerParser:
                 country = Country.objects.get(id=country_id_map['id'])
                 country_list.append(country)
             return country_list
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def get_mail_list(mail_list):
@@ -67,9 +69,10 @@ class DBReportSchedulerParser:
                                          result_time.hour, result_time.minute, result_time.second)
             return naive_result_time
 
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def get_utc_time(naive_local_time):
@@ -77,9 +80,10 @@ class DBReportSchedulerParser:
             time_zone = config.TIME_ZONE.get('asia_taipei')
             utc_time = timeUtil.local_time_to_utc(naive_local_time, time_zone)
             return utc_time
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def local_date_time_valid(local_date_time, current_date_time):
@@ -100,6 +104,7 @@ class DBReportSchedulerParser:
                         return True
                     else:
                         return False
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e

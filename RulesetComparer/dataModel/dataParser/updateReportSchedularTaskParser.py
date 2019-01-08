@@ -18,9 +18,10 @@ class UpdateReportSchedulerTaskParser:
             self.local_time = self.parse_local_time(json_data.get("start_date_time"))
             self.utc_time = self.parse_utc_time(json_data.get("start_date_time"))
             self.enable = dataKey.STATUS_ENABLE
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def parse_country(country_id_list):
@@ -30,9 +31,10 @@ class UpdateReportSchedulerTaskParser:
                 country = Country.objects.get(id=country_id)
                 country_list.append(country)
             return country_list
-        except BaseException:
+        except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_compare_time(self, start_date_time):
         try:
@@ -59,16 +61,18 @@ class UpdateReportSchedulerTaskParser:
                                          result_time.hour, result_time.minute, result_time.second)
             return naive_result_time
 
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def parse_local_time(self, start_date_time):
         try:
             return self.get_compare_time(start_date_time)
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def parse_utc_time(self, start_date_time):
         try:
@@ -78,9 +82,10 @@ class UpdateReportSchedulerTaskParser:
             # transfer time zone to utc
             utc_time = timeUtil.local_time_to_utc(naive_result_time, time_zone)
             return utc_time
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     @staticmethod
     def local_date_time_valid(local_date_time, current_date_time):
@@ -101,6 +106,7 @@ class UpdateReportSchedulerTaskParser:
                         return True
                     else:
                         return False
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e

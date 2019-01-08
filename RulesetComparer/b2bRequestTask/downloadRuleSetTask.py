@@ -28,7 +28,7 @@ class DownloadRuleSetTask(BaseRequestTask):
     def request_data(self):
         try:
             client = Client(self.environment.b2b_rule_set_client)
-            auth_data = AuthDataParser(self.environment.name)
+            auth_data = AuthDataParser(self.environment.name, self.country.name)
 
             self.add_request_parameter(self.KEY_USER, auth_data.get_account())
             self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
@@ -36,16 +36,19 @@ class DownloadRuleSetTask(BaseRequestTask):
 
             info_log(self.LOG_CLASS, '======== download rule set %s ========' % self.rule_set_name)
             response = client.service.exportRuleset(self.request_parameter())
-            info_log(self.LOG_CLASS, "exportRuleset response :" + str(response))
+            info_log(self.LOG_CLASS, "exportRuleset response returnCode :" + str(response.returnCode))
+            info_log(self.LOG_CLASS, "exportRuleset response loginId :" + str(response.loginId))
+            info_log(self.LOG_CLASS, "exportRuleset response message :" + str(response.message))
             self.b2b_response_data = response
             self.b2b_response_error_check()
 
             if self.request_fail() is False:
                 self.download_status = apiResponse.RESPONSE_KEY_SUCCESS
                 self.save_rule_set()
-        except Exception:
+        except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
+            raise e
 
     def get_content(self):
         if self.request_fail():
