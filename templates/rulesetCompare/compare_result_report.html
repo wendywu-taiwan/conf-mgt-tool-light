@@ -20,6 +20,11 @@
             crossorigin="anonymous"></script>
     <style>
         @media screen and (min-width: 1320px) {
+            .custom-row {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
             .container-compare-report {
                 max-width: 90%;
                 text-align: center;
@@ -30,12 +35,131 @@
             }
 
             .container-compare-report .ruleset_name_line {
+                margin-right: 0px;
                 height: 35px;
                 margin-bottom: 3px;
             }
 
             .container-compare-report .ruleset_name_div {
                 margin: auto;
+            }
+
+            .container-compare-report .rule_list_item_header_information {
+                max-width: 70%;
+                margin: auto;
+                margin-bottom: 30px;
+            }
+
+            .container-compare-report .rule_list_item_info {
+                width: 50%;
+            }
+
+            .container-compare-report .green_boarder_info_div {
+                margin: auto;
+                border: #34495e;
+                border-radius: 5px;
+                border-width: 1px;
+                border-style: solid;
+            }
+
+            .container-compare-report .green_boarder_nav {
+                background: #34495e;
+                color: white;
+                width: 100%;
+                padding: 5px 10px 5px 15px;
+                border-radius: 3px;
+                font-size: 14px;
+            }
+
+            .container-compare-report .info_nav_icon {
+                color: white;
+                margin-right: 10px;
+            }
+
+            .container-compare-report .info_nav_title {
+                font-weight: 600;
+                font-size: 16px;
+            }
+
+            .container-compare-report .info_row {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .container-compare-report .info_row_no_margin {
+                margin-top: 1px;
+                margin-bottom: 1px;
+            }
+
+            .container-compare-report .info_row_margin_top {
+                margin-top: 10px;
+                margin-bottom: 1px;
+            }
+
+            .container-compare-report .info_row_bg_blue {
+                background: #3d5368;
+                color: white;
+            }
+
+            .container-compare-report .info_title {
+                width: 45%;
+                font-size: 16px;
+                margin-left: 8px;
+                text-align: left;
+            }
+
+            .container-compare-report .info_content {
+                float: right;
+                width: 50%;
+                text-align: right;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .container-compare-report .rule_list_item_summary {
+                width: 45%;
+                margin-left: 5%;
+            }
+
+            .container-compare-report .summary_header_content {
+                width: 30%;
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .container-compare-report .summary_title {
+                width: 40%;
+                font-size: 14px;
+                text-align: left;
+                padding-left: 8px;
+                border-right: 1px solid;
+                border-bottom: 1px solid;
+            }
+
+            .container-compare-report .summary_title_last {
+                border-bottom: none;
+            }
+
+            .container-compare-report .summary_content_highlight {
+                color: red;
+            }
+
+            .container-compare-report .summary_content {
+                width: 30%;
+                font-size: 14px;
+                font-weight: 500;
+                border-bottom: 1px solid #3d5368;
+            }
+
+            .container-compare-report .summary_content_column_two {
+                width: 60%;
+                font-size: 14px;
+                font-weight: 500;
+                border-bottom: 1px solid #3d5368;
+            }
+
+            .container-compare-report .summary_content_last {
+                border-bottom: none;
             }
 
             .vertical_distance {
@@ -47,15 +171,6 @@
                 width: -webkit-fill-available;
                 color: #000126;
                 margin-bottom: 50px;
-            }
-
-            #compare_info_table {
-                margin: auto;
-            }
-
-            .compare_info_table .table_content {
-                color: #080808;
-                font-weight: 600;
             }
 
             .container-compare-report .add_list {
@@ -398,7 +513,13 @@
                 margin-left: 18%;
             }
         }
+
         @media screen and (max-width: 1320px) {
+            .custom-row {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
             .container-compare-report {
                 max-width: 90%;
                 text-align: center;
@@ -409,12 +530,131 @@
             }
 
             .container-compare-report .ruleset_name_line {
+                margin-right: 0px;
                 height: 35px;
                 margin-bottom: 3px;
             }
 
             .container-compare-report .ruleset_name_div {
                 margin: auto;
+            }
+
+            .container-compare-report .rule_list_item_header_information {
+                max-width: 70%;
+                margin: auto;
+                margin-bottom: 30px;
+            }
+
+            .container-compare-report .rule_list_item_info {
+                width: 50%;
+            }
+
+            .container-compare-report .green_boarder_info_div {
+                margin: auto;
+                border: #34495e;
+                border-radius: 5px;
+                border-width: 1px;
+                border-style: solid;
+            }
+
+            .container-compare-report .green_boarder_nav {
+                background: #34495e;
+                color: white;
+                width: 100%;
+                padding: 5px 10px 5px 15px;
+                border-radius: 3px;
+                font-size: 14px;
+            }
+
+            .container-compare-report .info_nav_icon {
+                color: white;
+                margin-right: 10px;
+            }
+
+            .container-compare-report .info_nav_title {
+                font-weight: 600;
+                font-size: 16px;
+            }
+
+            .container-compare-report .info_row {
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+
+            .container-compare-report .info_row_no_margin {
+                margin-top: 1px;
+                margin-bottom: 1px;
+            }
+
+            .container-compare-report .info_row_margin_top {
+                margin-top: 10px;
+                margin-bottom: 1px;
+            }
+
+            .container-compare-report .info_row_bg_blue {
+                background: #3d5368;
+                color: white;
+            }
+
+            .container-compare-report .info_title {
+                width: 45%;
+                font-size: 16px;
+                margin-left: 8px;
+                text-align: left;
+            }
+
+            .container-compare-report .info_content {
+                float: right;
+                width: 50%;
+                text-align: right;
+                font-size: 16px;
+                font-weight: 500;
+            }
+
+            .container-compare-report .rule_list_item_summary {
+                width: 45%;
+                margin-left: 5%;
+            }
+
+            .container-compare-report .summary_header_content {
+                width: 30%;
+                font-size: 14px;
+                font-weight: 600;
+            }
+
+            .container-compare-report .summary_title {
+                width: 40%;
+                font-size: 14px;
+                text-align: left;
+                padding-left: 8px;
+                border-right: 1px solid;
+                border-bottom: 1px solid;
+            }
+
+            .container-compare-report .summary_title_last {
+                border-bottom: none;
+            }
+
+            .container-compare-report .summary_content_highlight {
+                color: red;
+            }
+
+            .container-compare-report .summary_content {
+                width: 30%;
+                font-size: 14px;
+                font-weight: 500;
+                border-bottom: 1px solid #3d5368;
+            }
+
+            .container-compare-report .summary_content_column_two {
+                width: 60%;
+                font-size: 14px;
+                font-weight: 500;
+                border-bottom: 1px solid #3d5368;
+            }
+
+            .container-compare-report .summary_content_last {
+                border-bottom: none;
             }
 
             .vertical_distance {
@@ -426,15 +666,6 @@
                 width: -webkit-fill-available;
                 color: #000126;
                 margin-bottom: 50px;
-            }
-
-            #compare_info_table {
-                margin: auto;
-            }
-
-            .compare_info_table .table_content {
-                color: #080808;
-                font-weight: 600;
             }
 
             .container-compare-report .add_list {
@@ -770,7 +1001,7 @@
                 font-weight: 500;
                 color: #34495d;
                 margin-right: 2.5%;
-                margin-left:  2.5%;
+                margin-left: 2.5%;
                 text-align: left;
                 word-wrap: break-word;
             }
@@ -786,27 +1017,103 @@
     <div class="row">
         <h2 id="title_text">Ruleset Compare Result</h2>
     </div>
-    <div>
-        <table id="compare_info_table" class="table-sm">
-            <tr>
-                <th scope="row">Base Environment:</th>
-                <td class="table_content">{{ base_env.name }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Compared Environment:</th>
-                <td class="table_content">{{ compare_env.name }}</td>
-            </tr>
-            <tr>
-                <th scope="row">Compared Time:</th>
-                <td class="table_content">{{ list_data.current_time }}</td>
-            </tr>
-        </table>
+    <div class="row rule_list_item_header_information">
+        <div class="rule_list_item_info">
+            <div class="green_boarder_info_div">
+                <div class="nav green_boarder_nav" data-target=".add_data">
+                    <div>
+                        <i class="info_nav_icon fas fa-align-justify"></i>
+                    </div>
+                    <div class="info_nav_title file_title"> Information
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="custom-row info_row">
+                        <div class="info_title">Country</div>
+                        <div class="info_content">{{ country.full_name }}</div>
+                    </div>
+                    <div class="custom-row info_row">
+                        <div class="info_title">Environment (1)</div>
+                        <div class="info_content">{{ base_env.name }}</div>
+                    </div>
+                    <div class="custom-row info_row">
+                        <div class="info_title">Environment (2)</div>
+                        <div class="info_content">{{ compare_env.name }}</div>
+                    </div>
+                    <div class="custom-row info_row">
+                        <div class="info_title">Compared Time</div>
+                        <div class="info_content">{{ list_data.current_time }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rule_list_item_summary">
+            <div class="green_boarder_info_div">
+                <div class="nav green_boarder_nav" data-target=".add_data">
+                    <div>
+                        <i class="info_nav_icon fas fa-align-justify"></i>
+                    </div>
+                    <div class="info_nav_title file_title"> Summary
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="custom-row info_row_margin_top info_row_bg_blue">
+                        <div class="summary_title"></div>
+                        <div class="summary_header_content">{{ base_env.name }}</div>
+                        <div class="summary_header_content">{{ compare_env.name }}</div>
+                    </div>
+                    <div class="custom-row info_row_no_margin">
+                        <div class="summary_title">Common Rule Set</div>
+                        <div class="summary_content_column_two">{{ list_data.normal_list|length }}</div>
+                    </div>
+                    <div class="custom-row info_row_no_margin">
+                        <div class="summary_title">Rulesets Only In </div>
+                        {% if list_data.remove_file_count == list_data.add_file_count %}
+                        <div class="summary_content_column_two">{{ list_data.add_file_count }}</div>
+                        {% else %}
+                        <div class="summary_content summary_content_highlight">{{ list_data.remove_file_count }}</div>
+                        <div class="summary_content summary_content_highlight">{{ list_data.add_file_count }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="custom-row info_row_no_margin">
+                        <div class="summary_title">Rules Only In</div>
+                        {% if list_data.remove_rule_count == list_data.add_rule_count %}
+                        <div class="summary_content_column_two">{{ list_data.add_rule_count }}</div>
+                        {% else %}
+                        <div class="summary_content summary_content_highlight">{{ list_data.remove_rule_count }}</div>
+                        <div class="summary_content summary_content_highlight">{{ list_data.add_rule_count }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="custom-row info_row_no_margin">
+                        <div class="summary_title">Different Rulesets</div>
+                        {% if list_data.modify_file_count == 0 %}
+                        <div class="summary_content_column_two">{{ list_data.modify_file_count }}</div>
+                        {% else %}
+                        <div class="summary_content_column_two summary_content_highlight">{{ list_data.modify_file_count }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="custom-row info_row_no_margin">
+                        <div class="summary_title summary_title_last">Different Rules</div>
+                        {% if list_data.modify_rule_count == 0 %}
+                        <div class="summary_content_column_two summary_content_last">{{ list_data.modify_rule_count }}
+                        </div>
+                        {% else %}
+                        <div class="summary_content_column_two summary_content_last summary_content_highlight">
+                            {{ list_data.modify_rule_count }}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
     <div class="vertical_distance"></div>
     <!-- file list compare result -->
     <div class="add_list">
         <div class="nav" data-target=".add_data">
-            <div class="nav_title"> Added Files
+            <div class="nav_title"> Rulesets {{ compare_env.name }} Only
             </div>
         </div>
         {% for data in list_data.add_list %}
@@ -817,7 +1124,7 @@
     </div>
     <div class="minus_list">
         <div class="nav" data-target=".minus_data">
-            <div class="nav_title"> Removed Files
+            <div class="nav_title"> Rulesets {{ base_env.name }} Only
             </div>
         </div>
         {% for data in list_data.remove_list %}
@@ -828,7 +1135,7 @@
     </div>
     <div class="modify_list">
         <div class="nav" data-target=".modify_data">
-            <div class="nav_title"> Modified Files
+            <div class="nav_title"> Different Rulesets
             </div>
         </div>
         {% for data in list_data.modify_list %}

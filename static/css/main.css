@@ -190,10 +190,6 @@
     font-weight: 600;
 }
 
-.container-rule-list-item .summary_header_content_text {
-    border-bottom: 1px solid;
-}
-
 .container-rule-list-item .summary_title {
     width: 40%;
     font-size: 14px;
@@ -715,4 +711,8 @@
 .custom-row {
     display: flex;
     flex-wrap: wrap;
+}
+
+.info_row_no_right_margin{
+    margin-right: 0px;
 }
