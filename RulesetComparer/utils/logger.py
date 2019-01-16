@@ -70,5 +70,5 @@ def print_log(log_class, level, msg, *args, **kwargs):
 def local_time(*args):
     utc_dt = datetime.utcnow()
     time_zone = pytz.timezone(TIME_ZONE.get('asia_taipei'))
-    converted = utc_dt.astimezone(time_zone)
+    converted = time_zone.localize(utc_dt)
     return converted.timetuple()
