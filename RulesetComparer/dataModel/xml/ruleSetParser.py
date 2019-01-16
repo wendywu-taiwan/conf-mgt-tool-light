@@ -6,10 +6,10 @@ from RulesetComparer.properties import xmlKey as XMLKey
 
 # this is for handling rules data, rules file contains many rules
 class RulesModel(BaseModel):
-    def __init__(self, xml):
+    def __init__(self, xml, rule_name):
         BaseModel.__init__(self, xml)
         self.root = self.parse_xml_from_file()
-        self.rulesName = ""
+        self.rulesName = rule_name
         self.rulesMap = {}
         self.parse_data()
 
@@ -22,17 +22,11 @@ class RulesModel(BaseModel):
         # get data array in <Rule></Rule>
         if self.has_xml_tag:
             for rule in self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE):
-                self.rulesName = self.value_in_node_with_xml(rule,
-                                                             XMLKey.NODE_KEY_CONTEXT,
-                                                             XMLKey.ORGANIZATION_ID)
                 rule_key = self.value_with_xml(rule, XMLKey.RULE_KEY)
                 rule_model = RuleModel(rule, self.has_xml_tag)
                 self.rulesMap[rule_key] = rule_model
         else:
             for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
-                self.rulesName = self.value(rule,
-                                            XMLKey.NODE_KEY_CONTEXT+"/"+XMLKey.ORGANIZATION_ID)
-                # get data array in <Key></Key>
                 rule_key = self.value(rule, XMLKey.RULE_KEY)
                 rule_model = RuleModel(rule, self.has_xml_tag)
                 self.rulesMap[rule_key] = rule_model

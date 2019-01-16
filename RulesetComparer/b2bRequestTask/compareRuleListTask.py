@@ -19,6 +19,7 @@ from RulesetComparer.utils.timeUtil import get_current_time
 
 
 class CompareRuleListTask:
+    LOG_CLASS = "CompareRuleListTask"
 
     def __init__(self, base_env_id, compare_env_id, country_id):
         self.compare_hash_key = hash(self)
@@ -52,6 +53,9 @@ class CompareRuleListTask:
         # check if environment is git
         self.git_environment = self.check_environment()
         try:
+            info_log(self.LOG_CLASS, " ============== start ==============")
+            info_log(self.LOG_CLASS, "base env : "+self.baseEnv.name+", compare env : "+self.comparedEnv.name)
+            info_log(self.LOG_CLASS, "country : "+str(self.country.name)+", compare key:"+str(self.compare_hash_key))
             self.check_git_status()
             self.execute()
             self.save_result_file()
@@ -134,6 +138,7 @@ class CompareRuleListTask:
         fileManager.save_compare_result_html(self.compare_hash_key, html)
 
     def remove_rule_files(self):
+        info_log(self.LOG_CLASS, " ============== finish ==============")
         file_path = get_rule_set_path("", "", self.compare_hash_key)
         fileManager.clear_folder(file_path)
 
@@ -153,6 +158,9 @@ class CompareRuleListTask:
     def parse_add_list_rule(self, add_list):
         for rule_name in add_list:
             rule_module = self.load_rule_module(self.comparedEnv, rule_name)
+            if rule_module is None:
+                continue
+
             rule_list_item_parser = RuleListItemBuilder(rule_module, self.compare_hash_key)
             rule_list_item_parser.set_add_rule()
             self.add_rule_list.append(rule_list_item_parser.get_data())
@@ -162,6 +170,9 @@ class CompareRuleListTask:
     def parse_remove_list_rule(self, remove_list):
         for rule_name in remove_list:
             rule_module = self.load_rule_module(self.baseEnv, rule_name)
+            if rule_module is None:
+                continue
+
             rule_list_item_parser = RuleListItemBuilder(rule_module, self.compare_hash_key)
             rule_list_item_parser.set_remove_rule()
             self.remove_rule_list.append(rule_list_item_parser.get_data())
@@ -172,6 +183,8 @@ class CompareRuleListTask:
         for rule_name in union_list:
             base_rules_module = self.load_rule_module(self.baseEnv, rule_name)
             compared_rules_module = self.load_rule_module(self.comparedEnv, rule_name)
+            if base_rules_module is None or compared_rules_module is None:
+                continue
 
             comparer = RulesetComparer(base_rules_module, compared_rules_module)
             rule_list_item_parser = RuleListItemBuilder(base_rules_module, self.compare_hash_key)
@@ -192,12 +205,17 @@ class CompareRuleListTask:
                 self.modify_rules_count += comparer.get_difference_count()
 
     def load_rule_module(self, env, rule_name):
-        if env.name == config.GIT.get("environment_name"):
-            rule_set_file = rulesetUtil.load_git_file_with_name(self.country.name, rule_name)
-        else:
-            rule_set_file = rulesetUtil.load_rule_file_with_name(env.name,
-                                                                 self.country.name,
-                                                                 self.compare_hash_key,
-                                                                 rule_name)
-        rules_module = ParseRuleModel(rule_set_file)
-        return rules_module
+        try:
+            if env.name == config.GIT.get("environment_name"):
+                rule_set_file = rulesetUtil.load_git_file_with_name(self.country.name, rule_name)
+            else:
+                rule_set_file = rulesetUtil.load_rule_file_with_name(env.name,
+                                                                     self.country.name,
+                                                                     self.compare_hash_key,
+                                                                     rule_name)
+            rules_module = ParseRuleModel(rule_set_file, rule_name)
+            return rules_module
+        except Exception:
+            traceback.print_exc()
+            error_log(traceback.format_exc())
+            return None

@@ -36,7 +36,6 @@ class DownloadRuleSetTask(BaseRequestTask):
 
             info_log(self.LOG_CLASS, '======== download rule set %s ========' % self.rule_set_name)
             response = client.service.exportRuleset(self.request_parameter())
-            info_log(self.LOG_CLASS, "exportRuleset response returnCode :" + str(response.returnCode))
             info_log(self.LOG_CLASS, "exportRuleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "exportRuleset response message :" + str(response.message))
             self.b2b_response_data = response

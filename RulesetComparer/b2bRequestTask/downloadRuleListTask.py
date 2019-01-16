@@ -39,7 +39,8 @@ class DownloadRuleListTask(BaseRequestTask):
             response = client.service.getOwnedBRERuleSets(self.request_parameter())
             if response.returnCode != 0:
                 raise Exception(response.message[0].text)
-            info_log(self.LOG_CLASS, "getOwnedBRERuleSets response :" + str(response))
+            info_log(self.LOG_CLASS, "getOwnedBRERuleSets response loginId :" + str(response.loginId))
+            info_log(self.LOG_CLASS, "getOwnedBRERuleSets response message :" + str(response.message))
             self.b2b_response_data = response
             self.b2b_response_error_check()
         except Exception as e:

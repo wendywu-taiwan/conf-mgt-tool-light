@@ -29,7 +29,7 @@ def get_rule_from_b2b(environment, country, rule_set_name):
     task = DownloadRuleSetTask(environment, country, rule_set_name)
 
     ruleset = task.get_rule_set_file()
-    rules_model = ParseRuleModel(ruleset)
+    rules_model = ParseRuleModel(ruleset, rule_set_name)
     rule_data = RuleSerializer(rules_model.get_rules_data_array())
     return rule_data
 
@@ -52,8 +52,8 @@ def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set
     compare_rule = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
                                                       compare_key, rule_set_name)
 
-    base_module = ParseRuleModel(base_rule)
-    compare_module = ParseRuleModel(compare_rule)
+    base_module = ParseRuleModel(base_rule, rule_set_name)
+    compare_module = ParseRuleModel(compare_rule, rule_set_name)
 
     comparer = RulesetComparer(base_module, compare_module)
     data = comparer.get_diff_data()
@@ -113,7 +113,7 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
                                         compare_env_id,
                                         country_list,
                                         mail_list)
-    debug_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
+    info_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
     scheduler = SendMailScheduler(daily_task.scheduler_listener)
     job = scheduler.add_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)
@@ -121,7 +121,7 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
 
 def restart_all_scheduler():
     try:
-        debug_log(None, "restart all scheduler")
+        info_log(None, "restart all scheduler")
         if len(ReportSchedulerInfo.objects.all()) == 0:
             return
 
@@ -139,7 +139,7 @@ def restart_all_scheduler():
                                  parser.local_time,
                                  parser.interval_hour)
 
-        debug_log(None, "restart all scheduler success")
+        info_log(None, "restart all scheduler success")
     except BaseException as e:
         traceback.print_exc()
         error_log(traceback.format_exc())
