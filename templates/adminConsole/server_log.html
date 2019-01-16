@@ -7,18 +7,18 @@
         <div id="debug_log" class="button_div">
             <a href="{% url 'server-log-type' 0 %}">
                 {% if log_type_key == 0 %}
-                <button id="debug_log_btn_on_select" type="button" class="btn btn-outline-primary">Debug Log</button>
+                <button id="debug_log_btn_on_select" type="button" class="btn btn-outline-primary">Info Log</button>
                 {% else %}
-                <button type="button" class="btn btn-outline-primary">Debug Log</button>
+                <button type="button" class="btn btn-outline-primary">Info Log</button>
                 {% endif %}
             </a>
         </div>
         <div id="info_log" class="button_div">
             <a href="{% url 'server-log-type' 1 %}">
                 {% if log_type_key == 1 %}
-                <button id="info_log_btn_on_select" type="button" class="btn btn-outline-info">Info Log</button>
+                <button id="info_log_btn_on_select" type="button" class="btn btn-outline-info">Warning Log</button>
                 {% else %}
-                <button type="button" class="btn btn-outline-info">Info Log</button>
+                <button type="button" class="btn btn-outline-info">Warning Log</button>
                 {% endif %}
             </a>
         </div>

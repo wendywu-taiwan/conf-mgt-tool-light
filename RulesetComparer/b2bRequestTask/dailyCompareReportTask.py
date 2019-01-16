@@ -89,7 +89,7 @@ class DailyCompareReportTask:
             error_log(traceback.format_exc())
         else:
             try:
-                debug_log(self.LOG_CLASS, 'job worked, task id =' + str(self.id))
+                info_log(self.LOG_CLASS, 'job worked, task id =' + str(self.id))
                 time_zone = config.TIME_ZONE.get('asia_taipei')
                 time_format = config.TIME_FORMAT.get('db_time_format')
                 next_date_time = self.scheduled_job.next_run_time

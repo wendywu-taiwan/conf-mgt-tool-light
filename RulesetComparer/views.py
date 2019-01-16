@@ -306,7 +306,7 @@ def get_scheduler(request, scheduler_id):
 def create_scheduler(request):
     try:
         request_json = get_post_request_json(request)
-        debug_log("API", "create_scheduler, request json =" + str(request_json))
+        info_log("API", "create_scheduler, request json =" + str(request_json))
         scheduler_info = services.create_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
@@ -320,7 +320,7 @@ def create_scheduler(request):
 def update_scheduler(request):
     try:
         request_json = get_post_request_json(request)
-        debug_log("API", "update_scheduler, request json =" + str(request_json))
+        info_log("API", "update_scheduler, request json =" + str(request_json))
         scheduler_info = services.update_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()

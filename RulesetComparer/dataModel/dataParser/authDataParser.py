@@ -16,10 +16,8 @@ class AuthDataParser:
             environment_obj = auth_data[environment]
             if self.ROOT_KEY in environment_obj:
                 self.data = environment_obj[self.ROOT_KEY]
-                print("root data:" + str(self.data))
             else:
                 self.data = environment_obj[country]
-                print("country data:" + str(self.data))
         except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())

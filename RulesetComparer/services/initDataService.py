@@ -10,7 +10,7 @@ LOG_CLASS = "initDataService"
 
 def init_data(apps, schema_editor):
     try:
-        debug_log(LOG_CLASS, "init ruleset data")
+        info_log(LOG_CLASS, "init ruleset data")
         preload_data_path = settings.BASE_DIR + config.get_file_path("preload_data")
         preload_data = fileManager.load_json_file(preload_data_path)
         ruleset_data = preload_data["ruleset_data"]
@@ -37,7 +37,7 @@ def init_country_data(country_list):
                 full_name = country_obj["full_name"]
                 icon_file_name = country_obj["icon_file_name"]
                 Country.objects.create_country(name, full_name, icon_file_name)
-            debug_log(LOG_CLASS, "init country data success")
+            info_log(LOG_CLASS, "init country data success")
             return True
         except Exception as err:
             Country.objects.all().delete()
@@ -54,7 +54,7 @@ def init_environment_data(environment_data):
                 full_name = environment_obj["full_name"]
                 client = environment_obj['b2b_rule_set_client']
                 Environment.objects.create_environment(name, full_name, client)
-            debug_log(LOG_CLASS, "init environment data success")
+            info_log(LOG_CLASS, "init environment data success")
             return True
         except Exception as err:
             Environment.objects.all().delete()
@@ -71,7 +71,7 @@ def init_function_data(function_data):
                 name = function_obj["name"]
                 icon_file_name = function_obj["icon_file_name"]
                 Function.objects.create(name=name, icon_file_name=icon_file_name)
-            debug_log(LOG_CLASS, "init function data success")
+            info_log(LOG_CLASS, "init function data success")
             return True
         except Exception:
             Function.objects.all().delete()
@@ -92,7 +92,7 @@ def init_module_data(module_data):
                     if db_function is None:
                         continue
                     module.functions.add(db_function)
-            debug_log(LOG_CLASS, "init module data success")
+            info_log(LOG_CLASS, "init module data success")
             return True
         except Exception as err:
             Module.objects.all().delete()
@@ -114,7 +114,7 @@ def init_user_role_data(user_role_data):
                     if db_module is None:
                         continue
                     user_role.modules.add(db_module)
-            debug_log(LOG_CLASS, "init user role data success")
+            info_log(LOG_CLASS, "init user role data success")
             return True
         except Exception as err:
             UserRole.objects.all().delete()

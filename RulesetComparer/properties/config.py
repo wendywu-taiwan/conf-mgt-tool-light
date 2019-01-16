@@ -53,8 +53,8 @@ SEND_COMPARE_RESULT_MAIL = {
 DEFAULT_LOG_TYPE = 0
 
 LOG_TYPE_FILE = {
-    0: "debug.log",
-    1: "info.log",
+    0: "info.log",
+    1: "warning.log",
     2: "error.log"
 }
 
