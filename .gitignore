@@ -8,3 +8,4 @@ venv
 RulesetComparer/compare_result
 RulesetComparer/serverlog
 db.sqlite3
+auth_data.json
