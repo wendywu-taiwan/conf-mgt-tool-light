@@ -1,0 +1,10 @@
+.idea
+bower_components
+.DS_Store
+venv
+*.XML
+*.__pycache__
+*.pyc
+RulesetComparer/compare_result
+RulesetComparer/serverlog
+db.sqlite3
