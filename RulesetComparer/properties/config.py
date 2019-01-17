@@ -4,8 +4,8 @@ FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result",
-    "preload_data": "/static/preload_data.json",
-    "auth_data": "/static/auth_data.json",
+    "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
+    "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
     "server_log": "/RulesetComparer/serverlog"
 }
 FILE_NAME = {
