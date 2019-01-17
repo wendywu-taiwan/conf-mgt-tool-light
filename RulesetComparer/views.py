@@ -1,5 +1,6 @@
 import os
 import traceback
+import re
 
 from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
@@ -37,8 +38,17 @@ def admin_console_server_log_page(request, log_type=None):
         log_dir = settings.BASE_DIR + get_file_path("server_log")
         log_file_name = LOG_TYPE_FILE[log_type]
         full_name = log_dir + "/" + log_file_name
+
+        if fileManager.is_file_exist(full_name) is False:
+            info_log("views.admin_console_server_log_page", "init info message")
+            warning_log("views.admin_console_server_log_page", "init warning message")
+            error_log("init error message")
+
         file = fileManager.load_file(full_name)
-        file_content = file.read().split("\n")
+        file_secure = re.sub("password</ns0:name><ns0:value>[^<]+</ns0:value>",
+                             "password</ns0:name><ns0:value>****</ns0:value>", file.read())
+        file_content = file_secure.split("\n")
+
         data = {
             key.ADMIN_CONSOLE_INFO: info_data,
             key.LOG_TYPE_KEY: log_type,
@@ -352,8 +362,8 @@ def json_rule_list(request, environment, country):
 
 # todo : return json rule detail
 def json_rule_detail(request, country, env, rule_set_name):
-    response_model = services.get_rule_from_b2b(env, country, rule_set_name)
-    return render(request, "rule_show_detail.html", response_model.get_response_json())
+    rule_data = services.get_rule_from_b2b(env, country, rule_set_name)
+    return render(request, "rule_show_detail.html", rule_data)
 
 
 # todo : return json rule diff result

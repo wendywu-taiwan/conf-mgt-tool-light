@@ -29,6 +29,9 @@ def get_rule_from_b2b(environment, country, rule_set_name):
     task = DownloadRuleSetTask(environment, country, rule_set_name)
 
     ruleset = task.get_rule_set_file()
+    if ruleset is None:
+        return None
+
     rules_model = ParseRuleModel(ruleset, rule_set_name)
     rule_data = RuleSerializer(rules_model.get_rules_data_array())
     return rule_data
@@ -51,6 +54,10 @@ def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set
                                                    compare_key, rule_set_name)
     compare_rule = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
                                                       compare_key, rule_set_name)
+
+    if base_rule is None or compare_rule is None:
+        error_log("diff_rule_set , ruleset file not found")
+        return None
 
     base_module = ParseRuleModel(base_rule, rule_set_name)
     compare_module = ParseRuleModel(compare_rule, rule_set_name)

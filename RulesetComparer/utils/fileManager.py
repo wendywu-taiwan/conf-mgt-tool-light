@@ -5,15 +5,26 @@ import json
 from django.conf import settings
 from codecs import open
 from RulesetComparer.properties.config import get_compare_result_full_file_name
+from RulesetComparer.utils.logger import *
+from pathlib import Path
 
 # codecs save file mode
 SAVE_FILE_MODE_ADD = 'a'
 SAVE_FILE_MODE_WRITE = 'w'
 SAVE_FILE_MODE_READ = 'r'
+LOG_CLASS = "fileManager"
 
 
 def is_folder_exist(path):
     if os.path.isdir(path):
+        return True
+    else:
+        return False
+
+
+def is_file_exist(file_name):
+    file_path = Path(file_name)
+    if file_path.is_file():
         return True
     else:
         return False
@@ -69,7 +80,11 @@ def save_file_with_setting(file_name, mode, format, content):
 
 
 def load_file(file_name):
-    return load_file_with_setting(file_name, SAVE_FILE_MODE_READ, settings.UNICODE_ENCODING)
+    if is_file_exist(file_name):
+        return load_file_with_setting(file_name, SAVE_FILE_MODE_READ, settings.UNICODE_ENCODING)
+    else:
+        info_log(LOG_CLASS, " file not exist :" + file_name)
+        return None
 
 
 def load_file_with_setting(file_name, mode, format):
@@ -77,7 +92,7 @@ def load_file_with_setting(file_name, mode, format):
 
 
 def load_file_in_folder(path, extension):
-    name_filter = path + "*"+extension
+    name_filter = path + "*" + extension
     return [glob.glob(name_filter)]
 
 

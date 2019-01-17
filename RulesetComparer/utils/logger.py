@@ -30,13 +30,6 @@ def initialize_logger():
     handler.setFormatter(formatter)
     logger.addHandler(handler)
 
-    # create debug file handler and set level to debug
-    handler = logging.FileHandler(os.path.join(log_dir, "debug.log"), "w")
-    handler.setLevel(logging.DEBUG)
-    formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-
 
 def error_log(msg, *args, **kwargs):
     print_log(None, logging.ERROR, msg, *args, **kwargs)
@@ -48,10 +41,6 @@ def warning_log(log_class, msg, *args, **kwargs):
 
 def info_log(log_class, msg, *args, **kwargs):
     print_log(log_class, logging.INFO, msg, *args, **kwargs)
-
-
-def debug_log(log_class, msg, *args, **kwargs):
-    print_log(log_class, logging.DEBUG, msg, *args, **kwargs)
 
 
 def print_log(log_class, level, msg, *args, **kwargs):
