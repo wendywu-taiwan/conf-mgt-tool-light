@@ -231,6 +231,25 @@ def send_mail(request, compare_key):
         return JsonResponse(result)
 
 
+def download_rule_set(request):
+    try:
+        request_json = get_post_request_json(request)
+        zip_file_path = services.download_rulesets(request_json)
+        download_file_name = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date"))+"_ruleset"
+
+        if os.path.exists(zip_file_path):
+            with open(zip_file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/zip")
+                response['Content-Disposition'] = 'attachment; filename="' + download_file_name + '.zip"'
+                return response
+        raise Http404
+    except Exception:
+        traceback.print_exc()
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def download_compare_report(request, compare_key):
     try:
         file_path = fileManager.get_compare_result_full_file_name("_html", compare_key)

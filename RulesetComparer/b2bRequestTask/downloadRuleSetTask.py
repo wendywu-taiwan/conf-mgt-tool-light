@@ -42,7 +42,6 @@ class DownloadRuleSetTask(BaseRequestTask):
             self.b2b_response_error_check()
 
             if self.request_fail() is False:
-                self.download_status = apiResponse.RESPONSE_KEY_SUCCESS
                 self.save_rule_set()
         except Exception as e:
             traceback.print_exc()
@@ -56,8 +55,7 @@ class DownloadRuleSetTask(BaseRequestTask):
             return self.rule_set_name
 
     def get_content_json(self):
-        return {apiResponse.DATA_KEY_RULES_NAME: self.rule_set_name,
-                apiResponse.DATA_KEY_DOWNLOAD_STATUS: self.download_status}
+        return {apiResponse.DATA_KEY_RULES_NAME: self.rule_set_name}
 
     def save_rule_set(self):
         if self.request_fail():

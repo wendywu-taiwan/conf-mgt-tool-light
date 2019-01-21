@@ -6,7 +6,8 @@ FILE_PATH = {
     "compare_result": "/RulesetComparer/compare_result",
     "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
     "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
-    "server_log": "/RulesetComparer/serverlog"
+    "server_log": "/RulesetComparer/serverlog",
+    "rule_set_zip": "RulesetComparer/rulesets/zip/%s.zip"
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -86,3 +87,7 @@ def get_compare_result_full_file_name(file_key, compare_key):
 
 def get_rule_set_full_file_name(file_path, file_name):
     return "%s/%s.xml" % (file_path, file_name)
+
+
+def get_rule_set_zip_file_name(compare_key):
+    return FILE_PATH.get("rule_set_zip") % compare_key

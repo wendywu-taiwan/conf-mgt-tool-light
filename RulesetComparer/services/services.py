@@ -4,12 +4,14 @@ from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTa
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
+from RulesetComparer.b2bRequestTask.downloadPackedRuleSetTask import DownloadPackedRuleSetTask
 
 from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.updateReportSchedularTaskParser import UpdateReportSchedulerTaskParser
+from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadRulesetParser
 
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
@@ -67,8 +69,15 @@ def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set
     return data
 
 
-def download_rule_set_from_git(country):
-    pass
+def download_rulesets(json_data):
+    try:
+        parser = DownloadRulesetParser(json_data)
+        task = DownloadPackedRuleSetTask(parser.env_id,
+                                         parser.country_id,
+                                         parser.ruleset_name_list)
+        return task.zip_file_path
+    except Exception:
+        return None
 
 
 def create_report_scheduler(json_data):

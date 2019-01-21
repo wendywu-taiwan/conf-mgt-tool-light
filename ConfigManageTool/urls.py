@@ -18,6 +18,10 @@ from django.urls import path
 from RulesetComparer import views
 from django.conf.urls import url, include
 
+ruleset_download_pattern = [
+    path('download/', views.download_rule_set, name="packed-ruleset-download")
+
+]
 ruleset_comparer_pattern = [
     path('select/', views.environment_select_page, name="environment-select"),
     path('detail/<str:environment_name>/<str:compare_key>/<str:rule_name>',
@@ -54,6 +58,7 @@ ruleset_scheduler_pattern = [
 ]
 
 urlpatterns = [
+    path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
     path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),
     path('ConfigManageTool/admin_console/ruleset/', include(admin_console_ruleset_pattern)),
