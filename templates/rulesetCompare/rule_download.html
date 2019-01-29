@@ -60,25 +60,28 @@
                 </button>
             </div>
         </div>
-        <div id="download_data_div">
-            <div id="title_icon_div" class="row no-row-margin">
-                <div class="div_title_text col-4 no-col-padding">DOWNLOAD</div>
-                <div class="row no_row_margin col-8 no-col-padding">
-                    <div id="icon_div" class="row no_row_margin">
-                        <div id="download_selected_btn_div" class="download-icon col-1 no-col-padding">
-                            <button id="download_selected_btn" class="btn btn-info btn-font-13" onclick="downloadSelectedRulesOnClick()">
-                            </button>
-                        </div>
-                        <div id="download_all_btn_div" class="download-icon col-1 no-col-padding">
-                            <button class="btn btn-primary btn-font-13" onclick="downloadAllRulesOnClick()">Download
-                                All
-                            </button>
+        <div id="download_data_background_div">
+            <div id="download_data_div">
+                <div id="title_icon_div" class="row no-row-margin">
+                    <div class="div_title_text col-4 no-col-padding">DOWNLOAD</div>
+                    <div class="row no_row_margin col-8 no-col-padding">
+                        <div id="icon_div" class="row no_row_margin">
+                            <div id="download_selected_btn_div" class="download-icon col-1 no-col-padding">
+                                <button id="download_selected_btn" class="btn btn-info btn-font-13"
+                                        onclick="downloadSelectedRulesOnClick()">
+                                </button>
+                            </div>
+                            <div id="download_all_btn_div" class="download-icon col-1 no-col-padding">
+                                <button class="btn btn-primary btn-font-13" onclick="downloadAllRulesOnClick()">Download
+                                    All
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div id="show_rule_name_list_div">
-                {{ rule_name_list }}
+                <div id="show_rule_name_list_div">
+                    {{ rule_name_list }}
+                </div>
             </div>
         </div>
     </div>

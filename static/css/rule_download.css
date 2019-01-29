@@ -18,6 +18,11 @@
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
+#download_data_background_div {
+    background: #f7f7f7;
+    padding-bottom: 5%;
+}
+
 #download_data_div {
     display: none;
     padding-top: 2%;

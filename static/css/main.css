@@ -1,9 +1,9 @@
 /* container */
-.height-full{
+.height-full {
     height: 100%;
 }
 
-.height-auto{
+.height-auto {
     height: auto;
 }
 
@@ -22,7 +22,7 @@
 }
 
 /* environment select */
-.container-select .dropdown-limit{
+.container-select .dropdown-limit {
     height: auto;
     max-height: 180px;
     overflow-x: hidden;
@@ -304,25 +304,30 @@
 }
 
 /* utilities */
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
 .custom-row {
     display: flex;
     flex-wrap: wrap;
 }
 
-.no-col-padding{
+.no-col-padding {
     padding-left: 0px;
     padding-right: 0px;
 }
 
-.no-row-margin{
+.no-row-margin {
     margin-left: 0px;
     margin-right: 0px;
 }
 
-.info_row_no_right_margin{
+.info_row_no_right_margin {
     margin-right: 0px;
 }
 
-.btn-font-13{
+.btn-font-13 {
     font-size: 13px;
 }
