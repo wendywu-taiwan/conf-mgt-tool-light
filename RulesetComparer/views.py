@@ -124,6 +124,28 @@ def admin_console_scheduler_update_page(request, scheduler_id):
 
 
 # ruleset page
+def rule_download_page(request):
+    try:
+        country_list = Country.objects.all()
+        environment_list = Environment.objects.all()
+
+        response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
+                    key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
+
+        if request.method == REQUEST_POST:
+            request_json = get_post_request_json(request)
+            info_log("API", "filter rule names, request json =" + str(request_json))
+            filtered_rule_names = services.get_filtered_ruleset_list(request_json)
+            return render(request, "rule_download_table.html", {key.RULE_NAME_LIST: filtered_rule_names})
+        else:
+            return render(request, "rule_download.html", response)
+    except Exception:
+        traceback.print_exc()
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def environment_select_page(request):
     try:
         country_list = Country.objects.all()
@@ -235,7 +257,7 @@ def download_rule_set(request):
     try:
         request_json = get_post_request_json(request)
         zip_file_path = services.download_rulesets(request_json)
-        download_file_name = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date"))+"_ruleset"
+        download_file_name = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date")) + "_ruleset"
 
         if os.path.exists(zip_file_path):
             with open(zip_file_path, 'rb') as fh:

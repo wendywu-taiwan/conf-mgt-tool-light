@@ -19,7 +19,8 @@ from RulesetComparer import views
 from django.conf.urls import url, include
 
 ruleset_download_pattern = [
-    path('download/', views.download_rule_set, name="packed-ruleset-download")
+    path('', views.rule_download_page, name="ruleset-download-page"),
+    path('packed/', views.download_rule_set, name="packed-ruleset-download")
 
 ]
 ruleset_comparer_pattern = [

@@ -3,6 +3,10 @@ $(function () {
     setToken(csrftoken);
 });
 
+function stopDialog(){
+    swal.close();
+}
+
 function showWaitingDialog() {
     swal({
         title: "Please Wait..",

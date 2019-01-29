@@ -1,0 +1,139 @@
+/*@media screen and (min-width: 1350px) {*/
+#rule_download_container {
+    background-color: #f7f7f7;
+    margin-top: -30px;
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+#select_data_div {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+    margin-bottom: 30px;
+    width: 40%;
+    background-color: white;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
+}
+
+#download_data_div {
+    display: none;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+    width: 40%;
+    background-color: white;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
+}
+
+#rule_download_container .div_title_text {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+    min-width: 130px;
+}
+
+#rule_download_container .drop_down_label_text {
+    font-weight: 600;
+    color: #bbbbbb;
+    font-size: 16px;
+}
+
+#rule_download_container .drop_down_button {
+    background-color: #088587;
+    width: 100%;
+}
+
+#select_country_and_env_div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#select_country_div {
+    margin-right: 5%;
+}
+
+#filter_div {
+    margin-bottom: 45px;
+}
+
+#filter_input_div {
+    width: 100%;
+}
+
+#filter_btn_div {
+    text-align: right;
+}
+
+#filter_btn {
+    background-color: #1abb9c;
+}
+
+/* rule download table */
+#show_rule_name_list_div {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+#show_rule_name_list_div .rule_name_item {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+    margin-bottom: 10px;
+    width: 90%;
+    background-color: #ededef4a;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
+}
+
+#show_rule_name_list_div .checkbox_rule_name {
+    text-align: center;
+}
+
+#show_rule_name_list_div .rule_name_text {
+    font-size: 14px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-family: sans-serif;
+    font-weight: 500;
+}
+
+#download_data_div #title_icon_div {
+    margin-bottom: 30px;
+}
+
+#title_icon_div #front_space {
+    max-width: 30%;
+    min-width: 0;
+    width: 30%;
+}
+
+#title_icon_div #icon_div {
+    margin-left: auto;
+}
+
+#title_icon_div #download_selected_btn_div {
+    margin-right: 10px;
+}
+
+#title_icon_div #download_selected_btn {
+    visibility: hidden;
+}
+
+#title_icon_div .download-icon {
+    min-width: 100px;
+    max-width: 28%;
+    width: 28%;
+}
+
+/*}*/
+
+/*@media screen and (max-width: 1350px) {*/
+
+/*}*/

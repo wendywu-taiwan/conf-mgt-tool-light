@@ -36,9 +36,13 @@ RULE_MODIFIED_KEY_BASE_EXPRESSION = 'base_expression'
 RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
 
-# view.environment_select , view.admin_console_create_task
+# view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
+
+# view.rule_download_page
+RULE_NAME_LIST = 'rule_name_list'
+
 
 # view.compare_rule_list_item_data
 COMPARE_RULE_LIST_COUNTRY = 'country'

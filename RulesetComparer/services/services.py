@@ -7,6 +7,7 @@ from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareRe
 from RulesetComparer.b2bRequestTask.downloadPackedRuleSetTask import DownloadPackedRuleSetTask
 
 from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
+from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
@@ -15,7 +16,7 @@ from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadR
 
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils import rulesetUtil, fileManager
+from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
 from RulesetComparer.properties import dataKey
@@ -69,15 +70,35 @@ def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set
     return data
 
 
+def get_filtered_ruleset_list(json_data):
+    try:
+        parser = GetFilteredRulesetParser(json_data)
+        if parser.is_git:
+            git_file_path = get_rule_set_git_path(parser.country.name)
+            rule_name_list = fileManager.get_rule_name_list(git_file_path)
+        else:
+            task = DownloadRuleListTask(parser.environment.id,
+                                        parser.country.id)
+            rule_name_list = task.get_rule_list()
+
+        filter_name_list = stringFilter.array_filter(rule_name_list, parser.filter_keys)
+        return filter_name_list
+    except Exception:
+        error_log(traceback.format_exc())
+        return traceback.print_exc()
+
+
 def download_rulesets(json_data):
     try:
         parser = DownloadRulesetParser(json_data)
         task = DownloadPackedRuleSetTask(parser.env_id,
                                          parser.country_id,
-                                         parser.ruleset_name_list)
-        return task.zip_file_path
+                                         parser.rule_name_list,
+                                         parser.rule_name_xml_list)
+        return task.zip_file
     except Exception:
-        return None
+        traceback.print_exc()
+        error_log(traceback.format_exc())
 
 
 def create_report_scheduler(json_data):

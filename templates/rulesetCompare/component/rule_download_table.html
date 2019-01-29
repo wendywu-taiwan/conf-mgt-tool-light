@@ -1,0 +1,15 @@
+{% for data in rule_name_list %}
+    <div class="rule_name_item">
+        <div class="row no_row_margin">
+            <div id="check_box_rule_name_div" class="checkbox_rule_name col-1 no-col-padding">
+                <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"
+                       data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>
+            </div>
+            <div class="rule_name_text col-6 no-col-padding">
+                {{ data }}
+            </div>
+            <div class="icon_div col-3 no-col-padding"></div>
+        </div>
+    </div>
+    <div class="divider"></div>
+{% endfor %}
