@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block content %}
 
+{% block resource %}
+    <script src="{% static '/js/environment-select.js' %}"></script>
+{% endblock %}
+
+{% block content %}
 <div class="container-select container-fluid">
     <p class="header-text">Compare</p>
     <div class="dropdown-block">

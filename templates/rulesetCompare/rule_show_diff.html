@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block content %}
 
-{{ data }}
+{% block resource %}
+    <link href="{% static '/css/rule_show_diff.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
 <div class="container-rule-diff container-fluid">
     <div class="modify_rule_list">
         <div class="nav" data-target=".modify_data">

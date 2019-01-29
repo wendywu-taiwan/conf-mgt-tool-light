@@ -1,5 +1,9 @@
 {% extends "admin_console_base.html" %}
 {% load static from staticfiles %}
+{% block resource %}
+    <script src="{% static '/js/adminConsole/scheduler-create.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <div id="create_task_container" class="custom_container">
     <div id="content_header_div" class="row">
