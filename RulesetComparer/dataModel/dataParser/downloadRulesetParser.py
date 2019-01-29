@@ -14,7 +14,8 @@ class DownloadRulesetParser:
         try:
             self.env_id = json_data[self.JSON_KEY_ENV_ID]
             self.country_id = json_data[self.JSON_KEY_COUNTRY_ID]
-            self.ruleset_name_list = self.parse_ruleset(json_data[self.JSON_KEY_RULESET_NAME_LIST])
+            self.rule_name_list = json_data[self.JSON_KEY_RULESET_NAME_LIST]
+            self.rule_name_xml_list = self.parse_ruleset(self.rule_name_list)
         except BaseException as e:
             traceback.print_exc()
             error_log(traceback.format_exc())

@@ -7,7 +7,8 @@ FILE_PATH = {
     "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
     "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
     "server_log": "/RulesetComparer/serverlog",
-    "rule_set_zip": "RulesetComparer/rulesets/zip/%s.zip"
+    "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
+    "rule_set_zip_file_path": "RulesetComparer/rulesets/zip",
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -90,4 +91,4 @@ def get_rule_set_full_file_name(file_path, file_name):
 
 
 def get_rule_set_zip_file_name(compare_key):
-    return FILE_PATH.get("rule_set_zip") % compare_key
+    return FILE_PATH.get("rule_set_zip_file_name") % compare_key

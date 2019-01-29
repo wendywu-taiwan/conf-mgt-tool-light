@@ -53,9 +53,9 @@ class DownloadRuleListTask(BaseRequestTask):
             return []
 
         payload_data_encoding = self.b2b_response_data.payload.encode(settings.UNICODE_ENCODING)
-        rule_list_xml_parser = RuleListModel(payload_data_encoding)
+        parser = RuleListModel(payload_data_encoding)
 
-        return rule_list_xml_parser.get_rules_file_name_list()
+        return parser.get_rules_file_name_list()
 
     # for getting response content
     def get_content(self):

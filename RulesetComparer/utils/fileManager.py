@@ -2,6 +2,7 @@ import os
 import shutil
 import glob
 import json
+import zipfile
 from django.conf import settings
 from codecs import open
 from RulesetComparer.properties.config import get_compare_result_full_file_name
@@ -85,6 +86,32 @@ def load_file(file_name):
     else:
         info_log(LOG_CLASS, " file not exist :" + file_name)
         return None
+
+
+def archive_file(source_path, dst_path, dst_file):
+    create_folder(dst_path)
+    zip_handler = zipfile.ZipFile(dst_file, mode='w')
+    for dirname, subdirs, files in os.walk(source_path):
+        for filename in files:
+            absname = os.path.abspath(os.path.join(dirname, filename))
+            print("absname:" + absname)
+            zip_handler.write(absname)
+    zip_handler.close()
+
+
+def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
+    create_folder(dst_path)
+    abs_src = os.path.abspath(source_path)
+
+    zip_handler = zipfile.ZipFile(dst_file, mode='w')
+    for dirname, subdirs, files in os.walk(source_path):
+        for filename in files:
+            absname = os.path.abspath(os.path.join(dirname, filename))
+            arcname = arcname_prefix + absname[len(abs_src) + 1:]
+            print("absname :" + absname)
+            print("arcname :" + arcname)
+            zip_handler.write(absname, arcname)
+    zip_handler.close()
 
 
 def load_file_with_setting(file_name, mode, format):
