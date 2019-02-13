@@ -120,9 +120,19 @@ checkInputValid = function () {
     }
     return true;
 };
+checkboxOnClick = function (countryId) {
+    countryList.push(countryId);
+};
 
-checkboxOnClick = function (country_id) {
-    countryList.push(country_id);
+checkboxOnChange = function (checkboxItem) {
+    let countryId = checkboxItem.value;
+    if(checkboxItem.checked && !countryList.includes(countryId)){
+        checkboxOnClick(countryId)
+    }else{
+        countryList = countryList.filter(function (item) {
+            return item !== countryId;
+        })
+    }
 };
 
 getStartDateTime = function () {

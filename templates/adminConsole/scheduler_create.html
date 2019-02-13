@@ -61,7 +61,7 @@
         <div id="country_check_box_div" class="country_check_box_div row no_row_margin">
             {% for data in countries %}
             <div class="checkbox_input_div form-check form-check-inline">
-                <input onclick="checkboxOnClick('{{ data.id }}')" class="form-check-input checkbox_input"
+                <input onclick="checkboxOnChange(this)" class="form-check-input checkbox_input"
                        type="checkbox"
                        id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
                 <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
