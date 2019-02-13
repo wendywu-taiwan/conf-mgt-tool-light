@@ -1,8 +1,6 @@
 import os, sys
 from django.apps import AppConfig
 from RulesetComparer.utils.logger import *
-from RulesetComparer.services.services import restart_all_scheduler
-
 
 class RulesetcomparerConfig(AppConfig):
     name = 'RulesetComparer'
@@ -12,4 +10,5 @@ class RulesetcomparerConfig(AppConfig):
         if os.environ.get('RUN_MAIN', None) == 'true':
             return
         if 'manage.py' not in sys.argv:
+            from RulesetComparer.services.services import restart_all_scheduler
             restart_all_scheduler()
