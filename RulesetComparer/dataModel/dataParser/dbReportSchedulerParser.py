@@ -4,6 +4,7 @@ from RulesetComparer.models import Country
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import config
+from datetime import timedelta
 
 
 class DBReportSchedulerParser:
@@ -54,17 +55,15 @@ class DBReportSchedulerParser:
             local_date_time = timeUtil.utc_to_locale_time(naive_utc_time, time_zone)
             current_date_time = timeUtil.get_current_date_time()
 
+            result_time = local_date_time
             # compare local time and current time
-            if local_date_time > current_date_time:
-                result_time = local_date_time
-            else:
-                local_date_time = local_date_time.replace(year=current_date_time.year)
-                local_date_time = local_date_time.replace(month=current_date_time.month)
-                if self.local_date_time_valid(local_date_time, current_date_time):
-                    local_date_time = local_date_time.replace(day=current_date_time.day)
-                else:
-                    local_date_time = local_date_time.replace(day=current_date_time.day + 1)
-                result_time = local_date_time
+            if local_date_time < current_date_time:
+                result_time = result_time.replace(day=current_date_time.day,
+                                                  month=current_date_time.month,
+                                                  year=current_date_time.year)
+                if not self.local_date_time_bigger(local_date_time, current_date_time):
+                    result_time = result_time + timedelta(days=1)
+
             naive_result_time = datetime(result_time.year, result_time.month, result_time.day,
                                          result_time.hour, result_time.minute, result_time.second)
             return naive_result_time
@@ -86,7 +85,7 @@ class DBReportSchedulerParser:
             raise e
 
     @staticmethod
-    def local_date_time_valid(local_date_time, current_date_time):
+    def local_date_time_bigger(local_date_time, current_date_time):
         try:
             if local_date_time.hour < current_date_time.hour:
                 return False
