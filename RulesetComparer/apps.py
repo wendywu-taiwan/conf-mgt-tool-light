@@ -10,6 +10,6 @@ class RulesetcomparerConfig(AppConfig):
         if os.environ.get('RUN_MAIN', None) == 'true':
             return
         print(str(sys.argv))
-        if 'manage.py' not in sys.argv:
+        if 'runserver' in sys.argv:
             from RulesetComparer.services.services import restart_all_scheduler
             restart_all_scheduler()
