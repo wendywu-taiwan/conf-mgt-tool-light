@@ -9,6 +9,7 @@ class RulesetcomparerConfig(AppConfig):
         # django will run twice when run server
         if os.environ.get('RUN_MAIN', None) == 'true':
             return
+        print(str(sys.argv))
         if 'manage.py' not in sys.argv:
             from RulesetComparer.services.services import restart_all_scheduler
             restart_all_scheduler()
