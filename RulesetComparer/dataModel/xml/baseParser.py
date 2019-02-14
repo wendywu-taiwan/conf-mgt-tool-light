@@ -54,7 +54,7 @@ class BaseModel:
 
     @staticmethod
     def node_array(data, array_path):
-        return data.findall("./"+array_path)
+        return data.findall("./" + array_path)
 
     @staticmethod
     def node(data, node_path):
@@ -62,6 +62,9 @@ class BaseModel:
             return None
 
         node = data.find("./" + node_path)
+        if node is None:
+            node = data.find("./" + node_path.lower())
+
         return node
 
     def value(self, data, node_path):

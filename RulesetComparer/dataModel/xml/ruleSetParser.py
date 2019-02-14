@@ -22,17 +22,19 @@ class RulesModel(BaseModel):
         # get data array in <Rule></Rule>
         if self.has_xml_tag:
             for rule in self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE):
-                rule_key = self.value_with_xml(rule, XMLKey.RULE_KEY)
+                # rule_key = self.value_with_xml(rule, XMLKey.RULE_KEY)
                 rule_model = RuleModel(rule, self.has_xml_tag)
+                rule_key = rule_model.combinedKey
                 self.rulesMap[rule_key] = rule_model
         else:
             for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
-                rule_key = self.value(rule, XMLKey.RULE_KEY)
+                # rule_key = self.value(rule, XMLKey.RULE_KEY)
                 rule_model = RuleModel(rule, self.has_xml_tag)
+                rule_key = rule_model.combinedKey
                 self.rulesMap[rule_key] = rule_model
 
-    def get_rule_by_key(self, rule_key):
-        return self.rulesMap[rule_key]
+    def get_rule_by_key(self, combined_key):
+        return self.rulesMap[combined_key]
 
     def get_rules_name(self):
         return self.rulesName
@@ -40,7 +42,7 @@ class RulesModel(BaseModel):
     def get_rules_count(self):
         return len(self.rulesMap.keys())
 
-    def get_rules_name_list(self):
+    def get_rule_combined_key_list(self):
         return list(self.rulesMap.keys())
 
     def get_rule_full_value(self, rule_key):
@@ -49,28 +51,13 @@ class RulesModel(BaseModel):
         if rule is None:
             return ""
 
-        return rule.get_full_value()
-
-    def get_rule_value(self, rule_key):
-        rule = self.rulesMap[rule_key]
-
-        if rule is None:
-            return None
-        return rule.get_rule_value()
-
-    def get_rule_expression(self, rule_key):
-        rule = self.rulesMap[rule_key]
-
-        if rule is None:
-            return None
-
-        return rule.get_rule_expression()
+        return rule.fullValue
 
     def get_rules_data_array(self, name_list=None):
         array = list()
 
         if name_list is None:
-            name_list = self.get_rules_name_list()
+            name_list = self.get_rule_combined_key_list()
 
         for rule in name_list:
             rule_model = self.rulesMap[rule]

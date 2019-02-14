@@ -13,8 +13,8 @@ class RulesetComparer:
         self.classify_rule_keys()
 
     def classify_rule_keys(self):
-        base_key_set = set(self.base_rule_set.get_rules_name_list())
-        compare_key_set = set(self.compare_rule_set.get_rules_name_list())
+        base_key_set = set(self.base_rule_set.get_rule_combined_key_list())
+        compare_key_set = set(self.compare_rule_set.get_rule_combined_key_list())
 
         # get rule key only in left rules
         self.baseKeyOnly = list(base_key_set - compare_key_set)
@@ -25,13 +25,13 @@ class RulesetComparer:
 
         # get union key in two rules
         tmp = list(base_key_set & compare_key_set)
-        for rule_key in tmp:
-            base_rule_value = self.base_rule_set.get_rule_full_value(rule_key)
-            compare_rule_value = self.compare_rule_set.get_rule_full_value(rule_key)
+        for combined_key in tmp:
+            base_rule_value = self.base_rule_set.get_rule_full_value(combined_key)
+            compare_rule_value = self.compare_rule_set.get_rule_full_value(combined_key)
             if base_rule_value != compare_rule_value:
-                self.different.append(rule_key)
+                self.different.append(combined_key)
             else:
-                self.normal.append(rule_key)
+                self.normal.append(combined_key)
         self.different.sort()
         self.normal.sort()
 
@@ -57,10 +57,10 @@ class RulesetComparer:
 
     def get_difference_rules_array(self):
         data_array = list()
-        for rule_key in self.different:
+        for combined_key in self.different:
             # get xml rule model
-            base_rule_model = self.base_rule_set.get_rule_by_key(rule_key)
-            compare_rule_model = self.compare_rule_set.get_rule_by_key(rule_key)
+            base_rule_model = self.base_rule_set.get_rule_by_key(combined_key)
+            compare_rule_model = self.compare_rule_set.get_rule_by_key(combined_key)
             data_builder = RuleModifiedBuilder(base_rule_model, compare_rule_model)
             data_array.append(data_builder.get_data())
 
