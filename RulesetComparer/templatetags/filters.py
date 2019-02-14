@@ -10,26 +10,26 @@ def get_item(dictionary, key):
 
 @register.filter
 def get_map_add_array(dictionary, map_key):
-    return get_map_array(dictionary, map_key, 0)
+    return get_map_array(dictionary, map_key, 'add')
 
 
 @register.filter
 def get_map_remove_array(dictionary, map_key):
-    return get_map_array(dictionary, map_key, 1)
+    return get_map_array(dictionary, map_key, 'remove')
 
 
 @register.filter
 def get_map_modify_array(dictionary, map_key):
-    return get_map_array(dictionary, map_key, 2)
+    return get_map_array(dictionary, map_key, 'modify')
 
 
-def get_map_array(dictionary, map_key, index):
+def get_map_array(dictionary, map_key, dict_key):
     for key in dictionary:
         if key != map_key:
             continue
         else:
-            result_list = list(dictionary[key].values())
-            return result_list[index]
+            result_list = dictionary[key].get(dict_key)
+            return result_list
 
 
 @register.filter
