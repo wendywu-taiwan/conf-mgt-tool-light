@@ -19,9 +19,12 @@ class DownloadPackedRuleSetTask:
             self.country = Country.objects.get(id=country_id)
             self.name_list = rule_name_list
             self.name_xml_list = rule_name_xml_list
+            # RulesetComparer/rulesets/{compare_hash_key}/{environment}/{country}
             self.rule_set_folder_path = get_rule_set_path(self.environment.name,
                                                           self.country.name,
                                                           self.compare_hash_key)
+
+            # RulesetComparer/rulesets/zip/{compare_hash_key}.zip
             self.zip_file = get_rule_set_zip_file_name(self.compare_hash_key)
 
             info_log(self.LOG_CLASS,
@@ -73,8 +76,10 @@ class DownloadPackedRuleSetTask:
 
     def archive_file(self):
         source_path = self.rule_set_folder_path
+        # RulesetComparer/rulesets/zip
         dst_path = get_file_path("rule_set_zip_file_path")
         dst_file = self.zip_file
+        # to have single folder ruleset in zip file
         arcname_prefix = "ruleset/"
         archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix)
 

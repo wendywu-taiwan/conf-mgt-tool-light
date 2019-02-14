@@ -29,16 +29,19 @@ filterRules = function (postUrl) {
 
     doPOST(postUrl, post_body, function (response) {
             successDialog("filter success", function () {
+                let downloadAllBtn = document.getElementById('download_all_btn_div');
                 let ruleNameTableDiv = document.getElementById('download_data_div');
                 let ruleNameTableContentDiv = document.getElementById('show_rule_name_list_div');
 
-                if (response.length > 0) {
-                    ruleNameTableDiv.style.display = 'block';
-                    ruleNameTableContentDiv.innerHTML = response;
+                ruleNameTableDiv.style.display = 'block';
+                ruleNameTableContentDiv.innerHTML = response;
+                if (response.includes("No matching result")) {
+                    downloadAllBtn.style.display = 'none';
                 } else {
-                    ruleNameTableDiv.style.display = 'none';
+                    downloadAllBtn.style.display = 'block';
                 }
-                console.log(response);
+                // refresh download selected btn status
+                onCheckboxSelected();
             });
         }, function (response) {
             console.log(response);
@@ -50,21 +53,16 @@ filterRules = function (postUrl) {
 
 
 function downloadSelectedRules(url) {
-    let test = getSelectedRules();
-    console.log("downloadSelectedRules:" + test);
     downloadPackedRules(url, getSelectedRules());
 }
 
 function downloadAllRules(url) {
-    let test = getAllRules();
-    console.log("downloadSelectedRules:" + test);
     downloadPackedRules(url, getAllRules());
 }
 
 function downloadPackedRules(url, ruleNameList) {
     showWaitingDialog();
 
-    console.log("downloadPackedRules:" + ruleNameList);
     if (!countryId) {
         showWarningDialog("please select country");
         return;
