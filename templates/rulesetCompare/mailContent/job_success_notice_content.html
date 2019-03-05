@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table, th, td {
+            border: 1.5px solid white;
+        }
+
+        .header {
+            background: #34495d;
+            color: white;
+            font-size: 10.0pt;
+            font-family: "Arial", sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .td_content {
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+        }
+
+        .env_text {
+            margin-left: 5px;
+            color: #4285f4;
+        }
+
+        .same_line_dive {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<p>
+<div class="same_line_dive">This is the remind mail for task execution success.</div>
+</p>
+<p>
+<div class="same_line_dive">Task name :</div>
+<div class="same_line_dive env_text"> {{ task_name }}</div>
+</p>
+<p>
+<div class="same_line_dive">Message :</div>
+<div class="same_line_dive env_text"> {{ message }}</div>
+</p>
+<br>
+<br>
+{% for data_obj in data %}
+    <table style=" border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td class="header">{{ data_obj.data_title }}</td>
+        </tr>
+        {% for content_text in data_obj.content %}
+            <tr>
+                <td class="td_content">{{ content_text }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endfor %}
+</body>
+</html>

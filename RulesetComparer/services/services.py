@@ -5,8 +5,9 @@ from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleList
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
 from RulesetComparer.b2bRequestTask.downloadPackedRuleSetTask import DownloadPackedRuleSetTask
+from RulesetComparer.b2bRequestTask.clearRulesetFilesTask import ClearRulesetFilesTask
 
-from RulesetComparer.utils.sendMailScheduler import SendMailScheduler
+from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
@@ -151,8 +152,8 @@ def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
                                         country_list,
                                         mail_list)
     info_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
-    scheduler = SendMailScheduler(daily_task.scheduler_listener)
-    job = scheduler.add_job(daily_task.run_task, interval, next_proceed_time)
+    scheduler = CustomJobScheduler(daily_task.scheduler_listener)
+    job = scheduler.add_hours_job(daily_task.run_task, interval, next_proceed_time)
     daily_task.set_scheduled_job(job)
 
 
@@ -163,6 +164,7 @@ def restart_all_scheduler():
             return
 
         scheduler_model_list = ReportSchedulerInfo.objects.all()
+        # report scheduler
         for scheduler in scheduler_model_list:
             country_list = scheduler.country_list.values("id")
             parser = DBReportSchedulerParser(scheduler, country_list)
@@ -176,6 +178,11 @@ def restart_all_scheduler():
                                  parser.local_time,
                                  parser.interval_hour)
 
+        # clear zip and ruleset file scheduler
+        clear_ruleset_task = ClearRulesetFilesTask()
+        scheduler = CustomJobScheduler(clear_ruleset_task.scheduler_listener)
+        job = scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
+        clear_ruleset_task.set_scheduled_job(job)
         info_log(None, "restart all scheduler success")
     except BaseException as e:
         traceback.print_exc()

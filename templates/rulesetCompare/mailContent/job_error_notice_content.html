@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .env_text {
+            margin-left: 5px;
+            color: #4285f4;
+        }
+
+        .same_line_dive {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+<p>
+<div class="same_line_dive">This is the remind mail for task execution failure.</div>
+</p>
+<p>
+<div class="same_line_dive">Task name :</div>
+<div class="same_line_dive env_text"> {{ task_name }}</div>
+</p>
+<p>
+<div class="same_line_dive">Exception :</div>
+<div class="same_line_dive env_text"> {{ exception }}</div>
+</p>
+<p>
+<div class="same_line_dive">Trace Back :</div>
+<div class="same_line_dive env_text"> {{ trace_back }}</div>
+</p>
+</body>
+</html>

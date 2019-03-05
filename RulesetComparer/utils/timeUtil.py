@@ -138,6 +138,11 @@ def get_format_current_time(time_format):
     return date_time_to_time(current_date_time, time_format)
 
 
+def add_minute(date_time, minutes):
+    date_time = date_time + timedelta(minutes=minutes)
+    return date_time
+
+
 def get_format_time(date_time, time_format):
     time_str = date_time.strftime(time_format)
     return time_str.strip("'")

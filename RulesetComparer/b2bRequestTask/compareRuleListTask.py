@@ -59,7 +59,6 @@ class CompareRuleListTask:
             self.check_git_status()
             self.execute()
             self.save_result_file()
-            self.remove_rule_files()
         except Exception as e:
             traceback.print_exc()
             error_log(traceback.format_exc())
@@ -136,11 +135,7 @@ class CompareRuleListTask:
         template = get_template("compare_result_report.html")
         html = template.render(compare_result_data)
         fileManager.save_compare_result_html(self.compare_hash_key, html)
-
-    def remove_rule_files(self):
         info_log(self.LOG_CLASS, " ============== finish ==============")
-        file_path = get_rule_set_path("", "", self.compare_hash_key)
-        fileManager.clear_folder(file_path)
 
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_rule_list()

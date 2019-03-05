@@ -1,4 +1,4 @@
-import os
+import os, time, sys
 import shutil
 import glob
 import json
@@ -14,6 +14,7 @@ SAVE_FILE_MODE_ADD = 'a'
 SAVE_FILE_MODE_WRITE = 'w'
 SAVE_FILE_MODE_READ = 'r'
 LOG_CLASS = "fileManager"
+SECONDS_A_DAY = 86400
 
 
 def is_folder_exist(path):
@@ -39,6 +40,28 @@ def create_folder(path):
 def clear_folder(path):
     if is_folder_exist(path):
         shutil.rmtree(path)
+
+
+def clear_folder_over_days(folder_path, days, except_array):
+    now = time.time()
+    delete_files = []
+    for file in os.listdir(folder_path):
+        if except_array is not None and file in except_array:
+            continue
+
+        file_with_path = folder_path + "/" + file
+        file_create_time = os.stat(file_with_path).st_mtime
+
+        if file_create_time < now - days * SECONDS_A_DAY:
+            if os.path.isfile(file_with_path):
+                info_log(None, "delete file :" + file_with_path)
+                delete_files.append(file)
+                os.remove(os.path.join(folder_path, file))
+            elif os.path.isdir(file_with_path):
+                info_log(None, "delete folder :" + file_with_path)
+                delete_files.append(file)
+                clear_folder(file_with_path)
+    return delete_files
 
 
 def save_compare_result_html(compare_key, content):
