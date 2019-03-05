@@ -116,7 +116,7 @@ function downloadPackedRules(url, ruleNameList) {
 
 function getAllRules() {
     let allRuleNames = [];
-    $('#check_box_rule_name_div input').each(function () {
+    $('#row_checkbox_div input').each(function () {
         allRuleNames.push($(this).attr('name'));
     });
     return allRuleNames;
@@ -124,7 +124,7 @@ function getAllRules() {
 
 function getSelectedRules() {
     let selectedRuleNames = [];
-    $('#check_box_rule_name_div input:checked').each(function () {
+    $('#row_checkbox_div input:checked').each(function () {
         selectedRuleNames.push($(this).attr('name'));
     });
     return selectedRuleNames;
@@ -132,7 +132,7 @@ function getSelectedRules() {
 
 function onCheckboxSelected() {
     let selectedCount = 0;
-    $('#check_box_rule_name_div input:checked').each(function () {
+    $('#row_checkbox_div input:checked').each(function () {
         selectedCount++;
     });
     let button = document.getElementById('download_selected_btn');
