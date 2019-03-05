@@ -4,34 +4,28 @@ from RulesetComparer.dataModel.dataBuilder.ruleSetBuilder import RuleSetBuilder
 from RulesetComparer.properties import xmlKey as XMLKey
 
 
-# this is for handling rules data, rules file contains many rules
+# this is for handling ruleset data, a ruleset file contains many rules
 class RulesModel(BaseModel):
     def __init__(self, xml, rule_name):
         BaseModel.__init__(self, xml)
-        self.root = self.parse_xml_from_file()
         self.rulesName = rule_name
         self.rulesMap = {}
-        self.parse_data()
+        self.parse_data_catch_error()
 
     def parse_data(self):
-        if not self.valid_data():
-            return None
+        root = self.parse_xml_from_file()
 
-        self.check_xml_tag()
-
-        # get data array in <Rule></Rule>
-        if self.has_xml_tag:
-            for rule in self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE):
-                # rule_key = self.value_with_xml(rule, XMLKey.RULE_KEY)
-                rule_model = RuleModel(rule, self.has_xml_tag)
-                rule_key = rule_model.combinedKey
-                self.rulesMap[rule_key] = rule_model
+        if len(self.nodes_data(root, saxif_tag=True, key=XMLKey.NODE_KEY_RULE)) > 0:
+            has_saxif_tag = True
         else:
-            for rule in self.node_array(self.root, XMLKey.NODE_KEY_RULE):
-                # rule_key = self.value(rule, XMLKey.RULE_KEY)
-                rule_model = RuleModel(rule, self.has_xml_tag)
-                rule_key = rule_model.combinedKey
-                self.rulesMap[rule_key] = rule_model
+            has_saxif_tag = False
+
+        for rule in self.nodes_data(root, saxif_tag=has_saxif_tag,
+                                    key=XMLKey.NODE_KEY_RULE,
+                                    path=XMLKey.NODE_KEY_RULE):
+            rule_model = RuleModel(rule, has_saxif_tag)
+            rule_key = rule_model.combinedKey
+            self.rulesMap[rule_key] = rule_model
 
     def get_rule_by_key(self, combined_key):
         return self.rulesMap[combined_key]

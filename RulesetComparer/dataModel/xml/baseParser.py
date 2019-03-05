@@ -6,88 +6,96 @@ from RulesetComparer.properties import xmlKey as XMLKey
 class BaseModel:
     def __init__(self, xml):
         self.xml = xml
-        self.root = None
-        self.has_xml_tag = True
+
+    def parse_data_catch_error(self):
+        try:
+            self.parse_data()
+        except Exception as e:
+            raise e
 
     def parse_xml_from_string(self):
-        if self.valid_data():
-            return ET.fromstring(self.xml)
+        return ET.fromstring(self.xml)
 
     def parse_xml_from_file(self):
-        if self.valid_data():
-            xml_tree = ET.parse(self.xml)
-            return xml_tree.getroot()
+        xml_tree = ET.parse(self.xml)
+        return xml_tree.getroot()
 
     @staticmethod
-    def node_array_with_xml(data, key):
-        return data.findall(XMLKey.filter_with_key(key),
-                            XMLKey.XML_PATH_MAP)
+    # root_data:    <Rule>
+    #                     <RuleType>FieldTranslation</RuleType>
+    #                     <Key>root.task.basicClaimData.vehicle.vehicleAdmin.vehicleIdentificationId</Key>
+    #                     <Value>EN=Chassis Number,DE=Chassis Number</Value>
+    #                     <Status>Active</Status>
+    #               </Rule>
+    # key: Rule ->  <Rule></Rule>
+    # path:Rule ->  ./Rule
+    # return:       <RuleType>FieldTranslation</RuleType>
+    #               <Key>root.task.basicClaimData.vehicle.vehicleAdmin.vehicleIdentificationId</Key>
+    #               <Value>EN=Chassis Number,DE=Chassis Number</Value>
+    #               <Status>Active</Status>
+    def nodes_data(root_data, saxif_tag, key=None, path=None):
+        if saxif_tag:
+            # get nodes data <saxif_path:key> in <saxif_path:http://www.audatex.com/SAXIF>
+            return root_data.findall(XMLKey.filter_with_key(key),
+                                     XMLKey.XML_PATH_MAP)
+        else:
+            # get nodes data in path ./path
+            return root_data.findall("./" + path)
 
+    # data:      <Status>Active</Status>
+    # node_key:  Status -> <Status></Status>
+    # node_path: Status -> ./Status
+    # return:    <Status>Active</Status>
     @staticmethod
-    def node_with_xml(data, node_key):
+    def node_data(data, saxif_tag, node_key=None, node_path=None):
         if data is None:
             return None
 
-        node = data.find(XMLKey.filter_with_key(node_key),
-                         XMLKey.XML_PATH_MAP)
-        return node
+        if saxif_tag is True:
+            node_data = data.find(XMLKey.filter_with_key(node_key),
+                                  XMLKey.XML_PATH_MAP)
+        else:
+            node_data = data.find("./" + node_path)
+            if node_data is None:
+                node_data = data.find("./" + node_path.lower())
 
-    def value_in_node_with_xml(self, data, node_key, value_key):
+        return node_data
+
+    # data:      <Status>Active</Status>
+    # node key:  Status -> <Status></Status>
+    # node path: Status -> ./Status
+    # return:    Active
+    def node_value_data(self, data, saxif_tag, node_key=None, node_path=None):
         if data is None:
             return ""
 
-        node = self.node_with_xml(data, node_key)
-        if node is None:
+        node_data = self.node_data(data, saxif_tag, node_key=node_key, node_path=node_path)
+
+        if node_data is None:
             return ""
-
-        return self.value_with_xml(node, value_key)
-
-    def value_with_xml(self, data, key):
-        value_node = self.node_with_xml(data, key)
-
-        if value_node is None:
-            return ""
-        elif value_node.text is None:
+        elif node_data.text is None:
             return ""
         else:
-            return value_node.text
+            return node_data.text
 
-    @staticmethod
-    def node_array(data, array_path):
-        return data.findall("./" + array_path)
-
-    @staticmethod
-    def node(data, node_path):
+    # data:       <Context><Status>Active</Status></Context>
+    # node_key:   Context -> <Context></Context>
+    # value_key:  Status -> <Status></Status>
+    # node_path:  Context/Status -> ./Context/Status
+    # return:     Active
+    def nest_node_value_data(self, data, saxif_tag, node_key=None, value_key=None, node_path=None):
         if data is None:
-            return None
-
-        node = data.find("./" + node_path)
-        if node is None:
-            node = data.find("./" + node_path.lower())
-
-        return node
-
-    def value(self, data, node_path):
-        value_node = self.node(data, node_path)
-
-        if value_node is None:
             return ""
-        elif value_node.text is None:
-            return ""
-        else:
-            return value_node.text
 
-    def valid_data(self):
-        if self.xml is None:
-            return False
+        if saxif_tag is True:
+            node_data = self.node_data(data, saxif_tag=saxif_tag, node_key=node_key)
+            if node_data is None:
+                return ""
+            node_value_data = self.node_value_data(node_data, saxif_tag=saxif_tag, node_key=value_key)
         else:
-            return True
+            node_value_data = self.node_value_data(data, saxif_tag=saxif_tag, node_path=node_path)
 
-    def check_xml_tag(self):
-        if len(self.node_array_with_xml(self.root, XMLKey.NODE_KEY_RULE)) > 0:
-            self.has_xml_tag = True
-        else:
-            self.has_xml_tag = False
+        return node_value_data
 
     @abc.abstractmethod
     def parse_data(self):
