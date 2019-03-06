@@ -32,7 +32,7 @@ def get_rule_list_from_b2b(environment, country):
 def get_rule_from_b2b(environment, country, rule_set_name):
     task = DownloadRuleSetTask(environment, country, rule_set_name)
 
-    ruleset = task.get_rule_set_file()
+    ruleset = task.get_result_data()
     if ruleset is None:
         return None
 
@@ -80,7 +80,7 @@ def get_filtered_ruleset_list(json_data):
         else:
             task = DownloadRuleListTask(parser.environment.id,
                                         parser.country.id)
-            rule_name_list = task.get_rule_list()
+            rule_name_list = task.get_result_data()
 
         filter_name_list = stringFilter.array_filter(rule_name_list, parser.filter_keys)
         return filter_name_list

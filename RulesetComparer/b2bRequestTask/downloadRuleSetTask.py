@@ -1,12 +1,5 @@
-import traceback
-from zeep import Client
-from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_full_file_name
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
-from RulesetComparer.models import Country, Environment
-from RulesetComparer.properties import apiResponse
 from RulesetComparer.utils import fileManager
-from RulesetComparer.utils.logger import *
-from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
 from RulesetComparer.utils.logger import *
 
 
@@ -16,65 +9,46 @@ class DownloadRuleSetTask(BaseRequestTask):
     KEY_RULE_SET_NAME = 'rulesetName'
     LOG_CLASS = "DownloadRuleSetTask"
 
-    def __init__(self, env_id, country_id, rule_set_name, compare_hash_key):
-        self.environment = Environment.objects.get(id=env_id)
-        self.country = Country.objects.get(id=country_id)
-        self.rule_set_name = rule_set_name
-        self.download_status = apiResponse.RESPONSE_KEY_FAIL
-        self.compare_hash_key = compare_hash_key
-        self.file_name_with_path = None
+    def __init__(self, environment_id, country_id, rule_set_name, compare_hash_key):
         BaseRequestTask.__init__(self)
+        self.parse_data(environment_id, country_id)
+        self.rule_set_name = rule_set_name
+        self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, compare_hash_key)
+        self.request_data()
+
+    def parse_data(self, environment_id, country_id):
+        super().parse_data(environment_id, country_id)
 
     def request_data(self):
-        try:
-            client = Client(self.environment.b2b_rule_set_client)
-            auth_data = AuthDataParser(self.environment.name, self.country.name)
+        super().request_data()
 
-            self.add_request_parameter(self.KEY_USER, auth_data.get_account())
-            self.add_request_parameter(self.KEY_PASSWORD, auth_data.get_password())
-            self.add_request_parameter(self.KEY_RULE_SET_NAME, self.rule_set_name)
+    def execute(self):
+        request_params = [{"name": self.KEY_USER, "value": self.auth_data.get_account()},
+                          {"name": self.KEY_PASSWORD, "value": self.auth_data.get_password()},
+                          {"name": self.KEY_RULE_SET_NAME, "value": self.rule_set_name}]
 
-            info_log(self.LOG_CLASS, '======== download rule set %s ========' % self.rule_set_name)
-            response = client.service.exportRuleset(self.request_parameter())
+        info_log(self.LOG_CLASS, '======== download rule set %s ========' % self.rule_set_name)
+        response = self.client.service.exportRuleset(request_params)
+        self.b2b_response_data = response
+
+        if response.returnCode != 0:
             info_log(self.LOG_CLASS, "exportRuleset response loginId :" + str(response.loginId))
-            info_log(self.LOG_CLASS, "exportRuleset response message :" + str(response.message))
-            self.b2b_response_data = response
-            self.b2b_response_error_check()
+            info_log(self.LOG_CLASS, "exportRuleset error message :" + str(response.message))
+            raise Exception(response.message[0].text)
 
-            if self.request_fail() is False:
-                self.save_rule_set()
-        except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
-            raise e
+        self.b2b_response_data = response
+        self.save_file()
 
-    def get_content(self):
-        if self.request_fail():
-            return None
-        else:
-            return self.rule_set_name
+    def save_file(self):
+        fileManager.create_folder(self.file_name_with_path)
 
-    def get_content_json(self):
-        return {apiResponse.DATA_KEY_RULES_NAME: self.rule_set_name}
-
-    def save_rule_set(self):
-        if self.request_fail():
-            return
-
-        # save file to specific path
-        save_file_path = get_rule_set_path(self.environment.name,
-                                           self.country.name,
-                                           self.compare_hash_key)
-        fileManager.create_folder(save_file_path)
         # save file
-
         payload = self.b2b_response_data.payload[
                   self.b2b_response_data.payload.index('<BRERuleList'):]
-        fileManager.save_file(get_rule_set_full_file_name(save_file_path, self.rule_set_name),
-                              payload)
+        fileManager.save_file(get_rule_set_full_file_name(self.file_name_with_path, self.rule_set_name), payload)
 
-    def get_rule_set_file(self):
-        if self.request_fail():
-            return None
-
+    def parse_result_data(self):
         return fileManager.load_file(self.file_name_with_path)
+
+    def get_result_data(self):
+        return super().get_result_data()

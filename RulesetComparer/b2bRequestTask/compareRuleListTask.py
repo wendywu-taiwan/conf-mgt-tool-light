@@ -138,7 +138,7 @@ class CompareRuleListTask:
         info_log(self.LOG_CLASS, " ============== finish ==============")
 
     def updated_rule_list_from_server(self, environment):
-        updated_list = DownloadRuleListTask(environment.id, self.country.id).get_rule_list()
+        updated_list = DownloadRuleListTask(environment.id, self.country.id).get_result_data()
         self.download_rules(environment, updated_list)
         return updated_list
 
