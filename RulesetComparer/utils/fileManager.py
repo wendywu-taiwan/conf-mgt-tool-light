@@ -117,7 +117,7 @@ def archive_file(source_path, dst_path, dst_file):
     for dirname, subdirs, files in os.walk(source_path):
         for filename in files:
             absname = os.path.abspath(os.path.join(dirname, filename))
-            print("absname:" + absname)
+            print("archive_file, resource path :" + absname)
             zip_handler.write(absname)
     zip_handler.close()
 
@@ -131,8 +131,7 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
         for filename in files:
             absname = os.path.abspath(os.path.join(dirname, filename))
             arcname = arcname_prefix + absname[len(abs_src) + 1:]
-            print("absname :" + absname)
-            print("arcname :" + arcname)
+            print("archive_file, resource path :" + absname)
             zip_handler.write(absname, arcname)
     zip_handler.close()
 

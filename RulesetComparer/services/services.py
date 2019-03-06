@@ -1,10 +1,12 @@
 import traceback
 from RulesetComparer.utils.logger import *
+from RulesetComparer.utils.gitManager import GitManager
+from RulesetComparer.models import Environment, Country
 from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
-from RulesetComparer.b2bRequestTask.downloadPackedRuleSetTask import DownloadPackedRuleSetTask
+from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
 from RulesetComparer.b2bRequestTask.clearRulesetFilesTask import ClearRulesetFilesTask
 
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
@@ -77,13 +79,26 @@ def get_filtered_ruleset_list(json_data):
         return traceback.print_exc()
 
 
-def download_rulesets(json_data):
+def download_rulesets(json_data, compare_hash_key=None):
     try:
         parser = DownloadRulesetParser(json_data)
-        task = DownloadPackedRuleSetTask(parser.env_id,
-                                         parser.country_id,
-                                         parser.rule_name_list,
-                                         parser.rule_name_xml_list)
+        environment = Environment.objects.get(id=parser.env_id)
+        country = Country.objects.get(id=parser.country_id)
+
+        if compare_hash_key is None:
+            compare_hash_key = hash(timeUtil.get_current_timestamp())
+
+        if environment.name == GIT.get("environment_name"):
+            # update git to latest code
+            manager = GitManager(get_rule_set_git_path(""), settings.GIT_BRANCH_DEVELOP)
+            manager.pull()
+            resource_path = get_rule_set_git_path(country.name)
+        else:
+            task = DownloadRulesetsTask(parser.env_id, parser.country_id, parser.rule_name_list, compare_hash_key)
+            resource_path = get_rule_set_path(environment.name, country.name, compare_hash_key)
+
+        copied_path = get_rule_set_path(environment.name, country.name, compare_hash_key * 2)
+        task = PackedRulesetsTask(parser.rule_name_xml_list, resource_path, copied_path)
         return task.zip_file
     except Exception:
         traceback.print_exc()
