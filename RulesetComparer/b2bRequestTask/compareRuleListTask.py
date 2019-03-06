@@ -3,7 +3,7 @@ import traceback
 from django.template.loader import get_template
 
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
-from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
+from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.dataModel.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
 from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.models import Country, Environment
@@ -54,8 +54,9 @@ class CompareRuleListTask:
         self.git_environment = self.check_environment()
         try:
             info_log(self.LOG_CLASS, " ============== start ==============")
-            info_log(self.LOG_CLASS, "base env : "+self.baseEnv.name+", compare env : "+self.comparedEnv.name)
-            info_log(self.LOG_CLASS, "country : "+str(self.country.name)+", compare key:"+str(self.compare_hash_key))
+            info_log(self.LOG_CLASS, "base env : " + self.baseEnv.name + ", compare env : " + self.comparedEnv.name)
+            info_log(self.LOG_CLASS,
+                     "country : " + str(self.country.name) + ", compare key:" + str(self.compare_hash_key))
             self.check_git_status()
             self.execute()
             self.save_result_file()
@@ -147,8 +148,7 @@ class CompareRuleListTask:
         return fileManager.get_rule_name_list(git_file_path)
 
     def download_rules(self, env, rule_list):
-        for rule_name in rule_list:
-            DownloadRuleSetTask(env.id, self.country.id, rule_name, self.compare_hash_key)
+        DownloadRulesetsTask(env.id, self.country.id, rule_list, self.compare_hash_key)
 
     def parse_add_list_rule(self, add_list):
         for rule_name in add_list:

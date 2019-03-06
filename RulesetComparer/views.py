@@ -403,8 +403,7 @@ def json_rule_list(request, environment, country):
 
 # todo : return json rule detail
 def json_rule_detail(request, country, env, rule_set_name):
-    rule_data = services.get_rule_from_b2b(env, country, rule_set_name)
-    return render(request, "rule_show_detail.html", rule_data)
+    pass
 
 
 # todo : return json rule diff result

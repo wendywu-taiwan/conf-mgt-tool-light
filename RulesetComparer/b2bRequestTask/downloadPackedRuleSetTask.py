@@ -5,7 +5,7 @@ from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils.fileManager import *
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.properties.config import *
-from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
+from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from shutil import copyfile
 
 
@@ -67,9 +67,8 @@ class DownloadPackedRuleSetTask:
 
     def get_file_from_server(self):
         # download ruleset, use rule name with no .xml
-        for name in self.name_list:
-            task = DownloadRuleSetTask(self.environment.id, self.country.id, name, self.compare_hash_key)
-            # should handle download result
+        task = DownloadRulesetsTask(self.environment.id, self.country.id, self.name_list, self.compare_hash_key)
+        # should handle download result
 
         # zip file
         self.archive_file()

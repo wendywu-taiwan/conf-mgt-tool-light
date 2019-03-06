@@ -1,6 +1,6 @@
 import traceback
 from RulesetComparer.utils.logger import *
-from RulesetComparer.b2bRequestTask.downloadRuleSetTask import DownloadRuleSetTask
+from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
@@ -27,18 +27,6 @@ from django.template.loader import get_template
 def get_rule_list_from_b2b(environment, country):
     task = DownloadRuleListTask(environment, country)
     return task
-
-
-def get_rule_from_b2b(environment, country, rule_set_name):
-    task = DownloadRuleSetTask(environment, country, rule_set_name)
-
-    ruleset = task.get_result_data()
-    if ruleset is None:
-        return None
-
-    rules_model = ParseRuleModel(ruleset, rule_set_name)
-    rule_data = RuleSerializer(rules_model.get_rules_data_array())
-    return rule_data
 
 
 def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
