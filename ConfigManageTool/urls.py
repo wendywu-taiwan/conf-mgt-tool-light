@@ -20,12 +20,12 @@ from django.conf.urls import url, include
 
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
-    path('packed/', views.download_rule_set, name="packed-ruleset-download")
+    path('packed/', views.download_rulesets, name="packed-ruleset-download"),
 
 ]
 ruleset_comparer_pattern = [
     path('select/', views.environment_select_page, name="environment-select"),
-    path('detail/<str:environment_name>/<str:compare_key>/<str:rule_name>',
+    path('detail/<str:environment_id>/<str:compare_key>/<str:rule_name>',
          views.rule_detail_page, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.rule_diff_page, name="rule-diff"),

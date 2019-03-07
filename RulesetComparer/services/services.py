@@ -79,31 +79,27 @@ def get_filtered_ruleset_list(json_data):
         return traceback.print_exc()
 
 
-def download_rulesets(json_data, compare_hash_key=None):
+def download_rulesets(json_data):
     try:
         parser = DownloadRulesetParser(json_data)
-        environment = Environment.objects.get(id=parser.env_id)
-        country = Country.objects.get(id=parser.country_id)
 
-        if compare_hash_key is None:
-            compare_hash_key = hash(timeUtil.get_current_timestamp())
-
-        if environment.name == GIT.get("environment_name"):
+        if parser.environment.name == GIT.get("environment_name"):
             # update git to latest code
             manager = GitManager(get_rule_set_git_path(""), settings.GIT_BRANCH_DEVELOP)
             manager.pull()
-            resource_path = get_rule_set_git_path(country.name)
+            resource_path = get_rule_set_git_path(parser.country.name)
         else:
-            task = DownloadRulesetsTask(parser.env_id, parser.country_id, parser.rule_name_list, compare_hash_key)
-            resource_path = get_rule_set_path(environment.name, country.name, compare_hash_key)
+            if parser.ruleset_exist is False:
+                task = DownloadRulesetsTask(parser.environment.id, parser.country.id, parser.rule_name_list,
+                                            parser.compare_hash_key)
+            resource_path = get_rule_set_path(parser.environment.name, parser.country.name, parser.compare_hash_key)
 
-        copied_path = get_rule_set_path(environment.name, country.name, compare_hash_key * 2)
+        copied_path = get_rule_set_path(parser.environment.name, parser.country.name, parser.compare_hash_key * 2)
         task = PackedRulesetsTask(parser.rule_name_xml_list, resource_path, copied_path)
         return task.zip_file
     except Exception:
         traceback.print_exc()
         error_log(traceback.format_exc())
-
 
 def create_report_scheduler(json_data):
     try:

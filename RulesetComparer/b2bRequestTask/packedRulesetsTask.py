@@ -19,8 +19,6 @@ class PackedRulesetsTask:
             info_log(self.LOG_CLASS, "copied_path = %s" % copied_path)
             self.execute()
         except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
             raise e
 
     def execute(self):
@@ -48,4 +46,5 @@ class PackedRulesetsTask:
     def remove_copied_files(self):
         copied_path_key = self.copied_path.split("/")[-3]
         removed_path = get_rule_set_path("", "", copied_path_key)
+        info_log(self.LOG_CLASS, "removed folder = %s" % removed_path)
         clear_folder(removed_path)
