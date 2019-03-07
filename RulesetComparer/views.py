@@ -173,16 +173,22 @@ def environment_select_page(request):
         return JsonResponse(result)
 
 
-def rule_detail_page(request, environment_name, compare_key, rule_name):
+def rule_detail_page(request, environment_id, compare_key, rule_name):
     try:
         result_data = fileManager.load_compare_result_file(compare_key)
+        environment = Environment.objects.get(id=environment_id)
         detail_rules_data = result_data[key.COMPARE_RESULT_DETAIL_DATA]
+        country_data = result_data[key.COMPARE_RULE_LIST_COUNTRY]
 
         rule_data = detail_rules_data[rule_name]
         # add format to value and expression column
         rules_data = RuleSerializer(rule_data, many=True).data
 
-        data = {key.RULE_KEY_ENVIRONMENT: environment_name,
+        data = {key.RULE_KEY_ENVIRONMENT_NAME: environment.name,
+                key.RULE_KEY_ENVIRONMENT_ID: environment.id,
+                key.RULE_KEY_COUNTRY_NAME: country_data[key.COUNTRY_KEY_NAME],
+                key.RULE_KEY_COUNTRY_ID: country_data[key.COUNTRY_KEY_ID],
+                key.RULE_KEY_COMPARE_HASH_KEY: compare_key,
                 key.RULE_KEY_RULE_NAME: rule_name,
                 key.RULE_KEY_RULE_DATA: rules_data}
         return render(request, "rule_show_detail.html", data)
@@ -253,7 +259,7 @@ def send_mail(request, compare_key):
         return JsonResponse(result)
 
 
-def download_rule_set(request):
+def download_rulesets(request):
     try:
         request_json = get_post_request_json(request)
         zip_file_path = services.download_rulesets(request_json)

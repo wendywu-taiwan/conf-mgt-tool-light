@@ -43,6 +43,9 @@ ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
 # view.rule_download_page
 RULE_NAME_LIST = 'rule_name_list'
 
+# country
+COUNTRY_KEY_ID = 'id'
+COUNTRY_KEY_NAME = 'name'
 
 # view.compare_rule_list_item_data
 COMPARE_RULE_LIST_COUNTRY = 'country'
@@ -66,7 +69,11 @@ COMPARE_RESULT_DIFF_DATA = 'diff_data'
 COMPARE_RESULT_INFO_DATA = 'info_data'
 
 # view.rule_detail, view.rule_diff
-RULE_KEY_ENVIRONMENT = 'environment'
+RULE_KEY_ENVIRONMENT_NAME = 'environment_name'
+RULE_KEY_ENVIRONMENT_ID = 'environment_id'
+RULE_KEY_COUNTRY_NAME = 'country_name'
+RULE_KEY_COUNTRY_ID = 'country_id'
+RULE_KEY_COMPARE_HASH_KEY = 'compare_hash_key'
 RULE_KEY_RULE_NAME = 'rule_name'
 RULE_KEY_RULE_DATA = 'rule_data'
 RULE_DIFF_KEY_BASE_ENV_NAME = 'base_env_name'
