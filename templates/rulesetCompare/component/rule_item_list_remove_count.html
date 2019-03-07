@@ -1,13 +1,13 @@
 <div class="col count_div">
     {% if data.table_type == 'remove' %}
-        <a href="{% url 'rule-detail' compare_env.name compare_hash_key data.name %}">
+        <a href="{% url 'rule-detail' base_env.id compare_hash_key data.name %}">
         <button type="submit" class="button_minus btn btn-primary">
                 {{ base_env.name }}
                 <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
             </button>
         </a>
     {% elif data.table_type == 'normal' %}
-        <a href="{% url 'rule-detail' compare_env.name compare_hash_key data.name %}">
+        <a href="{% url 'rule-detail' base_env.id compare_hash_key data.name %}">
             <button type="submit" class="button_minus btn btn-primary">
                 {{ base_env.name }}
                 <span class="span_minus badge badge-light">{{ data.base_count }}</span>

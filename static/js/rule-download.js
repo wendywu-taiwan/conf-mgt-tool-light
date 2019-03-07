@@ -53,14 +53,14 @@ filterRules = function (postUrl) {
 
 
 function downloadSelectedRules(url) {
-    downloadPackedRules(url, getSelectedRules());
+    downloadRulesFromBRE(url, getSelectedRules());
 }
 
 function downloadAllRules(url) {
-    downloadPackedRules(url, getAllRules());
+    downloadRulesFromBRE(url, getAllRules());
 }
 
-function downloadPackedRules(url, ruleNameList) {
+function downloadRulesFromBRE(url, ruleNameList) {
     showWaitingDialog();
 
     if (!countryId) {
@@ -92,25 +92,7 @@ function downloadPackedRules(url, ruleNameList) {
         responseType: 'arraybuffer',
     }).then(function success(data) {
         stopDialog();
-        // transfer unicode data to characters
-        let newContent = "";
-        for (let i = 0; i < data.length; i++) {
-            newContent += String.fromCharCode(data.charCodeAt(i) & 0xFF);
-        }
-        let bytes = new Uint8Array(newContent.length);
-        for (let i = 0; i < newContent.length; i++) {
-            bytes[i] = newContent.charCodeAt(i);
-        }
-
-        // use blob to download files
-        let blob = new Blob([bytes], {type: "application/zip"});
-        let element = document.createElement('a');
-        element.href = URL.createObjectURL(blob);
-        element.download = "ruleset.zip";
-        element.style.display = 'none';
-        document.body.appendChild(element);
-        element.click();
-        document.body.removeChild(element);
+        downloadZipFile(data);
     })
 }
 
