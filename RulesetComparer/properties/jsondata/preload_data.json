@@ -1,32 +1,5 @@
 {
   "ruleset_data": {
-    "environment": [
-      {
-        "full_name": "production",
-        "name": "PROD",
-        "b2b_rule_set_client": "http://www.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
-      },
-      {
-        "full_name": "ct",
-        "name": "CT",
-        "b2b_rule_set_client": "http://www.audatex.cn/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
-      },
-      {
-        "full_name": "int1",
-        "name": "INT1",
-        "b2b_rule_set_client": "http://www-int1.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
-      },
-      {
-        "full_name": "int2",
-        "name": "INT2",
-        "b2b_rule_set_client": "http://www-int2.audatex.sg/b2b/services/BRERuleSetAssignmentService_v1?wsdl"
-      },
-      {
-        "full_name": "git",
-        "b2b_rule_set_client": "",
-        "name": "GIT"
-      }
-    ],
     "country": [
       {
         "full_name": "China",
@@ -79,6 +52,74 @@
         "icon_file_name": "thailand.png"
       }
     ],
+    "environment": [
+      {
+        "full_name": "production",
+        "name": "PROD"
+      },
+      {
+        "full_name": "production2",
+        "name": "PROD2"
+      },
+      {
+        "full_name": "cae",
+        "name": "CAE"
+      },
+      {
+        "full_name": "ct",
+        "name": "CT"
+      },
+      {
+        "full_name": "int1",
+        "name": "INT1"
+      },
+      {
+        "full_name": "int2",
+        "name": "INT2"
+      },
+      {
+        "full_name": "git",
+        "name": "GIT"
+      }
+    ],
+    "b2b_client": [
+      {
+        "data_center": "SGDC",
+        "url": "http://www-int1.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "http://www-int2.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "https://www-ct.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "https://www-cae.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "http://www2.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "http://www.audatex.sg/b2b/services/"
+      },
+      {
+        "data_center": "SHDC",
+        "url": "https://apps-int1.audatex.cn/b2b/services/"
+      },
+      {
+        "data_center": "SHDC",
+        "url": "http://www2.audatex.cn/b2b/services/"
+      },
+      {
+        "data_center": "SHDC",
+        "url": "http://www.audatex.cn/b2b/services/"
+      }
+    ],
     "function": [
       {
         "name": "Server Log",
@@ -105,6 +146,164 @@
           "Ruleset"
         ]
       }
-    ]
+    ],
+    "b2b_service": [
+      {
+        "name": "ruleset_assignment",
+        "url": "BRERuleSetAssignmentService_v1?wsdl"
+      }
+    ],
+    "data_center": [
+      {
+        "name": "SGDC"
+      },
+      {
+        "name": "SHDC"
+      }
+    ],
+    "b2b_server": [
+      {
+        "country_name": [
+          "CN",
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "INT1",
+        "b2b_client_url": "http://www-int1.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "CN",
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "INT2",
+        "b2b_client_url": "http://www-int2.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "CN"
+        ],
+        "environment_name": "CT",
+        "b2b_client_url": "https://www-ct.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "CN"
+        ],
+        "environment_name": "PROD2",
+        "b2b_client_url": "http://www2.audatex.cn/b2b/services/"
+      },
+      {
+        "country_name": [
+          "CN"
+        ],
+        "environment_name": "PROD",
+        "b2b_client_url": "http://www.audatex.cn/b2b/services/"
+      },
+      {
+        "country_name": [
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "CT",
+        "b2b_client_url": "https://www-ct.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "CAE",
+        "b2b_client_url": "https://www-cae.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "PROD2",
+        "b2b_client_url": "http://www2.audatex.sg/b2b/services/"
+      },
+      {
+        "country_name": [
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "PROD",
+        "b2b_client_url": "http://www.audatex.sg/b2b/services/"
+      }
+    ],
+    "update_time": {
+      "country": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "environment": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "b2b_client": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "function": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "module": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "user_role": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "b2b_service": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "data_center": {
+        "update_time": "2019-03-12 10:30:00"
+      },
+      "b2b_server": {
+        "update_time": "2019-03-12 10:30:00"
+      }
+    }
   }
 }
