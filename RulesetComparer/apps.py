@@ -2,6 +2,7 @@ import os, sys
 from django.apps import AppConfig
 from RulesetComparer.utils.logger import *
 
+
 class RulesetcomparerConfig(AppConfig):
     name = 'RulesetComparer'
 
@@ -9,7 +10,9 @@ class RulesetcomparerConfig(AppConfig):
         # django will run twice when run server
         if os.environ.get('RUN_MAIN', None) == 'true':
             return
-        
+
         if 'runserver' in sys.argv:
             from RulesetComparer.services.services import restart_all_scheduler
             restart_all_scheduler()
+            from RulesetComparer.services.initDataService import init_data
+            init_data()

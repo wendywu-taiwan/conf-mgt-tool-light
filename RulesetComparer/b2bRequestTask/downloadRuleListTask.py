@@ -1,5 +1,6 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.dataModel.xml.ruleSetFileListParser import RuleListModel
+from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 
 
@@ -11,11 +12,11 @@ class DownloadRuleListTask(BaseRequestTask):
 
     def __init__(self, environment_id, country_id):
         BaseRequestTask.__init__(self)
-        self.parse_data(environment_id, country_id)
+        self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.request_data()
 
-    def parse_data(self, environment_id, country_id):
-        super().parse_data(environment_id, country_id)
+    def parse_data(self, environment_id, country_id, b2b_service_name):
+        super().parse_data(environment_id, country_id, b2b_service_name)
 
     def request_data(self):
         super().request_data()
@@ -23,7 +24,6 @@ class DownloadRuleListTask(BaseRequestTask):
     def execute(self):
         info_log(self.LOG_CLASS, '======== download rule set list ========')
         info_log(self.LOG_CLASS, "environment = %s , country = %s" % (self.environment, self.country))
-        info_log(self.LOG_CLASS, "b2b_rule_set_client = %s" % self.environment.b2b_rule_set_client)
 
         request_params = [{"name": self.KEY_USER, "value": self.auth_data.get_account()},
                           {"name": self.KEY_PASSWORD, "value": self.auth_data.get_password()},

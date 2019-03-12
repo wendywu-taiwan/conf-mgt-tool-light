@@ -108,3 +108,6 @@ ADMIN_CONSOLE_INFO = "admin_console_info"
 
 # view.admin_console_update_scheduler
 SCHEDULER_DATA = "scheduler_data"
+
+# B2B_SERVICE
+B2B_SERVICE_RULESET_ASSIGNMENT = "ruleset_assignment"
