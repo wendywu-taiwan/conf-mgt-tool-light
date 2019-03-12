@@ -29,8 +29,8 @@ class Country(models.Model):
 
 
 class EnvironmentManager(models.Manager):
-    def create_environment(self, name, full_name, client):
-        environment = self.create(name=name, full_name=full_name, b2b_rule_set_client=client)
+    def create_environment(self, name, full_name):
+        environment = self.create(name=name, full_name=full_name)
         return environment
 
     def environment_list(self, ids):
@@ -45,12 +45,82 @@ class Environment(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=128)
-    b2b_rule_set_client = models.URLField()
 
     objects = EnvironmentManager()
 
     def __str__(self):
         return self.name
+
+
+class B2BServiceManager(models.Manager):
+    def create_b2b_client(self, name, url):
+        service = self.create(name=name, url=url)
+        return service
+
+
+class B2BService(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+    url = models.URLField()
+
+    objects = B2BServiceManager()
+
+    def __str__(self):
+        return self.id
+
+
+class DataCenterManager(models.Manager):
+    def create_b2b_client(self, name):
+        data_center = self.create(name=name)
+        return data_center
+
+
+class DataCenter(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+
+    objects = DataCenterManager()
+
+    def __str__(self):
+        return self.id
+
+
+class B2BClientManager(models.Manager):
+    def create_b2b_client(self, client_url):
+        client = self.create(client_url=client_url)
+        return client
+
+
+class B2BClient(models.Model):
+    id = models.AutoField(primary_key=True)
+    data_center = models.ForeignKey(DataCenter, related_name="data_center", on_delete=models.CASCADE)
+    url = models.URLField()
+
+    objects = B2BClientManager()
+
+    def __str__(self):
+        return self.id
+
+
+class B2BServerManager(models.Manager):
+    def create_country_environment_server(self, country_id, environment_id, server_id, server_url):
+        server = self.create(country_id=country_id, environment_id=environment_id,
+                             server_id=server_id, server_url=server_url)
+        return server
+
+
+class B2BServer(models.Model):
+    id = models.AutoField(primary_key=True)
+    country = models.ForeignKey(Country, related_name='country',
+                                on_delete=models.CASCADE)
+    environment = models.ForeignKey(Environment, related_name='environment',
+                                    on_delete=models.CASCADE)
+    client = models.ForeignKey(B2BClient, related_name='client',
+                               on_delete=models.CASCADE)
+    objects = B2BClientManager()
+
+    def __str__(self):
+        return self.id
 
 
 class FunctionManager(models.Manager):
@@ -129,7 +199,7 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
-    def update_next_proceed_time(self, task_id,  next_proceed_time):
+    def update_next_proceed_time(self, task_id, next_proceed_time):
         task = self.get(id=task_id)
         task.next_proceed_time = next_proceed_time
 
@@ -154,16 +224,23 @@ class ReportSchedulerInfo(models.Model):
     objects = ReportSchedulerInfoManager()
 
 
-class TestScheduledTaskManager(models.Manager):
-    def create_task(self, status):
-        test_task = self.create(status=status)
-        return test_task
+class DataUpdateTimeManager(models.Manager):
+    def get_data_update_time(self, table_name):
+        try:
+            update_time = self.get(table=table_name)
+            return update_time
+        except DataUpdateTime.DoesNotExist:
+            return None
 
 
-class TestScheduledTask(models.Model):
-    status = models.IntegerField()
+class DataUpdateTime(models.Model):
+    id = models.AutoField(primary_key=True)
+    table = models.CharField(max_length=128)
+    update_time = models.DateTimeField(null=True)
+    objects = DataUpdateTimeManager()
 
-    objects = TestScheduledTaskManager()
+    def __str__(self):
+        return self.id
 
 
 class Meta:
