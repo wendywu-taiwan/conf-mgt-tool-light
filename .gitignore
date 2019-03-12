@@ -10,3 +10,4 @@ RulesetComparer/serverlog
 db.sqlite3
 auth_data.json
 RulesetComparer/rulesets/zip
+RulesetComparer/migrations
