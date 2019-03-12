@@ -98,8 +98,8 @@ def download_rulesets(json_data):
         task = PackedRulesetsTask(parser.rule_name_xml_list, resource_path, copied_path)
         return task.zip_file
     except Exception:
-        traceback.print_exc()
         error_log(traceback.format_exc())
+
 
 def create_report_scheduler(json_data):
     try:
@@ -117,7 +117,6 @@ def create_report_scheduler(json_data):
                              parser.interval_hour)
         return info_model
     except Exception as e:
-        traceback.print_exc()
         error_log(traceback.format_exc())
         raise e
 
@@ -129,7 +128,6 @@ def update_report_scheduler(json_data):
         info_model = create_report_scheduler(json_data)
         return info_model
     except Exception as e:
-        traceback.print_exc()
         error_log(traceback.format_exc())
         raise e
 
@@ -138,7 +136,6 @@ def delete_scheduler(task_id):
     try:
         ReportSchedulerInfo.objects.filter(id=task_id).delete()
     except Exception as e:
-        traceback.print_exc()
         error_log(traceback.format_exc())
         raise e
 
@@ -184,6 +181,5 @@ def restart_all_scheduler():
         clear_ruleset_task.set_scheduled_job(job)
         info_log(None, "restart all scheduler success")
     except BaseException as e:
-        traceback.print_exc()
         error_log(traceback.format_exc())
         raise e

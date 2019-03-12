@@ -68,7 +68,6 @@ class GitManager:
                 self.status = self.STATUS_NO_CHANGED
                 info_log(self.LOG_CLASS, "compare result : nothing change")
         except Exception as e:
-            traceback.print_exc()
             error_log(self.LOG_CLASS, traceback.format_exc())
             raise e
 
@@ -94,7 +93,6 @@ class GitManager:
 
             info_log(self.LOG_CLASS, "current active branch is {}".format(repo.active_branch))
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 

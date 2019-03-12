@@ -58,7 +58,6 @@ class DailyCompareReportTask:
                 self.info_builder.add_data(result_data)
             return None
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             return e
 
@@ -79,7 +78,6 @@ class DailyCompareReportTask:
             self.mail_sender.send()
             self.mail_sender.quit()
         except Exception:
-            traceback.print_exc()
             error_log(traceback.format_exc())
 
     def scheduler_listener(self, event):
@@ -102,5 +100,4 @@ class DailyCompareReportTask:
 
                 task.save()
             except BaseException:
-                traceback.print_exc()
                 error_log(traceback.format_exc())

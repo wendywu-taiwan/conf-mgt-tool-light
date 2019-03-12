@@ -29,7 +29,6 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             self.result_dict["status"] = self.get_status()
 
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -40,7 +39,6 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                           "icon_file_name": self.info_module.module.icon_file_name}
             return module_map
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -66,7 +64,6 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             str_time = timeUtil.date_time_to_time(local_date_time, time_format)
             return str_time
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -77,6 +74,5 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             else:
                 return False
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e

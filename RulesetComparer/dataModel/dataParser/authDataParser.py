@@ -19,22 +19,16 @@ class AuthDataParser:
             else:
                 self.data = environment_obj[country]
         except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
             raise e
 
     def get_account(self):
         try:
             return self.data[self.ACCOUNT_KEY]
         except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
             raise e
 
     def get_password(self):
         try:
             return self.data[self.PASSWORD_KEY]
         except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
             raise e

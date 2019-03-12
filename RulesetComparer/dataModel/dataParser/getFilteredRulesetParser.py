@@ -16,17 +16,10 @@ class GetFilteredRulesetParser:
             self.filter_keys = json_data[self.JSON_KEY_FILTER_KEYS]
             self.is_git = self.is_git_env()
         except BaseException as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
             raise e
 
     def is_git_env(self):
-        try:
-            if self.environment.name == GIT["environment_name"]:
-                return True
-            else:
-                return False
-        except BaseException:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
-            
+        if self.environment.name == GIT["environment_name"]:
+            return True
+        else:
+            return False

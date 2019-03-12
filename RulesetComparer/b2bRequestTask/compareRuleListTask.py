@@ -54,14 +54,13 @@ class CompareRuleListTask:
         self.git_environment = self.check_environment()
         try:
             info_log(self.LOG_CLASS, " ============== start ==============")
-            info_log(self.LOG_CLASS, "base env : " + self.baseEnv.name + ", compare env : " + self.comparedEnv.name)
+            info_log(self.LOG_CLASS, "env one : " + self.baseEnv.name + ", env two : " + self.comparedEnv.name)
             info_log(self.LOG_CLASS,
                      "country : " + str(self.country.name) + ", compare key:" + str(self.compare_hash_key))
             self.check_git_status()
             self.execute()
             self.save_result_file()
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -211,6 +210,5 @@ class CompareRuleListTask:
             rules_module = ParseRuleModel(rule_set_file, rule_name)
             return rules_module
         except Exception:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             return None

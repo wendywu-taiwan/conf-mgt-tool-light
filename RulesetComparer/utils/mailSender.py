@@ -9,35 +9,35 @@ from email.mime.text import MIMEText
 from RulesetComparer.properties.config import SMTP
 from RulesetComparer.utils.logger import *
 
+
 class MailSender:
 
     def __init__(self, mail_config):
-        # for google SMTP server
-        # self.smtp = smtplib.SMTP_SSL()
-        self.host = SMTP.get('host')
-        self.port = SMTP.get('port')
-        # for audatex internal server
-        self.smtp = smtplib.SMTP(self.host, self.port)
-        self.login_username = SMTP.get('login_username')
-        self.login_password = SMTP.get('login_password')
-        self.sender = mail_config.get('sender')
-        self.receiver = mail_config.get('receivers')
-        self.title = mail_config.get('title')
-        self.content = mail_config.get('content')
-        self.msg = MIMEMultipart()
+        try:
+            # for google SMTP server
+            # self.smtp = smtplib.SMTP_SSL()
+            self.host = SMTP.get('host')
+            self.port = SMTP.get('port')
+            # for audatex internal server
+            self.smtp = smtplib.SMTP(self.host, self.port)
+            self.login_username = SMTP.get('login_username')
+            self.login_password = SMTP.get('login_password')
+            self.sender = mail_config.get('sender')
+            self.receiver = mail_config.get('receivers')
+            self.title = mail_config.get('title')
+            self.content = mail_config.get('content')
+            self.msg = MIMEMultipart()
 
-        self.connect()
+            self.connect()
+        except Exception as e:
+            raise e
 
     def connect(self):
         self.smtp.connect(self.host, self.port)
         # self.smtp.connect(self.host)
 
     def login(self):
-        try:
-            self.smtp.login(self.login_username, self.login_password)
-        except Exception as e:
-            traceback.print_exc()
-            error_log(traceback.format_exc())
+        self.smtp.login(self.login_username, self.login_password)
 
     def set_receiver(self, receivers=None):
         if receivers is None or len(receivers) == 0:

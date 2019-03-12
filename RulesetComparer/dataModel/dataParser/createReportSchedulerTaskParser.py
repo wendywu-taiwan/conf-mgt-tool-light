@@ -18,7 +18,6 @@ class CreateReportSchedulerTaskParser:
             self.local_time = self.parse_local_time(json_data.get("start_date_time"))
             self.utc_time = self.parse_utc_time(json_data.get("start_date_time"))
         except BaseException as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -31,7 +30,6 @@ class CreateReportSchedulerTaskParser:
                 country_list.append(country)
             return country_list
         except BaseException as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -61,7 +59,6 @@ class CreateReportSchedulerTaskParser:
             return naive_result_time
 
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -75,7 +72,6 @@ class CreateReportSchedulerTaskParser:
             return utc_time
 
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -83,7 +79,6 @@ class CreateReportSchedulerTaskParser:
         try:
             return self.get_compare_time(start_time)
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e
 
@@ -107,6 +102,5 @@ class CreateReportSchedulerTaskParser:
                     else:
                         return False
         except Exception as e:
-            traceback.print_exc()
             error_log(traceback.format_exc())
             raise e

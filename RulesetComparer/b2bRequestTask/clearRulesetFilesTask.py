@@ -34,9 +34,9 @@ class ClearRulesetFilesTask:
             # clear ruleset file over 3 days
             self.delete_rulesets = clear_folder_over_days(ruleset_file_path, 1, ruleset_except_array)
         except BaseException as e:
-            error_log(e)
             self.run_task_error = e
             self.tracback = traceback.format_exc()
+            raise e
 
     def scheduler_listener(self, event):
         if event.exception:
@@ -60,6 +60,6 @@ class ClearRulesetFilesTask:
                 mail_sender.compose_msg(None, None, html_content)
                 mail_sender.send()
                 mail_sender.quit()
-            except BaseException:
-                traceback.print_exc()
+            except BaseException as e:
                 error_log(traceback.format_exc())
+                raise e
