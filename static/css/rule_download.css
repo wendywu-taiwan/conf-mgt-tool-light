@@ -30,7 +30,7 @@
     padding-left: 3%;
     padding-right: 3%;
     margin: auto;
-    width: 65%;
+    width: 50%;
     background-color: white;
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
@@ -145,16 +145,16 @@
     text-align: center;
 }
 
+#show_rule_name_list_title_div #table_title_ruleset_name {
+    text-align: left;
+}
+
 #row_checkbox_div {
     text-align: center;
 }
 
 #row_rule_name_div {
     text-align: left;
-}
-
-#row_last_update_time_div {
-    text-align: center;
 }
 
 #row_action_div {
@@ -166,19 +166,13 @@
 }
 
 #rule_name_table_div .checkbox_space_set {
-    width: 10%;
+    width: 15%;
     margin-right: 15px;
     margin-left: 15px;
 }
 
 #rule_name_table_div .rule_name_space_set {
-    width: 48%;
-    overflow-wrap: break-word;
-    margin-right: 15px;
-}
-
-#rule_name_table_div .update_time_space_set {
-    width: 20%;
+    width: 55%;
     overflow-wrap: break-word;
     margin-right: 15px;
 }

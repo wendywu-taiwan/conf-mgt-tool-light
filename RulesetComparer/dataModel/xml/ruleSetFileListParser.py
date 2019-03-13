@@ -26,6 +26,3 @@ class RuleListModel(BaseModel):
 
     def get_rules_file_name_list(self):
         return self.rulesNameList
-
-    def get_rules_file_info_map(self):
-        return self.rulesNameList
