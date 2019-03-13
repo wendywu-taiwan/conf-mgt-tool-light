@@ -5,18 +5,20 @@ from RulesetComparer.serializers.serializers import UserRoleSerializer, ModuleSe
 
 
 class AdminConsoleInfoBuilder(BaseBuilder):
-    DEFAULT_USER_ROLE_ID = "1"
-    DEFAULT_MODULE_ID = "1"
+    DEFAULT_USER_ROLE = "Admin"
+    DEFAULT_MODULE = "Ruleset"
 
     def __init__(self, user_role_id=None, module_id=None):
         if user_role_id is None:
-            user_role_id = self.DEFAULT_USER_ROLE_ID
+            self.user_role = UserRole.objects.get(name=self.DEFAULT_USER_ROLE)
+        else:
+            self.user_role = UserRole.objects.get(id=user_role_id)
 
         if module_id is None:
-            module_id = self.DEFAULT_MODULE_ID
+            self.module = Module.objects.get(name=self.DEFAULT_MODULE)
+        else:
+            self.module = Module.objects.get(id=module_id)
 
-        self.user_role = UserRole.objects.get(id=user_role_id)
-        self.module = Module.objects.get(id=module_id)
         BaseBuilder.__init__(self)
 
     def __generate_data__(self):

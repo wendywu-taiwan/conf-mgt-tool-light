@@ -58,7 +58,6 @@ class DailyCompareReportTask:
                 self.info_builder.add_data(result_data)
             return None
         except Exception as e:
-            error_log(traceback.format_exc())
             return e
 
     def send_mail(self):
