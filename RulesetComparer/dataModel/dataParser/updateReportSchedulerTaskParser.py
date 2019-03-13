@@ -1,14 +1,15 @@
 from RulesetComparer.dataModel.dataParser.baseReportSchedulerParser import BaseReportSchedulerParser
+from RulesetComparer.properties import dataKey
 
 
-class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):
+class UpdateReportSchedulerTaskParser(BaseReportSchedulerParser):
 
     def __init__(self, json_data):
         try:
             BaseReportSchedulerParser.__init__(self)
+            self.task_id = json_data.get("id")
             self.base_env_id = json_data.get("base_environment_id")
             self.compare_env_id = json_data.get("compare_environment_id")
-            self.module_id = json_data.get("module_id")
             self.country_list = self.parse_country_id_list(json_data.get("country_list"))
             self.mail_list = json_data.get("mail_list")
             self.interval_hour = int(json_data.get("interval_hour"))
@@ -16,7 +17,8 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):
             self.local_time = self.get_local_time_shift_days(json_data.get("start_date_time"))
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
-        except BaseException as e:
+            self.enable = dataKey.STATUS_ENABLE
+        except Exception as e:
             raise e
 
     def parse_country_id_list(self, country_id_list):
