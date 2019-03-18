@@ -205,6 +205,14 @@ class ReportSchedulerInfoManager(models.Manager):
 
         task.save()
         return task
+    
+
+class MailContentType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.id
 
 
 class ReportSchedulerInfo(models.Model):
@@ -215,6 +223,7 @@ class ReportSchedulerInfo(models.Model):
                                             on_delete=models.CASCADE)
     module = models.ForeignKey(Module, related_name='module_id', on_delete=models.CASCADE)
     country_list = models.ManyToManyField(Country)
+    mail_content_type_list = models.ManyToManyField(MailContentType)
     mail_list = models.TextField()
     interval_hour = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)

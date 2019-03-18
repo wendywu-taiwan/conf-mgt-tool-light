@@ -1,5 +1,13 @@
 {
   "ruleset_data": {
+    "mail_content_type": [
+      {
+       "name":"ruleset count table"
+      },
+      {
+        "name":"ruleset name list"
+      }
+    ],
     "country": [
       {
         "full_name": "China",
@@ -277,6 +285,9 @@
       }
     ],
     "update_time": {
+      "mail_content_type":{
+        "update_time": "2019-03-15 10:30:00"
+      },
       "country": {
         "update_time": "2019-03-12 10:30:00"
       },

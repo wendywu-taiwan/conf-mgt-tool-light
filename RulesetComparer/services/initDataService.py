@@ -3,11 +3,12 @@ from RulesetComparer.utils import fileManager, modelManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, DataCenter, B2BService, B2BClient, \
-    B2BServer, DataUpdateTime
+    B2BServer, DataUpdateTime, MailContentType
 from RulesetComparer.services.services import restart_all_scheduler
 
 LOG_CLASS = "initDataService"
 
+KEY_MAIL_CONTENT_TYPE = "mail_content_type"
 KEY_COUNTRY = "country"
 KEY_ENVIRONMENT = "environment"
 KEY_FUNCTION = "function"
@@ -26,6 +27,11 @@ def init_data():
         preload_data = fileManager.load_json_file(preload_data_path)
         ruleset_data = preload_data["ruleset_data"]
         update_time_data = ruleset_data["update_time"]
+
+        if has_update(update_time_data, KEY_MAIL_CONTENT_TYPE):
+            update_mail_content = init_mail_content_type_data(ruleset_data[KEY_MAIL_CONTENT_TYPE])
+            if update_mail_content:
+                update_local_time(update_time_data, KEY_MAIL_CONTENT_TYPE)
 
         if has_update(update_time_data, KEY_COUNTRY):
             update_country = init_country_data(ruleset_data[KEY_COUNTRY])
@@ -76,13 +82,22 @@ def init_data():
         raise e
 
 
+def init_mail_content_type_data(mail_content_types):
+    try:
+        MailContentType.objects.all().delete()
+        for mail_content_type in mail_content_types:
+            name = mail_content_type["name"]
+            MailContentType.objects.create(name=name)
+        info_log(LOG_CLASS, "init mail content data success")
+        return True
+    except Exception as e:
+        MailContentType.objects.all().delete()
+        raise e
+
+
 def init_country_data(country_list):
     try:
         Country.objects.all().delete()
-        db_countries = Country.objects.all()
-        if len(db_countries) != 0:
-            return True
-
         for country_obj in country_list:
             name = country_obj["name"]
             full_name = country_obj["full_name"]
