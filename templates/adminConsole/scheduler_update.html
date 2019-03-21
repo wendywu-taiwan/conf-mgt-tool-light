@@ -63,10 +63,24 @@
             <div id="country_check_box_div" class="country_check_box_div row no_row_margin">
                 {% for data in countries %}
                     <div class="checkbox_input_div form-check form-check-inline">
-                        <input onclick="checkboxOnChange(this)" class="form-check-input checkbox_input"
+                        <input onclick="countryCheckboxOnChange(this)" class="form-check-input checkbox_input"
                                type="checkbox"
                                id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
                         <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="mail_content_select_div">
+            <div class="env_select_title">Mail Content :</div>
+            <div id="mail_content_checkbox_div>" class="row no_row_margin">
+                {% for data in mail_content_types %}
+                    <div class="checkbox_input_div form-check form-check-inline">
+                        <input onclick="mailContentTypeCheckboxOnChange(this)" class="form-check-input checkbox_input"
+                               type="checkbox"
+                               id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
+                        <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.title }}</label>
                     </div>
                 {% endfor %}
             </div>
@@ -116,6 +130,9 @@
         setCompareEnvSelected('{{ scheduler_data.compare_environment.id}}', '{{ scheduler_data.compare_environment.name}}');
         '{% for country in scheduler_data.country_list %}'
             setCountryChecked('{{ country.id }}');
+            '{% endfor %}'
+        '{% for mail_content_type in scheduler_data.mail_content_types %}'
+            setMailContentTypeChecked('{{ mail_content_type.id }}');
             '{% endfor %}'
         setDailyProceedTime('{{ scheduler_data.next_proceed_time }}');
         setIntervalHour('{{ scheduler_data.interval_hour }}');

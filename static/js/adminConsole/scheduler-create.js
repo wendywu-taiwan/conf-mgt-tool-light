@@ -17,6 +17,7 @@ $(function () {
 let baseEnvId, compareEnvId, intervalHour, startDateTime;
 let countryList = [];
 let mailList = [];
+let mailContentTypeList = [];
 let moduleId, postUrl, taskListUrl;
 
 function init(module_id, post_url, list_url) {
@@ -36,6 +37,7 @@ createTask = function () {
         "compare_environment_id": compareEnvId,
         "module_id": moduleId,
         "country_list": countryList,
+        "mail_content_type_list": mailContentTypeList,
         "mail_list": mailList,
         "interval_hour": intervalHour,
         "start_date_time": startDateTime
@@ -64,6 +66,7 @@ updateTask = function (task_id) {
         "compare_environment_id": compareEnvId,
         "module_id": moduleId,
         "country_list": countryList,
+        "mail_content_type_list": mailContentTypeList,
         "mail_list": mailList,
         "interval_hour": intervalHour,
         "start_date_time": startDateTime
@@ -101,6 +104,11 @@ checkInputValid = function () {
         return false;
     }
 
+    if (mailContentTypeList.length == 0) {
+        showWarningDialog("please select mail content");
+        return false;
+    }
+
     if (!intervalHour) {
         showWarningDialog("please enter hour interval");
         return false;
@@ -120,17 +128,32 @@ checkInputValid = function () {
     }
     return true;
 };
-checkboxOnClick = function (countryId) {
+countryCheckboxOnClick = function (countryId) {
     countryList.push(countryId);
 };
 
-checkboxOnChange = function (checkboxItem) {
+mailContentTypeCheckboxOnClick = function (mailContentId) {
+    mailContentTypeList.push(mailContentId);
+};
+
+countryCheckboxOnChange = function (checkboxItem) {
     let countryId = checkboxItem.value;
-    if(checkboxItem.checked && !countryList.includes(countryId)){
-        checkboxOnClick(countryId)
-    }else{
+    if (checkboxItem.checked && !countryList.includes(countryId)) {
+        countryCheckboxOnClick(countryId)
+    } else {
         countryList = countryList.filter(function (item) {
             return item !== countryId;
+        })
+    }
+};
+
+mailContentTypeCheckboxOnChange = function (checkboxItem) {
+    let mailContentId = checkboxItem.value;
+    if (checkboxItem.checked && !mailContentTypeList.includes(mailContentId)) {
+        mailContentTypeCheckboxOnClick(mailContentId)
+    } else {
+        mailContentTypeList = mailContentTypeList.filter(function (item) {
+            return item !== mailContentId;
         })
     }
 };

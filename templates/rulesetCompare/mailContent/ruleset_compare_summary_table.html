@@ -1,0 +1,26 @@
+<div class="list_title">Rulesets / Rules Comparison</div>
+<table style=" border-collapse: collapse; border: 1px solid black;">
+    <tr>
+        <td class="header"></td>
+        <td class="header">{{ normal_environment.name }}</td>
+        <td class="header">{{ developer_environment.name }}</td>
+    </tr>
+    <tr>
+        <td class="td_title_blue">Rulesets only in</td>
+        <td class="td_content_blue">{{ diff_table.normal_env_only_rulesets_count }}</td>
+        <td class="td_content_blue">{{ diff_table.developer_env_only_rulesets_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title">Rules only in</td>
+        <td class="td_content">{{ diff_table.normal_env_only_rules_count }}</td>
+        <td class="td_content">{{ diff_table.developer_env_only_rules_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title_blue">Different Rulesets</td>
+        <td class="td_content_blue" colspan="2">{{ diff_table.different_rulesets_count }}</td>
+    </tr>
+    <tr>
+        <td class="td_title">Different Rules</td>
+        <td class="td_content" colspan="2">{{ diff_table.different_rules_count }}</td>
+    </tr>
+</table>

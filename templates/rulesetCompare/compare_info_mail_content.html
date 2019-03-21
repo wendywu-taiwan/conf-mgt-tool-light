@@ -6,11 +6,16 @@
             border: 1.5px solid white;
         }
 
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
         .header {
             background: #34495d;
             color: white;
             font-size: 10.0pt;
-            font-family: "Arial", sans-serif;
+            font-family: Calibri, sans-serif;
             font-weight: 600;
             text-align: center;
         }
@@ -20,77 +25,107 @@
             padding: .75pt .75pt .75pt 3.75pt;
             font-weight: 600;
             color: black;
+            font-family: Calibri, sans-serif;
+        }
+
+        .td_title_blue {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+            font-family: Calibri, sans-serif;
+            background-color: #bcd7f16b;
         }
 
         .td_content {
+            font-family: Calibri, sans-serif;
             width: 200px;
             margin-left: 5px;
             text-align: center;
             color: black;
         }
 
-        .env_text {
+        .td_content_blue {
+            font-family: Calibri, sans-serif;
+            width: 200px;
             margin-left: 5px;
-            color: #4285f4;
+            text-align: center;
+            color: black;
+            background-color: #bcd7f16b;
         }
 
-        .same_line_dive {
+        .env_title_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
             display: inline-block;
         }
 
-        .td_bg_blue{
-            background-color: #bcd7f16b;
+        .env_text {
+            margin-left: 5px;
+            color: #5b9bd5;
+            font-weight: 600;
+            font-family: Calibri, sans-serif;
+            display: inline-block;
+        }
+
+        .content_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .list_title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #e69136;
+            font-family: Calibri, sans-serif;
+        }
+
+        .list_remind_title {
+            font-size: 16px;
+            color: #7b8996;
+            font-weight: 600;
+            font-family: Calibri, sans-serif;
+        }
+
+        .list_ruleset_name {
+            font-size: 14px;
+            font-family: Calibri, sans-serif;
         }
     </style>
 </head>
 <body>
-<p>
-<div class="same_line_dive">This is the rule sets compare result for two environment on</div>
-<div class="same_line_dive env_text">{{ current_time }}</div>
-</p>
-<p>
-<div class="same_line_dive">Base environment :</div>
-<div class="same_line_dive env_text">{{ base_env.name }}</div>
-</p>
-<p>
-<div class="same_line_dive">Compared environment :</div>
-<div class="same_line_dive env_text"> {{ compare_env.name }}</div>
-</p>
-<p>there are files and rules information in following table,
-<p>you can check out the attached report for more details,</p>
-<p>Thank you.</p>
+<div class="row">
+    <div class="content_text">This is the rulesets compare result on</div>
+    <div class="env_text">{{ compare_time }}</div>
+</div>
+<br>
+<div class="row">
+    <div class="env_title_text">Country :</div>
+    <div class="env_text">{{ country.full_name }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">Normal environment :</div>
+    <div class="env_text">{{ normal_environment.name }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">Developer environment :</div>
+    <div class="env_text"> {{ developer_environment.name }}</div>
+</div>
+<br>
+<div class="content_text">there are summary information in following table,</div>
+<div class="content_text">you can check out the attached report for more details,</div>
+<div class="content_text">Thank you.</div>
 <br>
 <br>
-{% for data in info_data %}
-<table style=" border-collapse: collapse; border: 1px solid black;">
-    <tr>
-        <td class="header">{{ data.country.name }}</td>
-        <td class="header">{{ base_env.name }}</td>
-        <td class="header">{{ compare_env.name }}</td>
-    </tr>
-    <tr>
-        <td class="td_title">Common Rule Set</td>
-        <td class="td_content" colspan="2">{{ data.normal_list|length }}</td>
-    </tr>
-    <tr>
-        <td class="td_title td_bg_blue">Rule Set only in</td>
-        <td class="td_content td_bg_blue">{{ data.remove_file_count }}</td>
-        <td class="td_content td_bg_blue">{{ data.add_file_count }}</td>
-    </tr>
-    <tr>
-        <td class="td_title">Rule only in</td>
-        <td class="td_content">{{ data.remove_rule_count }}</td>
-        <td class="td_content">{{ data.add_rule_count }}</td>
-    </tr>
-    <tr>
-        <td class="td_title td_bg_blue">Rule Set Different</td>
-        <td class="td_content td_bg_blue" colspan="2">{{ data.modify_file_count }}</td>
-    </tr>
-    <tr>
-        <td class="td_title">Rule Different</td>
-        <td class="td_content" colspan="2">{{ data.modify_rule_count }}</td>
-    </tr>
-</table>
-{% endfor %}
+{% if ruleset_list.show == "true" %}
+    {% include 'ruleset_compare_reminder_list.html' %}
+    <br>
+    <br>
+{% endif %}
+{% if diff_table.show == "true" %}
+    {% include 'ruleset_compare_summary_table.html' %}
+{% endif %}
 </body>
 </html>

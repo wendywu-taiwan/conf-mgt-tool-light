@@ -1,0 +1,33 @@
+<div id="normal_env_rulesets_div">
+    <div class="list_title">Rulesets {{ normal_environment.name }} Only</div>
+    <div class="list_remind_title">
+        Here are some rulesets only in {{ normal_environment.name }}, do you forget to commit back ?
+    </div>
+    {% for data in ruleset_list.normal_env_only_rulesets %}
+        <div class="list_ruleset_name"> + {{ data.name }}</div>
+    {% endfor %}
+    <br>
+    <br>
+</div>
+
+<div id="developer_env_rulesets_div">
+    <div class="list_title">Rulesets {{ developer_environment.name }} Only</div>
+    <div class="list_remind_title">
+        Here are some rulesets only in {{ developer_environment.name }}, do you forget to deploy to server or they have been deprecated ?
+    </div>
+    {% for data in ruleset_list.developer_env_only_rulesets %}
+        <div class="list_ruleset_name"> + {{ data.name }}</div>
+    {% endfor %}
+    <br>
+    <br>
+</div>
+
+<div id="different_rulesets_div">
+    <div class="list_title">Different Rulesets</div>
+    <div class="list_remind_title">
+        Here are some rulesets different between {{ normal_environment.name }} and {{ developer_environment.name }}, do you forget to commit your change back or forget to deploy the latest version ?
+    </div>
+    {% for data in ruleset_list.different_rulesets %}
+        <div class="list_ruleset_name"> + {{ data.name }}</div>
+    {% endfor %}
+</div>

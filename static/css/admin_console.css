@@ -531,6 +531,10 @@ html, body {
     font-weight: 700;
 }
 
+#mail_content_select_div {
+    margin-bottom: 50px;
+}
+
 #time_select_group_div {
     margin-bottom: 50px;
 }

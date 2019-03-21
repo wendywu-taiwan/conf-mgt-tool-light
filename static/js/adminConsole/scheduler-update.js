@@ -25,8 +25,13 @@ function setCompareEnvSelected(id, name) {
 };
 
 function setCountryChecked(country_id) {
-    checkboxOnClick(country_id);
+    countryCheckboxOnClick(country_id);
     $("#checkbox_input_" + country_id).prop("checked", true);
+};
+
+function setMailContentTypeChecked(mail_content_type_id) {
+    mailContentTypeCheckboxOnClick(mail_content_type_id);
+    $("#checkbox_input_" + mail_content_type_id).prop("checked", true);
 };
 
 function setDailyProceedTime(start_time) {
