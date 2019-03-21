@@ -2,10 +2,12 @@
   "ruleset_data": {
     "mail_content_type": [
       {
-       "name":"ruleset count table"
+       "name":"ruleset_count_table",
+       "title":"summary table"
       },
       {
-        "name":"ruleset name list"
+        "name":"ruleset_name_list",
+        "title":" reminder list"
       }
     ],
     "country": [
@@ -285,8 +287,8 @@
       }
     ],
     "update_time": {
-      "mail_content_type":{
-        "update_time": "2019-03-15 10:30:00"
+      "mail_content_type": {
+        "update_time": "2019-03-15 10:55:00"
       },
       "country": {
         "update_time": "2019-03-12 10:30:00"

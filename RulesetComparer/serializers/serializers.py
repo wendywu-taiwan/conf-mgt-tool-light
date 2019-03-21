@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from RulesetComparer.models import Country, Environment, Function, Module, UserRole
+from RulesetComparer.models import Country, Environment, Function, Module, UserRole, MailContentType
 from RulesetComparer.properties import dataKey
 
 
@@ -110,3 +110,9 @@ class ModifiedRuleValueSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class MailContentTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MailContentType
+        fields = ('id', 'name', 'title')

@@ -167,7 +167,7 @@ class UserRole(models.Model):
 
 class ReportSchedulerInfoManager(models.Manager):
     def create_task(self, base_env_id, compared_env_id, module_id,
-                    country_list, mail_list_str, interval, next_proceed_time):
+                    country_list, mail_content_type_list, mail_list_str, interval, next_proceed_time):
         task = self.create(base_environment_id=base_env_id,
                            compare_environment_id=compared_env_id,
                            module_id=module_id,
@@ -180,10 +180,13 @@ class ReportSchedulerInfoManager(models.Manager):
         for country in country_list:
             task.country_list.add(country)
 
+        for mail_content_type in mail_content_type_list:
+            task.mail_content_type_list.add(mail_content_type)
+
         return task
 
     def update_task(self, task_id, base_env_id, compared_env_id, country_list,
-                    mail_list_str, interval, next_proceed_time):
+                    mail_content_type_list, mail_list_str, interval, next_proceed_time):
         task = self.get(id=task_id)
         task.base_environment_id = base_env_id
         task.compare_environment_id = compared_env_id
@@ -196,6 +199,10 @@ class ReportSchedulerInfoManager(models.Manager):
         for country_id in country_list:
             task.country_list.add(country_id)
 
+        task.mail_content_list.clear()
+        for mail_content_type in mail_content_type_list:
+            task.mail_content_type_list.add(mail_content_type)
+
         task.save()
         return task
 
@@ -205,11 +212,12 @@ class ReportSchedulerInfoManager(models.Manager):
 
         task.save()
         return task
-    
+
 
 class MailContentType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
+    title = models.CharField(max_length=128)
 
     def __str__(self):
         return self.id

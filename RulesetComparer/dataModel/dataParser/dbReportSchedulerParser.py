@@ -8,7 +8,7 @@ from RulesetComparer.utils import timeUtil
 
 class DBReportSchedulerParser(BaseReportSchedulerParser):
 
-    def __init__(self, scheduler, country_list):
+    def __init__(self, scheduler, country_list, mail_content_type_list):
         try:
             BaseReportSchedulerParser.__init__(self)
             self.task_id = scheduler.id
@@ -16,6 +16,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.compare_env_id = scheduler.compare_environment.id
             self.module_id = scheduler.module.id
             self.country_list = self.parse_country(country_list)
+            self.mail_content_type_list = self.parse_db_mail_content_type(mail_content_type_list)
             self.mail_list = self.get_mail_list(scheduler.mail_list)
             self.interval_hour = scheduler.interval_hour
             self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
@@ -25,6 +26,9 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
 
     def parse_country(self, country_id_list):
         return super().parse_country(country_id_list)
+
+    def parse_db_mail_content_type(self, mail_content_type_list):
+        return super().parse_db_mail_content_type(mail_content_type_list)
 
     @staticmethod
     def db_time_to_date_time(start_date_time):

@@ -4,7 +4,6 @@ from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, DataCenter, B2BService, B2BClient, \
     B2BServer, DataUpdateTime, MailContentType
-from RulesetComparer.services.services import restart_all_scheduler
 
 LOG_CLASS = "initDataService"
 
@@ -87,7 +86,8 @@ def init_mail_content_type_data(mail_content_types):
         MailContentType.objects.all().delete()
         for mail_content_type in mail_content_types:
             name = mail_content_type["name"]
-            MailContentType.objects.create(name=name)
+            title = mail_content_type["title"]
+            MailContentType.objects.create(name=name, title=title)
         info_log(LOG_CLASS, "init mail content data success")
         return True
     except Exception as e:

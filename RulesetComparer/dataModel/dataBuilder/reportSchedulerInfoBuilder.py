@@ -4,7 +4,7 @@ import RulesetComparer.properties.dataKey as key
 from RulesetComparer.properties import config
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, MailContentTypeSerializer
 from RulesetComparer.utils.logger import *
 
 
@@ -22,6 +22,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                 self.info_module.compare_environment).data
             self.result_dict["module"] = self.get_module_data()
             self.result_dict["country_list"] = CountrySerializer(self.info_module.country_list, many=True).data
+            self.result_dict["mail_content_types"] = MailContentTypeSerializer(self.info_module.mail_content_type_list,many=True).data
             self.result_dict["mail_list"] = self.get_mail_list()
             self.result_dict["interval_hour"] = self.info_module.interval_hour
             self.result_dict["last_proceed_time"] = self.get_format_time(self.info_module.last_proceed_time)

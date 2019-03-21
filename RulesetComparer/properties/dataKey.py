@@ -111,3 +111,9 @@ SCHEDULER_DATA = "scheduler_data"
 
 # B2B_SERVICE
 B2B_SERVICE_RULESET_ASSIGNMENT = "ruleset_assignment"
+
+# MAIL CONTENT TYPE
+RULESET_MAIL_CONTENT_TYPE = "mail_content_types"
+RULESET_COUNT_TABLE = "ruleset_count_table"
+RULESET_NAME_LIST = "ruleset_name_list"
+

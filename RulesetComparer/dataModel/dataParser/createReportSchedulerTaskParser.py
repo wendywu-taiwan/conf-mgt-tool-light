@@ -10,6 +10,7 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):
             self.compare_env_id = json_data.get("compare_environment_id")
             self.module_id = json_data.get("module_id")
             self.country_list = self.parse_country_id_list(json_data.get("country_list"))
+            self.mail_content_type_list = self.parse_mail_content_type_list(json_data.get("mail_content_type_list"))
             self.mail_list = json_data.get("mail_list")
             self.interval_hour = int(json_data.get("interval_hour"))
             # time with timezone setting for task running
@@ -21,6 +22,9 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):
 
     def parse_country_id_list(self, country_id_list):
         return super().parse_country_id_list(country_id_list)
+
+    def parse_mail_content_type_list(self, mail_content_type_list):
+        return super().parse_mail_content_type_list(mail_content_type_list)
 
     def frontend_time_to_date_time(self, start_date_time):
         return super().frontend_time_to_date_time(start_date_time)

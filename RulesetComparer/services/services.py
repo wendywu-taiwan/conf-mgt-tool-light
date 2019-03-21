@@ -108,13 +108,14 @@ def create_report_scheduler(json_data):
                                                              parser.compare_env_id,
                                                              parser.module_id,
                                                              parser.country_list,
+                                                             parser.mail_content_type_list,
                                                              parser.mail_list,
                                                              parser.interval_hour,
                                                              parser.utc_time)
 
         run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
-                             parser.country_list, parser.mail_list, parser.local_time,
-                             parser.interval_hour)
+                             parser.country_list, parser.mail_content_type_list, parser.mail_list,
+                             parser.local_time, parser.interval_hour)
         return info_model
     except Exception as e:
         error_log(traceback.format_exc())
@@ -141,11 +142,12 @@ def delete_scheduler(task_id):
 
 
 def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
-                         mail_list, next_proceed_time, interval):
+                         mail_content_type_list, mail_list, next_proceed_time, interval):
     daily_task = DailyCompareReportTask(model_id,
                                         base_env_id,
                                         compare_env_id,
                                         country_list,
+                                        mail_content_type_list,
                                         mail_list)
     info_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
     scheduler = CustomJobScheduler(daily_task.scheduler_listener)
@@ -163,13 +165,15 @@ def restart_all_scheduler():
         # report scheduler
         for scheduler in scheduler_model_list:
             country_list = scheduler.country_list.values("id")
-            parser = DBReportSchedulerParser(scheduler, country_list)
+            mail_content_type_list = scheduler.mail_content_type_list.values("id")
+            parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
             ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id,
                                                                  parser.utc_time)
             run_report_scheduler(parser.task_id,
                                  parser.base_env_id,
                                  parser.compare_env_id,
                                  parser.country_list,
+                                 parser.mail_content_type_list,
                                  parser.mail_list,
                                  parser.local_time,
                                  parser.interval_hour)

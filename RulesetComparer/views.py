@@ -6,11 +6,11 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
-from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo
+from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
-    ModifiedRuleValueSerializer, ModuleSerializer
+    ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
 from RulesetComparer.services import services
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
@@ -85,10 +85,12 @@ def admin_console_scheduler_create_page(request):
     try:
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
         info_data = AdminConsoleInfoBuilder().get_data()
 
         data = {key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+                key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
                 key.ADMIN_CONSOLE_INFO: info_data}
         return render(request, "scheduler_create.html", data)
     except Exception:
@@ -101,6 +103,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
     try:
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
         info_data = AdminConsoleInfoBuilder().get_data()
 
         scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
@@ -109,6 +112,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
         data = {
             key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
             key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+            key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
             key.ADMIN_CONSOLE_INFO: info_data,
             key.SCHEDULER_DATA: scheduler_data
         }

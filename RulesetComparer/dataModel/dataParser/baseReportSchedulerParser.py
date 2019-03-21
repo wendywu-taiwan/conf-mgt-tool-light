@@ -1,4 +1,4 @@
-from RulesetComparer.models import Country
+from RulesetComparer.models import Country, MailContentType
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import config
 from datetime import timedelta
@@ -14,12 +14,28 @@ class BaseReportSchedulerParser:
         return country_list
 
     @staticmethod
+    def parse_mail_content_type_list(mail_content_type_list):
+        content_type_list = list()
+        for mail_content_type_id in mail_content_type_list:
+            mail_content_type_obj = MailContentType.objects.get(id=mail_content_type_id)
+            content_type_list.append(mail_content_type_obj)
+        return content_type_list
+
+    @staticmethod
     def parse_country(country_id_list):
         country_list = list()
         for country_id_map in country_id_list:
             country = Country.objects.get(id=country_id_map['id'])
             country_list.append(country)
         return country_list
+
+    @staticmethod
+    def parse_db_mail_content_type(mail_content_type_list):
+        content_type_list = list()
+        for mail_content_type in mail_content_type_list:
+            mail_content_type_obj = MailContentType.objects.get(id=mail_content_type['id'])
+            content_type_list.append(mail_content_type_obj)
+        return content_type_list
 
     @staticmethod
     def frontend_time_to_date_time(start_date_time):
