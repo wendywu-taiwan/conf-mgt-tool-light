@@ -38,12 +38,12 @@ TIME_ZONE = {
 }
 
 SMTP = {
-    # "login_username": "mailtest20181112@gmail.com",
-    # "login_password": "shqkvjarskvbkigv",
-    # "host": "smtp.gmail.com",
-    "host": "10.29.25.73",
-    # "port": "465"
-    "port": "25"
+    "login_username": "mailtest20181112@gmail.com",
+    "login_password": "shqkvjarskvbkigv",
+    "host": "smtp.gmail.com",
+    # "host": "10.29.25.73",
+    "port": "465"
+    # "port": "25"
 }
 
 SEND_COMPARE_RESULT_MAIL = {
@@ -59,6 +59,11 @@ LOG_TYPE_FILE = {
     0: "info.log",
     1: "warning.log",
     2: "error.log"
+}
+
+MAIL_CONTENT_TYPE = {
+    "ruleset_count_table": "ruleset_count_table",
+    "ruleset_name_list": "ruleset_name_list"
 }
 
 
