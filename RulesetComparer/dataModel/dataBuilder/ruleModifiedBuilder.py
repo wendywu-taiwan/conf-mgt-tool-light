@@ -9,6 +9,7 @@ class RuleModifiedBuilder(BaseBuilder):
         BaseBuilder.__init__(self)
 
     def __generate_data__(self):
+        self.result_dict[key.RULE_KEY_COMBINED_KEY] = self.base_model.combinedKey
         self.result_dict[key.RULE_KEY_PROCESS] = self.base_model.process
         self.result_dict[key.RULE_KEY_PROCESS_STEP] = self.base_model.processStep
         self.result_dict[key.RULE_KEY_ORGANIZATION_ID] = self.base_model.organizationId

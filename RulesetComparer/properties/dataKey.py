@@ -35,6 +35,7 @@ RULE_MODIFIED_KEY_BASE_VALUE = 'base_value'
 RULE_MODIFIED_KEY_BASE_EXPRESSION = 'base_expression'
 RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
+RULE_KEY_COMBINED_KEY='combined_key'
 
 # view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'

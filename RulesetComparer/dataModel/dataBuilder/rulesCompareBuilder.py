@@ -15,7 +15,8 @@ class RulesCompareModel(BaseBuilder):
     def get_data(self):
         rules_compare_list = list()
         rules_compare_list.append(self.get_rules_compared_json(self.base_env, self.comparer.get_left_rules_array())),
-        rules_compare_list.append(self.get_rules_compared_json(self.compare_env, self.comparer.get_right_rules_array())),
+        rules_compare_list.append(
+            self.get_rules_compared_json(self.compare_env, self.comparer.get_right_rules_array())),
 
         base_env_data = self.get_rules_compared_json(self.base_env,
                                                      self.comparer.get_base_rules_array())
@@ -26,7 +27,7 @@ class RulesCompareModel(BaseBuilder):
             key.RULE_SET_BASE_ONLY_DATA: base_env_data,
             key.RULE_SET_COMPARED_ONLY_DATA: compared_env_data,
             key.RULE_SET_DIFF_DATA: self.comparer.get_difference_rules_array()
-                      }
+        }
         return dictionary
 
     @staticmethod
@@ -37,6 +38,3 @@ class RulesCompareModel(BaseBuilder):
         }
 
         return rules_data
-
-
-
