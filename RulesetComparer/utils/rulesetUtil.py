@@ -1,3 +1,4 @@
+from lxml import etree
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils.fileManager import load_file
 from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_git_path, get_rule_set_full_file_name
@@ -28,3 +29,10 @@ def load_git_file_with_name(country_name, rule_set_name):
     file_name_with_path = get_rule_set_full_file_name(file_path, rule_set_name)
     rule_set_file = load_file(file_name_with_path)
     return rule_set_file
+
+
+def build_ruleset_xml(rule_model_list):
+    ruleset_file_xml = etree.Element('BRERuleListType')
+    for rule in rule_model_list:
+        ruleset_file_xml.append(rule.to_xml())
+    return etree.tostring(ruleset_file_xml, pretty_print=True)
