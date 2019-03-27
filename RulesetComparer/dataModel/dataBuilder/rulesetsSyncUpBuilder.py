@@ -2,7 +2,7 @@ from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
 from RulesetComparer.properties import dataKey as key
 
 
-class RuleSetSyncUpBuilder(BaseBuilder):
+class RulesetsSyncUpBuilder(BaseBuilder):
     def __init__(self, json_data):
         try:
             self.json_data = json_data
@@ -68,14 +68,14 @@ class RuleSetSyncUpBuilder(BaseBuilder):
             ruleset_diff_obj = self.ruleset_diff_json[ruleset_name]
 
             ruleset_obj["name"] = ruleset_name
-            ruleset_obj["add_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_ADD_COUNT],
-                                                                   ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
-            ruleset_obj["delete_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT],
-                                                                      ruleset_diff_obj[
-                                                                          key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
-            ruleset_obj["update_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_MODIFY_COUNT],
-                                                                      ruleset_diff_obj[
-                                                                          key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY])
+            ruleset_obj["source_env_only_rules"] = self.__generate_rules_obj__(
+                ruleset[key.RULE_LIST_ITEM_ADD_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
+            ruleset_obj["target_env_only_rules"] = self.__generate_rules_obj__(
+                ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
+            ruleset_obj["normal_rules"] = self.__generate_rules_obj__(
+                0, ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL])
+            ruleset_obj["different_rules"] = self.__generate_rules_obj__(
+                ruleset[key.RULE_LIST_ITEM_MODIFY_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY])
             rulesets_array.append(ruleset_obj)
 
         rulesets_list["count"] = self.ruleset_list_json[key.COMPARE_RESULT_MODIFY_FILE_COUNT]
