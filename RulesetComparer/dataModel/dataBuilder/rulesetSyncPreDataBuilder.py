@@ -2,7 +2,7 @@ from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
 from RulesetComparer.properties import dataKey as key
 
 
-class RulesetsSyncUpBuilder(BaseBuilder):
+class RulesetSyncPreDataBuilder(BaseBuilder):
     def __init__(self, json_data):
         try:
             self.json_data = json_data

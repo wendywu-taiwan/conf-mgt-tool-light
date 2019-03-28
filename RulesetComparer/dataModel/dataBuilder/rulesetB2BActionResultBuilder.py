@@ -1,7 +1,7 @@
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
 
 
-class RulesetSyncUpResultBuilder(BaseBuilder):
+class RulesetB2BActionResultBuilder(BaseBuilder):
     def __init__(self, ruleset_name, action, b2b_response_data):
         try:
             self.action = action

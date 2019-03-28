@@ -3,7 +3,7 @@ from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
-from RulesetComparer.dataModel.dataBuilder.rulesetSyncUpResultBuilder import RulesetSyncUpResultBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
 
 
 class UpdateRulesetTask(BaseRequestTask):
@@ -56,9 +56,7 @@ class UpdateRulesetTask(BaseRequestTask):
         self.b2b_response_data = response
 
     def parse_result_data(self):
-        payload_data_encoding = self.b2b_response_data.payload.encode(settings.UNICODE_ENCODING)
-        info_log(self.LOG_CLASS, "update ruleset payload_data_encoding :" + str(payload_data_encoding))
-        builder = RulesetSyncUpResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE, self.b2b_response_data)
+        builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE, self.b2b_response_data)
         return builder.get_data()
 
     @staticmethod

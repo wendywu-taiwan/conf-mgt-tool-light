@@ -2,7 +2,7 @@ from RulesetComparer.dataModel.dataParser.baseReportSchedulerParser import BaseR
 from RulesetComparer.models import Environment
 
 
-class RulesetSyncUpParser(BaseReportSchedulerParser):
+class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
 
     def __init__(self, json_data):
         try:

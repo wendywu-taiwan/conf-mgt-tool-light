@@ -3,6 +3,7 @@ import shutil
 import glob
 import json
 import zipfile
+import codecs
 from django.conf import settings
 from codecs import open
 from RulesetComparer.properties.config import get_compare_result_full_file_name
@@ -137,7 +138,8 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
 
 
 def load_file_with_setting(file_name, mode, format):
-    return open(file_name, mode, format)
+    fp = codecs.open(file_name, mode, format)
+    return fp.read()
 
 
 def load_file_in_folder(path, extension):

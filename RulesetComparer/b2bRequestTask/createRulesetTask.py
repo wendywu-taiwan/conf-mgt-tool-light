@@ -1,7 +1,7 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
-from RulesetComparer.dataModel.dataBuilder.rulesetSyncUpResultBuilder import RulesetSyncUpResultBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
 
 
 class CreateRulesetTask(BaseRequestTask):
@@ -29,16 +29,15 @@ class CreateRulesetTask(BaseRequestTask):
                           {"name": "rulesetName", "value": self.ruleset_name},
                           {"name": "rulesetCountry", "value": self.country.name}]
 
-        response = self.client.service.createRuleset(request_params)
+        response = self.client.service.createRuleset(request_params,
+                                                     payload=self.ruleset_xml.replace('BRERuleListType', 'BRERuleList'))
         if response.returnCode != 0:
             info_log(self.LOG_CLASS, "create ruleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "create error message :" + str(response.message))
         self.b2b_response_data = response
 
     def parse_result_data(self):
-        payload_data_encoding = self.b2b_response_data.payload.encode(settings.UNICODE_ENCODING)
-        info_log(self.LOG_CLASS, "createRuleset payload_data_encoding :" + str(payload_data_encoding))
-        builder = RulesetSyncUpResultBuilder(self.ruleset_name, dataKey.RULESET_CREATE, self.b2b_response_data)
+        builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_CREATE, self.b2b_response_data)
         return builder.get_data()
 
     def get_result_data(self):
