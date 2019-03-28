@@ -9,6 +9,7 @@ class RuleModel(BaseModel):
     def __init__(self, xml, has_saxif_tag):
         BaseModel.__init__(self, xml)
         self.has_saxif_tag = has_saxif_tag
+        self.countryOrganizationId = None
         self.combinedKey = None
         self.fullValue = None
         self.process = None
@@ -22,6 +23,7 @@ class RuleModel(BaseModel):
         self.parse_data_catch_error()
 
     def parse_data(self):
+        self.countryOrganizationId = self.node_value(key=XMLKey.COUNTRY_ORGANIZATION_ID)
         self.process = self.value_in_context(key=XMLKey.PROCESS)
         self.processStep = self.value_in_context(key=XMLKey.PROCESS_STEP)
         self.organizationId = self.value_in_context(key=XMLKey.ORGANIZATION_ID)
@@ -37,7 +39,7 @@ class RuleModel(BaseModel):
     def to_xml(self):
         rule = etree.Element(XMLKey.NODE_KEY_RULE)
 
-        etree.SubElement(rule, XMLKey.COUNTRY_ORGANIZATION_ID).text = self.organizationId
+        etree.SubElement(rule, XMLKey.COUNTRY_ORGANIZATION_ID).text = self.countryOrganizationId
 
         context = etree.SubElement(rule, XMLKey.NODE_KEY_CONTEXT)
         if self.process != '':
@@ -47,7 +49,7 @@ class RuleModel(BaseModel):
         if self.ownerRole != '':
             etree.SubElement(context, XMLKey.OWNER_RULE).text = self.ownerRole
 
-        etree.SubElement(context, XMLKey.COUNTRY_ORGANIZATION_ID).text = self.organizationId
+        etree.SubElement(context, XMLKey.ORGANIZATION_ID).text = self.organizationId
         etree.SubElement(rule, XMLKey.RULE_TYPE).text = self.ruleType
         etree.SubElement(rule, XMLKey.RULE_KEY).text = self.ruleKey
         etree.SubElement(rule, XMLKey.RULE_VALUE).text = self.ruleValue
@@ -57,7 +59,7 @@ class RuleModel(BaseModel):
         etree.SubElement(rule, XMLKey.CREATED_BY).text = 'mid_Member.Manager'
         etree.SubElement(rule, XMLKey.LAST_UPDATE_DBY).text = 'mid_Member.Manager'
 
-        logger.info_log("RuleModel", etree.tostring(rule, pretty_print=True))
+        # logger.info_log("RuleModel", etree.tostring(rule, pretty_print=True))
         return rule
 
     def _gen_combined_key(self):

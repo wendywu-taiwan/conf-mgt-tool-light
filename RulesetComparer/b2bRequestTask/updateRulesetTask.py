@@ -22,6 +22,7 @@ class UpdateRulesetTask(BaseRequestTask):
         self.request_data()
 
     def execute(self):
+        info_log(self.LOG_CLASS, '======== update ruleset ========')
         target_only_count = self.diff_json["target_env_only_rules"]["count"]
         source_only_rules = self.diff_json["source_env_only_rules"]["rules_array"]
         normal_rules = self.diff_json["normal_rules"]["rules_array"]
@@ -41,19 +42,17 @@ class UpdateRulesetTask(BaseRequestTask):
 
         ruleset_xml = build_ruleset_xml(rule_model_list)
 
-        info_log(self.LOG_CLASS, '======== update ruleset ========')
-        info_log(self.LOG_CLASS, "environment = %s , country = %s" % (self.environment, self.country))
-
         request_params = [{"name": "loginId", "value": self.auth_data.get_account()},
                           {"name": "password", "value": self.auth_data.get_password()},
                           {"name": "rulesetName", "value": self.ruleset_name}]
 
-        response = self.client.service.createRuleset(request_params,
+        response = self.client.service.importRuleset(request_params,
                                                      payload=ruleset_xml.replace('BRERuleListType', 'BRERuleList'))
         if response.returnCode != 0:
             info_log(self.LOG_CLASS, "update ruleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "update ruleset error message :" + str(response.message))
         self.b2b_response_data = response
+        info_log(self.LOG_CLASS, '======== update ruleset success ========')
 
     def parse_result_data(self):
         builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE, self.b2b_response_data)
@@ -65,6 +64,8 @@ class UpdateRulesetTask(BaseRequestTask):
         for rule_key_obj in rule_key_array:
             rule_key = rule_key_obj["combined_key"]
             rule_model = rule_model_map.get(rule_key)
+            if rule_model is None:
+                print("rule model is none :"+rule_key)
             rule_model_list.append(rule_model)
 
         return rule_model_list

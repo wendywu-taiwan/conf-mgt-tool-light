@@ -156,7 +156,9 @@ class CompareRuleListTask:
 
     def parse_add_list_rule(self, add_list):
         for rule_name in add_list:
-            rule_module = self.load_rule_module(self.comparedEnv, rule_name)
+            rule_module = rulesetUtil.load_rule_module(rule_name, self.country.name, self.comparedEnv.name,
+                                                       self.compare_hash_key)
+            # self.load_rule_module(self.comparedEnv, rule_name)
             if rule_module is None:
                 continue
 
@@ -168,7 +170,10 @@ class CompareRuleListTask:
 
     def parse_remove_list_rule(self, remove_list):
         for rule_name in remove_list:
-            rule_module = self.load_rule_module(self.baseEnv, rule_name)
+            rule_module = rulesetUtil.load_rule_module(rule_name, self.country.name, self.baseEnv.name,
+                                                       self.compare_hash_key)
+
+            # rule_module = self.load_rule_module(self.baseEnv, rule_name)
             if rule_module is None:
                 continue
 
@@ -180,12 +185,17 @@ class CompareRuleListTask:
 
     def parse_union_list_rule(self, union_list):
         for rule_name in union_list:
-            base_rules_module = self.load_rule_module(self.baseEnv, rule_name)
-            compared_rules_module = self.load_rule_module(self.comparedEnv, rule_name)
+            base_rules_module = rulesetUtil.load_rule_module(rule_name, self.country.name, self.baseEnv.name,
+                                                             self.compare_hash_key)
+            compared_rules_module = rulesetUtil.load_rule_module(rule_name, self.country.name, self.comparedEnv.name,
+                                                                 self.compare_hash_key)
+
+            # base_rules_module = self.load_rule_module(self.baseEnv, rule_name)
+            # compared_rules_module = self.load_rule_module(self.comparedEnv, rule_name)
             if base_rules_module is None or compared_rules_module is None:
                 continue
 
-            comparer = RulesetComparer(base_rules_module, compared_rules_module)
+            comparer = RulesetComparer(rule_name, base_rules_module, compared_rules_module, is_module=True)
             rule_list_item_parser = RuleListItemBuilder(base_rules_module, self.compare_hash_key)
             if comparer.no_difference():
                 rule_list_item_parser.set_normal_rule()
@@ -217,3 +227,6 @@ class CompareRuleListTask:
         except Exception:
             error_log(traceback.format_exc())
             return None
+
+    def get_report(self):
+        return fileManager.load_compare_result_file(self.compare_hash_key)

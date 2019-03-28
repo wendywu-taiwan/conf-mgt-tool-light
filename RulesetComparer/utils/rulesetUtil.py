@@ -1,8 +1,11 @@
+import traceback
 from lxml import etree
+from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils.fileManager import load_file
 from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_git_path, get_rule_set_full_file_name
 from RulesetComparer.properties import config
+from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as RulesetParser
 
 
 def load_rule_file_with_id(env_id, country_id, compare_key, rule_set_name):
@@ -35,4 +38,37 @@ def build_ruleset_xml(rule_model_list):
     ruleset_file_xml = etree.Element('BRERuleListType')
     for rule in rule_model_list:
         ruleset_file_xml.append(rule.to_xml())
-    return etree.tostring(ruleset_file_xml, pretty_print=True)
+
+    xml_string = xml_to_string(ruleset_file_xml)
+    print("build_ruleset_xml:" + xml_string)
+
+    return xml_string
+
+
+def load_rule_module(rule_name, country_name, env_name, compare_hash_key):
+    try:
+        if env_name == config.GIT.get("environment_name"):
+            rule_set_file = load_git_file_with_name(country_name, rule_name)
+        else:
+            rule_set_file = load_rule_file_with_name(env_name,
+                                                     country_name,
+                                                     compare_hash_key,
+                                                     rule_name)
+        rules_module = RulesetParser(rule_set_file, rule_name)
+        return rules_module
+    except Exception as e:
+        error_log(traceback.format_exc())
+        return None
+
+
+def load_rule_module_from_file(ruleset_name, ruleset_file):
+    try:
+        ruleset_module = RulesetParser(ruleset_file, ruleset_name)
+        return ruleset_module
+    except Exception as e:
+        error_log(traceback.format_exc())
+        return None
+
+
+def xml_to_string(xml):
+    return etree.tostring(xml, encoding="unicode", pretty_print=True)

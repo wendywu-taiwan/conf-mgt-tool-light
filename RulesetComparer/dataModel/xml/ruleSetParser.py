@@ -15,7 +15,7 @@ class RulesModel(BaseModel):
         self.parse_data_catch_error()
 
     def parse_data(self):
-        root = self.parse_xml_from_file()
+        root = self.parse_xml_from_string()
 
         if len(self.nodes_data(root, saxif_tag=True, key=XMLKey.NODE_KEY_RULE)) > 0:
             has_saxif_tag = True

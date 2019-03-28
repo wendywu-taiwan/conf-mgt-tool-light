@@ -27,11 +27,12 @@ class ClearRulesetTask(BaseRequestTask):
                           {"name": "password", "value": self.auth_data.get_password()},
                           {"name": "rulesetName", "value": self.ruleset_name}]
 
-        response = self.client.service.createRuleset(request_params)
+        response = self.client.service.clearRuleset(request_params)
         if response.returnCode != 0:
             info_log(self.LOG_CLASS, "clear ruleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "clear ruleset error message :" + str(response.message))
         self.b2b_response_data = response
+        info_log(self.LOG_CLASS, '======== clear ruleset success ========')
 
     def parse_result_data(self):
         builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_CLEAR, self.b2b_response_data)
