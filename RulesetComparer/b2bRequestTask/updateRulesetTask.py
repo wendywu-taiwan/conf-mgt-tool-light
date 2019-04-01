@@ -1,5 +1,5 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
-from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel
+from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
@@ -22,13 +22,13 @@ class UpdateRulesetTask(BaseRequestTask):
         self.request_data()
 
     def execute(self):
-        info_log(self.LOG_CLASS, '======== update ruleset ========')
+        info_log(self.LOG_CLASS, '======== update ruleset %s ========' % self.ruleset_name)
         target_only_count = self.diff_json["target_env_only_rules"]["count"]
         source_only_rules = self.diff_json["source_env_only_rules"]["rules_array"]
         normal_rules = self.diff_json["normal_rules"]["rules_array"]
         different_rules = self.diff_json["different_rules"]["rules_array"]
-        source_ruleset_map = RulesModel(self.source_xml, self.ruleset_name).rulesMap
-        target_ruleset_map = RulesModel(self.target_xml, self.ruleset_name).rulesMap
+        source_ruleset_map = RulesetObject(self.source_xml, self.ruleset_name).rulesMap
+        target_ruleset_map = RulesetObject(self.target_xml, self.ruleset_name).rulesMap
         rule_model_list = list()
 
         if target_only_count != 0:
@@ -65,7 +65,7 @@ class UpdateRulesetTask(BaseRequestTask):
             rule_key = rule_key_obj["combined_key"]
             rule_model = rule_model_map.get(rule_key)
             if rule_model is None:
-                print("rule model is none :"+rule_key)
+                print("rule model is none :" + rule_key)
             rule_model_list.append(rule_model)
 
         return rule_model_list

@@ -29,23 +29,11 @@ class RulesetSyncPreDataBuilder(BaseBuilder):
         self.result_dict["target_environment"] = self.target_environment
         self.result_dict["compare_time"] = self.ruleset_list_json[key.COMPARE_RESULT_DATE_TIME]
         self.result_dict["compare_hash_key"] = self.ruleset_list_json[key.COMPARE_RULE_COMPARE_HASH_KEY]
-        self.result_dict["add_rulesets"] = self.__generate_add_ruleset_list__
-        self.result_dict["delete_rulesets"] = self.__generate_delete_ruleset_list__
-        self.result_dict["update_rulesets"] = self.__generate_update_ruleset_list__
+        self.result_dict["source_env_only_rulesets"] = self.__generate_source_only_ruleset_list__()
+        self.result_dict["target_env_only_rulesets"] = self.__generate_target_only_ruleset_list__()
+        self.result_dict["different_rulesets"] = self.__generate_different_ruleset_list__()
 
-    def __generate_add_ruleset_list__(self):
-        rulesets_list = {}
-        rulesets_array = []
-
-        for ruleset in self.ruleset_list_json[key.COMPARE_RESULT_ADD_LIST]:
-            ruleset_obj = {"name": ruleset["name"]}
-            rulesets_array.append(ruleset_obj)
-
-        rulesets_list["count"] = self.ruleset_list_json[key.COMPARE_RESULT_ADD_FILE_COUNT]
-        rulesets_list["rulesets_array"] = rulesets_array
-        return rulesets_list
-
-    def __generate_delete_ruleset_list__(self):
+    def __generate_source_only_ruleset_list__(self):
         rulesets_list = {}
         rulesets_array = []
 
@@ -57,7 +45,19 @@ class RulesetSyncPreDataBuilder(BaseBuilder):
         rulesets_list["rulesets_array"] = rulesets_array
         return rulesets_list
 
-    def __generate_update_ruleset_list__(self):
+    def __generate_target_only_ruleset_list__(self):
+        rulesets_list = {}
+        rulesets_array = []
+
+        for ruleset in self.ruleset_list_json[key.COMPARE_RESULT_ADD_LIST]:
+            ruleset_obj = {"name": ruleset["name"]}
+            rulesets_array.append(ruleset_obj)
+
+        rulesets_list["count"] = self.ruleset_list_json[key.COMPARE_RESULT_ADD_FILE_COUNT]
+        rulesets_list["rulesets_array"] = rulesets_array
+        return rulesets_list
+
+    def __generate_different_ruleset_list__(self):
         rulesets_list = {}
         rulesets_array = []
 
@@ -69,9 +69,9 @@ class RulesetSyncPreDataBuilder(BaseBuilder):
 
             ruleset_obj["name"] = ruleset_name
             ruleset_obj["source_env_only_rules"] = self.__generate_rules_obj__(
-                ruleset[key.RULE_LIST_ITEM_ADD_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
+                ruleset[key.RULE_LIST_ITEM_ADD_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
             ruleset_obj["target_env_only_rules"] = self.__generate_rules_obj__(
-                ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
+                ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
             ruleset_obj["normal_rules"] = self.__generate_rules_obj__(
                 0, ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL])
             ruleset_obj["different_rules"] = self.__generate_rules_obj__(

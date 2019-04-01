@@ -5,7 +5,7 @@ from RulesetComparer.properties import xmlKey as XMLKey
 
 
 # this is for handling ruleset data, a ruleset file contains many rules
-class RulesModel(BaseModel):
+class RulesetObject(BaseModel):
     def __init__(self, xml, rule_name):
         BaseModel.__init__(self, xml)
         self.root = None

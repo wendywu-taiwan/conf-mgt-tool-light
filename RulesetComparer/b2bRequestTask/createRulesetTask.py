@@ -21,7 +21,7 @@ class CreateRulesetTask(BaseRequestTask):
         super().request_data()
 
     def execute(self):
-        info_log(self.LOG_CLASS, '======== create ruleset  ========')
+        info_log(self.LOG_CLASS, '======== create ruleset %s ========' % self.ruleset_name)
         info_log(self.LOG_CLASS, "environment = %s , country = %s" % (self.environment, self.country))
 
         request_params = [{"name": "loginId", "value": self.auth_data.get_account()},

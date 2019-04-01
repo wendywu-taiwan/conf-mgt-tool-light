@@ -1,4 +1,5 @@
 from django.conf import settings
+from RulesetComparer.properties.dataKey import *
 
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
@@ -66,10 +67,15 @@ MAIL_CONTENT_TYPE = {
     "ruleset_name_list": "ruleset_name_list"
 }
 
+RULESET_SYNC_UP_ACTION = [RULESET_CREATE, RULESET_UPDATE, RULESET_DELETE]
+
 
 def get_rule_set_path(environment, country, compare_key):
     return FILE_PATH.get("rule_set_environment") % (compare_key, environment, country)
 
+
+def get_ruleset_git_root_path():
+    return get_rule_set_git_path("")
 
 def get_rule_set_git_path(country):
     return FILE_PATH.get("rule_set_git") % country
