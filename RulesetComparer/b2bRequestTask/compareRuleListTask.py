@@ -106,6 +106,10 @@ class CompareRuleListTask:
         base_env_data = EnvironmentSerializer(Environment.objects.get(id=self.baseEnv.id)).data
         compare_env_data = EnvironmentSerializer(Environment.objects.get(id=self.comparedEnv.id)).data
         country_data = CountrySerializer(Country.objects.get(id=self.country.id)).data
+        if self.add_rules_count == 0 and self.remove_rules_count == 0 and self.modify_rules_count == 0:
+            has_changes = False
+        else:
+            has_changes = True
 
         compare_list_data = {
             key.COMPARE_RULE_COMPARE_HASH_KEY: self.compare_hash_key,
@@ -119,7 +123,8 @@ class CompareRuleListTask:
             key.COMPARE_RESULT_MODIFY_FILE_COUNT: len(self.modify_rule_list),
             key.COMPARE_RESULT_ADD_RULE_COUNT: self.add_rules_count,
             key.COMPARE_RESULT_REMOVE_RULE_COUNT: self.remove_rules_count,
-            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.modify_rules_count
+            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.modify_rules_count,
+            key.COMPARE_RESULT_HAS_CHANGES: has_changes
         }
 
         compare_result_data = {

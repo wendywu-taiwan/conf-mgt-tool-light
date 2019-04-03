@@ -114,18 +114,23 @@
     <div class="env_text"> {{ developer_environment.name }}</div>
 </div>
 <br>
-<div class="content_text">there are summary information in following table,</div>
-<div class="content_text">you can check out the attached report for more details,</div>
-<div class="content_text">Thank you.</div>
-<br>
-<br>
-{% if ruleset_list.show == "true" %}
-    {% include 'ruleset_compare_reminder_list.html' %}
+{% if has_changes == True %}
+    <div class="content_text">there are summary information in following table,</div>
+    <div class="content_text">you can check out the attached report for more details,</div>
+    <div class="content_text">Thank you.</div>
     <br>
     <br>
-{% endif %}
-{% if diff_table.show == "true" %}
-    {% include 'ruleset_compare_summary_table.html' %}
+    {% if ruleset_list.show == "true" %}
+        {% include 'ruleset_compare_reminder_list.html' %}
+        <br>
+        <br>
+    {% endif %}
+    {% if diff_table.show == "true" %}
+        {% include 'ruleset_compare_summary_table.html' %}
+    {% endif %}
+{% else %}
+    <div class="content_text">there are no differences between two environments today,</div>
+    <div class="content_text">Thank you.</div>
 {% endif %}
 </body>
 </html>

@@ -57,6 +57,7 @@ class CompareReportInfoBuilder(BaseBuilder):
         self.result_dict["compare_hash_key"] = self.ruleset_list_json[key.COMPARE_RULE_COMPARE_HASH_KEY]
         self.result_dict["diff_table"] = self.__generate_diff_table__()
         self.result_dict["ruleset_list"] = self.__generate_ruleset_list__()
+        self.result_dict["has_changes"] = self.ruleset_list_json[key.COMPARE_RESULT_HAS_CHANGES]
 
     def __generate_diff_table__(self):
         diff_table = {"different_rulesets_count": self.ruleset_list_json[key.COMPARE_RESULT_MODIFY_FILE_COUNT],

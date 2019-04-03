@@ -1,4 +1,5 @@
 import traceback
+from RulesetComparer.properties.dataKey import COMPARE_RESULT_HAS_CHANGES
 from RulesetComparer.utils.logger import *
 from RulesetComparer.services import services
 from RulesetComparer.utils import fileManager, timeUtil
@@ -50,20 +51,22 @@ class DailyCompareReportTask:
 
                 self.mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
 
-                # add attachment
-                file_path = fileManager.get_compare_result_full_file_name("_html", task.compare_hash_key)
-                file_name = current_time + "_" + base_env.name + "_" + compare_env.name + "_" + country.name + "_" + "compare_report.html"
-                application = "text"
-                self.mail_sender.add_attachment(file_path, file_name, application)
+                # generate subject
+                subject = config.SEND_COMPARE_RESULT_MAIL.get(
+                    "title") + " for " + country.name + " - " + base_env.name + " <> " + compare_env.name
 
-                # generate compare info json for mail content use
+                # generate mail content
                 result_data = fileManager.load_compare_result_file(task.compare_hash_key)
                 info_builder = CompareReportInfoBuilder(result_data, self.mail_content_type_list)
                 content_json = info_builder.get_data()
                 html_content = render_to_string('compare_info_mail_content.html', content_json)
 
-                subject = config.SEND_COMPARE_RESULT_MAIL.get(
-                    "title") + " for " + country.name + " - " + base_env.name + " <> " + compare_env.name
+                if content_json[COMPARE_RESULT_HAS_CHANGES]:
+                    # add attachment
+                    file_path = fileManager.get_compare_result_full_file_name("_html", task.compare_hash_key)
+                    file_name = current_time + "_" + base_env.name + "_" + compare_env.name + "_" + country.name + "_" + "compare_report.html"
+                    application = "text"
+                    self.mail_sender.add_attachment(file_path, file_name, application)
 
                 self.mail_sender.set_receiver(self.mail_list)
                 self.mail_sender.compose_msg(subject, None, html_content)
