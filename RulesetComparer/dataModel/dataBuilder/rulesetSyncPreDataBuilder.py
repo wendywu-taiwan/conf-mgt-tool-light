@@ -68,14 +68,17 @@ class RulesetSyncPreDataBuilder(BaseBuilder):
             ruleset_diff_obj = self.ruleset_diff_json[ruleset_name]
 
             ruleset_obj["name"] = ruleset_name
-            ruleset_obj["source_env_only_rules"] = self.__generate_rules_obj__(
-                ruleset[key.RULE_LIST_ITEM_ADD_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
-            ruleset_obj["target_env_only_rules"] = self.__generate_rules_obj__(
-                ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
-            ruleset_obj["normal_rules"] = self.__generate_rules_obj__(
-                0, ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL])
-            ruleset_obj["different_rules"] = self.__generate_rules_obj__(
-                ruleset[key.RULE_LIST_ITEM_MODIFY_COUNT], ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY])
+            ruleset_obj["source_env_only_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_REMOVE_COUNT],
+                                                                               ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
+
+            ruleset_obj["target_env_only_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_ADD_COUNT],
+                                                                               ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_ADD])
+
+            ruleset_obj["normal_rules"] = self.__generate_rules_obj__(0,
+                                                                      ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL])
+
+            ruleset_obj["different_rules"] = self.__generate_rules_obj__(ruleset[key.RULE_LIST_ITEM_MODIFY_COUNT],
+                                                                         ruleset_diff_obj[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY])
             rulesets_array.append(ruleset_obj)
 
         rulesets_list["count"] = self.ruleset_list_json[key.COMPARE_RESULT_MODIFY_FILE_COUNT]
