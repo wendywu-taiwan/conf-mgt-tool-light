@@ -51,6 +51,7 @@ SEND_COMPARE_RESULT_MAIL = {
     "sender": "no-reply@audatex.com",
     "receivers": ["wendy.wu@audatex.com", "engle6030@gmail.com"],
     "title": "Ruleset Compare Report",
+    "ruleset_sync_title": "Ruleset Sync Up Report",
     "content": "this is the compare result",
 }
 
@@ -76,6 +77,7 @@ def get_rule_set_path(environment, country, compare_key):
 
 def get_ruleset_git_root_path():
     return get_rule_set_git_path("")
+
 
 def get_rule_set_git_path(country):
     return FILE_PATH.get("rule_set_git") % country

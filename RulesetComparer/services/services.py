@@ -20,7 +20,7 @@ from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadR
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
-from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
+from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
 from RulesetComparer.properties import dataKey
 from django.template.loader import get_template
@@ -44,19 +44,16 @@ def generate_compare_report(compare_key):
 
 
 def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set_name):
-    base_rule = rulesetUtil.load_rule_file_with_id(base_env_id, country_id,
-                                                   compare_key, rule_set_name)
-    compare_rule = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
+    base_ruleset = rulesetUtil.load_rule_file_with_id(base_env_id, country_id,
                                                       compare_key, rule_set_name)
+    compare_ruleset = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
+                                                         compare_key, rule_set_name)
 
-    if base_rule is None or compare_rule is None:
+    if base_ruleset is None or compare_ruleset is None:
         error_log("diff_rule_set , ruleset file not found")
         return None
 
-    base_module = ParseRuleModel(base_rule, rule_set_name)
-    compare_module = ParseRuleModel(compare_rule, rule_set_name)
-
-    comparer = RulesetComparer(base_module, compare_module)
+    comparer = RulesetComparer(rule_set_name, base_ruleset, compare_ruleset, is_module=False)
     data = comparer.get_diff_data()
     return data
 
@@ -85,7 +82,7 @@ def download_rulesets(json_data):
 
         if parser.environment.name == GIT.get("environment_name"):
             # update git to latest code
-            manager = GitManager(get_rule_set_git_path(""), settings.GIT_BRANCH_DEVELOP)
+            manager = GitManager(get_ruleset_git_root_path(), settings.GIT_BRANCH_DEVELOP)
             manager.pull()
             resource_path = get_rule_set_git_path(parser.country.name)
         else:
