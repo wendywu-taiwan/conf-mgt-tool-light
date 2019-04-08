@@ -209,7 +209,7 @@
           "CN"
         ],
         "environment_name": "CT",
-        "b2b_client_url": "https://www-ct.audatex.sg/b2b/services/"
+        "b2b_client_url": "https://apps-int1.audatex.cn/b2b/services/"
       },
       {
         "country_name": [
@@ -315,7 +315,7 @@
         "update_time": "2019-03-12 10:30:00"
       },
       "b2b_server": {
-        "update_time": "2019-03-12 10:30:00"
+        "update_time": "2019-04-08 10:30:00"
       }
     }
   }
