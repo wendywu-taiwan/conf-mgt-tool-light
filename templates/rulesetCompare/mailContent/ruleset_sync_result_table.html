@@ -1,0 +1,8 @@
+<tr>
+    <td class="td_title">{{ data.ruleset_name }}</td>
+    {% if data.status == "success" %}
+        <td class="td_content">{{ data.status }}</td>
+    {% else %}
+        <td class="td_content_highlight">{{ data.status }}</td>
+    {% endif %}
+</tr>
