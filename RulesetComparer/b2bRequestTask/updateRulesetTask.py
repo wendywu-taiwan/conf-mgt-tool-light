@@ -23,7 +23,6 @@ class UpdateRulesetTask(BaseRequestTask):
 
     def execute(self):
         info_log(self.LOG_CLASS, '======== update ruleset %s ========' % self.ruleset_name)
-        target_only_count = self.diff_json["target_env_only_rules"]["count"]
         source_only_rules = self.diff_json["source_env_only_rules"]["rules_array"]
         normal_rules = self.diff_json["normal_rules"]["rules_array"]
         different_rules = self.diff_json["different_rules"]["rules_array"]
@@ -31,10 +30,8 @@ class UpdateRulesetTask(BaseRequestTask):
         target_ruleset_map = RulesetObject(self.target_xml, self.ruleset_name).rulesMap
         rule_model_list = list()
 
-        if target_only_count != 0:
-            # add normal rules from target env
-            rule_model_list.extend(self.__get_rule_model_list__(normal_rules, target_ruleset_map))
-
+        # add normal rules from target env
+        rule_model_list.extend(self.__get_rule_model_list__(normal_rules, target_ruleset_map))
         # add source only rules from source env
         rule_model_list.extend(self.__get_rule_model_list__(source_only_rules, source_ruleset_map))
         # add different rules from source env
