@@ -11,7 +11,7 @@ from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services
+from RulesetComparer.services import services, rulesetSyncUpService
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
@@ -387,6 +387,34 @@ def delete_scheduler(request):
         services.delete_scheduler(task_id)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def sync_up_ruleset(request):
+    try:
+        request_json = get_post_request_json(request)
+        rulesetSyncUpService.sync_up_rulesets_test(request_json)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def create_ruleset(request):
+    try:
+        rulesetSyncUpService.create_ruleset_test()
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_ruleset(request):
+    try:
+        rulesetSyncUpService.update_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

@@ -119,3 +119,9 @@ RULESET_MAIL_CONTENT_TYPE = "mail_content_types"
 RULESET_COUNT_TABLE = "ruleset_count_table"
 RULESET_NAME_LIST = "ruleset_name_list"
 
+# RULESET SYNC UP ACTION
+RULESET_CREATE = "create"
+RULESET_UPDATE = "update"
+RULESET_DELETE = "delete"
+RULESET_CLEAR = "clear"
+

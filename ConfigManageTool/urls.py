@@ -18,6 +18,12 @@ from django.urls import path
 from RulesetComparer import views
 from django.conf.urls import url, include
 
+ruleset_b2b_pattern = [
+    path('create/', views.create_ruleset, name="b2b-create-ruleset"),
+    path('update/', views.update_ruleset, name="b2b-update-ruleset"),
+    path('sync/', views.sync_up_ruleset, name="b2b-syncup-ruleset")
+]
+
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
     path('packed/', views.download_rulesets, name="packed-ruleset-download"),
@@ -59,6 +65,7 @@ ruleset_scheduler_pattern = [
 ]
 
 urlpatterns = [
+    path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
     path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),
