@@ -14,10 +14,10 @@ class AuthDataParser:
             file_path = settings.BASE_DIR + config.get_file_path("auth_data")
             auth_data = fileManager.load_json_file(file_path)
             environment_obj = auth_data[environment]
-            if self.ROOT_KEY in environment_obj:
-                self.data = environment_obj[self.ROOT_KEY]
-            else:
+            if environment_obj.get(country) is not None:
                 self.data = environment_obj[country]
+            else:
+                self.data = environment_obj[self.ROOT_KEY]
         except Exception as e:
             raise e
 
