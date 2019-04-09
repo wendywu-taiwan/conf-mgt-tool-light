@@ -125,3 +125,7 @@ RULESET_UPDATE = "update"
 RULESET_DELETE = "delete"
 RULESET_CLEAR = "clear"
 
+# RulesetB2BActionResultBuilder
+STATUS_SUCCESS = "success"
+STATUS_FAILED = "failed"
+

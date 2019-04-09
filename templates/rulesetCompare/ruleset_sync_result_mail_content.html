@@ -114,7 +114,7 @@
 <div class="content_text">Thank you.</div>
 <br>
 <br>
-<div class="list_title">Rulesets Sync Summary For {{ target_environment.name }}</div>
+<div class="list_title">Rulesets Sync Summary For {{ target_environment.name }} Environment</div>
 <table style=" border-collapse: collapse; border: 1px solid black;">
     <tr>
         <td class="header">Added Rulesets</td>
@@ -129,41 +129,38 @@
 </table>
 <br>
 <br>
-{% if create_rulesets|length > 0 %}
-    <div class="list_title">Created Rulesets</div>
+{% if failed_rulesets|length > 0 %}
+    <div class="list_title">Sync Up Failed Rulesets</div>
     <table style=" border-collapse: collapse; border: 1px solid black;">
         <tr>
             <td class="header">Ruleset</td>
-            <td class="header">Status</td>
+            <td class="header">Action</td>
+            <td class="header">Exception</td>
+        </tr>
+        {% for data in failed_rulesets %}
+            <tr>
+                <td class="td_title">{{ data.ruleset_name }}</td>
+                <td class="td_content">{{ data.action }}</td>
+                <td class="td_content_highlight">{{ data.exception }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+{% endif %}
+{% if create_rulesets|length > 0 or update_rulesets|length > 0 %}
+    <div class="list_title">Sync Up Success Rulesets</div>
+    <table style=" border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td class="header">Ruleset</td>
+            <td class="header">Action</td>
         </tr>
         {% for data in create_rulesets %}
             {% include 'ruleset_sync_result_table.html' %}
         {% endfor %}
-    </table>
-    <br>
-    <br>
-{% endif %}
-{% if update_rulesets|length > 0 %}
-    <div class="list_title">Updated Rulesets</div>
-    <table style=" border-collapse: collapse; border: 1px solid black;">
-        <tr>
-            <td class="header">Ruleset</td>
-            <td class="header">Status</td>
-        </tr>
         {% for data in update_rulesets %}
             {% include 'ruleset_sync_result_table.html' %}
         {% endfor %}
-    </table>
-    <br>
-    <br>
-{% endif %}
-{% if deleted_rulesets|length > 0 %}
-    <div class="list_title">Deleted Rulesets</div>
-    <table style=" border-collapse: collapse; border: 1px solid black;">
-        <tr>
-            <td class="header">Ruleset</td>
-            <td class="header">Status</td>
-        </tr>
         {% for data in deleted_rulesets %}
             {% include 'ruleset_sync_result_table.html' %}
         {% endfor %}
@@ -171,5 +168,33 @@
     <br>
     <br>
 {% endif %}
+{#{% if update_rulesets|length > 0 %}#}
+{#    <div class="list_title">Updated Rulesets</div>#}
+{#    <table style=" border-collapse: collapse; border: 1px solid black;">#}
+{#        <tr>#}
+{#            <td class="header">Ruleset</td>#}
+{#            <td class="header">Status</td>#}
+{#        </tr>#}
+{#        {% for data in update_rulesets %}#}
+{#            {% include 'ruleset_sync_result_table.html' %}#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#    <br>#}
+{#    <br>#}
+{#{% endif %}#}
+{#{% if deleted_rulesets|length > 0 %}#}
+{#    <div class="list_title">Deleted Rulesets</div>#}
+{#    <table style=" border-collapse: collapse; border: 1px solid black;">#}
+{#        <tr>#}
+{#            <td class="header">Ruleset</td>#}
+{#            <td class="header">Status</td>#}
+{#        </tr>#}
+{#        {% for data in deleted_rulesets %}#}
+{#            {% include 'ruleset_sync_result_table.html' %}#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#    <br>#}
+{#    <br>#}
+{#{% endif %}#}
 </body>
 </html>

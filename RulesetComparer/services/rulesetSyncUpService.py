@@ -12,6 +12,7 @@ from RulesetComparer.dataModel.dataParser.createRulesetSyncSchedulerParser impor
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncPreDataBuilder import RulesetSyncPreDataBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncResultDataBuilder import RulesetSyncResultDataBuilder
 from RulesetComparer.models import RulesetSyncUpScheduler
+from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
 
 
 def create_ruleset_test():
@@ -81,34 +82,39 @@ def update_scheduler(json_data):
 
 
 def sync_up_rulesets(parser, country):
-        compare_report_json = CompareRuleListTask(parser.source_environment_id, parser.target_environment_id,
-                                                  country.id).get_report()
-        sync_up_report_json = RulesetSyncPreDataBuilder(compare_report_json).get_data()
+    compare_report_json = CompareRuleListTask(parser.source_environment_id, parser.target_environment_id,
+                                              country.id).get_report()
+    sync_up_report_json = RulesetSyncPreDataBuilder(compare_report_json).get_data()
 
-        if sync_up_report_json is None:
-            # error handle
-            pass
+    if sync_up_report_json is None:
+        raise Exception("can not generate ruleset sync pre data")
 
-        if parser.backup:
-            backup_rulesets()
+    if parser.backup:
+        backup_rulesets()
 
-        create_rulesets_list = []
-        update_rulesets_list = []
-        delete_rulesets_list = []
+    failed_rulesets_list = []
+    create_rulesets_list = []
+    update_rulesets_list = []
+    delete_rulesets_list = []
 
-        if parser.action.create_ruleset:
-            create_rulesets_list = create_rulesets(country, parser, sync_up_report_json)
+    if parser.action.create_ruleset:
+        result_obj = create_rulesets(country, parser, sync_up_report_json)
+        failed_rulesets_list.extend(result_obj.failed_list)
+        create_rulesets_list.extend(result_obj.result_list)
 
-        if parser.action.update_ruleset:
-            update_rulesets_list = update_rulesets(country, parser, sync_up_report_json)
+    if parser.action.update_ruleset:
+        result_obj = update_rulesets(country, parser, sync_up_report_json)
+        failed_rulesets_list.extend(result_obj.failed_list)
+        update_rulesets_list.extend(result_obj.result_list)
 
-        if parser.action.delete_ruleset:
-            pass
+    if parser.action.delete_ruleset:
+        pass
 
-        builder = RulesetSyncResultDataBuilder(sync_up_report_json, create_rulesets_list,
-                                               update_rulesets_list, delete_rulesets_list)
+    builder = RulesetSyncResultDataBuilder(sync_up_report_json, failed_rulesets_list,
+                                           create_rulesets_list, update_rulesets_list,
+                                           delete_rulesets_list)
 
-        return builder.get_data()
+    return builder.get_data()
 
 
 def backup_rulesets():
@@ -118,9 +124,10 @@ def backup_rulesets():
 def create_rulesets(country, parser, sync_up_report_json):
     rulesets = sync_up_report_json["source_env_only_rulesets"]["rulesets_array"]
     result_list = []
+    failed_list = []
 
     if len(rulesets) == 0:
-        return
+        return RulesetsSyncResultObject(result_list, failed_list)
 
     for ruleset_obj in rulesets:
         ruleset_name = ruleset_obj["name"]
@@ -128,16 +135,16 @@ def create_rulesets(country, parser, sync_up_report_json):
                                              country.name, sync_up_report_json[COMPARE_RULE_COMPARE_HASH_KEY])
 
         result_obj = CreateRulesetTask(parser.target_environment, country, ruleset_name, ruleset_xml).get_result_data()
-        result_list.append(result_obj)
-    return result_list
+        set_result_object(result_obj, result_list, failed_list)
+    return RulesetsSyncResultObject(result_list, failed_list)
 
 
 def update_rulesets(country, parser, sync_up_report_json):
     rulesets = sync_up_report_json["different_rulesets"]["rulesets_array"]
     result_list = []
-
+    failed_list = []
     if len(rulesets) == 0:
-        return
+        return RulesetsSyncResultObject(result_list, failed_list)
 
     for ruleset_obj in rulesets:
         ruleset_name = ruleset_obj["name"]
@@ -158,12 +165,19 @@ def update_rulesets(country, parser, sync_up_report_json):
 
         result_obj = UpdateRulesetTask(parser.target_environment, country, ruleset_name, source_xml, target_xml,
                                        ruleset_obj).get_result_data()
-        result_list.append(result_obj)
-    return result_list
+        set_result_object(result_obj, result_list, failed_list)
+    return RulesetsSyncResultObject(result_list, failed_list)
 
 
 def delete_rulesets():
     pass
+
+
+def set_result_object(result_obj, result_list, failed_list):
+    if result_obj.get("status") == STATUS_SUCCESS:
+        result_list.append(result_obj)
+    else:
+        failed_list.append(result_obj)
 
 
 def send_mail(result_data):
@@ -180,3 +194,9 @@ def send_mail(result_data):
     mail_sender.compose_msg(subject, None, html_content)
     mail_sender.send()
     mail_sender.quit()
+
+
+class RulesetsSyncResultObject:
+    def __init__(self, result_list, failed_list):
+        self.result_list = result_list
+        self.failed_list = failed_list

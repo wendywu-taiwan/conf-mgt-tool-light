@@ -1,4 +1,5 @@
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
+from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
 
 
 class RulesetB2BActionResultBuilder(BaseBuilder):
@@ -22,7 +23,8 @@ class RulesetB2BActionResultBuilder(BaseBuilder):
         self.result_dict["action"] = self.action
 
         if self.b2b_response_data is None or self.b2b_response_data.returnCode != 0:
-            self.result_dict["status"] = "failure"
-            self.result_dict["exception"] = self.b2b_response_data.message
+            b2b_message = self.b2b_response_data.message[0]
+            self.result_dict["status"] = STATUS_FAILED
+            self.result_dict["exception"] = b2b_message.localizedText
         else:
-            self.result_dict["status"] = "success"
+            self.result_dict["status"] = STATUS_SUCCESS
