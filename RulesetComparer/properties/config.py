@@ -11,6 +11,7 @@ FILE_PATH = {
     "server_log": "/RulesetComparer/serverlog",
     "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
     "rule_set_zip_file_path": "RulesetComparer/rulesets/zip",
+    "rule_set_backup_path": "RulesetComparer/rulesets/backup/%s/%s/%s",
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -31,6 +32,7 @@ TIME_FORMAT = {
     "year_month_date_hour_minute_second": '%Y/%m/%d %H:%M:%S',
     "git_time_format": '%Y-%m-%d %H:%M:%S',
     "year_month_date": '%Y/%m/%d',
+    "year_month_date_without_slash": '%Y%m%d',
     "hour_minute_second": '%H:%M:%S'
 }
 
@@ -56,6 +58,7 @@ SEND_COMPARE_RESULT_MAIL = {
 }
 
 DEFAULT_LOG_TYPE = 0
+DEFAULT_MODULE_NAME = "Ruleset"
 
 LOG_TYPE_FILE = {
     0: "info.log",
@@ -71,8 +74,12 @@ MAIL_CONTENT_TYPE = {
 RULESET_SYNC_UP_ACTION = [RULESET_CREATE, RULESET_UPDATE, RULESET_DELETE]
 
 
-def get_rule_set_path(environment, country, compare_key):
-    return FILE_PATH.get("rule_set_environment") % (compare_key, environment, country)
+def get_rule_set_path(env_name, country_name, compare_key):
+    return FILE_PATH.get("rule_set_environment") % (compare_key, env_name, country_name)
+
+
+def get_ruleset_backup_path(environment, country, date):
+    return FILE_PATH.get("rule_set_backup_path") % (environment, country, date)
 
 
 def get_ruleset_git_root_path():
@@ -87,8 +94,8 @@ def get_file_path(path_key):
     return FILE_PATH.get(path_key)
 
 
-def get_file_name(file_key, compare_key):
-    return FILE_NAME.get(file_key) % compare_key
+def get_file_name(suffix, file_name):
+    return FILE_NAME.get(suffix) % file_name
 
 
 def get_full_file_name(path_key, file_key, compare_key):

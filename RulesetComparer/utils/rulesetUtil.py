@@ -1,8 +1,9 @@
 import traceback
 from lxml import etree
+from shutil import copyfile
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Environment, Country
-from RulesetComparer.utils.fileManager import load_file
+from RulesetComparer.utils.fileManager import load_file, create_folder
 from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_git_path, get_rule_set_full_file_name
 from RulesetComparer.properties import config
 from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
@@ -70,3 +71,18 @@ def load_rule_module_from_file(ruleset_name, ruleset_file):
 
 def xml_to_string(xml):
     return etree.tostring(xml, encoding="unicode", pretty_print=True)
+
+
+def copy_rulesets(ruleset_name_list, source_folder_path, target_folder_path):
+    create_folder(target_folder_path)
+    for ruleset_name in ruleset_name_list:
+        source_file_path = source_folder_path + "/" + ruleset_name
+        target_file_path = target_folder_path + "/" + ruleset_name
+        copyfile(source_file_path, target_file_path)
+
+
+def copy_ruleset(ruleset_name, source_folder_path, target_folder_path):
+    create_folder(target_folder_path)
+    source_file_path = source_folder_path + "/" + ruleset_name
+    target_file_path = target_folder_path + "/" + ruleset_name
+    copyfile(source_file_path, target_file_path)

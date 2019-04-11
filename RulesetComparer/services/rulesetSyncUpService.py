@@ -90,7 +90,7 @@ def sync_up_rulesets(parser, country):
         raise Exception("can not generate ruleset sync pre data")
 
     if parser.backup:
-        backup_rulesets()
+        backup_rulesets(sync_up_report_json)
 
     failed_rulesets_list = []
     create_rulesets_list = []
@@ -117,8 +117,27 @@ def sync_up_rulesets(parser, country):
     return builder.get_data()
 
 
-def backup_rulesets():
-    pass
+def backup_rulesets(sync_up_pre_json):
+    target_env_name = sync_up_pre_json[KEY_TARGET_ENV][KEY_NAME]
+    country_name = sync_up_pre_json[KEY_COUNTRY][KEY_NAME]
+    compare_key = sync_up_pre_json[KEY_COMPARE_HASH_KEY]
+    target_env_only_rulesets = sync_up_pre_json[KEY_TARGET_ENV_ONLY_RULESETS][KEY_RULESETS_ARRAY]
+    different_rulesets = sync_up_pre_json[KEY_DIFFERENT_RULESETS][KEY_RULESETS_ARRAY]
+    backup_date = get_format_current_time(config.TIME_FORMAT.get("year_month_date_without_slash"))
+
+    copy_from_rulesets_folder_path = get_rule_set_path(target_env_name, country_name, compare_key)
+    copy_to_rulesets_folder_path = get_ruleset_backup_path(target_env_name, country_name, backup_date)
+
+    info_log("backup_rulesets", "copy_from_rulesets_folder_path : " + copy_from_rulesets_folder_path)
+    info_log("backup_rulesets", "copy_to_rulesets_folder_path : " + copy_to_rulesets_folder_path)
+
+    for ruleset_obj in target_env_only_rulesets:
+        copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]),
+                     copy_from_rulesets_folder_path, copy_to_rulesets_folder_path)
+
+    for ruleset_obj in different_rulesets:
+        copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]),
+                     copy_from_rulesets_folder_path, copy_to_rulesets_folder_path)
 
 
 def create_rulesets(country, parser, sync_up_report_json):
