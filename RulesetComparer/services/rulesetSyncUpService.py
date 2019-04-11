@@ -1,8 +1,11 @@
 from django.template.loader import render_to_string
 
+from RulesetComparer.b2bRequestTask.rulesetsSyncUpTask import RulesetsSyncUpTask
+from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.rulesetUtil import *
+from RulesetComparer.utils.timeUtil import get_format_current_time
 from RulesetComparer.properties.dataKey import *
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.createRulesetTask import CreateRulesetTask
@@ -58,27 +61,44 @@ def sync_up_rulesets_test(json_data):
         send_mail(result_data)
 
 
+def get_schedulers():
+    try:
+        schedulers = RulesetSyncUpScheduler.objects.all()
+        return schedulers
+    except Exception as e:
+        raise e
+
+
 def create_scheduler(json_data):
     try:
         parser = CreateRulesetSyncSchedulerParser(json_data)
-        info_model = RulesetSyncUpScheduler.objects.create_task(parser.source_environment_id,
-                                                                parser.target_environment_id,
-                                                                parser.module_id,
-                                                                parser.country_list,
-                                                                parser.action_list,
-                                                                parser.receiver_list,
-                                                                parser.interval_hour,
-                                                                parser.utc_time,
-                                                                parser.backup)
-        sync_up_rulesets(parser)
-        return info_model
+        sync_scheduler = RulesetSyncUpScheduler.objects.create_task(parser.source_environment_id,
+                                                                    parser.target_environment_id,
+                                                                    parser.module,
+                                                                    parser.country_list,
+                                                                    parser.action_list,
+                                                                    parser.receiver_list,
+                                                                    parser.interval_hour,
+                                                                    parser.utc_time,
+                                                                    parser.backup)
+        parser.set_task_id(sync_scheduler.id)
+        task = RulesetsSyncUpTask(parser)
+        scheduler = CustomJobScheduler(task.listener)
+        job = scheduler.add_hours_job(task.run_task, parser.interval_hour, parser.local_time)
+        task.set_scheduled_job(job)
+        return sync_scheduler
     except Exception as e:
-        error_log(traceback.format_exc())
         raise e
 
 
 def update_scheduler(json_data):
-    pass
+    delete_scheduler(json_data)
+    return create_scheduler(json_data)
+
+
+def delete_scheduler(json_data):
+    task_id = json_data.get(KEY_TASK_ID)
+    RulesetSyncUpScheduler.objects.filter(id=task_id).delete()
 
 
 def sync_up_rulesets(parser, country):

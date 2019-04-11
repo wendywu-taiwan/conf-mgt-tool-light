@@ -1,3 +1,5 @@
+from RulesetComparer.models import Module
+from RulesetComparer.properties.config import DEFAULT_MODULE_NAME
 
 
 def get_single_model(class_model, **kwargs):
@@ -30,3 +32,7 @@ def create_model(class_model, **kwargs):
         return class_model
     except class_model.DoesNotExist:
         return None
+
+
+def get_default_module():
+    return Module.objects.get(name=DEFAULT_MODULE_NAME)

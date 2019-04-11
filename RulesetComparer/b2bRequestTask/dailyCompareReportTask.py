@@ -1,5 +1,4 @@
 import traceback
-from RulesetComparer.properties.dataKey import COMPARE_RESULT_HAS_CHANGES
 from RulesetComparer.utils.logger import *
 from RulesetComparer.services import services
 from RulesetComparer.utils import fileManager, timeUtil

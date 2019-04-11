@@ -1,4 +1,5 @@
 from RulesetComparer.dataModel.dataParser.baseReportSchedulerParser import BaseReportSchedulerParser
+from RulesetComparer.utils.modelManager import get_default_module
 from RulesetComparer.models import Environment
 
 
@@ -7,13 +8,14 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
     def __init__(self, json_data):
         try:
             BaseReportSchedulerParser.__init__(self)
+            self.task_id = json_data.get("task_id")
             self.source_environment_id = json_data.get("source_environment_id")
             self.source_environment = Environment.objects.get(id=self.source_environment_id)
 
             self.target_environment_id = json_data.get("target_environment_id")
             self.target_environment = Environment.objects.get(id=self.target_environment_id)
 
-            self.module_id = json_data.get("module_id")
+            self.module = get_default_module()
             self.country_list = self.parse_country_id_list(json_data.get("country_list"))
             self.receiver_list = json_data.get("receiver_list")
             self.action_list = json_data.get("action_list")
@@ -26,6 +28,9 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:
             raise e
+
+    def set_task_id(self, task_id):
+        self.task_id = task_id
 
     @staticmethod
     def parse_boolean_to_int(boolean):

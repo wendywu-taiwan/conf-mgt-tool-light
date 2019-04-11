@@ -21,7 +21,10 @@ from django.conf.urls import url, include
 ruleset_b2b_pattern = [
     path('create/', views.create_ruleset, name="b2b-create-ruleset"),
     path('update/', views.update_ruleset, name="b2b-update-ruleset"),
-    path('sync/', views.sync_up_ruleset, name="b2b-syncup-ruleset")
+    path('scheduler/sync/all', views.get_rulesets_sync_jobs, name="get-rulesets-sync-job"),
+    path('scheduler/sync/create', views.create_rulesets_sync_job, name="create-rulesets-sync-job"),
+    path('scheduler/sync/update', views.update_rulesets_sync_job, name="update-rulesets-sync-job"),
+    path('scheduler/sync/delete', views.delete_rulesets_sync_job, name="delete-rulesets-sync-job")
 ]
 
 ruleset_download_pattern = [

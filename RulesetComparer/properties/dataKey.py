@@ -35,7 +35,7 @@ RULE_MODIFIED_KEY_BASE_VALUE = 'base_value'
 RULE_MODIFIED_KEY_BASE_EXPRESSION = 'base_expression'
 RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
-RULE_KEY_COMBINED_KEY='combined_key'
+RULE_KEY_COMBINED_KEY = 'combined_key'
 
 # view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
@@ -129,3 +129,15 @@ RULESET_CLEAR = "clear"
 STATUS_SUCCESS = "success"
 STATUS_FAILED = "failed"
 
+# RulesetSyncPreDataBuilder
+KEY_SOURCE_ENV = "source_environment"
+KEY_TARGET_ENV = "target_environment"
+KEY_RULESETS_ARRAY = "rulesets_array"
+KEY_TARGET_ENV_ONLY_RULESETS = "target_env_only_rulesets"
+KEY_DIFFERENT_RULESETS = "different_rulesets"
+
+# common
+KEY_COUNTRY = "country"
+KEY_NAME = "name"
+KEY_COMPARE_HASH_KEY = "compare_hash_key"
+KEY_TASK_ID = "task_id"

@@ -17,6 +17,7 @@ from RulesetComparer.utils.mailSender import MailSender
 
 from RulesetComparer.dataModel.dataBuilder.responseBuilder import ResponseBuilder
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
 from RulesetComparer.dataModel.dataBuilder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
 from RulesetComparer.utils.logger import *
 
@@ -393,10 +394,53 @@ def delete_scheduler(request):
         return JsonResponse(result)
 
 
-def sync_up_ruleset(request):
+def get_rulesets_sync_jobs(request):
+    try:
+        schedulers = rulesetSyncUpService.get_schedulers()
+        data_list = list()
+        for scheduler in schedulers:
+            data_builder = RulesetSyncSchedulerBuilder(scheduler)
+            data_list.append(data_builder.get_data())
+
+        result = ResponseBuilder(data=data_list).get_data()
+        response = JsonResponse(data=result)
+        return response
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        rulesetSyncUpService.sync_up_rulesets_test(request_json)
+        scheduler = rulesetSyncUpService.create_scheduler(request_json)
+        result = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_rulesets_sync_job(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetSyncUpService.update_scheduler(request_json)
+        result = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def delete_rulesets_sync_job(request):
+    try:
+        request_json = get_post_request_json(request)
+        rulesetSyncUpService.delete_scheduler(request_json)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
