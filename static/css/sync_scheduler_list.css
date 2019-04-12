@@ -1,0 +1,151 @@
+.custom_container {
+    padding: 20px;
+    height: 100%;
+}
+
+.custom_container #title_div {
+    background: #eaeef0;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 50px;
+    padding-left: 15px;
+}
+
+#create_task_button_div {
+    margin-left: auto;
+}
+
+.task_environment_width {
+    width: 10%;
+}
+
+#task_title_last_time {
+    width: 17%;
+}
+
+#task_title_next_time {
+    width: 17%;
+}
+
+#task_row_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+#task_id_column_div {
+    text-align: center;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#sync_task_list_container #header_div {
+    margin-bottom: 15px;
+}
+
+#sync_task_list_container #title_div {
+    background: #eaeef0;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 50px;
+    padding-left: 15px;
+}
+
+#sync_task_list_container .title_text {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #849aa4;
+}
+
+#sync_task_list_container .task_id_width {
+    width: 5%;
+}
+
+#sync_task_list_container .country_width {
+    width: 10%;
+}
+
+#sync_task_list_container .proceed_time_width {
+    width: 15%;
+}
+
+#sync_task_list_container .receiver_div {
+    width: 20%;
+}
+
+#sync_task_list_container .action_div_width {
+    width: 15%;
+}
+
+#sync_task_list_container .icon {
+    width: 20px;
+}
+
+#sync_task_list_container .task_divider {
+    height: 1px;
+    width: 98%;
+    margin: auto;
+    background-color: #eef0f2;
+}
+
+.environment_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#sync_task_list_container .task_environment_icon {
+    margin-left: auto;
+    width: 23px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.environment_text {
+    margin-right: auto;
+}
+
+.country_column_div {
+}
+
+.country_div {
+    width: 25%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#sync_task_list_container .task_nation_flag {
+    width: 32px;
+}
+
+#sync_task_list_container .country_name_tips {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.task_proceed_time_text {
+    font-size: 14px;
+    font-family: inherit;
+    text-align: center;
+}
+
+.task_receiver_text {
+    font-size: 15px;
+    font-family: inherit;
+    text-align: center;
+}
+
+#task_receiver_column_div {
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+#task_action_div {
+    margin: auto;
+    margin-right: 10px;
+}

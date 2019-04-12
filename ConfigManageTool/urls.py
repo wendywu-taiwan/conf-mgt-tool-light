@@ -48,9 +48,10 @@ admin_console_ruleset_pattern = [
     path('', views.admin_console_page),
     path('server_log', views.admin_console_server_log_page, name="server-log"),
     path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
-    path('scheduler/list', views.admin_console_scheduler_list_page, name="task-manager-list"),
+    path('scheduler/list', views.admin_console_report_scheduler_list_page, name="report-scheduler-list"),
     path('scheduler/create', views.admin_console_scheduler_create_page, name="task-create"),
     path('scheduler/update/<int:scheduler_id>', views.admin_console_scheduler_update_page, name="task-update"),
+    path('scheduler/sync/list', views.admin_console_sync_scheduler_list_page, name="sync-scheduler-list"),
 
 ]
 

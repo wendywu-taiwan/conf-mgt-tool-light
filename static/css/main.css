@@ -343,3 +343,18 @@ html, body {
     margin: auto;
     background-color: #eef0f2;
 }
+
+.component_title {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.margin_l_auto{
+    margin-left: auto;
+}
+
+.margin_r_auto{
+    margin-right: auto;
+}

@@ -125,7 +125,7 @@
     <script>
         init("{{ admin_console_info.module.id }}",
             "{% url 'update-scheduler' %}",
-            "{% url 'task-manager-list' %}");
+            "{% url 'report-scheduler-list' %}");
         setBaseEnvSelected('{{ scheduler_data.base_environment.id}}', '{{ scheduler_data.base_environment.name}}');
         setCompareEnvSelected('{{ scheduler_data.compare_environment.id}}', '{{ scheduler_data.compare_environment.name}}');
         '{% for country in scheduler_data.country_list %}'

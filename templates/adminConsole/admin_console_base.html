@@ -8,6 +8,7 @@
     <link href="{% static '/css/flat-ui.css' %}" rel="stylesheet">
     <link href="{% static '/css/bootstrap-clockpicker.min.css' %}" rel="stylesheet">
     <link href="{% static '/css/admin_console.css' %}" rel="stylesheet">
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
     <link href="{% static '/css/sweetalert.css' %}" rel="stylesheet">
     <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static '/js/sweetalert.min.js' %}"></script>
@@ -36,22 +37,39 @@
             </div>
         </div>
         <div id="function_list">
-            <a href="{% url 'server-log' %}">
-                <div class="function row">
-                    <div class="function_icon_div">
-                        <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
+            <div id="server_log_div" class="function_div">
+                <a href="{% url 'server-log' %}">
+                    <div class="row no-row-margin">
+                        <div class="function_icon_div">
+                            <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
+                        </div>
+                        <div class="function_text vertical_align_middle">Server Log</div>
                     </div>
-                    <div class="function_text">Server Log</div>
-                </div>
-            </a>
-            <a href="{% url 'task-manager-list' %}">
-                <div class="function row">
-                    <div class="function_icon_div">
-                        <img class="function_icon" src="{% static '/icons/task_manage_white.png' %}">
+                </a>
+            </div>
+            <div id="task_manager_div" class="function_div">
+                <a data-toggle="collapse" href="#task_manager_list_div" role="button" aria-expanded="false"
+                   aria-controls="task_manager_list_div">
+                    <div class="row no-row-margin">
+                        <div class="function_icon_div">
+                            <img class="function_icon" src="{% static '/icons/task_manage_white.png' %}">
+                        </div>
+                        <div class="function_text vertical_align_middle">Task Manager</div>
                     </div>
-                    <div class="function_text">Task Manager</div>
+                </a>
+            </div>
+            <div id="task_manager_list_div" class="collapse multi-collapse">
+                <div id="report_task_div">
+                    <a href="{% url 'report-scheduler-list' %}">
+                        <div class="sub_function_text vertical_align_middle">ReportTask</div>
+                    </a>
                 </div>
-            </a>
+                <div id="auto_sync_task_div">
+                    <a href="{% url 'sync-scheduler-list' %}">
+                        <div class="sub_function_text vertical_align_middle">AutoSyncTask</div>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
     <div id="right_area">

@@ -38,7 +38,7 @@ html, body {
 #function_list {
     background-color: #162850;
     width: 100%;
-    padding-top: 15px;
+    padding-top: 30px;
     padding-bottom: 30px;
 }
 
@@ -307,8 +307,7 @@ html, body {
 }
 
 .function_icon_div {
-    padding-left: 15%;
-    padding-right: 25px;
+    margin-right: 10%;
 }
 
 .function_icon {
@@ -322,10 +321,10 @@ html, body {
     font-weight: 800;
 }
 
-.vertical_align_middle {
-    margin-top: auto;
-    margin-bottom: auto;
-}
+/*.vertical_align_middle {*/
+/*margin-top: auto;*/
+/*margin-bottom: auto;*/
+/*}*/
 
 .no_row_margin {
     margin-left: 0px;
@@ -367,7 +366,7 @@ html, body {
     background-color: #eef0f2;
 }
 
-.custom_container .title_div {
+#task_list_container .title_div {
     background: #eaeef0;
     margin-left: 0px;
     margin-right: 0px;
@@ -375,7 +374,7 @@ html, body {
     padding-left: 15px;
 }
 
-.custom_container .title_text {
+#task_list_container .title_text {
     font-size: 14px;
     font-weight: 700;
     color: #849aa4;
@@ -387,7 +386,7 @@ html, body {
     width: 17%;
 }
 
-#task_edit_icon{
+#task_edit_icon {
     width: 22px;
 }
 
@@ -400,7 +399,7 @@ html, body {
     text-align: center;
 }
 
-.country_name_tips{
+.country_name_tips {
     font-size: 12px;
     font-weight: 600;
 }
@@ -545,6 +544,40 @@ html, body {
 
 #mail_receiver_input {
     width: 100%;
+}
+
+.function_div {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+#server_log_div {
+    margin-bottom: 5%;
+}
+
+#task_manager_div {
+}
+
+#task_manager_list_div {
+    padding-left: 30%;
+    padding-right: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#report_task_div{
+    margin-top: 10px;
+}
+
+#auto_sync_task_div{
+    margin-top: 15px;
+}
+
+.sub_function_text {
+    color: #51a8fd;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 800;
 }
 
 /* end admin console create task */

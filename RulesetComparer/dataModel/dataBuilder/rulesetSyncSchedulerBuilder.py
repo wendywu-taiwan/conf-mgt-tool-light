@@ -22,7 +22,6 @@ class RulesetSyncSchedulerBuilder(BaseBuilder):
         self.result_dict["task_id"] = self.scheduler.id
         self.result_dict["source_environment"] = EnvironmentSerializer(self.scheduler.source_environment).data
         self.result_dict["target_environment"] = EnvironmentSerializer(self.scheduler.target_environment).data
-        self.result_dict["module"] = ModuleSerializer(self.scheduler.module).data
         self.result_dict["country_list"] = CountrySerializer(self.scheduler.country_list, many=True).data
         self.result_dict["action_list"] = self.get_action_list()
         self.result_dict["receiver_list"] = self.get_mail_list()

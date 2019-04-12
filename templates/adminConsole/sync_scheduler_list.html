@@ -1,0 +1,132 @@
+{% extends "admin_console_base.html" %}
+{% load static from staticfiles %}
+{% block resource %}
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
+    <link href="{% static '/css/sync_scheduler_list.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div id="sync_task_list_container" class="custom_container">
+        <div id="header_div" class="row no-row-margin">
+            <div class="component_title">TASK</div>
+            <div id="create_task_button_div">
+                <a href="" class="btn btn-block btn-lg btn-primary">Create</a>
+            </div>
+        </div>
+        <div id="title_div" class="row no-row-margin">
+            <div id="task_title_id" class="task_id_width title_text vertical_align_middle">
+                ID
+            </div>
+            <div id="source_environment" class="task_environment_width title_text vertical_align_middle">
+                From
+            </div>
+            <div id="target_environment" class="task_environment_width title_text vertical_align_middle">
+                To
+            </div>
+            <div class="country_width title_text vertical_align_middle">
+                Country
+            </div>
+            <div class="proceed_time_width title_text vertical_align_middle">
+                Last Proceed Time
+            </div>
+            <div class="proceed_time_width title_text vertical_align_middle">
+                Next Proceed Time
+            </div>
+            <div class="receiver_div title_text vertical_align_middle">
+                Receiver
+            </div>
+            <div id="task_title_action" class="action_div_width title_text vertical_align_middle">
+            </div>
+        </div>
+        <div id="task_list_div">
+            {% for task in task_list %}
+                <div id="task_row_div" class="row">
+                    <div id="task_id_column_div" class="task_id_width vertical_align_middle">{{ task.task_id }}</div>
+                    <div id="source_env_column_div" class="task_environment_width vertical_align_middle">
+                        <div class="environment_div row">
+                            <img class="task_environment_icon" src="{% static '/icons/environment_blue.png' %}">
+                            <div class="environment_text vertical_align_middle">
+                                {{ task.source_environment.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="target_env_column_div" class="task_environment_width vertical_align_middle">
+                        <div class="environment_div row">
+                            <img class="task_environment_icon" src="{% static '/icons/environment_blue.png' %}">
+                            <div class="environment_text vertical_align_middle">
+                                {{ task.target_environment.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vertical_align_middle country_column_div country_width">
+                        <div class="row no-row-margin">
+                            {% for country in task.country_list %}
+                                <div class="country_div">
+                                    <img class="task_nation_flag"
+                                         src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
+                                    <div class="country_name_tips">{{ country.name }}</div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div id="task_last_proceed_time_column_div" class="proceed_time_width vertical_align_middle">
+                        <div id="last_proceed_time_div">
+                            <div class="task_proceed_time_text">
+                                {{ task.last_proceed_time }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="task_next_proceed_time_column_div" class="proceed_time_width vertical_align_middle">
+                        <div id="next_proceed_time_div">
+                            <div class="task_proceed_time_text">
+                                {{ task.next_proceed_time }}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="task_receiver_column_div" class="receiver_div">
+                        {% for receiver in task.receiver_list %}
+                            <div class="task_receiver_text">{{ receiver }}</div>
+                        {% endfor %}
+                    </div>
+                    <div id="task_action_column_div" class="vertical_align_middle action_div_width row no_row_margin">
+                        <div class="margin_l_auto">
+                            <a href="{% url 'task-update' task.task_id %}" class="btn">
+                                <img class="icon" src="{% static '/icons/edit.png' %}">
+                            </a>
+                        </div>
+                        <div class="margin_r_auto">
+                            <a onclick="deleteScheduler('{{ task.task_id }}')" class="btn">
+                                <img class="icon" src="{% static '/icons/delete_yellow.png' %}">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="task_divider"></div>
+            {% endfor %}
+        </div>
+    </div>
+{#    <script>#}
+{#        function deleteScheduler(task_id) {#}
+{#            warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",#}
+{#                function () {#}
+{#                    console.log("deleteScheduler confirm");#}
+{#                    showWaitingDialog();#}
+{##}
+{#                    let post_body = {#}
+{#                        "id": task_id#}
+{#                    };#}
+{##}
+{#                    doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {#}
+{#                        successDialog("delete task success", function () {#}
+{#                            console.log(response);#}
+{#                            window.location = "{% url 'report-scheduler-list' %}";#}
+{#                        });#}
+{#                    }, function (response) {#}
+{#                        console.log(response);#}
+{#                        showErrorDialog("delete task fail")#}
+{#                    });#}
+{#                })#}
+{#        }#}
+{##}
+{#    </script>#}
+
+{% endblock %}

@@ -111,7 +111,7 @@
                 doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {
                     successDialog("delete task success", function () {
                         console.log(response);
-                        window.location = "{% url 'task-manager-list' %}";
+                        window.location = "{% url 'report-scheduler-list' %}";
                     });
                 }, function (response) {
                     console.log(response);
