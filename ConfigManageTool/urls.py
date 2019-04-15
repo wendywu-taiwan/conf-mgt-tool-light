@@ -52,6 +52,7 @@ admin_console_ruleset_pattern = [
     path('scheduler/create', views.admin_console_scheduler_create_page, name="task-create"),
     path('scheduler/update/<int:scheduler_id>', views.admin_console_scheduler_update_page, name="task-update"),
     path('scheduler/sync/list', views.admin_console_sync_scheduler_list_page, name="sync-scheduler-list"),
+    path('scheduler/sync/create', views.admin_console_sync_scheduler_create_page, name="sync-scheduler-create"),
 
 ]
 

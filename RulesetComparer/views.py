@@ -6,7 +6,8 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
-from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType
+from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
+    RulesetSyncUpScheduler
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
@@ -47,7 +48,7 @@ def admin_console_server_log_page(request, log_type=None):
 
         file = fileManager.load_file(full_name)
         file_secure = re.sub("password</ns0:name><ns0:value>[^<]+</ns0:value>",
-                             "password</ns0:name><ns0:value>****</ns0:value>", file.read())
+                             "password</ns0:name><ns0:value>****</ns0:value>", file)
         file_content = file_secure.split("\n")
 
         data = {
@@ -63,7 +64,7 @@ def admin_console_server_log_page(request, log_type=None):
         return JsonResponse(result)
 
 
-def admin_console_scheduler_list_page(request):
+def admin_console_report_scheduler_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
         scheduler_info_list = ReportSchedulerInfo.objects.all()
@@ -118,6 +119,44 @@ def admin_console_scheduler_update_page(request, scheduler_id):
             key.SCHEDULER_DATA: scheduler_data
         }
         return render(request, "scheduler_update.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_sync_scheduler_list_page(request):
+    try:
+        info_data = AdminConsoleInfoBuilder().get_data()
+        schedulers = rulesetSyncUpService.get_schedulers()
+        data_list = list()
+        for scheduler in schedulers:
+            data_builder = RulesetSyncSchedulerBuilder(scheduler)
+            data_list.append(data_builder.get_data())
+
+        data = {key.ADMIN_CONSOLE_INFO: info_data,
+                key.SCHEDULER_LIST: data_list}
+        return render(request, "sync_scheduler_list.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_sync_scheduler_create_page(request):
+    try:
+        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
+        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
+        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        action_list = config.RULESET_SYNC_UP_ACTION
+        info_data = AdminConsoleInfoBuilder().get_data()
+
+        data = {key.SOURCE_ENVIRONMENT: git_environment_data,
+                key.TARGET_ENVIRONMENT: int2_environment_data,
+                key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+                key.ACTION_LIST: action_list,
+                key.ADMIN_CONSOLE_INFO: info_data}
+        return render(request, "sync_scheduler_create.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

@@ -40,6 +40,9 @@ RULE_KEY_COMBINED_KEY = 'combined_key'
 # view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
+SOURCE_ENVIRONMENT = 'source_environment'
+TARGET_ENVIRONMENT = 'target_environment'
+ACTION_LIST = 'action_list'
 
 # view.rule_download_page
 RULE_NAME_LIST = 'rule_name_list'
@@ -141,3 +144,9 @@ KEY_COUNTRY = "country"
 KEY_NAME = "name"
 KEY_COMPARE_HASH_KEY = "compare_hash_key"
 KEY_TASK_ID = "task_id"
+
+# environment name
+INT2_NAME = "INT2"
+INT1_NAME = "INT1"
+PROD_NAME = "PROD"
+GIT_NAME = "GIT"

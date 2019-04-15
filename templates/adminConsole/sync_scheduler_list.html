@@ -9,7 +9,7 @@
         <div id="header_div" class="row no-row-margin">
             <div class="component_title">TASK</div>
             <div id="create_task_button_div">
-                <a href="" class="btn btn-block btn-lg btn-primary">Create</a>
+                <a href="{% url 'sync-scheduler-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
             </div>
         </div>
         <div id="title_div" class="row no-row-margin">
@@ -104,29 +104,28 @@
             {% endfor %}
         </div>
     </div>
-{#    <script>#}
-{#        function deleteScheduler(task_id) {#}
-{#            warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",#}
-{#                function () {#}
-{#                    console.log("deleteScheduler confirm");#}
-{#                    showWaitingDialog();#}
-{##}
-{#                    let post_body = {#}
-{#                        "id": task_id#}
-{#                    };#}
-{##}
-{#                    doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {#}
-{#                        successDialog("delete task success", function () {#}
-{#                            console.log(response);#}
-{#                            window.location = "{% url 'report-scheduler-list' %}";#}
-{#                        });#}
-{#                    }, function (response) {#}
-{#                        console.log(response);#}
-{#                        showErrorDialog("delete task fail")#}
-{#                    });#}
-{#                })#}
-{#        }#}
-{##}
-{#    </script>#}
+    <script>
+        function deleteScheduler(task_id) {
+            warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
+                function () {
+                    showWaitingDialog();
+
+                    let post_body = {
+                        "task_id": task_id
+                    };
+
+                    doPOST("{% url 'delete-rulesets-sync-job' %}", post_body, function (response) {
+                        successDialog("delete task success", function () {
+                            console.log(response);
+                            window.location = "{% url 'sync-scheduler-list' %}";
+                        });
+                    }, function (response) {
+                        console.log(response);
+                        showErrorDialog("delete task fail")
+                    });
+                })
+        }
+
+    </script>
 
 {% endblock %}
