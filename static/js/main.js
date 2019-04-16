@@ -10,7 +10,7 @@ function stopDialog() {
 function showWaitingDialog() {
     swal({
         title: "Please Wait..",
-        imageUrl: "../../../../static/icons/loading.gif",
+        imageUrl: "/static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
         showCancelButton: false,
