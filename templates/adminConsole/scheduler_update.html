@@ -139,7 +139,7 @@
         '{% for receiver in scheduler_data.mail_list %}'
             addReceivers('{{ receiver }}');
             '{% endfor %}'
-        setReceivers()
+        setReceivers();
 
         updateBtnOnClick = function () {
             updateTask('{{ scheduler_data.task_id }}');

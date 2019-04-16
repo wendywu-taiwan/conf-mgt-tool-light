@@ -4,6 +4,7 @@
     <link href="{% static '/css/main.css' %}" rel="stylesheet">
     <link href="{% static '/css/sync_scheduler_create.css' %}" rel="stylesheet">
     <script src="{% static '/js/adminConsole/sync-scheduler-create.js' %}"></script>
+    <script src="{% static '/js/adminConsole/sync-scheduler-update.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -139,18 +140,41 @@
 
     <script>
         init("{{ admin_console_info.module.id }}",
-            "{% url 'create-rulesets-sync-job' %}",
+            "{% url 'update-rulesets-sync-job' %}",
             "{% url 'sync-scheduler-list' %}");
 
-        source_env_id = {{ source_environment.0.id }};
-        source_env_name = "{{ source_environment.0.name }}";
-        target_env_id = {{ target_environment.0.id }};
-        target_env_name = "{{ target_environment.0.name }}";
+        source_env_id = {{ scheduler_data.source_environment.id }};
+        source_env_name = "{{ scheduler_data.source_environment.name }}";
+        target_env_id = {{ scheduler_data.target_environment.id }};
+        target_env_name = "{{ scheduler_data.target_environment.name }}";
+
+        select_country_id = {{ scheduler_data.country_list.0.id }};
 
         setSourceEnvSelected(source_env_id, source_env_name);
         setTargetEnvSelected(target_env_id, target_env_name);
+        //check country
+        setCountryChecked('{{ country.id }}');
+        $('#radio_input_' + select_country_id).radiocheck('check');
+
+        //selected action
+        '{% for action in scheduler_data.action_list %}'
+            setActionChecked('{{ action }}');
+            '{% endfor %}'
+
+        //selected daily proceed time
+        setDailyProceedTime('{{ scheduler_data.next_proceed_time }}');
+        //select interval hour
+        setIntervalHour('{{ scheduler_data.interval_hour }}');
+
+        //add receiver
+        '{% for receiver in scheduler_data.receiver_list %}'
+            addReceivers('{{ receiver }}');
+            '{% endfor %}'
+        setReceivers();
+        setBackupCheck();
+
         createBtnOnClick = function () {
-            createTask();
+            updateTask();
         }
     </script>
 {% endblock %}

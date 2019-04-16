@@ -163,6 +163,32 @@ def admin_console_sync_scheduler_create_page(request):
         return JsonResponse(result)
 
 
+def admin_console_sync_scheduler_update_page(request, scheduler_id):
+    try:
+        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
+        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
+        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        action_list = config.RULESET_SYNC_UP_ACTION
+        info_data = AdminConsoleInfoBuilder().get_data()
+
+        scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
+        scheduler_data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+
+        data = {
+            key.SOURCE_ENVIRONMENT: git_environment_data,
+            key.TARGET_ENVIRONMENT: int2_environment_data,
+            key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+            key.ACTION_LIST: action_list,
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.SCHEDULER_DATA: scheduler_data
+        }
+        return render(request, "sync_scheduler_update.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 # ruleset page
 def rule_download_page(request):
     try:

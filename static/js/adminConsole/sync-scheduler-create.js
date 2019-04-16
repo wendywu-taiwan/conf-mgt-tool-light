@@ -2,12 +2,12 @@ $(function () {
     $('.clockpicker').clockpicker();
     $(".tagsinput").tagsinput();
 
-    $("#base_env_select_list li").click(function () {
+    $("#source_env_select_list li").click(function () {
         $("#select_source_env_btn:first-child").text($(this).text());
         $("#select_source_env_btn:first-child").val($(this).val());
     });
 
-    $("#compare_env_select_list li").click(function () {
+    $("#target_env_select_list li").click(function () {
         $("#select_target_env_btn:first-child").text($(this).text());
         $("#select_target_env_btn:first-child").val($(this).val());
     });
@@ -67,15 +67,15 @@ updateTask = function (task_id) {
         return;
 
     let post_body = {
-        "id": task_id,
-        "base_environment_id": baseEnvId,
-        "compare_environment_id": compareEnvId,
-        "module_id": moduleId,
+        "task_id": task_id,
+        "source_environment_id": sourceEnvId,
+        "target_environment_id": targetEnvId,
         "country_list": countryList,
-        "mail_content_type_list": mailContentTypeList,
-        "mail_list": mailList,
+        "action_list": actionList,
+        "receiver_list": mailList,
         "interval_hour": intervalHour,
-        "start_date_time": startDateTime
+        "next_proceed_time": startDateTime,
+        "backup":backup
     };
 
     doPOST(postUrl, post_body, function (response) {

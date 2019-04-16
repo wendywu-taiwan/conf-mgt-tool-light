@@ -83,3 +83,10 @@ function downloadZipFile(data) {
     element.click();
     document.body.removeChild(element);
 }
+
+function leadingZero(value) {
+    if (value < 10) {
+        return "0" + value.toString();
+    }
+    return value.toString();
+}
