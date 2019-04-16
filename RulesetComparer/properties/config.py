@@ -33,7 +33,8 @@ TIME_FORMAT = {
     "git_time_format": '%Y-%m-%d %H:%M:%S',
     "year_month_date": '%Y/%m/%d',
     "year_month_date_without_slash": '%Y%m%d',
-    "hour_minute_second": '%H:%M:%S'
+    "hour_minute_second": '%H:%M:%S',
+    "hour_minute_second_without_slash": '%H%M%S'
 }
 
 TIME_ZONE = {

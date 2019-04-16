@@ -6,6 +6,7 @@ from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.utils.timeUtil import get_format_current_time
+from RulesetComparer.utils.fileManager import *
 from RulesetComparer.properties.dataKey import *
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.createRulesetTask import CreateRulesetTask
@@ -138,26 +139,33 @@ def sync_up_rulesets(parser, country):
 
 
 def backup_rulesets(sync_up_pre_json):
-    target_env_name = sync_up_pre_json[KEY_TARGET_ENV][KEY_NAME]
-    country_name = sync_up_pre_json[KEY_COUNTRY][KEY_NAME]
-    compare_key = sync_up_pre_json[KEY_COMPARE_HASH_KEY]
-    target_env_only_rulesets = sync_up_pre_json[KEY_TARGET_ENV_ONLY_RULESETS][KEY_RULESETS_ARRAY]
-    different_rulesets = sync_up_pre_json[KEY_DIFFERENT_RULESETS][KEY_RULESETS_ARRAY]
-    backup_date = get_format_current_time(config.TIME_FORMAT.get("year_month_date_without_slash"))
+    try:
+        target_env_name = sync_up_pre_json[KEY_TARGET_ENV][KEY_NAME]
+        country_name = sync_up_pre_json[KEY_COUNTRY][KEY_NAME]
+        compare_key = sync_up_pre_json[KEY_COMPARE_HASH_KEY]
+        target_env_only_rulesets = sync_up_pre_json[KEY_TARGET_ENV_ONLY_RULESETS][KEY_RULESETS_ARRAY]
+        different_rulesets = sync_up_pre_json[KEY_DIFFERENT_RULESETS][KEY_RULESETS_ARRAY]
+        backup_date = get_format_current_time(config.TIME_FORMAT.get("year_month_date_without_slash"))
+        backup_time = get_format_current_time(config.TIME_FORMAT.get("hour_minute_second_without_slash"))
 
-    copy_from_rulesets_folder_path = get_rule_set_path(target_env_name, country_name, compare_key)
-    copy_to_rulesets_folder_path = get_ruleset_backup_path(target_env_name, country_name, backup_date)
+        copy_from_rulesets_folder_path = get_rule_set_path(target_env_name, country_name, compare_key)
+        copy_to_rulesets_folder_path = get_ruleset_backup_path(target_env_name, country_name, backup_date + backup_time)
 
-    info_log("backup_rulesets", "copy_from_rulesets_folder_path : " + copy_from_rulesets_folder_path)
-    info_log("backup_rulesets", "copy_to_rulesets_folder_path : " + copy_to_rulesets_folder_path)
+        info_log("backup_rulesets", "copy_from_rulesets_folder_path : " + copy_from_rulesets_folder_path)
+        info_log("backup_rulesets", "copy_to_rulesets_folder_path : " + copy_to_rulesets_folder_path)
 
-    for ruleset_obj in target_env_only_rulesets:
-        copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]),
-                     copy_from_rulesets_folder_path, copy_to_rulesets_folder_path)
+        for ruleset_obj in target_env_only_rulesets:
+            copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]), copy_from_rulesets_folder_path,
+                         copy_to_rulesets_folder_path)
 
-    for ruleset_obj in different_rulesets:
-        copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]),
-                     copy_from_rulesets_folder_path, copy_to_rulesets_folder_path)
+        for ruleset_obj in different_rulesets:
+            copy_ruleset(get_file_name("_xml", ruleset_obj[KEY_NAME]), copy_from_rulesets_folder_path,
+                         copy_to_rulesets_folder_path)
+
+        # save sync pre json to backup folder
+        save_auto_sync_pre_json_file(copy_to_rulesets_folder_path, sync_up_pre_json)
+    except Exception as e:
+        raise e
 
 
 def create_rulesets(country, parser, sync_up_report_json):

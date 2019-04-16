@@ -86,6 +86,19 @@ def load_compare_result_file(compare_key):
     return load_json_file(file_name_with_path)
 
 
+def save_auto_sync_pre_json_file(file_path, data):
+    create_folder(file_path)
+    file_name = get_file_name("_json", "pre")
+    file_name_with_path = file_path + "/" + file_name
+    save_file(file_name_with_path, json.dumps(data))
+
+
+def load_auto_sync_pre_json_file(file_path):
+    file_name = get_file_name("_json", "pre")
+    file_name_with_path = file_path + "/" + file_name
+    return load_json_file(file_name_with_path)
+
+
 def load_json_file(file_path):
     if file_path is None:
         return None

@@ -54,7 +54,7 @@ class RulesetsSyncUpTask:
                 task.last_proceed_time = task.next_proceed_time
                 task.next_proceed_time = utc_next_proceed_time
                 task.save()
-                info_log(self.LOG_CLASS, 'job worked, id: ' + self.parser.task_id)
+                info_log(self.LOG_CLASS, 'job worked, id: ' + str(self.parser.task_id))
             except BaseException:
                 error_log(traceback.format_exc())
 
