@@ -26,6 +26,11 @@ def timestamp_to_date_time(timestamp):
     return date_time
 
 
+def time_change_format(str_time, origin_time_format, new_time_format):
+    date_time = time_to_date_time(str_time, origin_time_format)
+    return date_time.strftime(new_time_format)
+
+
 def date_time_change_format(date_time, time_format):
     str_time = date_time.strftime(time_format)
     return time_to_date_time(str_time, time_format)

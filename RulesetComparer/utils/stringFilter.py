@@ -14,3 +14,18 @@ def array_filter(array, filter_keys):
         if match:
             matched_list.append(string)
     return matched_list
+
+
+def string_filter(string, filter_keys):
+    string = string.strip()
+    lower_string = string.lower()
+
+    match = True
+    for key in filter_keys:
+        key = key.strip()
+        lower_key = key.lower()
+        if lower_key not in lower_string:
+            match = False
+            break
+
+    return match

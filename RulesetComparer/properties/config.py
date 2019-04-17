@@ -28,13 +28,14 @@ GIT = {
 
 TIME_FORMAT = {
     "db_time_format": '%Y-%m-%d %H:%M:%S',
+    "time_format_without_slash": '%Y%m%d%H%M%S',
     "year_month_date_hour_minute_second_float": '%Y/%m/%d %H:%M:%S.%f',
     "year_month_date_hour_minute_second": '%Y/%m/%d %H:%M:%S',
     "git_time_format": '%Y-%m-%d %H:%M:%S',
     "year_month_date": '%Y/%m/%d',
     "year_month_date_without_slash": '%Y%m%d',
     "hour_minute_second": '%H:%M:%S',
-    "hour_minute_second_without_slash": '%H%M%S'
+    "hour_minute_second_without_slash": '%H%M%S',
 }
 
 TIME_ZONE = {

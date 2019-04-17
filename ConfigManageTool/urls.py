@@ -70,8 +70,13 @@ ruleset_scheduler_pattern = [
     path('delete', views.delete_scheduler, name="delete-scheduler"),
 ]
 
+ruleset_recover_pattern = [
+    path('filter', views.admin_console_recover_ruleset_filtered_page, name="filter-backup-rulesets"),
+]
+
 urlpatterns = [
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
+    path('ConfigManageTool/ruleset/recover/', include(ruleset_recover_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
     path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),

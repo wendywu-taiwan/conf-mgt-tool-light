@@ -170,3 +170,15 @@ def get_rule_name_list(path):
         file_name = file_name[:-4]
         rule_name_list.append(file_name)
     return rule_name_list
+
+def get_files_list_in_path(path, exception=None):
+    name_list = list()
+    for file in os.listdir(path):
+        if os.path.isfile(file):
+            continue
+
+        if file == exception:
+            continue
+
+        name_list.append(file)
+    return name_list

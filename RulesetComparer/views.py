@@ -12,7 +12,7 @@ from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services, rulesetSyncUpService
+from RulesetComparer.services import services, rulesetSyncUpService, rulesetRecoverService
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
@@ -183,6 +183,32 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
             key.SCHEDULER_DATA: scheduler_data
         }
         return render(request, "sync_scheduler_update.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_recover_ruleset_filtered_page(request):
+    try:
+        country_list = Country.objects.all()
+        environment_list = Environment.objects.all()
+
+        response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
+                    key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
+
+        if request.method == REQUEST_POST:
+            request_json = get_post_request_json(request)
+            info_log("API", "filter rule names, request json =" + str(request_json))
+            filtered_rule_names = services.get_filtered_ruleset_list(request_json)
+            return render(request, "rule_download_table.html", {key.RULE_NAME_LIST: filtered_rule_names})
+        else:
+            return render(request, "rule_download.html", response)
+
+
+        rulesetRecoverService.filter_backup_list(get_post_request_json(request))
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
