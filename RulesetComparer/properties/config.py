@@ -11,7 +11,7 @@ FILE_PATH = {
     "server_log": "/RulesetComparer/serverlog",
     "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
     "rule_set_zip_file_path": "RulesetComparer/rulesets/zip",
-    "rule_set_backup_path": "RulesetComparer/rulesets/backup/%s/%s/%s",
+    "rule_set_backup_path": "RulesetComparer/rulesets/backup",
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -80,8 +80,15 @@ def get_rule_set_path(env_name, country_name, compare_key):
     return FILE_PATH.get("rule_set_environment") % (compare_key, env_name, country_name)
 
 
-def get_ruleset_backup_path(environment, country, date):
-    return FILE_PATH.get("rule_set_backup_path") % (environment, country, date)
+def get_ruleset_backup_path(environment_name, country_name, date):
+    path = FILE_PATH.get("rule_set_backup_path")
+    if environment_name != "":
+        path = path + "/" + environment_name
+        if country_name != "":
+            path = path + "/" + country_name
+            if date != "":
+                path = path + "/" + date
+    return path
 
 
 def get_ruleset_git_root_path():

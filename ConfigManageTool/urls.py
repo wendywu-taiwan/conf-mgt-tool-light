@@ -55,6 +55,13 @@ admin_console_ruleset_pattern = [
     path('scheduler/sync/create', views.admin_console_sync_scheduler_create_page, name="sync-scheduler-create"),
     path('scheduler/sync/update/<int:scheduler_id>', views.admin_console_sync_scheduler_update_page,
          name="sync-scheduler-update"),
+    path('recover/filter', views.admin_console_recover_ruleset_filtered_page, name="recover-filter-page"),
+    path('recover/filter/environment', views.admin_console_recover_ruleset_filtered_environment_page,
+         name="recover-filter-environment-page"),
+    path('recover/filter/backup/list', views.admin_console_recover_ruleset_backup_list_page,
+         name="recover-filter-backup-list-page"),
+    path('recover/filter/<str:environment_id>/<str:country_id>', views.admin_console_recover_ruleset_filtered_page,
+         name="filter-backup-rulesets"),
 ]
 
 admin_console_pattern = [
@@ -70,13 +77,8 @@ ruleset_scheduler_pattern = [
     path('delete', views.delete_scheduler, name="delete-scheduler"),
 ]
 
-ruleset_recover_pattern = [
-    path('filter', views.admin_console_recover_ruleset_filtered_page, name="filter-backup-rulesets"),
-]
-
 urlpatterns = [
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
-    path('ConfigManageTool/ruleset/recover/', include(ruleset_recover_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
     path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),

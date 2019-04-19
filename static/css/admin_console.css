@@ -81,8 +81,6 @@ html, body {
 
 #content_area {
     margin: 30px;
-    background-color: white;
-    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
 #server_log_container {
@@ -304,6 +302,10 @@ html, body {
     margin-right: 10%;
 }
 
+#recover_icon{
+    width: 26px;
+}
+
 .function_icon {
     width: 24px;
 }
@@ -423,11 +425,16 @@ html, body {
     padding-bottom: 5px;
 }
 
-#report_task_div{
+#recover_function_div{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+
+#report_task_div {
     margin-top: 10px;
 }
 
-#auto_sync_task_div{
+#auto_sync_task_div {
     margin-top: 15px;
 }
 

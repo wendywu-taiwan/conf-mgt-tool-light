@@ -149,7 +149,9 @@ KEY_DELETED_RULESETS = "deleted_rulesets"
 
 # common
 KEY_COUNTRY = "country"
+KEY_COUNTRIES = "countries"
 KEY_ENVIRONMENT = "environment"
+KEY_ENVIRONMENTS = "environments"
 KEY_NAME = "name"
 KEY_COMPARE_HASH_KEY = "compare_hash_key"
 KEY_TASK_ID = "task_id"

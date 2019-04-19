@@ -1,7 +1,7 @@
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataBuilder.recoverFilterBackupObjBuilder import RecoverFilterBackupObjBuilder
 from RulesetComparer.dataModel.dataBuilder.recoverFilterObjBuilder import RecoverFilterObjBuilder
-from RulesetComparer.models import Environment
+from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils.fileManager import *
 
 
@@ -34,6 +34,16 @@ def filter_environment():
         environment = Environment.objects.get(name=environment_name)
         environment_list.append(environment)
 
+    return environment_list
 
 
+def filter_country(environment_id):
+    environment = Environment.objects.get(id=environment_id)
+    backup_env_folder_path = get_ruleset_backup_path(environment.name, "", "")
+    country_name_list = get_files_list_in_path(backup_env_folder_path, "__init__.py")
 
+    country_list = []
+    for country_name in country_name_list:
+        country = Country.objects.get(name=country_name)
+        country_list.append(country)
+    return country_list

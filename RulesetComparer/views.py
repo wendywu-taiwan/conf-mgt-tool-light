@@ -191,24 +191,31 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 
 def admin_console_recover_ruleset_filtered_page(request):
     try:
-        country_list = Country.objects.all()
-        environment_list = Environment.objects.all()
-
-        response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
-                    key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
-
-        if request.method == REQUEST_POST:
-            request_json = get_post_request_json(request)
-            info_log("API", "filter rule names, request json =" + str(request_json))
-            filtered_rule_names = services.get_filtered_ruleset_list(request_json)
-            return render(request, "rule_download_table.html", {key.RULE_NAME_LIST: filtered_rule_names})
-        else:
-            return render(request, "rule_download.html", response)
+        environment_list = rulesetRecoverService.filter_environment()
+        environment_json_list = EnvironmentSerializer(environment_list, many=True).data
+        return render(request, "recovery.html", {key.KEY_ENVIRONMENTS: environment_json_list})
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
 
-        rulesetRecoverService.filter_backup_list(get_post_request_json(request))
-        result = ResponseBuilder().get_data()
-        return JsonResponse(data=result)
+def admin_console_recover_ruleset_filtered_environment_page(request):
+    try:
+        request_json = get_post_request_json(request)
+        countries = rulesetRecoverService.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
+        return render(request, "select_country_dropdown.html", {key.KEY_COUNTRIES: countries})
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_recover_ruleset_backup_list_page(request):
+    try:
+        request_json = get_post_request_json(request)
+        result = rulesetRecoverService.filter_backup_list(request_json)
+        return render(request, "backup_data_view.html", result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

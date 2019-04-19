@@ -337,7 +337,7 @@ html, body {
     margin-bottom: auto;
 }
 
-.custom_divider{
+.custom_divider {
     height: 1px;
     width: 98%;
     margin: auto;
@@ -351,10 +351,15 @@ html, body {
     font-weight: 800;
 }
 
-.margin_l_auto{
+.margin_l_auto {
     margin-left: auto;
 }
 
-.margin_r_auto{
+.margin_r_auto {
     margin-right: auto;
+}
+
+.admin_console_block_background {
+    background-color: white;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }

@@ -1,0 +1,226 @@
+/*@media screen and (min-width: 1350px) {*/
+#filter_env_country_div {
+    height: 100%;
+    padding: 30px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    opacity: 1;
+    transition: all .5s;
+    -wekit-transition: all .5s;
+    -moz-transition: all .5s;
+}
+
+#backup_folder_list_div {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    padding: 30px;
+}
+
+.backup_rulesets_div {
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    padding: 30px;
+    display: none;
+}
+
+#select_data_div {
+    margin: auto;
+}
+
+#download_data_background_div {
+    background: #f7f7f7;
+    padding-bottom: 5%;
+}
+
+#download_data_div {
+    display: none;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    padding-left: 3%;
+    padding-right: 3%;
+    margin: auto;
+    width: 50%;
+    background-color: white;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
+}
+
+.recovery_container .div_title_text {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+    min-width: 130px;
+}
+
+.recovery_container .div_title_description_text {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 15px;
+    font-weight: 600;
+    min-width: 130px;
+    color: #1abb9c;
+}
+
+.recovery_container .drop_down_label_text {
+    font-weight: 600;
+    color: #bbbbbb;
+    font-size: 16px;
+}
+
+.recovery_container .drop_down_button {
+    background-color: #088587;
+    width: 100%;
+}
+
+#select_country_and_env_div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+#select_env_div {
+    margin-right: 5%;
+}
+
+#select_country_div {
+}
+
+#filter_div {
+    margin-bottom: 45px;
+}
+
+#filter_input_div {
+    width: 100%;
+}
+
+#filter_btn_div {
+    text-align: right;
+}
+
+#filter_btn {
+    background-color: #1abb9c;
+}
+
+.list_header_row_div {
+    margin-bottom: 20px;
+}
+
+#folder_list_div {
+    border: solid 2.5px;
+    border-top: none;
+    border-radius: 5px;
+    border-color: #1abb9c;
+}
+
+#title_row_div {
+    background: #1abb9c;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 35px;
+    border-radius: 5px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.content_row_div {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: white;
+}
+
+#folder_list_div #row_divider {
+    width: 100% !important;
+}
+
+#folder_list_div .title_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+}
+
+#folder_list_div .content_text {
+    font-size: 14px;
+    text-align: center;
+}
+
+.date_width {
+    width: 40%;
+}
+
+.action_count_width {
+    width: 20%;
+}
+
+#apply_button {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+#rulesets_list_title_div {
+    background-color: #1abb9c;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    border-radius: 3px;
+
+}
+
+.rulesets_list_row_div {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+#rulesets_list_div {
+    border: solid 2.5px;
+    border-top: none;
+    border-radius: 5px;
+    border-color: #1abb9c;
+}
+
+.diff_icon {
+    height: 30px;
+}
+
+#row_action_div {
+    margin-left: auto;
+}
+
+#rulesets_list_div .title_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+}
+
+#rulesets_list_div .content_text {
+    font-size: 14px;
+    text-align: center;
+}
+
+#rulesets_list_div .check_width {
+    width: 15%;
+}
+
+#rulesets_list_div .ruleset_name_width {
+    width: 60%;
+}
+
+#rulesets_list_div .action_width {
+    width: 15%;
+}
+
+.row_ruleset_name {
+    text-align: left;
+    font-size: 14px;
+}
+
+/*}*/
+
+/*@media screen and (max-width: 1350px) {*/
+
+/*}*/

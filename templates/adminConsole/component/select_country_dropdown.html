@@ -1,0 +1,15 @@
+<div id="select_country_div" class="col no-col-padding">
+    <label class="drop_down_label_text col no-col-padding" for="select_country">Country</label>
+    <div id="select_country" class="custom-btn-group-1 btn-group">
+        <button id="select-country-btn" class="drop_down_button btn btn-inverse dropdown-toggle"
+                type="button" data-toggle="dropdown">
+            Country
+        </button>
+        <ul id="select-country-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+            role="menu">
+            {% for data in countries %}
+                <li value="{{ data.id }}"><a href="#">{{ data.full_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
