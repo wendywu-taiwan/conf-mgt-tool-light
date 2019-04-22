@@ -191,9 +191,14 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 
 def admin_console_recover_ruleset_filtered_page(request):
     try:
+        info_data = AdminConsoleInfoBuilder().get_data()
         environment_list = rulesetRecoverService.filter_environment()
         environment_json_list = EnvironmentSerializer(environment_list, many=True).data
-        return render(request, "recovery.html", {key.KEY_ENVIRONMENTS: environment_json_list})
+        data = {
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.KEY_ENVIRONMENTS: environment_json_list
+        }
+        return render(request, "recovery.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -202,9 +207,14 @@ def admin_console_recover_ruleset_filtered_page(request):
 
 def admin_console_recover_ruleset_filtered_environment_page(request):
     try:
+        info_data = AdminConsoleInfoBuilder().get_data()
         request_json = get_post_request_json(request)
         countries = rulesetRecoverService.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
-        return render(request, "select_country_dropdown.html", {key.KEY_COUNTRIES: countries})
+        data = {
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.KEY_COUNTRIES: countries
+        }
+        return render(request, "select_country_dropdown.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -213,8 +223,10 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
+        info_data = AdminConsoleInfoBuilder().get_data()
         request_json = get_post_request_json(request)
         result = rulesetRecoverService.filter_backup_list(request_json)
+        result[key.ADMIN_CONSOLE_INFO] = info_data
         return render(request, "backup_data_view.html", result)
     except Exception:
         error_log(traceback.format_exc())
@@ -365,6 +377,19 @@ def download_rulesets(request):
                 response['Content-Disposition'] = 'attachment; filename="' + download_file_name + '.zip"'
                 return response
         raise Http404
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def recover_rulesets(request):
+    try:
+        request_json = get_post_request_json(request)
+        print("recover_rulesets , request_json:" + str(request_json))
+        result_data = rulesetSyncUpService.sync_up_rulesets_from_backup(request_json)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
