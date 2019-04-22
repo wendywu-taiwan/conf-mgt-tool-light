@@ -44,7 +44,7 @@ createTask = function () {
         "receiver_list": mailList,
         "interval_hour": intervalHour,
         "next_proceed_time": startDateTime,
-        "backup":backup
+        "backup": backup
     };
 
     console.log(post_body);
@@ -75,7 +75,7 @@ updateTask = function (task_id) {
         "receiver_list": mailList,
         "interval_hour": intervalHour,
         "next_proceed_time": startDateTime,
-        "backup":backup
+        "backup": backup
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -145,13 +145,24 @@ function setTargetEnvSelected(id, name) {
     $("#select_target_env_btn:first-child").val(id);
 };
 
-countryRadioOnSelect = function(countryId){
-    countryList = [];
+countryCheckboxOnChange = function (checkboxItem) {
+    let countryId = checkboxItem.value;
+    if (checkboxItem.checked && !countryList.includes(countryId)) {
+        countryCheckboxOnClick(countryId)
+    } else {
+        countryList = countryList.filter(function (item) {
+            return item !== countryId;
+        })
+    }
+};
+
+countryCheckboxOnClick = function (countryId) {
+    console.log("countryCheckboxOnClick, countryId:"+countryId);
     countryList.push(countryId);
 };
 
 
-actionCheckboxOnChanged = function(checkboxItem){
+actionCheckboxOnChanged = function (checkboxItem) {
     let action = checkboxItem.value;
     if (checkboxItem.checked && !actionList.includes(action)) {
         actionList.push(action);
@@ -162,10 +173,10 @@ actionCheckboxOnChanged = function(checkboxItem){
     }
 };
 
-backupOnChecked = function(checkboxItem){
-    if(checkboxItem.checked){
+backupOnChecked = function (checkboxItem) {
+    if (checkboxItem.checked) {
         backup = true;
-    }else{
+    } else {
         backup = false;
     }
 };

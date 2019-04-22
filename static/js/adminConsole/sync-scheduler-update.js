@@ -15,10 +15,12 @@ $(function () {
 
 let receivers = [];
 
-function setCountryChecked(countryId) {
-    countryRadioOnSelect(countryId);
-    $('#radio_input_' + countryId).radiocheck('check');
-}
+
+function setCountryChecked(country_id) {
+    console.log("setCountryChecked, countryId:"+country_id);
+    countryCheckboxOnClick(country_id);
+    $("#checkbox_input_" + country_id).prop("checked", true);
+};
 
 function setActionChecked(action) {
     actionList.push(action);

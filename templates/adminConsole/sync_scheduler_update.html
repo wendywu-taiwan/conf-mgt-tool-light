@@ -61,15 +61,13 @@
         <div id="country_select_div">
             <div class="block_title_div">Country :</div>
 
-            <div id="country_radio_box_div" class="country_check_box_div row no_row_margin">
+            <div id="country_check_box_div" class="row no_row_margin">
                 {% for data in countries %}
-                    <div class="radio_button_input_div form-check form-check-inline">
-                        <input onclick="countryRadioOnSelect(this.value)" name="optionsRadios1" type="radio"
-                               data-toggle="radio"
-                               class="custom-radio vertical_align_middle"
-                               id="radio_input_{{ data.id }}" value="{{ data.id }}">
-                        <label class="radio custom_radio_label option_font_size vertical_align_middle"
-                               for="radio_input_{{ data.id }}"> {{ data.full_name }}</label>
+                    <div class="checkbox_input_div form-check form-check-inline">
+                        <input onclick="countryCheckboxOnChange(this)" class="form-check-input checkbox_input"
+                               type="checkbox"
+                               id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
+                        <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
                     </div>
                 {% endfor %}
             </div>
@@ -153,8 +151,9 @@
         setSourceEnvSelected(source_env_id, source_env_name);
         setTargetEnvSelected(target_env_id, target_env_name);
         //check country
-        setCountryChecked('{{ country.id }}');
-        $('#radio_input_' + select_country_id).radiocheck('check');
+        '{% for country in scheduler_data.country_list %}'
+            setCountryChecked('{{ country.id }}');
+            '{% endfor %}'
 
         //selected action
         '{% for action in scheduler_data.action_list %}'
