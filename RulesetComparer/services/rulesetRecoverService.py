@@ -16,13 +16,12 @@ def filter_backup_list(json_data):
         backup_ruleset_path = get_ruleset_backup_path(parser.environment.name,
                                                       parser.country.name,
                                                       date_folder_name)
-        # rulesets_list = get_files_list_in_path(backup_ruleset_path, "pre.json")
         pre_json = load_auto_sync_pre_json_file(backup_ruleset_path)
         backup_ruleset_object = RecoverFilterBackupObjBuilder(date_folder_name, pre_json, parser.filter_keys)
         if backup_ruleset_object.has_filter_keys:
             backup_ruleset_objects.append(backup_ruleset_object.get_data())
 
-    result_data = RecoverFilterObjBuilder(pre_json, backup_ruleset_objects).get_data()
+    result_data = RecoverFilterObjBuilder(parser.country, parser.environment, backup_ruleset_objects).get_data()
     return result_data
 
 

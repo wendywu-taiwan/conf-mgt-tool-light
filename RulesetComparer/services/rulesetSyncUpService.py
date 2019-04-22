@@ -1,5 +1,6 @@
 from django.template.loader import render_to_string
 
+from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.b2bRequestTask.rulesetsSyncUpTask import RulesetsSyncUpTask
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.mailSender import MailSender
@@ -15,6 +16,8 @@ from RulesetComparer.b2bRequestTask.clearRulesetTask import ClearRulesetTask
 from RulesetComparer.dataModel.dataParser.createRulesetSyncSchedulerParser import CreateRulesetSyncSchedulerParser
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncPreDataBuilder import RulesetSyncPreDataBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncResultDataBuilder import RulesetSyncResultDataBuilder
+from RulesetComparer.dataModel.dataParser.recoverRulesetsParser import RecoverRulesetsParser
+from RulesetComparer.dataModel.dataBuilder.recoverRulesetsResultBuilder import RecoverRulesetsResultBuilder
 from RulesetComparer.models import RulesetSyncUpScheduler
 from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
 
@@ -217,6 +220,77 @@ def update_rulesets(country, parser, sync_up_report_json):
 
 
 def delete_rulesets():
+    pass
+
+
+def sync_up_rulesets_from_backup(json_data):
+    failed_rulesets_list = []
+    create_rulesets_list = []
+    update_rulesets_list = []
+    delete_rulesets_list = []
+
+    parser = RecoverRulesetsParser(json_data)
+    environment = parser.environment
+    country = parser.country
+    # do delete to created rulesets
+    delete_rulesets_with_backup()
+    # do create to deleted rulesets
+    result_obj = create_rulesets_with_backup(environment, country, parser.select_folder_name, parser.deleted_rulesets)
+    failed_rulesets_list.extend(result_obj.failed_list)
+    create_rulesets_list.extend(result_obj.result_list)
+    # do updated to updated rulesets
+    result_obj = update_rulesets_with_backup(environment, country, parser.select_folder_name, parser.updated_rulesets)
+    failed_rulesets_list.extend(result_obj.failed_list)
+    update_rulesets_list.extend(result_obj.result_list)
+
+    builder = RecoverRulesetsResultBuilder(environment, country, failed_rulesets_list, create_rulesets_list,
+                                           update_rulesets_list, delete_rulesets_list)
+
+    return builder.get_data()
+
+
+def create_rulesets_with_backup(environment, country, select_folder_name, rulesets):
+    result_list = []
+    failed_list = []
+    for ruleset_name in rulesets:
+        ruleset_xml = load_backup_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
+        result_obj = CreateRulesetTask(environment, country, ruleset_name, ruleset_xml).get_result_data()
+        set_result_object(result_obj, result_list, failed_list)
+    return RulesetsSyncResultObject(result_list, failed_list)
+
+
+def update_rulesets_with_backup(environment, country, select_folder_name, rulesets):
+    try:
+        result_list = []
+        failed_list = []
+        if len(rulesets) == 0:
+            return RulesetsSyncResultObject(result_list, failed_list)
+
+        # download current rulesets from environment
+        DownloadRulesetsTask(environment.id, country.id, rulesets, select_folder_name)
+        for ruleset_name in rulesets:
+            source_xml = load_backup_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
+            target_xml = load_server_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
+
+            # compare ruleset to know the differences
+            diff_json = RulesetComparer(ruleset_name, source_xml, target_xml, is_module=False).get_data_by_builder()
+            target_only_rules_count = diff_json["target_env_only_rules"][KEY_COUNT]
+
+            if target_only_rules_count > 0:
+                # clear ruleset first to remove deleted ruleset at target env
+                result_obj = ClearRulesetTask(environment, country, ruleset_name).get_result_data()
+                if result_obj.get("exception") is not None:
+                    continue
+
+            result_obj = UpdateRulesetTask(environment, country, ruleset_name, source_xml, target_xml,
+                                           diff_json).get_result_data()
+            set_result_object(result_obj, result_list, failed_list)
+        return RulesetsSyncResultObject(result_list, failed_list)
+    except Exception as e:
+        raise e
+
+
+def delete_rulesets_with_backup():
     pass
 
 

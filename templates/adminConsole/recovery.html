@@ -63,13 +63,16 @@
     <div id="back_up_data_div"></div>
     <script>
         onEnvironmentSelected = function (environment_id) {
-            console.log("onEnvironmentSelected, environment_id =" + environment_id);
             filterCountries(environment_id, "{% url 'recover-filter-environment-page' %}");
         };
 
         filterBtnOnClick = function () {
             filterBackupRules("{% url 'recover-filter-backup-list-page' %}");
         };
+
+        applyButtonOnClick = function () {
+            applyRulesetsRecover("{% url 'recover-rulesets' %}");
+        }
 
     </script>
 {% endblock %}

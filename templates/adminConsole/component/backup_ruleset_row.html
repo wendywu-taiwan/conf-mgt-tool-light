@@ -3,7 +3,7 @@
     <div id="row_checkbox_div"
          class="content_text checkbox_space_set checkbox_rule_name check_width no-col-padding vertical_align_middle">
         <input type="checkbox" data-toggle="switch" name="{{ ruleset }}" data-on-color="primary"
-               data-off-color="default" id="switch-03"/>
+               data-off-color="default" id="switch-03" onclick="onSelectedRules(this,'{{ ruleset }}','{{ action }}')"/>
     </div>
     <div id="row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
         {{ ruleset }}

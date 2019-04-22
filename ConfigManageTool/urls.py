@@ -60,8 +60,8 @@ admin_console_ruleset_pattern = [
          name="recover-filter-environment-page"),
     path('recover/filter/backup/list', views.admin_console_recover_ruleset_backup_list_page,
          name="recover-filter-backup-list-page"),
-    path('recover/filter/<str:environment_id>/<str:country_id>', views.admin_console_recover_ruleset_filtered_page,
-         name="filter-backup-rulesets"),
+    path('recover/rulesets', views.recover_rulesets,
+         name="recover-rulesets"),
 ]
 
 admin_console_pattern = [

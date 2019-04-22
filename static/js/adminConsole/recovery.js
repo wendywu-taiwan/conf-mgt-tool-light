@@ -4,15 +4,15 @@ $(function () {
     $("#select-env-list li").click(function () {
         $("#select-env-btn:first-child").text($(this).text());
         $("#select-env-btn:first-child").val($(this).val());
-        console.log("environment select:" + $(this).val());
         onEnvironmentSelected($(this).val());
     });
 
     initCountryDropDown();
 });
 
-let envId, countryId, currentSeletedDateFolder;
+let envId, countryId, backupFolderName;
 let filterKeyList = [];
+let rulesetsMap = {};
 
 initCountryDropDown = function () {
     $("#select-country-list li").click(function () {
@@ -38,6 +38,7 @@ filterCountries = function (environmentId, postUrl) {
 };
 
 filterBackupRules = function (postUrl) {
+    showWaitingDialog();
     checkFilterValid();
 
     let validData = checkFilterValid();
@@ -52,26 +53,15 @@ filterBackupRules = function (postUrl) {
 
     doPOST(postUrl, post_body, function (response) {
             successDialog("filter success", function () {
-                let filterEnvCountryDiv = document.getElementById('filter_env_country_div');
                 let backupDataDiv = document.getElementById('back_up_data_div');
-                // filterEnvCountryDiv.style.display = 'none';
                 backupDataDiv.style.display = 'block';
                 backupDataDiv.innerHTML = response;
-                // if (response.includes("No matching result")) {
-                //     downloadAllBtn.style.display = 'none';
-                // } else {
-                //     downloadAllBtn.style.display = 'block';
-                // }
-
-                // filterEnvCountryDiv.insertAdjacentHTML('afterend', response);
             });
         }, function (response) {
             console.log(response);
             showErrorDialog("filter error")
         }
-    )
-    ;
-
+    );
 };
 
 
@@ -111,6 +101,44 @@ filterRules = function (postUrl) {
     ;
 };
 
+
+applyRulesetsRecover = function (postUrl) {
+    let ruleset, rulesetAction;
+    let createdRulesets = [];
+    let updatedRulesets = [];
+    let deletedRulesets = [];
+
+    for (ruleset in rulesetsMap) {
+        rulesetAction = rulesetsMap[ruleset];
+        if (rulesetAction == "created") {
+            createdRulesets.push(ruleset);
+        } else if (rulesetAction == "updated") {
+            updatedRulesets.push(ruleset);
+        } else {
+            deletedRulesets.push(ruleset);
+        }
+    }
+
+    let post_body = {
+        "environment_id": envId,
+        "country_id": countryId,
+        "select_folder_name": backupFolderName,
+        "created_rulesets": createdRulesets,
+        "updated_rulesets": updatedRulesets,
+        "deleted_rulesets": deletedRulesets
+    };
+
+    doPOST(postUrl, post_body, function (response) {
+            successDialog("recover success", function () {
+            });
+        }, function (response) {
+            console.log(response);
+            showErrorDialog("recover error")
+        }
+    )
+    ;
+};
+
 checkFilterValid = function () {
     envId = $("#select-env-btn:first-child").val();
     countryId = $("#select-country-btn:first-child").val();
@@ -127,12 +155,26 @@ checkFilterValid = function () {
     return true;
 };
 
+function onSelectedRules(inputItem, rulesetName, action) {
+    rulesetsMap[rulesetName] = action;
+    if (inputItem.checked) {
+        rulesetsMap[rulesetName] = action;
+    } else {
+        delete rulesetsMap[rulesetName];
+    }
+
+    for (var a in rulesetsMap) {
+        console.log(a);
+        console.log(rulesetsMap[a]);
+    }
+}
+
 function getSelectedRules() {
     let selectedRuleNames = [];
     $('#row_checkbox_div input:checked').each(function () {
         selectedRuleNames.push($(this).attr('name'));
     });
-    console.log("selectedRuleNames:"+selectedRuleNames);
+    console.log("selectedRuleNames:" + selectedRuleNames);
     return selectedRuleNames;
 }
 
@@ -146,6 +188,7 @@ onClickBackupFolderRow = function (selectedItem) {
         rowElementId = rowElement.id;
         rowElementRulesetDiv = document.getElementById(rowElementId + "_rulesets_div");
         if (rowElementId == selectedItemId) {
+            backupFolderName = rowElementId;
             rowElementRulesetDiv.style.display = 'block';
             rowElement.style.backgroundColor = '#edf9f6';
         } else {

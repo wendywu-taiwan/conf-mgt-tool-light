@@ -39,6 +39,13 @@ def load_git_ruleset_with_name(country_name, rule_set_name):
     return rule_set_file
 
 
+def load_backup_ruleset_with_name(env_name, country_name, selected_folder_name, ruleset_name):
+    backup_folder_path = get_ruleset_backup_path(env_name, country_name, selected_folder_name)
+    file_name_with_path = get_rule_set_full_file_name(backup_folder_path, ruleset_name)
+    ruleset_file = load_file(file_name_with_path)
+    return ruleset_file
+
+
 def build_ruleset_xml(rule_model_list):
     ruleset_file_xml = etree.Element('BRERuleListType')
     for rule in rule_model_list:

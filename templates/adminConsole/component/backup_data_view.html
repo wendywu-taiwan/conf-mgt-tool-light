@@ -11,7 +11,8 @@
         </div>
         <div id="content_rows_div">
             {% for data in backup_rulesets_list %}
-                <div id="{{ data.folder_name }}" style="background-color: white" class="content_row_div row no-row-margin"
+                <div id="{{ data.folder_name }}" style="background-color: white"
+                     class="content_row_div row no-row-margin"
                      onclick="onClickBackupFolderRow(this)">
                     <div id="title_date_div"
                          class="content_text date_width vertical_align_middle">{{ data.date_time }}</div>
@@ -39,7 +40,7 @@
                 <div class="div_title_description_text">{{ data.date_time }}</div>
             </div>
             <div id="apply_button" class="col-1 no-col-padding vertical_align_middle">
-                <button class="btn btn-primary btn-font-14" onclick="getSelectedRules()">Apply</button>
+                <button class="btn btn-primary btn-font-14" onclick="applyButtonOnClick()">Apply</button>
             </div>
         </div>
         <div id="rulesets_list_div">
@@ -49,13 +50,19 @@
                 <div id="title_action" class="title_text action_width"></div>
             </div>
             {% for ruleset in data.created_rulesets.rulesets_array %}
-                {% include 'backup_ruleset_row.html' %}
+                {% with "created" as action %}
+                    {% include 'backup_ruleset_row.html' %}
+                {% endwith %}
             {% endfor %}
             {% for ruleset in data.updated_rulesets.rulesets_array %}
-                {% include 'backup_ruleset_row.html' %}
+                {% with "updated" as action %}
+                    {% include 'backup_ruleset_row.html' %}
+                {% endwith %}
             {% endfor %}
             {% for ruleset in data.deleted_rulesets.rulesets_array %}
-                {% include 'backup_ruleset_row.html' %}
+                {% with "deleted" as action %}
+                    {% include 'backup_ruleset_row.html' %}
+                {% endwith %}
             {% endfor %}
         </div>
     </div>

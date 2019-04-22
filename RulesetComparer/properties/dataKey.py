@@ -140,24 +140,35 @@ KEY_SOURCE_ENV_ONLY_RULESETS = "source_env_only_rulesets"
 KEY_TARGET_ENV_ONLY_RULESETS = "target_env_only_rulesets"
 KEY_DIFFERENT_RULESETS = "different_rulesets"
 
-# RulesetFilterBackupObjectBuilder
+# RulesetFilterBackupObjectBuilder, RecoverRulesetsResultBuilder, RulesetSyncResultDataBuilder
 KEY_FOLDER_NAME = "folder_name"
 KEY_BACKUP_RULESETS_LIST = "backup_rulesets_list"
 KEY_CREATED_RULESETS = "created_rulesets"
 KEY_UPDATED_RULESETS = "updated_rulesets"
 KEY_DELETED_RULESETS = "deleted_rulesets"
+KEY_ACTION = "action"
+KEY_CREATED = "created"
+KEY_UPDATED = "updated"
+KEY_DELETED = "deleted"
+KEY_FAILED_RULESETS = "failed_rulesets"
+
+# recoverRulesetsParser
+KEY_SELECT_FOLDER_NAME = "select_folder_name"
 
 # common
 KEY_COUNTRY = "country"
 KEY_COUNTRIES = "countries"
 KEY_ENVIRONMENT = "environment"
 KEY_ENVIRONMENTS = "environments"
+KEY_ENVIRONMENT_ID = "environment_id"
+KEY_COUNTRY_ID = "country_id"
 KEY_NAME = "name"
 KEY_COMPARE_HASH_KEY = "compare_hash_key"
 KEY_TASK_ID = "task_id"
 KEY_DATE_TIME = "date_time"
 KEY_COUNT = "count"
 KEY_RULESETS = "rulesets"
+KEY_UPDATED_TIME = "updated_time"
 
 # environment name
 INT2_NAME = "INT2"
