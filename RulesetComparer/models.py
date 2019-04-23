@@ -253,7 +253,8 @@ class RulesetSyncUpSchedulerManager(models.Manager):
                            interval_hour=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
-                           backup=backup)
+                           backup=backup,
+                           enable=1)
 
         for country in country_list:
             task.country_list.add(country)
@@ -286,6 +287,12 @@ class RulesetSyncUpSchedulerManager(models.Manager):
         task.save()
         return task
 
+    def update_task_status(self, task_id, enable):
+        task = self.get(id=task_id)
+        task.enable = enable
+        task.save()
+        return task
+
 
 class RulesetSyncUpScheduler(models.Model):
     id = models.AutoField(primary_key=True)
@@ -299,6 +306,7 @@ class RulesetSyncUpScheduler(models.Model):
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
     backup = models.IntegerField()
+    enable = models.IntegerField(default=1)
 
     objects = RulesetSyncUpSchedulerManager()
 

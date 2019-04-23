@@ -16,19 +16,20 @@ class RulesetSyncSchedulerBuilder(BaseBuilder):
         try:
             self.__build_scheduler_json__()
         except Exception:
-            self.result_dict["exception"] = self.scheduler
+            self.result_dict[KEY_EXCEPTION] = self.scheduler
 
     def __build_scheduler_json__(self):
-        self.result_dict["task_id"] = self.scheduler.id
-        self.result_dict["source_environment"] = EnvironmentSerializer(self.scheduler.source_environment).data
-        self.result_dict["target_environment"] = EnvironmentSerializer(self.scheduler.target_environment).data
-        self.result_dict["country_list"] = CountrySerializer(self.scheduler.country_list, many=True).data
-        self.result_dict["action_list"] = self.get_action_list()
-        self.result_dict["receiver_list"] = self.get_mail_list()
-        self.result_dict["interval_hour"] = self.scheduler.interval_hour
-        self.result_dict["last_proceed_time"] = self.get_format_time(self.scheduler.last_proceed_time)
-        self.result_dict["next_proceed_time"] = self.get_format_time(self.scheduler.next_proceed_time)
-        self.result_dict["backup"] = bool(self.scheduler.backup)
+        self.result_dict[KEY_TASK_ID] = self.scheduler.id
+        self.result_dict[KEY_SOURCE_ENV] = EnvironmentSerializer(self.scheduler.source_environment).data
+        self.result_dict[KEY_TARGET_ENV] = EnvironmentSerializer(self.scheduler.target_environment).data
+        self.result_dict[KEY_COUNTRY_LIST] = CountrySerializer(self.scheduler.country_list, many=True).data
+        self.result_dict[ACTION_LIST] = self.get_action_list()
+        self.result_dict[KEY_RECEIVER_LIST] = self.get_mail_list()
+        self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
+        self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
+        self.result_dict[KEY_NEXT_PROCEED_TIME] = self.get_format_time(self.scheduler.next_proceed_time)
+        self.result_dict[KEY_BACKUP] = bool(self.scheduler.backup)
+        self.result_dict[KEY_ENABLE] = bool(self.scheduler.enable)
 
     def get_mail_list(self):
         try:

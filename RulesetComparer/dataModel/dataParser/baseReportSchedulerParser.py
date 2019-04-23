@@ -85,3 +85,10 @@ class BaseReportSchedulerParser:
                     return True
                 else:
                     return False
+
+    @staticmethod
+    def parse_boolean_to_int(boolean):
+        if boolean:
+            return 1
+        else:
+            return 0

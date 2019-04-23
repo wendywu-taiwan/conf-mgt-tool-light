@@ -42,7 +42,6 @@ ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
 SOURCE_ENVIRONMENT = 'source_environment'
 TARGET_ENVIRONMENT = 'target_environment'
-ACTION_LIST = 'action_list'
 
 # view.rule_download_page
 RULE_NAME_LIST = 'rule_name_list'
@@ -155,6 +154,15 @@ KEY_FAILED_RULESETS = "failed_rulesets"
 # recoverRulesetsParser
 KEY_SELECT_FOLDER_NAME = "select_folder_name"
 
+# RulesetSyncSchedulerBuilder
+KEY_COUNTRY_LIST = "country_list"
+KEY_RECEIVER_LIST = "receiver_list"
+KEY_INTERVAL_HOUR = "interval_hour"
+KEY_LAST_PROCEED_TIME ="last_proceed_time"
+KEY_NEXT_PROCEED_TIME = "next_proceed_time"
+KEY_BACKUP = "backup"
+KEY_ENABLE = "enable"
+
 # common
 KEY_COUNTRY = "country"
 KEY_COUNTRIES = "countries"
@@ -169,6 +177,8 @@ KEY_DATE_TIME = "date_time"
 KEY_COUNT = "count"
 KEY_RULESETS = "rulesets"
 KEY_UPDATED_TIME = "updated_time"
+ACTION_LIST = 'action_list'
+KEY_EXCEPTION = "exception"
 
 # environment name
 INT2_NAME = "INT2"

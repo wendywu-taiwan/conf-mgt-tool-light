@@ -32,12 +32,8 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
     def set_task_id(self, task_id):
         self.task_id = task_id
 
-    @staticmethod
-    def parse_boolean_to_int(boolean):
-        if boolean:
-            return 1
-        else:
-            return 0
+    def parse_boolean_to_int(self, boolean):
+        return super().parse_boolean_to_int(boolean)
 
     def parse_country_id_list(self, country_id_list):
         return super().parse_country_id_list(country_id_list)

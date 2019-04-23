@@ -58,7 +58,7 @@ def update_ruleset_test():
         raise e
 
 
-def sync_up_rulesets_test(json_data):
+def sync_up_rulesets_without_scheduler(json_data):
     parser = CreateRulesetSyncSchedulerParser(json_data)
     for country in parser.country_list:
         result_data = sync_up_rulesets(parser, country)
@@ -102,7 +102,18 @@ def update_scheduler(json_data):
 
 def delete_scheduler(json_data):
     task_id = json_data.get(KEY_TASK_ID)
-    RulesetSyncUpScheduler.objects.filter(id=task_id).delete()
+    RulesetSyncUpScheduler.objects.get(id=task_id).delete()
+
+
+def update_scheduler_status(json_data):
+    task_id = json_data.get(KEY_TASK_ID)
+    enable = json_data.get(KEY_ENABLE)
+    if enable:
+        enable = 1
+    else:
+        enable = 0
+    task = RulesetSyncUpScheduler.objects.update_task_status(task_id, enable)
+    return task
 
 
 def sync_up_rulesets(parser, country):

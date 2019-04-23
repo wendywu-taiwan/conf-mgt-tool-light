@@ -21,18 +21,31 @@ class RulesetsSyncUpTask:
         info_log(self.LOG_CLASS, '======== ruleset sync up task start ========')
         try:
             if self.task_runnable():
-                for country in self.parser.country_list:
-                    result_data = rulesetSyncUpService.sync_up_rulesets(self.parser, country)
-                    rulesetSyncUpService.send_mail(result_data)
+                if self.task_enable():
+                    info_log(self.LOG_CLASS, "task enable")
+                    for country in self.parser.country_list:
+                        result_data = rulesetSyncUpService.sync_up_rulesets(self.parser, country)
+                        rulesetSyncUpService.send_mail(result_data)
+                else:
+                    info_log(self.LOG_CLASS, "task disable")
             else:
                 error_log(self.LOG_CLASS + " remove task, id:" + str(self.parser.task_id))
                 self.scheduled_job.remove()
         except Exception as e:
             raise e
 
+    # check if task has been removed
     def task_runnable(self):
         task_count = RulesetSyncUpScheduler.objects.filter(id=self.parser.task_id).count()
         if task_count > 0:
+            return True
+        else:
+            return False
+
+    # check task status is enable or disable
+    def task_enable(self):
+        task = RulesetSyncUpScheduler.objects.get(id=self.parser.task_id)
+        if task.enable == 1:
             return True
         else:
             return False
