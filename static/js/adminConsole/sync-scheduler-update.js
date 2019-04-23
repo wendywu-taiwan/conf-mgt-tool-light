@@ -17,7 +17,6 @@ let receivers = [];
 
 
 function setCountryChecked(country_id) {
-    console.log("setCountryChecked, countryId:"+country_id);
     countryCheckboxOnClick(country_id);
     $("#checkbox_input_" + country_id).prop("checked", true);
 };
@@ -53,7 +52,10 @@ function setReceivers() {
     }
 }
 
-function setBackupCheck() {
-    backup = true;
-    $("#backup_yes_input").prop("checked", true);
+function setBackupCheck(backup) {
+    if (backup == "True") {
+        $("#backup_yes_input").prop("checked", true);
+    } else {
+        $("#backup_yes_input").prop("checked", false);
+    }
 }

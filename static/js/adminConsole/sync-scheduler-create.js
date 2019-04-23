@@ -29,9 +29,41 @@ function init(module_id, post_url, list_url) {
     taskListUrl = list_url;
 }
 
+runTask = function (postUrl) {
+    showWaitingDialog();
+    let validData = checkInputValid(true);
+    if (!validData)
+        return;
+
+    let post_body = {
+        "source_environment_id": sourceEnvId,
+        "target_environment_id": targetEnvId,
+        "module_id": moduleId,
+        "country_list": countryList,
+        "action_list": actionList,
+        "receiver_list": mailList,
+        "interval_hour": 0,
+        "next_proceed_time": getCurrentDataTime(),
+        "backup": backup
+    };
+
+    doPOST(postUrl, post_body, function (response) {
+        if (response == null || response["status_code"] != 200) {
+            showErrorDialog(response["message"])
+        } else {
+            successDialog("run task success", function () {
+                console.log(response);
+            });
+        }
+    }, function (response) {
+        console.log(response);
+        showErrorDialog(response["message"])
+    });
+};
+
 createTask = function () {
     showWaitingDialog();
-    let validData = checkInputValid();
+    let validData = checkInputValid(false);
     if (!validData)
         return;
 
@@ -47,22 +79,23 @@ createTask = function () {
         "backup": backup
     };
 
-    console.log(post_body);
-
     doPOST(postUrl, post_body, function (response) {
-        successDialog("create task success", function () {
-            console.log(response);
-            window.location = taskListUrl;
-        });
+        if (response == null || response["status_code"] != 200) {
+            showErrorDialog(response["message"])
+        } else {
+            successDialog("create task success", function () {
+                console.log(response);
+                window.location = taskListUrl;
+            });
+        }
     }, function (response) {
-        console.log(response);
-        showErrorDialog("create task fail")
+        showErrorDialog(response["message"]);
     });
 };
 
 updateTask = function (task_id) {
     showWaitingDialog();
-    let validData = checkInputValid();
+    let validData = checkInputValid(false);
     if (!validData)
         return;
 
@@ -79,17 +112,20 @@ updateTask = function (task_id) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-        successDialog("update task success", function () {
-            console.log(response);
-            window.location = taskListUrl;
-        });
+        if (response == null || response["status_code"] != 200) {
+            showErrorDialog(response["message"])
+        } else {
+            successDialog("update task success", function () {
+                console.log(response);
+                window.location = taskListUrl;
+            });
+        }
     }, function (response) {
-        console.log(response);
-        showErrorDialog("update task fail")
+        showErrorDialog(response["message"])
     });
 };
 
-checkInputValid = function () {
+checkInputValid = function (runNow) {
     sourceEnvId = $("#select_source_env_btn:first-child").val();
     targetEnvId = $("#select_target_env_btn:first-child").val();
     intervalHour = $("#hour_input").val();
@@ -115,7 +151,7 @@ checkInputValid = function () {
         return false;
     }
 
-    if (!intervalHour) {
+    if (!runNow && !intervalHour) {
         showWarningDialog("please enter hour interval");
         return false;
     } else if (Number(intervalHour) % 1 != 0) {
@@ -123,7 +159,7 @@ checkInputValid = function () {
         return false;
     }
 
-    if (!startDateTime) {
+    if (!runNow && !startDateTime) {
         showWarningDialog("please enter daily start time");
         return false;
     }
@@ -157,7 +193,6 @@ countryCheckboxOnChange = function (checkboxItem) {
 };
 
 countryCheckboxOnClick = function (countryId) {
-    console.log("countryCheckboxOnClick, countryId:"+countryId);
     countryList.push(countryId);
 };
 

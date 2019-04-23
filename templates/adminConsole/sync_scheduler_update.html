@@ -12,8 +12,12 @@
         <div id="header_div" class="row">
             <div class="page_title_div">Ruleset Sync Task</div>
             <div id="action_button_div" class="row no_row_margin">
+                <div id="run_now_button_div">
+                    <a id="run_now_btn" class="btn btn-block btn-lg btn-warning" onclick="runNowBtnOnClick()">Execute
+                    </a>
+                </div>
                 <div id="create_button_div">
-                    <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="createBtnOnClick()">SAVE
+                    <a id="create_btn" class="btn btn-block btn-lg btn-primary" onclick="createBtnOnClick()">Save
                     </a>
                 </div>
             </div>
@@ -170,10 +174,13 @@
             addReceivers('{{ receiver }}');
             '{% endfor %}'
         setReceivers();
-        setBackupCheck();
+        setBackupCheck('{{ scheduler_data.backup }}');
 
         createBtnOnClick = function () {
-            updateTask();
+            updateTask('{{ scheduler_data.task_id }}');
+        };
+        runNowBtnOnClick = function () {
+            runTask("{% url 'run-rulesets-sync-job' %}");
         }
     </script>
 {% endblock %}

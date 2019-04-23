@@ -534,11 +534,25 @@ def get_rulesets_sync_jobs(request):
         return JsonResponse(result)
 
 
+def run_rulesets_sync_job(request):
+    try:
+
+        request_json = get_post_request_json(request)
+        rulesetSyncUpService.sync_up_rulesets_without_scheduler(request_json)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
         scheduler = rulesetSyncUpService.create_scheduler(request_json)
-        result = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
@@ -550,7 +564,21 @@ def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
         scheduler = rulesetSyncUpService.update_scheduler(request_json)
-        result = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_rulesets_sync_job_status(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetSyncUpService.update_scheduler_status(request_json)
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
