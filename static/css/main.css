@@ -363,3 +363,7 @@ html, body {
     background-color: white;
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
+
+.cursor_pointer {
+    cursor: pointer;
+}

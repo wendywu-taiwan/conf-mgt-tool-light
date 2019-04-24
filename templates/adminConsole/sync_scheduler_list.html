@@ -84,11 +84,11 @@
                     </div>
                     <div id="task_status_column_div" class="status_div">
                         {% if task.enable %}
-                            <div id="task_status_in_progress" onclick="stopScheduler('{{ task.task_id }}')">In
+                            <div id="task_status_in_progress" class="cursor_pointer" onclick="stopScheduler('{{ task.task_id }}')">In
                                 Progress
                             </div>
                         {% else %}
-                            <div id="task_status_stop" onclick="restartScheduler('{{ task.task_id }}')">Stop</div>
+                            <div id="task_status_stop" class="cursor_pointer" onclick="restartScheduler('{{ task.task_id }}')">Stop</div>
                         {% endif %}
                     </div>
                     <div id="task_action_column_div" class="vertical_align_middle action_div_width row no_row_margin">

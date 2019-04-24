@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from rest_framework.utils import json
 from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
     RulesetSyncUpScheduler
+from RulesetComparer.utils.threadManager import *
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
@@ -538,7 +539,7 @@ def run_rulesets_sync_job(request):
     try:
 
         request_json = get_post_request_json(request)
-        rulesetSyncUpService.sync_up_rulesets_without_scheduler(request_json)
+        run_in_background(func=rulesetSyncUpService.sync_up_rulesets_without_scheduler, parameter=request_json)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
