@@ -162,6 +162,8 @@ KEY_LAST_PROCEED_TIME ="last_proceed_time"
 KEY_NEXT_PROCEED_TIME = "next_proceed_time"
 KEY_BACKUP = "backup"
 KEY_ENABLE = "enable"
+KEY_BACKUP_YES = 1
+KEY_BACKUP_NO = 0
 
 # common
 KEY_COUNTRY = "country"

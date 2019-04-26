@@ -49,6 +49,5 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
         local_date_time = self.db_time_to_date_time(start_date_time)
         return super().get_local_time_shift_days(local_date_time)
 
-    @staticmethod
-    def get_mail_list(mail_list):
-        return ast.literal_eval(mail_list)
+    def get_mail_list(self, receiver_list):
+        return super().get_mail_list(receiver_list)

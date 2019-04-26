@@ -61,8 +61,12 @@ def update_ruleset_test():
 def sync_up_rulesets_without_scheduler(json_data):
     parser = CreateRulesetSyncSchedulerParser(json_data)
     for country in parser.country_list:
-        result_data = sync_up_rulesets(parser, country)
-        send_mail(result_data)
+        try:
+            result_data = sync_up_rulesets(parser, country)
+            send_mail(result_data)
+        except Exception as e:
+            error_log(e)
+            error_log(traceback.format_exc())
 
 
 def get_schedulers():
@@ -86,18 +90,37 @@ def create_scheduler(json_data):
                                                                     parser.utc_time,
                                                                     parser.backup)
         parser.set_task_id(sync_scheduler.id)
-        task = RulesetsSyncUpTask(parser)
-        scheduler = CustomJobScheduler(task.listener)
-        job = scheduler.add_hours_job(task.run_task, parser.interval_hour, parser.local_time)
-        task.set_scheduled_job(job)
+        add_task_to_scheduler(sync_scheduler.id, parser)
         return sync_scheduler
     except Exception as e:
         raise e
 
 
 def update_scheduler(json_data):
-    delete_scheduler(json_data)
-    return create_scheduler(json_data)
+    try:
+        parser = CreateRulesetSyncSchedulerParser(json_data)
+        sync_scheduler = RulesetSyncUpScheduler.objects.update_task(parser.task_id,
+                                                                    parser.source_environment_id,
+                                                                    parser.target_environment_id,
+                                                                    parser.country_list,
+                                                                    parser.action_list,
+                                                                    parser.receiver_list,
+                                                                    parser.interval_hour,
+                                                                    parser.utc_time,
+                                                                    parser.backup)
+        add_task_to_scheduler(sync_scheduler.id, parser)
+        return sync_scheduler
+    except Exception as e:
+        raise e
+
+
+def add_task_to_scheduler(db_scheduler_id, parser):
+    task = RulesetsSyncUpTask(parser)
+    scheduler = CustomJobScheduler(task.listener)
+    job = scheduler.add_hours_job(task.run_task, parser.interval_hour, parser.local_time)
+    # save job id to database
+    RulesetSyncUpScheduler.objects.update_job_id(db_scheduler_id, job.id)
+    task.set_scheduled_job(job)
 
 
 def delete_scheduler(json_data):
@@ -124,7 +147,7 @@ def sync_up_rulesets(parser, country):
     if sync_up_report_json is None:
         raise Exception("can not generate ruleset sync pre data")
 
-    if parser.backup:
+    if parser.backup == KEY_BACKUP_YES:
         backup_rulesets(sync_up_report_json)
 
     failed_rulesets_list = []
