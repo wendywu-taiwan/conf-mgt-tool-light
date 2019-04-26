@@ -56,7 +56,6 @@ class CompareRuleListTask:
             self.execute()
             self.save_result_file()
         except Exception as e:
-            error_log(traceback.format_exc())
             raise e
 
     def check_environment(self):
@@ -164,6 +163,10 @@ class CompareRuleListTask:
         base_env_data = EnvironmentSerializer(Environment.objects.get(id=self.baseEnv.id)).data
         compare_env_data = EnvironmentSerializer(Environment.objects.get(id=self.comparedEnv.id)).data
         country_data = CountrySerializer(Country.objects.get(id=self.country.id)).data
+        if self.base_env_only_rules_count == 0 and self.compare_env_only_rules_count == 0 and self.different_rules_count == 0:
+            has_changes = False
+        else:
+            has_changes = True
 
         compare_list_data = {
             key.COMPARE_RULE_COMPARE_HASH_KEY: self.compare_hash_key,
@@ -177,7 +180,9 @@ class CompareRuleListTask:
             key.COMPARE_RESULT_MODIFY_FILE_COUNT: len(self.different_rulesets),
             key.COMPARE_RESULT_ADD_RULE_COUNT: self.compare_env_only_rules_count,
             key.COMPARE_RESULT_REMOVE_RULE_COUNT: self.base_env_only_rules_count,
-            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.different_rules_count
+            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.different_rules_count,
+            key.COMPARE_RESULT_HAS_CHANGES: has_changes
+
         }
 
         compare_result_data = {

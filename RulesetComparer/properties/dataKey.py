@@ -158,7 +158,7 @@ KEY_SELECT_FOLDER_NAME = "select_folder_name"
 KEY_COUNTRY_LIST = "country_list"
 KEY_RECEIVER_LIST = "receiver_list"
 KEY_INTERVAL_HOUR = "interval_hour"
-KEY_LAST_PROCEED_TIME ="last_proceed_time"
+KEY_LAST_PROCEED_TIME = "last_proceed_time"
 KEY_NEXT_PROCEED_TIME = "next_proceed_time"
 KEY_BACKUP = "backup"
 KEY_ENABLE = "enable"
@@ -166,6 +166,7 @@ KEY_BACKUP_YES = 1
 KEY_BACKUP_NO = 0
 
 # common
+KEY_ID = "id"
 KEY_COUNTRY = "country"
 KEY_COUNTRIES = "countries"
 KEY_ENVIRONMENT = "environment"

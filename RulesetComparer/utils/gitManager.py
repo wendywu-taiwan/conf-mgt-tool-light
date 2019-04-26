@@ -68,7 +68,6 @@ class GitManager:
                 self.status = self.STATUS_NO_CHANGED
                 info_log(self.LOG_CLASS, "compare result : nothing change")
         except Exception as e:
-            error_log(self.LOG_CLASS, traceback.format_exc())
             raise e
 
     def check_branch_status(self):

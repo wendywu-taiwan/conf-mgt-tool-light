@@ -21,7 +21,7 @@ class RulesetsSyncUpTask:
         info_log(self.LOG_CLASS, '======== ruleset sync up task start , task id : %s ========' % self.parser.task_id)
         try:
             if not self.task_runnable():
-                error_log(self.LOG_CLASS + " remove task")
+                info_log(self.LOG_CLASS, "remove task")
                 self.scheduled_job.remove()
             elif not self.task_enable():
                 info_log(self.LOG_CLASS, "task disable")
@@ -81,8 +81,7 @@ class RulesetsSyncUpTask:
             error_log(self.LOG_CLASS + ' job crashed')
             error_log(event.exception)
         else:
-            info_log(self.LOG_CLASS, 'job worked')
-
+            info_log(self.LOG_CLASS, 'job done')
         try:
             time_zone = config.TIME_ZONE.get('asia_taipei')
             time_format = config.TIME_FORMAT.get('db_time_format')

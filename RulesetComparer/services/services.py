@@ -100,19 +100,18 @@ def download_rulesets(json_data):
 def create_report_scheduler(json_data):
     try:
         parser = CreateReportSchedulerTaskParser(json_data)
-        info_model = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
-                                                             parser.compare_env_id,
-                                                             parser.module_id,
-                                                             parser.country_list,
-                                                             parser.mail_content_type_list,
-                                                             parser.mail_list,
-                                                             parser.interval_hour,
-                                                             parser.utc_time)
+        report_scheduler = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
+                                                                   parser.compare_env_id,
+                                                                   parser.module_id,
+                                                                   parser.country_list,
+                                                                   parser.mail_content_type_list,
+                                                                   parser.mail_list,
+                                                                   parser.interval_hour,
+                                                                   parser.utc_time)
 
-        run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
-                             parser.country_list, parser.mail_content_type_list, parser.mail_list,
-                             parser.local_time, parser.interval_hour)
-        return info_model
+        parser.task_id = report_scheduler.id
+        run_report_scheduler(parser)
+        return report_scheduler
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
@@ -120,10 +119,17 @@ def create_report_scheduler(json_data):
 
 def update_report_scheduler(json_data):
     try:
-        parser = UpdateReportSchedulerTaskParser(json_data)
-        delete_scheduler(parser.task_id)
-        info_model = create_report_scheduler(json_data)
-        return info_model
+        parser = CreateReportSchedulerTaskParser(json_data)
+        report_scheduler = ReportSchedulerInfo.objects.update_task(parser.task_id,
+                                                                   parser.base_env_id,
+                                                                   parser.compare_env_id,
+                                                                   parser.country_list,
+                                                                   parser.mail_content_type_list,
+                                                                   parser.mail_list,
+                                                                   parser.interval_hour,
+                                                                   parser.utc_time)
+        run_report_scheduler(parser)
+        return report_scheduler
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
@@ -137,17 +143,11 @@ def delete_scheduler(task_id):
         raise e
 
 
-def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
-                         mail_content_type_list, mail_list, next_proceed_time, interval):
-    daily_task = DailyCompareReportTask(model_id,
-                                        base_env_id,
-                                        compare_env_id,
-                                        country_list,
-                                        mail_content_type_list,
-                                        mail_list)
-    info_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
+def run_report_scheduler(parser):
+    daily_task = DailyCompareReportTask(parser)
     scheduler = CustomJobScheduler(daily_task.scheduler_listener)
-    job = scheduler.add_hours_job(daily_task.run_task, interval, next_proceed_time)
+    job = scheduler.add_hours_job(daily_task.run_task, parser.interval_hour, parser.local_time)
+    ReportSchedulerInfo.objects.update_job_id(parser.task_id, job.id)
     daily_task.set_scheduled_job(job)
 
 
@@ -160,19 +160,11 @@ def restart_all_scheduler():
         scheduler_model_list = ReportSchedulerInfo.objects.all()
         # report scheduler
         for scheduler in scheduler_model_list:
-            country_list = scheduler.country_list.values("id")
-            mail_content_type_list = scheduler.mail_content_type_list.values("id")
+            country_list = scheduler.country_list.values(KEY_ID)
+            mail_content_type_list = scheduler.mail_content_type_list.values(KEY_ID)
             parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
-            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id,
-                                                                 parser.utc_time)
-            run_report_scheduler(parser.task_id,
-                                 parser.base_env_id,
-                                 parser.compare_env_id,
-                                 parser.country_list,
-                                 parser.mail_content_type_list,
-                                 parser.mail_list,
-                                 parser.local_time,
-                                 parser.interval_hour)
+            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
+            run_report_scheduler(parser)
 
         # clear zip and ruleset file scheduler
         clear_ruleset_task = ClearRulesetFilesTask()

@@ -208,7 +208,7 @@ class ReportSchedulerInfoManager(models.Manager):
         for country_id in country_list:
             task.country_list.add(country_id)
 
-        task.mail_content_list.clear()
+        task.mail_content_type_list.clear()
         for mail_content_type in mail_content_type_list:
             task.mail_content_type_list.add(mail_content_type)
 
@@ -219,6 +219,12 @@ class ReportSchedulerInfoManager(models.Manager):
         task = self.get(id=task_id)
         task.next_proceed_time = next_proceed_time
 
+        task.save()
+        return task
+
+    def update_job_id(self, task_id, job_id):
+        task = self.get(id=task_id)
+        task.job_id = job_id
         task.save()
         return task
 
@@ -236,6 +242,7 @@ class ReportSchedulerInfo(models.Model):
     interval_hour = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
+    job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField()
 
     objects = ReportSchedulerInfoManager()
