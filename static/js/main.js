@@ -97,3 +97,7 @@ function getCurrentDataTime() {
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     return date + " " + time;
 }
+
+function arrayContains(string, array) {
+    return (array.indexOf(string) > -1);
+}

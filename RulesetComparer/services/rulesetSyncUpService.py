@@ -258,29 +258,34 @@ def delete_rulesets():
 
 
 def sync_up_rulesets_from_backup(json_data):
-    failed_rulesets_list = []
-    create_rulesets_list = []
-    update_rulesets_list = []
-    delete_rulesets_list = []
+    try:
+        failed_rulesets_list = []
+        create_rulesets_list = []
+        update_rulesets_list = []
+        delete_rulesets_list = []
 
-    parser = RecoverRulesetsParser(json_data)
-    environment = parser.environment
-    country = parser.country
-    # do delete to created rulesets
-    delete_rulesets_with_backup()
-    # do create to deleted rulesets
-    result_obj = create_rulesets_with_backup(environment, country, parser.select_folder_name, parser.deleted_rulesets)
-    failed_rulesets_list.extend(result_obj.failed_list)
-    create_rulesets_list.extend(result_obj.result_list)
-    # do updated to updated rulesets
-    result_obj = update_rulesets_with_backup(environment, country, parser.select_folder_name, parser.updated_rulesets)
-    failed_rulesets_list.extend(result_obj.failed_list)
-    update_rulesets_list.extend(result_obj.result_list)
+        parser = RecoverRulesetsParser(json_data)
+        environment = parser.environment
+        country = parser.country
+        # do delete to created rulesets
+        delete_rulesets_with_backup()
+        # do create to deleted rulesets
+        result_obj = create_rulesets_with_backup(environment, country, parser.select_folder_name,
+                                                 parser.deleted_rulesets)
+        failed_rulesets_list.extend(result_obj.failed_list)
+        create_rulesets_list.extend(result_obj.result_list)
+        # do updated to updated rulesets
+        result_obj = update_rulesets_with_backup(environment, country, parser.select_folder_name,
+                                                 parser.updated_rulesets)
+        failed_rulesets_list.extend(result_obj.failed_list)
+        update_rulesets_list.extend(result_obj.result_list)
 
-    builder = RecoverRulesetsResultBuilder(environment, country, failed_rulesets_list, create_rulesets_list,
-                                           update_rulesets_list, delete_rulesets_list)
+        builder = RecoverRulesetsResultBuilder(environment, country, failed_rulesets_list, create_rulesets_list,
+                                               update_rulesets_list, delete_rulesets_list)
 
-    return builder.get_data()
+        return builder.get_data()
+    except Exception as e:
+        raise e
 
 
 def create_rulesets_with_backup(environment, country, select_folder_name, rulesets):

@@ -157,9 +157,21 @@
     width: 20%;
 }
 
-#apply_button {
+.button_group_div {
     margin-left: auto;
-    margin-right: 10px;
+}
+
+#apply_all_button {
+    margin-right: 15px;
+}
+
+#apply_button {
+}
+
+.diff_button {
+    font-size: 12px !important;
+    line-height: 0.5 !important;
+    border-radius: 5px;
 }
 
 #rulesets_list_title_div {
@@ -212,6 +224,32 @@
 
 #rulesets_list_div .action_width {
     width: 15%;
+}
+
+#rulesets_list_div .recover_success_div {
+    background: #1abb9c24;
+    display: none;
+}
+
+#rulesets_list_div .recover_failed_div {
+    background: #ff191921;
+    display: none;
+}
+
+#rulesets_list_div .message_width {
+    width: 25%;
+}
+
+.rulesets_list_row_div .recover_success_icon {
+    color: #1abb9c;
+}
+
+.rulesets_list_row_div .recover_failed_icon {
+    color: #E74C3C;
+}
+
+.rulesets_list_row_div .recover_failed_message {
+    color: #E74C3C;
 }
 
 .row_ruleset_name {

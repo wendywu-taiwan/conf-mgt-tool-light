@@ -39,8 +39,13 @@
                 <div class="div_title_text">Ruleset List</div>
                 <div class="div_title_description_text">{{ data.date_time }}</div>
             </div>
-            <div id="apply_button" class="col-1 no-col-padding vertical_align_middle">
-                <button class="btn btn-primary btn-font-14" onclick="applyButtonOnClick()">Apply</button>
+            <div id="{{ data.folder_name }}_button_group_div" class="button_group_div row no-row-margin">
+                <div id="apply_all_button" class="vertical_align_middle">
+                    <button class="btn btn-warning btn-font-14" onclick="applyAllRulesets()">Apply All</button>
+                </div>
+                <div id="apply_button" class="vertical_align_middle">
+                    <button class="btn btn-primary btn-font-14" onclick="applyButtonOnClick()">Apply</button>
+                </div>
             </div>
         </div>
         <div id="rulesets_list_div">
@@ -49,21 +54,25 @@
                 <div id="title_ruleset" class="title_text ruleset_name_width">Ruleset</div>
                 <div id="title_action" class="title_text action_width"></div>
             </div>
-            {% for ruleset in data.created_rulesets.rulesets_array %}
-                {% with "created" as action %}
-                    {% include 'backup_ruleset_row.html' %}
-                {% endwith %}
-            {% endfor %}
-            {% for ruleset in data.updated_rulesets.rulesets_array %}
-                {% with "updated" as action %}
-                    {% include 'backup_ruleset_row.html' %}
-                {% endwith %}
-            {% endfor %}
-            {% for ruleset in data.deleted_rulesets.rulesets_array %}
-                {% with "deleted" as action %}
-                    {% include 'backup_ruleset_row.html' %}
-                {% endwith %}
-            {% endfor %}
+            {% with data.folder_name as folder_name %}
+                {% for ruleset in data.created_rulesets.rulesets_array %}
+                    {% with "created" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+                {% for ruleset in data.updated_rulesets.rulesets_array %}
+                    {% with "updated" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+                {% for ruleset in data.deleted_rulesets.rulesets_array %}
+                    {% with "deleted" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+            {% endwith %}
         </div>
     </div>
 {% endfor %}
+<script>
+</script>

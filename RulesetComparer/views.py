@@ -389,7 +389,7 @@ def recover_rulesets(request):
         request_json = get_post_request_json(request)
         print("recover_rulesets , request_json:" + str(request_json))
         result_data = rulesetSyncUpService.sync_up_rulesets_from_backup(request_json)
-        result = ResponseBuilder().get_data()
+        result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
