@@ -63,6 +63,7 @@
     <div id="back_up_data_div"></div>
     <script>
         initRecoveryUrl("{% url 'recover-rulesets' %}");
+        initRulesetDiffUrl("{% url 'recover-filter-backup-ruleset-diff-page' %}", "{% url 'without-ruleset-diff-page' %}");
         onEnvironmentSelected = function (environment_id) {
             filterCountries(environment_id, "{% url 'recover-filter-environment-page' %}");
         };

@@ -1,7 +1,10 @@
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
+from RulesetComparer.dataModel.dataParser.diffBackupRulesetParser import DiffBackupRulesetParser
 from RulesetComparer.dataModel.dataBuilder.recoverFilterBackupObjBuilder import RecoverFilterBackupObjBuilder
 from RulesetComparer.dataModel.dataBuilder.recoverFilterObjBuilder import RecoverFilterObjBuilder
+from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
 from RulesetComparer.models import Environment, Country
+from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.fileManager import *
 
 
@@ -46,3 +49,10 @@ def filter_country(environment_id):
         country = Country.objects.get(name=country_name)
         country_list.append(country)
     return country_list
+
+
+def diff_backup_ruleset(json_data):
+    parser = DiffBackupRulesetParser(json_data)
+    comparer = RulesetComparer(parser.ruleset_name, parser.backup_ruleset_xml, parser.server_ruleset_xml, False)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, KEY_BACKUP, parser.environment.name, comparer.get_diff_data())
+    return builder.get_data()

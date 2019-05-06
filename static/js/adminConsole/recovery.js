@@ -15,11 +15,16 @@ let filterKeyList = [];
 let rulesetsMap = {};
 let allRulesetMaps = {};
 let allRulesetsRecoveredArray = [];
-let recoveryUrl, currentRulesetListDiv;
+let recoveryUrl, diffDataUrl, diffPageUrl, currentRulesetListDiv;
 
 initRecoveryUrl = function (url) {
     recoveryUrl = url;
-}
+};
+
+initRulesetDiffUrl = function (dataUrl, pageUrl) {
+    diffDataUrl = dataUrl;
+    diffPageUrl = pageUrl;
+};
 
 initCountryDropDown = function () {
     $("#select-country-list li").click(function () {
@@ -125,6 +130,36 @@ applyRulesetsRecover = function () {
                     showSuccessRulesetRow(deletedRulesets);
                 }
             );
+        }, function (response) {
+            console.log("response:" + String(response));
+            showErrorDialog("recover error")
+        }
+    )
+    ;
+};
+
+rulesetDiffPage = function (rulesetName) {
+    showWaitingDialog();
+
+    let post_body = {
+        "environment_id": envId,
+        "country_id": countryId,
+        "backup_folder_name": backupFolderName,
+        "ruleset_name": rulesetName
+    };
+
+    doPOST(diffDataUrl, post_body, function (response) {
+            let statusCode = response["status_code"];
+
+            if (statusCode == null) {
+                stopDialog();
+                openNewPageWithHTML(diffPageUrl, response);
+            } else {
+                if (statusCode == 233)
+                    showSuccessDialog("Backup ruleset is same as current version on the server.");
+                if (statusCode == 500)
+                    showErrorDialog(response["message"])
+            }
         }, function (response) {
             console.log("response:" + String(response));
             showErrorDialog("recover error")

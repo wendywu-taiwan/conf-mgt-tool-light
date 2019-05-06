@@ -22,6 +22,7 @@ from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import Rep
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
 from RulesetComparer.dataModel.dataBuilder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
 from RulesetComparer.utils.logger import *
+from RulesetComparer.properties.statusCode import *
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
@@ -308,7 +309,7 @@ def rule_detail_page(request, environment_id, compare_key, rule_name):
         return JsonResponse(result)
 
 
-def rule_diff_page(request, compare_key, rule_name):
+def ruleset_diff_page(request, compare_key, rule_name):
     try:
         result_data = fileManager.load_compare_result_file(compare_key)
         base_env = result_data[key.COMPARE_RULE_BASE_ENV]
@@ -334,7 +335,31 @@ def rule_diff_page(request, compare_key, rule_name):
         return render(request, "rule_show_diff.html", data)
     except Exception:
         error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def without_ruleset_diff_page(request):
+    try:
+        return render(request, "rule_show_diff.html")
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def backup_diff_page(request):
+    try:
+        request_json = get_post_request_json(request)
+        data = rulesetRecoverService.diff_backup_ruleset(request_json)
+        if data[RULE_DIFF_HAS_CHANGES] is False:
+            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "rule_show_diff.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
 
@@ -387,7 +412,6 @@ def download_rulesets(request):
 def recover_rulesets(request):
     try:
         request_json = get_post_request_json(request)
-        print("recover_rulesets , request_json:" + str(request_json))
         result_data = rulesetSyncUpService.sync_up_rulesets_from_backup(request_json)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)

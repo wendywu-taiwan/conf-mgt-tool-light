@@ -101,3 +101,8 @@ function getCurrentDataTime() {
 function arrayContains(string, array) {
     return (array.indexOf(string) > -1);
 }
+
+function openNewPageWithHTML(url, html) {
+    var newWindows = window.open(url);
+    newWindows.document.write(html);
+}

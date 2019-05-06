@@ -86,6 +86,7 @@ RULE_DIFF_KEY_ADD_LIST = 'add_list'
 RULE_DIFF_KEY_REMOVE_LIST = 'remove_list'
 RULE_DIFF_KEY_MODIFY_LIST = 'modify_list'
 RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
+RULE_DIFF_HAS_CHANGES = 'has_changes'
 
 # environment model key
 NO_ENVIRONMENT_GIT = 0
@@ -160,7 +161,6 @@ KEY_RECEIVER_LIST = "receiver_list"
 KEY_INTERVAL_HOUR = "interval_hour"
 KEY_LAST_PROCEED_TIME = "last_proceed_time"
 KEY_NEXT_PROCEED_TIME = "next_proceed_time"
-KEY_BACKUP = "backup"
 KEY_ENABLE = "enable"
 KEY_BACKUP_YES = 1
 KEY_BACKUP_NO = 0
@@ -174,6 +174,7 @@ KEY_ENVIRONMENTS = "environments"
 KEY_ENVIRONMENT_ID = "environment_id"
 KEY_COUNTRY_ID = "country_id"
 KEY_NAME = "name"
+KEY_FULL_NAME = "full_name"
 KEY_COMPARE_HASH_KEY = "compare_hash_key"
 KEY_TASK_ID = "task_id"
 KEY_DATE_TIME = "date_time"
@@ -182,6 +183,8 @@ KEY_RULESETS = "rulesets"
 KEY_UPDATED_TIME = "updated_time"
 ACTION_LIST = 'action_list'
 KEY_EXCEPTION = "exception"
+KEY_BACKUP = "backup"
+KEY_ICON_FILE_NAME = "icon_file_name"
 
 # environment name
 INT2_NAME = "INT2"

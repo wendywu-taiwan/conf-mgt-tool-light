@@ -39,7 +39,8 @@ ruleset_comparer_pattern = [
     path('detail/<str:environment_id>/<str:compare_key>/<str:rule_name>',
          views.rule_detail_page, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
-         views.rule_diff_page, name="rule-diff"),
+         views.ruleset_diff_page, name="rule-diff"),
+    path('diff/', views.without_ruleset_diff_page, name="without-ruleset-diff-page"),
     path('report/mail/<str:compare_key>',
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
@@ -62,6 +63,8 @@ admin_console_ruleset_pattern = [
          name="recover-filter-environment-page"),
     path('recover/filter/backup/list', views.admin_console_recover_ruleset_backup_list_page,
          name="recover-filter-backup-list-page"),
+    path('recover/filter/backup/ruleset/diff', views.backup_diff_page,
+         name="recover-filter-backup-ruleset-diff-page"),
     path('recover/rulesets', views.recover_rulesets,
          name="recover-rulesets"),
 ]
