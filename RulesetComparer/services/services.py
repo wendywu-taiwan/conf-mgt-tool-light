@@ -42,21 +42,6 @@ def generate_compare_report(compare_key):
     fileManager.save_compare_result_html(compare_key, html)
 
 
-def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set_name):
-    base_ruleset = rulesetUtil.load_rule_file_with_id(base_env_id, country_id,
-                                                      compare_key, rule_set_name)
-    compare_ruleset = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
-                                                         compare_key, rule_set_name)
-
-    if base_ruleset is None or compare_ruleset is None:
-        error_log("diff_rule_set , ruleset file not found")
-        return None
-
-    comparer = RulesetComparer(rule_set_name, base_ruleset, compare_ruleset, is_module=False)
-    data = comparer.get_diff_data()
-    return data
-
-
 def get_filtered_ruleset_list(json_data):
     try:
         parser = GetFilteredRulesetParser(json_data)
