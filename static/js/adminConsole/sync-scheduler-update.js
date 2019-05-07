@@ -52,10 +52,12 @@ function setReceivers() {
     }
 }
 
-function setBackupCheck(backup) {
-    if (backup == "True") {
+function setBackupCheck(rulesetBackup) {
+    if (rulesetBackup == "True") {
+        backup = true;
         $("#backup_yes_input").prop("checked", true);
     } else {
+        backup = false;
         $("#backup_yes_input").prop("checked", false);
     }
 }
