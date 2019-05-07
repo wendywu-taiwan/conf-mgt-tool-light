@@ -117,7 +117,7 @@ applyRulesetsRecover = function () {
                 return;
             }
 
-            successDialog("recover success", function () {
+            successDialog("recover finish", function () {
                     let failedRulesets = response["data"]["failed_rulesets"];
                     let updateRulesets = response["data"]["updated_rulesets"];
                     let createRulesets = response["data"]["created_rulesets"];
@@ -214,9 +214,12 @@ function showFailureRulesetRow(rulesetList) {
         let normalRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_checked_row_div');
         let failedRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_fail_row_div');
         let successRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_success_row_div');
+        let exceptionDiv = document.getElementById(backupFolderName + "_" + rulesetName + '_row_exception_div');
+
         normalRulesetRow.style.display = 'none';
         failedRulesetRow.style.display = 'block';
         successRulesetRow.style.display = 'none';
+        exceptionDiv.innerHTML = ruleset["exception"]
     }
 }
 
@@ -271,7 +274,7 @@ function applyAllRulesets() {
         input.checked = true;
     }
     rulesetsMap = allRulesetMaps;
-    applyRulesetsRecover();
+    // applyRulesetsRecover();
 }
 
 function clearAllInputSelected() {

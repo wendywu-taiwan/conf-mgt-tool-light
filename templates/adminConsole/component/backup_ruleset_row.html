@@ -36,11 +36,11 @@
         <div class="recover_failed_icon content_text checkbox_space_set checkbox_rule_name check_width no-col-padding vertical_align_middle">
             <span class="fui-cross"></span>
         </div>
-        <div id="row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
+        <div id="{{ folder_name }}_{{ ruleset }}_row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
             {{ ruleset }}
         </div>
-        <div id="row_action_div" class="recover_failed_message content_text message_width">
-            missing ruleset on environment
+        <div id="{{ folder_name }}_{{ ruleset }}_row_exception_div" class="recover_failed_message message_width">
+            {{ exception }}
         </div>
     </div>
 </div>

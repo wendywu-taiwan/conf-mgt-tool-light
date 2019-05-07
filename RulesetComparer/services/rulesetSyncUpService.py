@@ -1,6 +1,6 @@
 from django.template.loader import render_to_string
 
-from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
 from RulesetComparer.b2bRequestTask.rulesetsSyncUpTask import RulesetsSyncUpTask
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.mailSender import MailSender
@@ -219,7 +219,7 @@ def create_rulesets(country, parser, sync_up_report_json):
                                              country.name, sync_up_report_json[COMPARE_RULE_COMPARE_HASH_KEY])
 
         result_obj = CreateRulesetTask(parser.target_environment, country, ruleset_name, ruleset_xml).get_result_data()
-        set_result_object(result_obj, result_list, failed_list)
+        check_result_success(result_obj, failed_list, result_list)
     return RulesetsSyncResultObject(result_list, failed_list)
 
 
@@ -249,7 +249,7 @@ def update_rulesets(country, parser, sync_up_report_json):
 
         result_obj = UpdateRulesetTask(parser.target_environment, country, ruleset_name, source_xml, target_xml,
                                        ruleset_obj).get_result_data()
-        set_result_object(result_obj, result_list, failed_list)
+        check_result_success(result_obj, failed_list, result_list)
     return RulesetsSyncResultObject(result_list, failed_list)
 
 
@@ -294,7 +294,7 @@ def create_rulesets_with_backup(environment, country, select_folder_name, rulese
     for ruleset_name in rulesets:
         ruleset_xml = load_backup_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
         result_obj = CreateRulesetTask(environment, country, ruleset_name, ruleset_xml).get_result_data()
-        set_result_object(result_obj, result_list, failed_list)
+        check_result_success(result_obj, failed_list, result_list)
     return RulesetsSyncResultObject(result_list, failed_list)
 
 
@@ -305,11 +305,15 @@ def update_rulesets_with_backup(environment, country, select_folder_name, rulese
         if len(rulesets) == 0:
             return RulesetsSyncResultObject(result_list, failed_list)
 
-        # download current rulesets from environment
-        DownloadRulesetsTask(environment.id, country.id, rulesets, select_folder_name)
         for ruleset_name in rulesets:
+            task = DownloadRulesetTask(environment.id, country.id, ruleset_name)
+
+            # check download ruleset success or fail
+            if not check_result_success(task.get_result_data(), failed_list):
+                continue
+
+            target_xml = task.get_ruleset_xml()
             source_xml = load_backup_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
-            target_xml = load_server_ruleset_with_name(environment.name, country.name, select_folder_name, ruleset_name)
 
             # compare ruleset to know the differences
             diff_json = RulesetComparer(ruleset_name, source_xml, target_xml, is_module=False).get_data_by_builder()
@@ -318,12 +322,14 @@ def update_rulesets_with_backup(environment, country, select_folder_name, rulese
             if target_only_rules_count > 0:
                 # clear ruleset first to remove deleted ruleset at target env
                 result_obj = ClearRulesetTask(environment, country, ruleset_name).get_result_data()
-                if result_obj.get("exception") is not None:
+
+                if not check_result_success(result_obj, failed_list):
                     continue
 
             result_obj = UpdateRulesetTask(environment, country, ruleset_name, source_xml, target_xml,
                                            diff_json).get_result_data()
-            set_result_object(result_obj, result_list, failed_list)
+            check_result_success(result_obj, failed_list, result_list)
+
         return RulesetsSyncResultObject(result_list, failed_list)
     except Exception as e:
         raise e
@@ -333,11 +339,14 @@ def delete_rulesets_with_backup():
     pass
 
 
-def set_result_object(result_obj, result_list, failed_list):
+def check_result_success(result_obj, failed_list, result_list=None):
     if result_obj.get("status") == STATUS_SUCCESS:
-        result_list.append(result_obj)
+        if result_list is not None:
+            result_list.append(result_obj)
+        return True
     else:
         failed_list.append(result_obj)
+        return False
 
 
 def send_mail(result_data):
