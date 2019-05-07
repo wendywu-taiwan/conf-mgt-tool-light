@@ -10,7 +10,6 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
             self.date_folder_name = date_folder_name
             self.json_data = pre_json
             self.filter_keys = filter_keys
-            self.has_filter_keys = False
             self.source_env_only_rulesets = pre_json.get(KEY_SOURCE_ENV_ONLY_RULESETS)
             self.target_env_only_rulesets = pre_json.get(KEY_TARGET_ENV_ONLY_RULESETS)
             self.different_rulesets = pre_json.get(KEY_DIFFERENT_RULESETS)
@@ -26,7 +25,6 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
         self.result_dict[KEY_UPDATED_RULESETS] = self.__generate_rulesets_object__(self.different_rulesets)
         self.result_dict[KEY_DELETED_RULESETS] = self.__generate_no_rulesets_object__()
         # self.result_dict[KEY_DELETED_RULESETS] = self.__generate_rulesets_object__(self.target_env_only_rulesets)
-        self.has_filter_keys = self.__has_filtered_keys__()
 
     def __generate_rulesets_object__(self, rulesets):
         rulesets_object = {}
@@ -61,11 +59,3 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
         new_format = TIME_FORMAT.get("year_month_date_hour_minute_second")
         date_time = time_change_format(self.date_folder_name, origin_format, new_format)
         return date_time
-
-    def __has_filtered_keys__(self):
-        if self.result_dict[KEY_CREATED_RULESETS][KEY_COUNT] == 0 and \
-                self.result_dict[KEY_UPDATED_RULESETS][KEY_COUNT] == 0 and \
-                self.result_dict[KEY_DELETED_RULESETS][KEY_COUNT] == 0:
-            return False
-        else:
-            return True

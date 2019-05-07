@@ -44,7 +44,8 @@ class DownloadRulesetTask(BaseRequestTask):
         info_log(self.LOG_CLASS, '======== download ruleset finished ========')
 
     def parse_result_data(self):
-        self.result_builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE, self.b2b_response_data)
+        self.result_builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE,
+                                                            self.b2b_response_data)
         self.success = self.result_builder.success
         self.result_data = self.result_builder.get_data()
 
@@ -61,6 +62,7 @@ class DownloadRulesetTask(BaseRequestTask):
             return True
 
     def save_file(self, response_xml, ruleset_name):
+        info_log(self.LOG_CLASS, 'save file, path:' + self.file_name_with_path)
         create_folder(self.file_name_with_path)
 
         # save file

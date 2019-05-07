@@ -5,8 +5,11 @@ from RulesetComparer.utils.rulesetUtil import *
 
 
 class RulesetComparer:
+    LOG_CLASS = "RulesetComparer"
+
     def __init__(self, ruleset_name, base_ruleset, compare_ruleset, is_module):
         try:
+            info_log(self.LOG_CLASS, '======== RulesetComparer compare %s ========' % ruleset_name)
             self.is_module = is_module
             self.ruleset_name = ruleset_name
             self.base_rule_set = None
@@ -17,6 +20,7 @@ class RulesetComparer:
             self.normal = []
             self.parse_ruleset(base_ruleset, compare_ruleset)
             self.classify_rule_keys()
+            info_log(self.LOG_CLASS, '======== RulesetComparer compare finished ========')
         except Exception as e:
             raise e
 

@@ -162,7 +162,7 @@ rulesetDiffPage = function (rulesetName) {
             }
         }, function (response) {
             console.log("response:" + String(response));
-            showErrorDialog("recover error")
+            showErrorDialog(response["message"]);
         }
     )
     ;
@@ -274,7 +274,6 @@ function applyAllRulesets() {
         input.checked = true;
     }
     rulesetsMap = allRulesetMaps;
-    // applyRulesetsRecover();
 }
 
 function clearAllInputSelected() {
