@@ -7,11 +7,13 @@ from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
 class BaseRequestTask:
 
     def __init__(self):
+        self.success = True
         self.country = None
         self.environment = None
         self.auth_data = None
         self.client = None
         self.b2b_response_data = None
+        self.result_data = None
 
     def parse_data(self, environment_id, country_id, b2b_service_name):
         try:
@@ -25,14 +27,12 @@ class BaseRequestTask:
     def request_data(self):
         try:
             self.execute()
+            self.parse_result_data()
         except Exception as e:
             raise e
 
     def get_result_data(self):
-        try:
-            return self.parse_result_data()
-        except Exception as e:
-            raise e
+        return self.result_data
 
     def combine_client_url(self, service_name):
         try:

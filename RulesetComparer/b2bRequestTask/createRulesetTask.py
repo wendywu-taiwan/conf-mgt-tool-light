@@ -35,10 +35,12 @@ class CreateRulesetTask(BaseRequestTask):
             info_log(self.LOG_CLASS, "create ruleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "create error message :" + str(response.message))
         self.b2b_response_data = response
+        info_log(self.LOG_CLASS, '======== create ruleset finish ========')
 
     def parse_result_data(self):
         builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_CREATE, self.b2b_response_data)
-        return builder.get_data()
+        self.result_data = builder.get_data()
+        self.success = builder.success
 
     def get_result_data(self):
         return super().get_result_data()

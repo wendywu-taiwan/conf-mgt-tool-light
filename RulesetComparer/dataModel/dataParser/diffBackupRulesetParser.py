@@ -1,5 +1,5 @@
 from RulesetComparer.utils.rulesetUtil import *
-from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
 
 
 class DiffBackupRulesetParser:
@@ -26,7 +26,11 @@ class DiffBackupRulesetParser:
                                              self.ruleset_name)
 
     def load_server_ruleset_xml(self):
-        compare_hash_key = hash(timeUtil.get_current_timestamp())
-        ruleset_array = [self.ruleset_name]
-        download_task = DownloadRulesetsTask(self.environment.id, self.country.id, ruleset_array, compare_hash_key)
-        return load_rule_file_with_id(self.environment.id, self.country.id, compare_hash_key, self.ruleset_name)
+        download_task = DownloadRulesetTask(self.environment.id,
+                                            self.country.id,
+                                            self.ruleset_name,
+                                            compare_hash_key=None)
+        if download_task.success:
+            return download_task.get_ruleset_xml()
+        else:
+            return None

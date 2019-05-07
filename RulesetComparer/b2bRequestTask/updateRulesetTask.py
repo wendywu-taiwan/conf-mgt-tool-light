@@ -49,11 +49,11 @@ class UpdateRulesetTask(BaseRequestTask):
             info_log(self.LOG_CLASS, "update ruleset response loginId :" + str(response.loginId))
             info_log(self.LOG_CLASS, "update ruleset error message :" + str(response.message))
         self.b2b_response_data = response
-        info_log(self.LOG_CLASS, '======== update ruleset success ========')
+        info_log(self.LOG_CLASS, '======== update ruleset finish ========')
 
     def parse_result_data(self):
-        builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE, self.b2b_response_data)
-        return builder.get_data()
+        self.result_data = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE,
+                                                         self.b2b_response_data).get_data()
 
     @staticmethod
     def __get_rule_model_list__(rule_key_array, rule_model_map):

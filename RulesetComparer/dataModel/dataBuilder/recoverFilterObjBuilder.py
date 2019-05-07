@@ -1,7 +1,6 @@
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
 from RulesetComparer.properties.config import *
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer
-from operator import attrgetter, itemgetter
 
 
 class RecoverFilterObjBuilder(BaseBuilder):
