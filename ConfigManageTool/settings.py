@@ -63,6 +63,7 @@ TEMPLATES = [
         'DIRS': ['templates',
                  'templates/rulesetCompare',
                  'templates/adminConsole',
+                 'templates/adminConsole/component',
                  'templates/rulesetCompare/component',
                  'templates/rulesetCompare/mailContent'
                  ],

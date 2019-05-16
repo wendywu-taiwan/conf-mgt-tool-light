@@ -10,7 +10,7 @@ function stopDialog() {
 function showWaitingDialog() {
     swal({
         title: "Please Wait..",
-        imageUrl: "../../../../static/icons/loading.gif",
+        imageUrl: "/static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
         showCancelButton: false,
@@ -82,4 +82,27 @@ function downloadZipFile(data) {
     document.body.appendChild(element);
     element.click();
     document.body.removeChild(element);
+}
+
+function leadingZero(value) {
+    if (value < 10) {
+        return "0" + value.toString();
+    }
+    return value.toString();
+}
+
+function getCurrentDataTime() {
+    var today = new Date();
+    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    return date + " " + time;
+}
+
+function arrayContains(string, array) {
+    return (array.indexOf(string) > -1);
+}
+
+function openNewPageWithHTML(url, html) {
+    var newWindows = window.open(url);
+    newWindows.document.write(html);
 }

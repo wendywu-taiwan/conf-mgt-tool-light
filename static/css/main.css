@@ -337,9 +337,33 @@ html, body {
     margin-bottom: auto;
 }
 
-.custom_divider{
+.custom_divider {
     height: 1px;
     width: 98%;
     margin: auto;
     background-color: #eef0f2;
+}
+
+.component_title {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.margin_l_auto {
+    margin-left: auto;
+}
+
+.margin_r_auto {
+    margin-right: auto;
+}
+
+.admin_console_block_background {
+    background-color: white;
+    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
+}
+
+.cursor_pointer {
+    cursor: pointer;
 }

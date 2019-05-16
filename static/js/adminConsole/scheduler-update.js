@@ -61,10 +61,3 @@ function setReceivers() {
         $('#mail_receiver_input').tagsinput('add', receiver);
     }
 }
-
-function leadingZero(value) {
-    if (value < 10) {
-        return "0" + value.toString();
-    }
-    return value.toString();
-}

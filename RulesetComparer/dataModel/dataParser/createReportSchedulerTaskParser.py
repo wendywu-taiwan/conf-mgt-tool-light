@@ -6,6 +6,7 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):
     def __init__(self, json_data):
         try:
             BaseReportSchedulerParser.__init__(self)
+            self.task_id = json_data.get("id")
             self.base_env_id = json_data.get("base_environment_id")
             self.compare_env_id = json_data.get("compare_environment_id")
             self.module_id = json_data.get("module_id")

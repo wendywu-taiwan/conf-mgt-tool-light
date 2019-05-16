@@ -1,5 +1,7 @@
 from RulesetComparer.dataModel.xml.baseParser import BaseModel
 from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.utils import logger
+from lxml import etree
 
 
 # this is for handling single rule in a ruleset file
@@ -7,6 +9,7 @@ class RuleModel(BaseModel):
     def __init__(self, xml, has_saxif_tag):
         BaseModel.__init__(self, xml)
         self.has_saxif_tag = has_saxif_tag
+        self.countryOrganizationId = None
         self.combinedKey = None
         self.fullValue = None
         self.process = None
@@ -20,6 +23,7 @@ class RuleModel(BaseModel):
         self.parse_data_catch_error()
 
     def parse_data(self):
+        self.countryOrganizationId = self.node_value(key=XMLKey.COUNTRY_ORGANIZATION_ID)
         self.process = self.value_in_context(key=XMLKey.PROCESS)
         self.processStep = self.value_in_context(key=XMLKey.PROCESS_STEP)
         self.organizationId = self.value_in_context(key=XMLKey.ORGANIZATION_ID)
@@ -31,6 +35,32 @@ class RuleModel(BaseModel):
 
         self.combinedKey = self._gen_combined_key()
         self.fullValue = self._full_value()
+
+    def to_xml(self):
+        rule = etree.Element(XMLKey.NODE_KEY_RULE)
+
+        etree.SubElement(rule, XMLKey.COUNTRY_ORGANIZATION_ID).text = self.countryOrganizationId
+
+        context = etree.SubElement(rule, XMLKey.NODE_KEY_CONTEXT)
+        if self.process != '':
+            etree.SubElement(context, XMLKey.PROCESS).text = self.process
+        if self.processStep != '':
+            etree.SubElement(context, XMLKey.PROCESS_STEP).text = self.processStep
+        if self.ownerRole != '':
+            etree.SubElement(context, XMLKey.OWNER_RULE).text = self.ownerRole
+
+        etree.SubElement(context, XMLKey.ORGANIZATION_ID).text = self.organizationId
+        etree.SubElement(rule, XMLKey.RULE_TYPE).text = self.ruleType
+        etree.SubElement(rule, XMLKey.RULE_KEY).text = self.ruleKey
+        etree.SubElement(rule, XMLKey.RULE_VALUE).text = self.ruleValue
+        if self.expression != '':
+            etree.SubElement(rule, XMLKey.EXPRESSION).text = self.expression
+        etree.SubElement(rule, XMLKey.STATUS).text = 'Active'
+        etree.SubElement(rule, XMLKey.CREATED_BY).text = 'mid_Member.Manager'
+        etree.SubElement(rule, XMLKey.LAST_UPDATE_DBY).text = 'mid_Member.Manager'
+
+        # logger.info_log("RuleModel", etree.tostring(rule, pretty_print=True))
+        return rule
 
     def _gen_combined_key(self):
         return '\t'.join([self.process, self.processStep, self.ownerRole, self.ruleType, self.ruleKey])

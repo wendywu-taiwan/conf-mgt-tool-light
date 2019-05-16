@@ -1,0 +1,78 @@
+<div id="backup_folder_list_div" class="recovery_container admin_console_block_background">
+    <div class="list_header_row_div">
+        <div class="div_title_text">Backup List</div>
+    </div>
+    <div id="folder_list_div">
+        <div id="title_row_div" class="row no-row-margin">
+            <div id="title_date_div" class="title_text date_width vertical_align_middle">Date</div>
+            <div id="title_created_div" class="title_text action_count_width vertical_align_middle">Created</div>
+            <div id="title_updated_div" class="title_text action_count_width vertical_align_middle">Updated</div>
+            <div id="title_deleted_div" class="title_text action_count_width vertical_align_middle">Deleted</div>
+        </div>
+        <div id="content_rows_div">
+            {% for data in backup_rulesets_list %}
+                <div id="{{ data.folder_name }}" style="background-color: white"
+                     class="content_row_div row no-row-margin"
+                     onclick="onClickBackupFolderRow(this)">
+                    <div id="title_date_div"
+                         class="content_text date_width vertical_align_middle">{{ data.date_time }}</div>
+                    <div id="title_created_div"
+                         class="content_text action_count_width vertical_align_middle">{{ data.created_rulesets.count }}</div>
+                    <div id="title_updated_div"
+                         class="content_text action_count_width vertical_align_middle">{{ data.updated_rulesets.count }}</div>
+                    <div id="title_deleted_div"
+                         class="content_text action_count_width vertical_align_middle">{{ data.deleted_rulesets.count }}</div>
+                </div>
+                {% if not forloop.last %}
+                    <div id="row_divider" class="custom_divider"></div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% for data in backup_rulesets_list %}
+    <div id="{{ data.folder_name }}_rulesets_div"
+         class="backup_rulesets_div recovery_container admin_console_block_background">
+        <div class="list_header_row_div row no-row-margin">
+            <div class="title_text_div">
+                <div class="div_title_text">Ruleset List</div>
+                <div class="div_title_description_text">{{ data.date_time }}</div>
+            </div>
+            <div id="{{ data.folder_name }}_button_group_div" class="button_group_div row no-row-margin">
+                <div id="apply_all_button" class="vertical_align_middle">
+                    <button class="btn btn-warning btn-font-14" onclick="applyAllRulesets()">Select All</button>
+                </div>
+                <div id="apply_button" class="vertical_align_middle">
+                    <button class="btn btn-primary btn-font-14" onclick="applyButtonOnClick()">Apply</button>
+                </div>
+            </div>
+        </div>
+        <div id="rulesets_list_div">
+            <div id="rulesets_list_title_div" class="row no-row-margin">
+                <div id="title_check" class="title_text check_width">Check</div>
+                <div id="title_ruleset" class="title_text ruleset_name_width">Ruleset</div>
+                <div id="title_action" class="title_text action_width"></div>
+            </div>
+            {% with data.folder_name as folder_name %}
+                {% for ruleset in data.created_rulesets.rulesets_array %}
+                    {% with "created" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+                {% for ruleset in data.updated_rulesets.rulesets_array %}
+                    {% with "updated" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+                {% for ruleset in data.deleted_rulesets.rulesets_array %}
+                    {% with "deleted" as action %}
+                        {% include 'backup_ruleset_row.html' %}
+                    {% endwith %}
+                {% endfor %}
+            {% endwith %}
+        </div>
+    </div>
+{% endfor %}
+<script>
+</script>

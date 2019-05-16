@@ -35,10 +35,13 @@ RULE_MODIFIED_KEY_BASE_VALUE = 'base_value'
 RULE_MODIFIED_KEY_BASE_EXPRESSION = 'base_expression'
 RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
+RULE_KEY_COMBINED_KEY = 'combined_key'
 
 # view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
+SOURCE_ENVIRONMENT = 'source_environment'
+TARGET_ENVIRONMENT = 'target_environment'
 
 # view.rule_download_page
 RULE_NAME_LIST = 'rule_name_list'
@@ -83,6 +86,7 @@ RULE_DIFF_KEY_ADD_LIST = 'add_list'
 RULE_DIFF_KEY_REMOVE_LIST = 'remove_list'
 RULE_DIFF_KEY_MODIFY_LIST = 'modify_list'
 RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
+RULE_DIFF_HAS_CHANGES = 'has_changes'
 
 # environment model key
 NO_ENVIRONMENT_GIT = 0
@@ -118,3 +122,74 @@ RULESET_MAIL_CONTENT_TYPE = "mail_content_types"
 RULESET_COUNT_TABLE = "ruleset_count_table"
 RULESET_NAME_LIST = "ruleset_name_list"
 
+# RULESET SYNC UP ACTION
+RULESET_CREATE = "create"
+RULESET_UPDATE = "update"
+RULESET_DELETE = "delete"
+RULESET_CLEAR = "clear"
+
+# RulesetB2BActionResultBuilder
+STATUS_SUCCESS = "success"
+STATUS_FAILED = "failed"
+
+# RulesetSyncPreDataBuilder
+KEY_SOURCE_ENV = "source_environment"
+KEY_TARGET_ENV = "target_environment"
+KEY_RULESETS_ARRAY = "rulesets_array"
+KEY_SOURCE_ENV_ONLY_RULESETS = "source_env_only_rulesets"
+KEY_TARGET_ENV_ONLY_RULESETS = "target_env_only_rulesets"
+KEY_DIFFERENT_RULESETS = "different_rulesets"
+KEY_HAS_RECOVERY_RULESETS = "has_recovery_rulesets"
+
+# RulesetFilterBackupObjectBuilder, RecoverRulesetsResultBuilder, RulesetSyncResultDataBuilder
+KEY_FOLDER_NAME = "folder_name"
+KEY_BACKUP_RULESETS_LIST = "backup_rulesets_list"
+KEY_CREATED_RULESETS = "created_rulesets"
+KEY_UPDATED_RULESETS = "updated_rulesets"
+KEY_DELETED_RULESETS = "deleted_rulesets"
+KEY_ACTION = "action"
+KEY_CREATED = "created"
+KEY_UPDATED = "updated"
+KEY_DELETED = "deleted"
+KEY_FAILED_RULESETS = "failed_rulesets"
+
+# recoverRulesetsParser
+KEY_SELECT_FOLDER_NAME = "select_folder_name"
+
+# RulesetSyncSchedulerBuilder
+KEY_COUNTRY_LIST = "country_list"
+KEY_RECEIVER_LIST = "receiver_list"
+KEY_INTERVAL_HOUR = "interval_hour"
+KEY_LAST_PROCEED_TIME = "last_proceed_time"
+KEY_NEXT_PROCEED_TIME = "next_proceed_time"
+KEY_ENABLE = "enable"
+KEY_BACKUP_YES = 1
+KEY_BACKUP_NO = 0
+
+# common
+KEY_ID = "id"
+KEY_COUNTRY = "country"
+KEY_COUNTRIES = "countries"
+KEY_ENVIRONMENT = "environment"
+KEY_ENVIRONMENTS = "environments"
+KEY_ENVIRONMENT_ID = "environment_id"
+KEY_COUNTRY_ID = "country_id"
+KEY_NAME = "name"
+KEY_FULL_NAME = "full_name"
+KEY_COMPARE_HASH_KEY = "compare_hash_key"
+KEY_TASK_ID = "task_id"
+KEY_DATE_TIME = "date_time"
+KEY_COMPARE_TIME = "compare_time"
+KEY_COUNT = "count"
+KEY_RULESETS = "rulesets"
+KEY_UPDATED_TIME = "updated_time"
+ACTION_LIST = 'action_list'
+KEY_EXCEPTION = "exception"
+KEY_BACKUP = "backup"
+KEY_ICON_FILE_NAME = "icon_file_name"
+
+# environment name
+INT2_NAME = "INT2"
+INT1_NAME = "INT1"
+PROD_NAME = "PROD"
+GIT_NAME = "GIT"

@@ -18,6 +18,17 @@ from django.urls import path
 from RulesetComparer import views
 from django.conf.urls import url, include
 
+ruleset_b2b_pattern = [
+    path('create/', views.create_ruleset, name="b2b-create-ruleset"),
+    path('update/', views.update_ruleset, name="b2b-update-ruleset"),
+    path('scheduler/sync/all', views.get_rulesets_sync_jobs, name="get-rulesets-sync-job"),
+    path('scheduler/sync/run', views.run_rulesets_sync_job, name="run-rulesets-sync-job"),
+    path('scheduler/sync/create', views.create_rulesets_sync_job, name="create-rulesets-sync-job"),
+    path('scheduler/sync/update', views.update_rulesets_sync_job, name="update-rulesets-sync-job"),
+    path('scheduler/sync/update_status', views.update_rulesets_sync_job_status, name="update-rulesets-sync-job-status"),
+    path('scheduler/sync/delete', views.delete_rulesets_sync_job, name="delete-rulesets-sync-job")
+]
+
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
     path('packed/', views.download_rulesets, name="packed-ruleset-download"),
@@ -28,7 +39,8 @@ ruleset_comparer_pattern = [
     path('detail/<str:environment_id>/<str:compare_key>/<str:rule_name>',
          views.rule_detail_page, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
-         views.rule_diff_page, name="rule-diff"),
+         views.ruleset_diff_page, name="rule-diff"),
+    path('diff/', views.without_ruleset_diff_page, name="without-ruleset-diff-page"),
     path('report/mail/<str:compare_key>',
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
@@ -39,10 +51,22 @@ admin_console_ruleset_pattern = [
     path('', views.admin_console_page),
     path('server_log', views.admin_console_server_log_page, name="server-log"),
     path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
-    path('scheduler/list', views.admin_console_scheduler_list_page, name="task-manager-list"),
+    path('scheduler/list', views.admin_console_report_scheduler_list_page, name="report-scheduler-list"),
     path('scheduler/create', views.admin_console_scheduler_create_page, name="task-create"),
     path('scheduler/update/<int:scheduler_id>', views.admin_console_scheduler_update_page, name="task-update"),
-
+    path('scheduler/sync/list', views.admin_console_sync_scheduler_list_page, name="sync-scheduler-list"),
+    path('scheduler/sync/create', views.admin_console_sync_scheduler_create_page, name="sync-scheduler-create"),
+    path('scheduler/sync/update/<int:scheduler_id>', views.admin_console_sync_scheduler_update_page,
+         name="sync-scheduler-update"),
+    path('recover/filter', views.admin_console_recover_ruleset_filtered_page, name="recover-filter-page"),
+    path('recover/filter/environment', views.admin_console_recover_ruleset_filtered_environment_page,
+         name="recover-filter-environment-page"),
+    path('recover/filter/backup/list', views.admin_console_recover_ruleset_backup_list_page,
+         name="recover-filter-backup-list-page"),
+    path('recover/filter/backup/ruleset/diff', views.backup_diff_page,
+         name="recover-filter-backup-ruleset-diff-page"),
+    path('recover/rulesets', views.recover_rulesets,
+         name="recover-rulesets"),
 ]
 
 admin_console_pattern = [
@@ -59,6 +83,7 @@ ruleset_scheduler_pattern = [
 ]
 
 urlpatterns = [
+    path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),
     path('ConfigManageTool/ruleset/scheduler/', include(ruleset_scheduler_pattern)),

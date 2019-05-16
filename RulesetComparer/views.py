@@ -6,19 +6,23 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
-from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType
+from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
+    RulesetSyncUpScheduler
+from RulesetComparer.utils.threadManager import *
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services
+from RulesetComparer.services import services, rulesetSyncUpService, rulesetRecoverService
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
 from RulesetComparer.dataModel.dataBuilder.responseBuilder import ResponseBuilder
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
 from RulesetComparer.dataModel.dataBuilder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
 from RulesetComparer.utils.logger import *
+from RulesetComparer.properties.statusCode import *
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
@@ -46,7 +50,7 @@ def admin_console_server_log_page(request, log_type=None):
 
         file = fileManager.load_file(full_name)
         file_secure = re.sub("password</ns0:name><ns0:value>[^<]+</ns0:value>",
-                             "password</ns0:name><ns0:value>****</ns0:value>", file.read())
+                             "password</ns0:name><ns0:value>****</ns0:value>", file)
         file_content = file_secure.split("\n")
 
         data = {
@@ -62,7 +66,7 @@ def admin_console_server_log_page(request, log_type=None):
         return JsonResponse(result)
 
 
-def admin_console_scheduler_list_page(request):
+def admin_console_report_scheduler_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
         scheduler_info_list = ReportSchedulerInfo.objects.all()
@@ -117,6 +121,115 @@ def admin_console_scheduler_update_page(request, scheduler_id):
             key.SCHEDULER_DATA: scheduler_data
         }
         return render(request, "scheduler_update.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_sync_scheduler_list_page(request):
+    try:
+        info_data = AdminConsoleInfoBuilder().get_data()
+        schedulers = rulesetSyncUpService.get_schedulers()
+        data_list = list()
+        for scheduler in schedulers:
+            data_builder = RulesetSyncSchedulerBuilder(scheduler)
+            data_list.append(data_builder.get_data())
+
+        data = {key.ADMIN_CONSOLE_INFO: info_data,
+                key.SCHEDULER_LIST: data_list}
+        return render(request, "sync_scheduler_list.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_sync_scheduler_create_page(request):
+    try:
+        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
+        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
+        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        action_list = config.RULESET_SYNC_UP_ACTION
+        info_data = AdminConsoleInfoBuilder().get_data()
+
+        data = {key.SOURCE_ENVIRONMENT: git_environment_data,
+                key.TARGET_ENVIRONMENT: int2_environment_data,
+                key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+                key.ACTION_LIST: action_list,
+                key.ADMIN_CONSOLE_INFO: info_data}
+        return render(request, "sync_scheduler_create.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_sync_scheduler_update_page(request, scheduler_id):
+    try:
+        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
+        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
+        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        action_list = config.RULESET_SYNC_UP_ACTION
+        info_data = AdminConsoleInfoBuilder().get_data()
+
+        scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
+        scheduler_data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+
+        data = {
+            key.SOURCE_ENVIRONMENT: git_environment_data,
+            key.TARGET_ENVIRONMENT: int2_environment_data,
+            key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+            key.ACTION_LIST: action_list,
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.SCHEDULER_DATA: scheduler_data
+        }
+        return render(request, "sync_scheduler_update.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_recover_ruleset_filtered_page(request):
+    try:
+        info_data = AdminConsoleInfoBuilder().get_data()
+        environment_list = rulesetRecoverService.filter_environment()
+        environment_json_list = EnvironmentSerializer(environment_list, many=True).data
+        data = {
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.KEY_ENVIRONMENTS: environment_json_list
+        }
+        return render(request, "recovery.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_recover_ruleset_filtered_environment_page(request):
+    try:
+        info_data = AdminConsoleInfoBuilder().get_data()
+        request_json = get_post_request_json(request)
+        countries = rulesetRecoverService.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
+        data = {
+            key.ADMIN_CONSOLE_INFO: info_data,
+            key.KEY_COUNTRIES: countries
+        }
+        return render(request, "select_country_dropdown.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def admin_console_recover_ruleset_backup_list_page(request):
+    try:
+        info_data = AdminConsoleInfoBuilder().get_data()
+        request_json = get_post_request_json(request)
+        result = rulesetRecoverService.filter_backup_list(request_json)
+        result[key.ADMIN_CONSOLE_INFO] = info_data
+        return render(request, "backup_data_view.html", result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -196,7 +309,7 @@ def rule_detail_page(request, environment_id, compare_key, rule_name):
         return JsonResponse(result)
 
 
-def rule_diff_page(request, compare_key, rule_name):
+def ruleset_diff_page(request, compare_key, rule_name):
     try:
         result_data = fileManager.load_compare_result_file(compare_key)
         base_env = result_data[key.COMPARE_RULE_BASE_ENV]
@@ -222,7 +335,31 @@ def rule_diff_page(request, compare_key, rule_name):
         return render(request, "rule_show_diff.html", data)
     except Exception:
         error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def without_ruleset_diff_page(request):
+    try:
+        return render(request, "rule_show_diff.html")
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def backup_diff_page(request):
+    try:
+        request_json = get_post_request_json(request)
+        data = rulesetRecoverService.diff_backup_ruleset(request_json)
+        if data[RULE_DIFF_HAS_CHANGES] is False:
+            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "rule_show_diff.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
 
@@ -266,6 +403,18 @@ def download_rulesets(request):
                 response['Content-Disposition'] = 'attachment; filename="' + download_file_name + '.zip"'
                 return response
         raise Http404
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def recover_rulesets(request):
+    try:
+        request_json = get_post_request_json(request)
+        result_data = rulesetSyncUpService.sync_up_rulesets_from_backup(request_json)
+        result = ResponseBuilder(data=result_data).get_data()
+        return JsonResponse(data=result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -387,6 +536,105 @@ def delete_scheduler(request):
         services.delete_scheduler(task_id)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def get_rulesets_sync_jobs(request):
+    try:
+        schedulers = rulesetSyncUpService.get_schedulers()
+        data_list = list()
+        for scheduler in schedulers:
+            data_builder = RulesetSyncSchedulerBuilder(scheduler)
+            data_list.append(data_builder.get_data())
+
+        result = ResponseBuilder(data=data_list).get_data()
+        response = JsonResponse(data=result)
+        return response
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def run_rulesets_sync_job(request):
+    try:
+
+        request_json = get_post_request_json(request)
+        run_in_background(func=rulesetSyncUpService.sync_up_rulesets_without_scheduler, parameter=request_json)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def create_rulesets_sync_job(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetSyncUpService.create_scheduler(request_json)
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_rulesets_sync_job(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetSyncUpService.update_scheduler(request_json)
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_rulesets_sync_job_status(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetSyncUpService.update_scheduler_status(request_json)
+        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def delete_rulesets_sync_job(request):
+    try:
+        request_json = get_post_request_json(request)
+        rulesetSyncUpService.delete_scheduler(request_json)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def create_ruleset(request):
+    try:
+        rulesetSyncUpService.create_ruleset_test()
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def update_ruleset(request):
+    try:
+        rulesetSyncUpService.update_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

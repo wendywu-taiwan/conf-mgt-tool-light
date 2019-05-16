@@ -10,7 +10,7 @@ import traceback
 
 class ClearRulesetFilesTask:
     LOG_CLASS = "ClearRulesetFilesTask"
-    RULESET_FOLDER_EXCEPTION = ["Git", "zip", "__init__"]
+    RULESET_FOLDER_EXCEPTION = ["Git", "zip", "backup", "__init__.py"]
 
     def __init__(self):
         self.scheduled_job = None

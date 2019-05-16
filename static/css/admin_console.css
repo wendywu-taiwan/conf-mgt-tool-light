@@ -38,7 +38,7 @@ html, body {
 #function_list {
     background-color: #162850;
     width: 100%;
-    padding-top: 15px;
+    padding-top: 30px;
     padding-bottom: 30px;
 }
 
@@ -81,8 +81,6 @@ html, body {
 
 #content_area {
     margin: 30px;
-    background-color: white;
-    box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
 #server_log_container {
@@ -236,12 +234,6 @@ html, body {
     font-weight: 800;
 }
 
-.component_title_modify_data {
-    font-size: 18px;
-    font-weight: 800;
-    color: #088587;
-}
-
 .button_div {
     text-align: center;
     margin-right: 10px;
@@ -307,8 +299,11 @@ html, body {
 }
 
 .function_icon_div {
-    padding-left: 15%;
-    padding-right: 25px;
+    margin-right: 10%;
+}
+
+#recover_icon{
+    width: 26px;
 }
 
 .function_icon {
@@ -322,10 +317,10 @@ html, body {
     font-weight: 800;
 }
 
-.vertical_align_middle {
-    margin-top: auto;
-    margin-bottom: auto;
-}
+/*.vertical_align_middle {*/
+/*margin-top: auto;*/
+/*margin-bottom: auto;*/
+/*}*/
 
 .no_row_margin {
     margin-left: 0px;
@@ -367,7 +362,7 @@ html, body {
     background-color: #eef0f2;
 }
 
-.custom_container .title_div {
+#task_list_container .title_div {
     background: #eaeef0;
     margin-left: 0px;
     margin-right: 0px;
@@ -375,7 +370,7 @@ html, body {
     padding-left: 15px;
 }
 
-.custom_container .title_text {
+#task_list_container .title_text {
     font-size: 14px;
     font-weight: 700;
     color: #849aa4;
@@ -387,7 +382,7 @@ html, body {
     width: 17%;
 }
 
-#task_edit_icon{
+#task_edit_icon {
     width: 22px;
 }
 
@@ -400,151 +395,53 @@ html, body {
     text-align: center;
 }
 
-.country_name_tips{
+.country_name_tips {
     font-size: 12px;
     font-weight: 600;
 }
 
 /* end admin console task list */
 
-/* admin console task create */
-.env_select_div {
-    width: 35%;
-}
-
-.env_select_title {
-    font-size: 17px;
-    font-weight: 800;
-    color: #868686;
-    margin-bottom: 5px;
-    font-family: "Lato";
-}
-
-.env_select_dropdown_div {
-    width: 60%;
-}
-
-.env_select_dropdown_btn {
-    width: 100%;
-    background-color: #088587;
-}
-
-.env_select_dropdown_list_ul {
-    width: 60%;
-    max-height: 150px;
-    overflow: scroll;
-    background: #4fb99f;
-}
-
-.env_select_dropdown_list_item_text {
-    color: white !important;
-    font-size: 15px;
-}
-
 .country_check_box_group {
     width: 15%;
 }
 
-.time_select_div {
-    width: 35%;
+.function_div {
+    margin-left: 15%;
+    margin-right: 15%;
 }
 
-.time_input_div {
-    width: 60%;
+#server_log_div {
+    margin-bottom: 5%;
 }
 
-.time_input {
-    border-color: #049092;
+#task_manager_div {
 }
 
-.time_input_right_span {
-    margin: auto;
-    padding: 3px;
-    border: 2px solid #049092;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: #049092;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left: 0px;
+#task_manager_list_div {
+    padding-left: 30%;
+    padding-right: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
-.time_input_icon_span {
-    color: white;
+#recover_function_div{
+    margin-top: 5%;
 }
 
-.checkbox_input_div {
-    width: 18%;
+#report_task_div {
+    margin-top: 10px;
 }
 
-.checkbox_input {
-    width: 24px;
-    height: 24px;
+#auto_sync_task_div {
+    margin-top: 15px;
 }
 
-#create_task_container {
-    padding: 20px;
-    height: 100%;
-}
-
-#country_select_div {
-    margin-bottom: 50px;
-}
-
-#env_select_group_div {
-    margin-bottom: 50px;
-}
-
-#hour_input_right_span {
-    margin: auto;
-    padding: 4px;
-    border: 2px solid #049092;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: #049092;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left: 0px;
-}
-
-#content_header_div {
-    margin-left: 0px;
-    margin-right: 0px;
-    margin-bottom: 15px;
-}
-
-#action_button_div {
-    width: 10%;
-    margin-left: auto;
-}
-
-#create_button_div {
-    width: 80%;
-    margin-left: auto;
-}
-
-#create_btn {
-    color: white;
-    font-family: "Lato";
-    font-weight: 700;
-}
-
-#mail_content_select_div {
-    margin-bottom: 50px;
-}
-
-#time_select_group_div {
-    margin-bottom: 50px;
-}
-
-#mail_receiver_input_div {
-    width: 56%;
-}
-
-#mail_receiver_input {
-    width: 100%;
+.sub_function_text {
+    color: #51a8fd;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 800;
 }
 
 /* end admin console create task */

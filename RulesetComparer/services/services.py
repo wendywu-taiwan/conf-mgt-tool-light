@@ -12,7 +12,6 @@ from RulesetComparer.b2bRequestTask.clearRulesetFilesTask import ClearRulesetFil
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
-from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.updateReportSchedulerTaskParser import UpdateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadRulesetParser
@@ -20,7 +19,7 @@ from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadR
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
-from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
+from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
 from RulesetComparer.properties import dataKey
 from django.template.loader import get_template
@@ -41,24 +40,6 @@ def generate_compare_report(compare_key):
     template = get_template("compare_result_report.html")
     html = template.render(data)
     fileManager.save_compare_result_html(compare_key, html)
-
-
-def diff_rule_set(base_env_id, compare_env_id, country_id, compare_key, rule_set_name):
-    base_rule = rulesetUtil.load_rule_file_with_id(base_env_id, country_id,
-                                                   compare_key, rule_set_name)
-    compare_rule = rulesetUtil.load_rule_file_with_id(compare_env_id, country_id,
-                                                      compare_key, rule_set_name)
-
-    if base_rule is None or compare_rule is None:
-        error_log("diff_rule_set , ruleset file not found")
-        return None
-
-    base_module = ParseRuleModel(base_rule, rule_set_name)
-    compare_module = ParseRuleModel(compare_rule, rule_set_name)
-
-    comparer = RulesetComparer(base_module, compare_module)
-    data = comparer.get_diff_data()
-    return data
 
 
 def get_filtered_ruleset_list(json_data):
@@ -85,7 +66,7 @@ def download_rulesets(json_data):
 
         if parser.environment.name == GIT.get("environment_name"):
             # update git to latest code
-            manager = GitManager(get_rule_set_git_path(""), settings.GIT_BRANCH_DEVELOP)
+            manager = GitManager(get_ruleset_git_root_path(), settings.GIT_BRANCH_DEVELOP)
             manager.pull()
             resource_path = get_rule_set_git_path(parser.country.name)
         else:
@@ -104,19 +85,18 @@ def download_rulesets(json_data):
 def create_report_scheduler(json_data):
     try:
         parser = CreateReportSchedulerTaskParser(json_data)
-        info_model = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
-                                                             parser.compare_env_id,
-                                                             parser.module_id,
-                                                             parser.country_list,
-                                                             parser.mail_content_type_list,
-                                                             parser.mail_list,
-                                                             parser.interval_hour,
-                                                             parser.utc_time)
+        report_scheduler = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
+                                                                   parser.compare_env_id,
+                                                                   parser.module_id,
+                                                                   parser.country_list,
+                                                                   parser.mail_content_type_list,
+                                                                   parser.mail_list,
+                                                                   parser.interval_hour,
+                                                                   parser.utc_time)
 
-        run_report_scheduler(info_model.id, parser.base_env_id, parser.compare_env_id,
-                             parser.country_list, parser.mail_content_type_list, parser.mail_list,
-                             parser.local_time, parser.interval_hour)
-        return info_model
+        parser.task_id = report_scheduler.id
+        run_report_scheduler(parser)
+        return report_scheduler
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
@@ -124,10 +104,17 @@ def create_report_scheduler(json_data):
 
 def update_report_scheduler(json_data):
     try:
-        parser = UpdateReportSchedulerTaskParser(json_data)
-        delete_scheduler(parser.task_id)
-        info_model = create_report_scheduler(json_data)
-        return info_model
+        parser = CreateReportSchedulerTaskParser(json_data)
+        report_scheduler = ReportSchedulerInfo.objects.update_task(parser.task_id,
+                                                                   parser.base_env_id,
+                                                                   parser.compare_env_id,
+                                                                   parser.country_list,
+                                                                   parser.mail_content_type_list,
+                                                                   parser.mail_list,
+                                                                   parser.interval_hour,
+                                                                   parser.utc_time)
+        run_report_scheduler(parser)
+        return report_scheduler
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
@@ -141,17 +128,11 @@ def delete_scheduler(task_id):
         raise e
 
 
-def run_report_scheduler(model_id, base_env_id, compare_env_id, country_list,
-                         mail_content_type_list, mail_list, next_proceed_time, interval):
-    daily_task = DailyCompareReportTask(model_id,
-                                        base_env_id,
-                                        compare_env_id,
-                                        country_list,
-                                        mail_content_type_list,
-                                        mail_list)
-    info_log("service", "run_report_scheduler, task id:" + str(daily_task.id))
+def run_report_scheduler(parser):
+    daily_task = DailyCompareReportTask(parser)
     scheduler = CustomJobScheduler(daily_task.scheduler_listener)
-    job = scheduler.add_hours_job(daily_task.run_task, interval, next_proceed_time)
+    job = scheduler.add_hours_job(daily_task.run_task, parser.interval_hour, parser.local_time)
+    ReportSchedulerInfo.objects.update_job_id(parser.task_id, job.id)
     daily_task.set_scheduled_job(job)
 
 
@@ -164,19 +145,11 @@ def restart_all_scheduler():
         scheduler_model_list = ReportSchedulerInfo.objects.all()
         # report scheduler
         for scheduler in scheduler_model_list:
-            country_list = scheduler.country_list.values("id")
-            mail_content_type_list = scheduler.mail_content_type_list.values("id")
+            country_list = scheduler.country_list.values(KEY_ID)
+            mail_content_type_list = scheduler.mail_content_type_list.values(KEY_ID)
             parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
-            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id,
-                                                                 parser.utc_time)
-            run_report_scheduler(parser.task_id,
-                                 parser.base_env_id,
-                                 parser.compare_env_id,
-                                 parser.country_list,
-                                 parser.mail_content_type_list,
-                                 parser.mail_list,
-                                 parser.local_time,
-                                 parser.interval_hour)
+            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
+            run_report_scheduler(parser)
 
         # clear zip and ruleset file scheduler
         clear_ruleset_task = ClearRulesetFilesTask()

@@ -1,7 +1,7 @@
 {% extends "admin_console_base.html" %}
 {% load static from staticfiles %}
 {% block content %}
-<div id="task_list_container" class="custom_container">
+<div id="task_list_container" class="custom_container admin_console_block_background">
     <div id="task_list_header_div" class="row no_row_margin">
         <div class="component_title">TASK</div>
         <div id="create_task_button_div">
@@ -75,9 +75,9 @@
         </div>
         <div id="task_status_div">
             {% if task.status %}
-            <div id="task_status_in_progress">In Progress</div>
+            <div id="task_status_in_progress">Running</div>
             {% else %}
-            <div id="task_status_stop">Stop</div>
+            <div id="task_status_stop">Pending</div>
             {% endif %}
         </div>
         <div id="task_action_div" class="row no_row_margin">
@@ -111,7 +111,7 @@
                 doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {
                     successDialog("delete task success", function () {
                         console.log(response);
-                        window.location = "{% url 'task-manager-list' %}";
+                        window.location = "{% url 'report-scheduler-list' %}";
                     });
                 }, function (response) {
                     console.log(response);

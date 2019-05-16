@@ -8,6 +8,7 @@ class RuleSetBuilder(BaseBuilder):
         BaseBuilder.__init__(self)
 
     def __generate_data__(self):
+        self.result_dict[key.RULE_KEY_COMBINED_KEY]= self.rule_model.combinedKey
         self.result_dict[key.RULE_KEY_PROCESS] = self.rule_model.process
         self.result_dict[key.RULE_KEY_PROCESS_STEP] = self.rule_model.processStep
         self.result_dict[key.RULE_KEY_ORGANIZATION_ID] = self.rule_model.organizationId

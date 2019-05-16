@@ -1,16 +1,36 @@
 from RulesetComparer.dataModel.dataBuilder.ruleModifiedBuilder import RuleModifiedBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetCompareResultBuilder import RulesetCompareResultBuilder
 from RulesetComparer.properties import dataKey as key
+from RulesetComparer.utils.rulesetUtil import *
 
 
 class RulesetComparer:
-    def __init__(self, base_rule_set, compare_rule_set):
-        self.base_rule_set = base_rule_set
-        self.compare_rule_set = compare_rule_set
-        self.baseKeyOnly = []
-        self.compareKeyOnly = []
-        self.different = []
-        self.normal = []
-        self.classify_rule_keys()
+    LOG_CLASS = "RulesetComparer"
+
+    def __init__(self, ruleset_name, base_ruleset, compare_ruleset, is_module):
+        try:
+            info_log(self.LOG_CLASS, '======== RulesetComparer compare %s ========' % ruleset_name)
+            self.is_module = is_module
+            self.ruleset_name = ruleset_name
+            self.base_rule_set = None
+            self.compare_rule_set = None
+            self.baseKeyOnly = []
+            self.compareKeyOnly = []
+            self.different = []
+            self.normal = []
+            self.parse_ruleset(base_ruleset, compare_ruleset)
+            self.classify_rule_keys()
+            info_log(self.LOG_CLASS, '======== RulesetComparer compare finished ========')
+        except Exception as e:
+            raise e
+
+    def parse_ruleset(self, base_ruleset, compare_ruleset):
+        if self.is_module:
+            self.base_rule_set = base_ruleset
+            self.compare_rule_set = compare_ruleset
+        else:
+            self.base_rule_set = load_rule_module_from_file(self.ruleset_name, base_ruleset)
+            self.compare_rule_set = load_rule_module_from_file(self.ruleset_name, compare_ruleset)
 
     def classify_rule_keys(self):
         base_key_set = set(self.base_rule_set.get_rule_combined_key_list())
@@ -77,3 +97,12 @@ class RulesetComparer:
             key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL: self.get_normal_rules_array()
         }
         return diff_result
+
+    def get_data_by_builder(self):
+        builder = RulesetCompareResultBuilder(self.base_rule_set.get_rules_name(),
+                                              self.get_base_rules_array(),
+                                              self.get_compared_rules_array(),
+                                              self.get_difference_rules_array(),
+                                              self.get_normal_rules_array())
+
+        return builder.get_data()

@@ -3,6 +3,7 @@ import shutil
 import glob
 import json
 import zipfile
+import codecs
 from django.conf import settings
 from codecs import open
 from RulesetComparer.properties.config import get_compare_result_full_file_name
@@ -85,6 +86,19 @@ def load_compare_result_file(compare_key):
     return load_json_file(file_name_with_path)
 
 
+def save_auto_sync_pre_json_file(file_path, data):
+    create_folder(file_path)
+    file_name = get_file_name("_json", "pre")
+    file_name_with_path = file_path + "/" + file_name
+    save_file(file_name_with_path, json.dumps(data))
+
+
+def load_auto_sync_pre_json_file(file_path):
+    file_name = get_file_name("_json", "pre")
+    file_name_with_path = file_path + "/" + file_name
+    return load_json_file(file_name_with_path)
+
+
 def load_json_file(file_path):
     if file_path is None:
         return None
@@ -137,7 +151,8 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
 
 
 def load_file_with_setting(file_name, mode, format):
-    return open(file_name, mode, format)
+    fp = codecs.open(file_name, mode, format)
+    return fp.read()
 
 
 def load_file_in_folder(path, extension):
@@ -155,3 +170,15 @@ def get_rule_name_list(path):
         file_name = file_name[:-4]
         rule_name_list.append(file_name)
     return rule_name_list
+
+def get_files_list_in_path(path, exception=None):
+    name_list = list()
+    for file in os.listdir(path):
+        if os.path.isfile(file):
+            continue
+
+        if file == exception:
+            continue
+
+        name_list.append(file)
+    return name_list

@@ -22,7 +22,7 @@ class DownloadRuleListTask(BaseRequestTask):
         super().request_data()
 
     def execute(self):
-        info_log(self.LOG_CLASS, '======== download rule set list ========')
+        info_log(self.LOG_CLASS, '======== download ruleset list ========')
         info_log(self.LOG_CLASS, "environment = %s , country = %s" % (self.environment, self.country))
 
         request_params = [{"name": self.KEY_USER, "value": self.auth_data.get_account()},
@@ -35,12 +35,12 @@ class DownloadRuleListTask(BaseRequestTask):
             info_log(self.LOG_CLASS, "getOwnedBRERuleSets error message :" + str(response.message))
             raise Exception(response.message[0].text)
         self.b2b_response_data = response
+        info_log(self.LOG_CLASS, '======== download ruleset list finished ========')
 
     def parse_result_data(self):
         payload_data_encoding = self.b2b_response_data.payload.encode(settings.UNICODE_ENCODING)
         parser = RuleListModel(payload_data_encoding)
-
-        return parser.get_rules_file_name_list()
+        self.result_data = parser.get_rules_file_name_list()
 
     def get_result_data(self):
         return super().get_result_data()

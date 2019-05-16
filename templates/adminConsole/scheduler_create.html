@@ -1,13 +1,14 @@
 {% extends "admin_console_base.html" %}
 {% load static from staticfiles %}
 {% block resource %}
+    <link href="{% static '/css/report_scheduler_create.css' %}" rel="stylesheet">
     <script src="{% static '/js/adminConsole/scheduler-create.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-    <div id="create_task_container" class="custom_container">
-        <div id="content_header_div" class="row">
-            <div class="component_title_modify_data">CREATE TASK</div>
+    <div id="create_report_task_container" class="custom_container admin_console_block_background">
+        <div id="header_div" class="row">
+            <div class="page_title_div">CREATE TASK</div>
             <div id="action_button_div" class="row no_row_margin">
                 <div id="create_button_div">
                     <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="createBtnOnClick()">SAVE
@@ -16,9 +17,9 @@
             </div>
         </div>
 
-        <div id="env_select_group_div" class="row no_row_margin">
+        <div id="env_group_div" class="row no_row_margin">
             <div id="base_env_select_div" class="env_select_div">
-                <div class="env_select_title">Environment :</div>
+                <div class="block_title_div">Environment :</div>
                 <div id="base_env_dropdown_div" class="btn-group env_select_dropdown_div">
                     <button id="select_base_env_btn" data-toggle="dropdown"
                             class="env_select_dropdown_btn btn btn-primary dropdown-toggle"
@@ -36,7 +37,7 @@
                 </div>
             </div>
             <div id="compare_env_select_div" class="env_select_div">
-                <div class="env_select_title">Environment :</div>
+                <div class="block_title_div">Environment :</div>
                 <div id="compare_env_dropdown_div" class="btn-group env_select_dropdown_div">
                     <button id="select_compare_env_btn" data-toggle="dropdown"
                             class="env_select_dropdown_btn btn btn-primary dropdown-toggle"
@@ -56,9 +57,9 @@
         </div>
 
         <div id="country_select_div">
-            <div class="env_select_title">Country :</div>
+            <div class="block_title_div">Country :</div>
 
-            <div id="country_check_box_div" class="country_check_box_div row no_row_margin">
+            <div id="country_check_box_div" class="row no_row_margin">
                 {% for data in countries %}
                     <div class="checkbox_input_div form-check form-check-inline">
                         <input onclick="countryCheckboxOnChange(this)" class="form-check-input checkbox_input"
@@ -71,7 +72,7 @@
         </div>
 
         <div id="mail_content_select_div">
-            <div class="env_select_title">Mail Content :</div>
+            <div class="block_title_div">Mail Content :</div>
             <div id="mail_content_checkbox_div>" class="row no_row_margin">
                 {% for data in mail_content_types %}
                     <div class="checkbox_input_div form-check form-check-inline">
@@ -86,7 +87,7 @@
 
         <div id="time_select_group_div" class="row no_row_margin">
             <div id="select_proceed_time_div" class="time_select_div">
-                <div class="env_select_title">Next Proceed Time :</div>
+                <div class="block_title_div">Next Proceed Time :</div>
                 <div id="clock_picker_div" class="time_input_div input-group clockpicker" data-placement="left"
                      data-align="top"
                      data-autoclose="true">
@@ -97,7 +98,7 @@
                 </div>
             </div>
             <div id="select_interval_time_div" class="time_select_div">
-                <div class="env_select_title">Interval Hour :</div>
+                <div class="block_title_div">Interval Hour :</div>
                 <div id="hour_input_div" class="time_input_div input-group" data-placement="left"
                      data-align="top"
                      data-autoclose="true">
@@ -110,7 +111,7 @@
         </div>
 
         <div id="mail_receiver_list_div">
-            <div class="env_select_title">Receivers :</div>
+            <div class="block_title_div">Receivers :</div>
             <div>
                 <div id="mail_receiver_input_div" class="tagsinput-primary">
                     <input id="mail_receiver_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
@@ -124,7 +125,7 @@
     <script>
         init("{{ admin_console_info.module.id }}",
             "{% url 'create-scheduler' %}",
-            "{% url 'task-manager-list' %}");
+            "{% url 'report-scheduler-list' %}");
         createBtnOnClick = function () {
             createTask();
         }

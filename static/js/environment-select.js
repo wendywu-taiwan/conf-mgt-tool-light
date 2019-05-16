@@ -1,6 +1,5 @@
 $(function () {
     $("#select-country-list li").click(function () {
-        console.log('select:', $(this).text());
         $("#select-country-btn:first-child").text($(this).text());
         $("#select-country-btn:first-child").val($(this).val());
         $("#country_selected").val($(this).val());
@@ -20,7 +19,7 @@ $(function () {
         $("#environment_2_selected").val($(this).val());
     });
 
-     $("#compare_submit_button").click(function () {
-         showWaitingDialog();
-     });
+    $("#compare_submit_button").click(function () {
+        showWaitingDialog();
+    });
 });

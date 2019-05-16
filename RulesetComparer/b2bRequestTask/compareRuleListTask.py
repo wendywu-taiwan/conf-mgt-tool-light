@@ -5,7 +5,6 @@ from django.template.loader import get_template
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.dataModel.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
-from RulesetComparer.dataModel.xml.ruleSetParser import RulesModel as ParseRuleModel
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
@@ -27,28 +26,24 @@ class CompareRuleListTask:
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
 
-        # list for saving rule in compared env but not in base env
-        self.add_rule_list = list()
-        # list for saving rule in base env but not in compared env
-        self.remove_rule_list = list()
-        # list for saving rule has different version in base and compared env
-        self.modify_rule_list = list()
-        # list for saving rule has same version in base and compared env
-        self.normal_rule_list = list()
+        self.compare_env_only_rulesets = list()
+        self.base_env_only_rulesets = list()
+        self.different_rulesets = list()
+        self.normal_rulesets = list()
 
-        self.add_rules_count = 0
-        self.remove_rules_count = 0
-        self.modify_rules_count = 0
+        self.compare_env_only_rules_count = 0
+        self.base_env_only_rules_count = 0
+        self.different_rules_count = 0
 
-        # map for saving rule details for each rule file.
-        # key = rule file name
+        # list rule detail data list in ruleset object
+        # key = ruleset name
         # value = rule list
-        self.rule_detail_map = {}
+        self.ruleset_detail_map = {}
 
-        # map for saving rule diff result for each rule file.
-        # key = rule file name
+        # list rule diff data list in ruleset object
+        # key = ruleset  name
         # value = rule diff list
-        self.rule_diff_map = {}
+        self.ruleset_diff_map = {}
 
         # check if environment is git
         self.git_environment = self.check_environment()
@@ -61,7 +56,6 @@ class CompareRuleListTask:
             self.execute()
             self.save_result_file()
         except Exception as e:
-            error_log(traceback.format_exc())
             raise e
 
     def check_environment(self):
@@ -93,54 +87,9 @@ class CompareRuleListTask:
             compare_rule_list = self.updated_rule_list_from_server(self.comparedEnv)
 
         comparer = RuleListComparer(base_rule_list, compare_rule_list)
-        add_list = comparer.get_compare_rules_list()
-        minus_list = comparer.get_base_rules_list()
-        union_list = comparer.get_union_list()
-
-        self.parse_add_list_rule(add_list)
-        self.parse_remove_list_rule(minus_list)
-        self.parse_union_list_rule(union_list)
-
-    def save_result_file(self):
-        current_time = get_current_time()
-        base_env_data = EnvironmentSerializer(Environment.objects.get(id=self.baseEnv.id)).data
-        compare_env_data = EnvironmentSerializer(Environment.objects.get(id=self.comparedEnv.id)).data
-        country_data = CountrySerializer(Country.objects.get(id=self.country.id)).data
-        if self.add_rules_count == 0 and self.remove_rules_count == 0 and self.modify_rules_count == 0:
-            has_changes = False
-        else:
-            has_changes = True
-
-        compare_list_data = {
-            key.COMPARE_RULE_COMPARE_HASH_KEY: self.compare_hash_key,
-            key.COMPARE_RESULT_DATE_TIME: current_time,
-            key.COMPARE_RESULT_ADD_LIST: self.add_rule_list,
-            key.COMPARE_RESULT_REMOVE_LIST: self.remove_rule_list,
-            key.COMPARE_RESULT_NORMAL_LIST: self.normal_rule_list,
-            key.COMPARE_RESULT_MODIFY_LIST: self.modify_rule_list,
-            key.COMPARE_RESULT_ADD_FILE_COUNT: len(self.add_rule_list),
-            key.COMPARE_RESULT_REMOVE_FILE_COUNT: len(self.remove_rule_list),
-            key.COMPARE_RESULT_MODIFY_FILE_COUNT: len(self.modify_rule_list),
-            key.COMPARE_RESULT_ADD_RULE_COUNT: self.add_rules_count,
-            key.COMPARE_RESULT_REMOVE_RULE_COUNT: self.remove_rules_count,
-            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.modify_rules_count,
-            key.COMPARE_RESULT_HAS_CHANGES: has_changes
-        }
-
-        compare_result_data = {
-            key.COMPARE_RULE_LIST_COUNTRY: country_data,
-            key.COMPARE_RULE_BASE_ENV: base_env_data,
-            key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
-            key.COMPARE_RESULT_LIST_DATA: compare_list_data,
-            key.COMPARE_RESULT_DETAIL_DATA: self.rule_detail_map,
-            key.COMPARE_RESULT_DIFF_DATA: self.rule_diff_map
-        }
-
-        fileManager.save_compare_result_file(self.compare_hash_key, compare_result_data)
-        template = get_template("compare_result_report.html")
-        html = template.render(compare_result_data)
-        fileManager.save_compare_result_html(self.compare_hash_key, html)
-        info_log(self.LOG_CLASS, " ============== finish ==============")
+        self.parse_compare_env_only_rulesets(comparer.comparedEnvOnly)
+        self.parse_base_env_only_rulesets(comparer.baseEnvOnly)
+        self.parse_union_rulesets(comparer.union)
 
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_result_data()
@@ -154,66 +103,102 @@ class CompareRuleListTask:
     def download_rules(self, env, rule_list):
         DownloadRulesetsTask(env.id, self.country.id, rule_list, self.compare_hash_key)
 
-    def parse_add_list_rule(self, add_list):
-        for rule_name in add_list:
-            rule_module = self.load_rule_module(self.comparedEnv, rule_name)
-            if rule_module is None:
+    def parse_compare_env_only_rulesets(self, rulesets):
+        for ruleset_name in rulesets:
+            ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, self.country.name,
+                                                             self.comparedEnv.name, self.compare_hash_key)
+            if ruleset_object is None:
                 continue
 
-            rule_list_item_parser = RuleListItemBuilder(rule_module, self.compare_hash_key)
+            rule_list_item_parser = RuleListItemBuilder(ruleset_object, self.compare_hash_key)
             rule_list_item_parser.set_add_rule()
-            self.add_rule_list.append(rule_list_item_parser.get_data())
-            self.rule_detail_map[rule_name] = rule_module.get_rules_data_array()
-            self.add_rules_count += rule_module.get_rules_count()
+            self.compare_env_only_rulesets.append(rule_list_item_parser.get_data())
+            self.ruleset_detail_map[ruleset_name] = ruleset_object.get_rules_data_array()
+            self.compare_env_only_rules_count += ruleset_object.get_rules_count()
 
-    def parse_remove_list_rule(self, remove_list):
-        for rule_name in remove_list:
-            rule_module = self.load_rule_module(self.baseEnv, rule_name)
-            if rule_module is None:
+    def parse_base_env_only_rulesets(self, rulesets):
+        for ruleset_name in rulesets:
+            ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, self.country.name,
+                                                             self.baseEnv.name, self.compare_hash_key)
+
+            if ruleset_object is None:
                 continue
 
-            rule_list_item_parser = RuleListItemBuilder(rule_module, self.compare_hash_key)
+            rule_list_item_parser = RuleListItemBuilder(ruleset_object, self.compare_hash_key)
             rule_list_item_parser.set_remove_rule()
-            self.remove_rule_list.append(rule_list_item_parser.get_data())
-            self.rule_detail_map[rule_name] = rule_module.get_rules_data_array()
-            self.remove_rules_count += rule_module.get_rules_count()
+            self.base_env_only_rulesets.append(rule_list_item_parser.get_data())
+            self.ruleset_detail_map[ruleset_name] = ruleset_object.get_rules_data_array()
+            self.base_env_only_rules_count += ruleset_object.get_rules_count()
 
-    def parse_union_list_rule(self, union_list):
-        for rule_name in union_list:
-            base_rules_module = self.load_rule_module(self.baseEnv, rule_name)
-            compared_rules_module = self.load_rule_module(self.comparedEnv, rule_name)
-            if base_rules_module is None or compared_rules_module is None:
+    def parse_union_rulesets(self, rulesets):
+        for ruleset_name in rulesets:
+            base_ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, self.country.name,
+                                                                  self.baseEnv.name, self.compare_hash_key)
+            compare_ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, self.country.name,
+                                                                     self.comparedEnv.name, self.compare_hash_key)
+
+            if base_ruleset_object is None or compare_ruleset_object is None:
                 continue
 
-            comparer = RulesetComparer(base_rules_module, compared_rules_module)
-            rule_list_item_parser = RuleListItemBuilder(base_rules_module, self.compare_hash_key)
+            comparer = RulesetComparer(ruleset_name, base_ruleset_object, compare_ruleset_object, is_module=True)
+            rule_list_item_parser = RuleListItemBuilder(base_ruleset_object, self.compare_hash_key)
             if comparer.no_difference():
                 rule_list_item_parser.set_normal_rule()
-                self.normal_rule_list.append(rule_list_item_parser.get_data())
-                self.rule_detail_map[rule_name] = base_rules_module.get_rules_data_array()
+                self.normal_rulesets.append(rule_list_item_parser.get_data())
+                self.ruleset_detail_map[ruleset_name] = base_ruleset_object.get_rules_data_array()
             else:
-                rule_list_item_parser.set_modify_rule(base_rules_module.get_rules_count(),
-                                                      compared_rules_module.get_rules_count(),
+                rule_list_item_parser.set_modify_rule(base_ruleset_object.get_rules_count(),
+                                                      compare_ruleset_object.get_rules_count(),
                                                       comparer.get_compare_key_count(),
                                                       comparer.get_base_key_count(),
                                                       comparer.get_difference_count())
-                self.modify_rule_list.append(rule_list_item_parser.get_data())
-                self.rule_diff_map[rule_name] = comparer.get_diff_data()
-                self.add_rules_count += comparer.get_compare_key_count()
-                self.remove_rules_count += comparer.get_base_key_count()
-                self.modify_rules_count += comparer.get_difference_count()
+                self.different_rulesets.append(rule_list_item_parser.get_data())
+                self.ruleset_diff_map[ruleset_name] = comparer.get_diff_data()
+                self.compare_env_only_rules_count += comparer.get_compare_key_count()
+                self.base_env_only_rules_count += comparer.get_base_key_count()
+                self.different_rules_count += comparer.get_difference_count()
 
-    def load_rule_module(self, env, rule_name):
-        try:
-            if env.name == config.GIT.get("environment_name"):
-                rule_set_file = rulesetUtil.load_git_file_with_name(self.country.name, rule_name)
-            else:
-                rule_set_file = rulesetUtil.load_rule_file_with_name(env.name,
-                                                                     self.country.name,
-                                                                     self.compare_hash_key,
-                                                                     rule_name)
-            rules_module = ParseRuleModel(rule_set_file, rule_name)
-            return rules_module
-        except Exception:
-            error_log(traceback.format_exc())
-            return None
+    def save_result_file(self):
+        current_time = get_current_time()
+        base_env_data = EnvironmentSerializer(Environment.objects.get(id=self.baseEnv.id)).data
+        compare_env_data = EnvironmentSerializer(Environment.objects.get(id=self.comparedEnv.id)).data
+        country_data = CountrySerializer(Country.objects.get(id=self.country.id)).data
+        if self.base_env_only_rules_count == 0 and self.compare_env_only_rules_count == 0 and self.different_rules_count == 0:
+            has_changes = False
+        else:
+            has_changes = True
+
+        compare_list_data = {
+            key.COMPARE_RULE_COMPARE_HASH_KEY: self.compare_hash_key,
+            key.COMPARE_RESULT_DATE_TIME: current_time,
+            key.COMPARE_RESULT_ADD_LIST: self.compare_env_only_rulesets,
+            key.COMPARE_RESULT_REMOVE_LIST: self.base_env_only_rulesets,
+            key.COMPARE_RESULT_NORMAL_LIST: self.normal_rulesets,
+            key.COMPARE_RESULT_MODIFY_LIST: self.different_rulesets,
+            key.COMPARE_RESULT_ADD_FILE_COUNT: len(self.compare_env_only_rulesets),
+            key.COMPARE_RESULT_REMOVE_FILE_COUNT: len(self.base_env_only_rulesets),
+            key.COMPARE_RESULT_MODIFY_FILE_COUNT: len(self.different_rulesets),
+            key.COMPARE_RESULT_ADD_RULE_COUNT: self.compare_env_only_rules_count,
+            key.COMPARE_RESULT_REMOVE_RULE_COUNT: self.base_env_only_rules_count,
+            key.COMPARE_RESULT_MODIFY_RULE_COUNT: self.different_rules_count,
+            key.COMPARE_RESULT_HAS_CHANGES: has_changes
+
+        }
+
+        compare_result_data = {
+            key.COMPARE_RULE_LIST_COUNTRY: country_data,
+            key.COMPARE_RULE_BASE_ENV: base_env_data,
+            key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
+            key.COMPARE_RESULT_LIST_DATA: compare_list_data,
+            key.COMPARE_RESULT_DETAIL_DATA: self.ruleset_detail_map,
+            key.COMPARE_RESULT_DIFF_DATA: self.ruleset_diff_map
+        }
+
+        fileManager.save_compare_result_file(self.compare_hash_key, compare_result_data)
+        template = get_template("compare_result_report.html")
+        html = template.render(compare_result_data)
+        fileManager.save_compare_result_html(self.compare_hash_key, html)
+        info_log(self.LOG_CLASS, " ============== finish ==============")
+
+    def get_report(self):
+        return fileManager.load_compare_result_file(self.compare_hash_key)

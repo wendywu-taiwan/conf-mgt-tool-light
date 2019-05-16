@@ -5,15 +5,17 @@ from RulesetComparer.properties import xmlKey as XMLKey
 
 
 # this is for handling ruleset data, a ruleset file contains many rules
-class RulesModel(BaseModel):
+class RulesetObject(BaseModel):
     def __init__(self, xml, rule_name):
         BaseModel.__init__(self, xml)
+        self.root = None
+        self.has_saxif_tag = False
         self.rulesName = rule_name
         self.rulesMap = {}
         self.parse_data_catch_error()
 
     def parse_data(self):
-        root = self.parse_xml_from_file()
+        root = self.parse_xml_from_string()
 
         if len(self.nodes_data(root, saxif_tag=True, key=XMLKey.NODE_KEY_RULE)) > 0:
             has_saxif_tag = True

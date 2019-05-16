@@ -1,0 +1,175 @@
+#create_sync_task_container {
+    padding: 20px;
+    height: 100%;
+}
+
+#create_sync_task_container #header_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+}
+
+#create_sync_task_container .page_title_div {
+    font-size: 18px;
+    font-weight: 800;
+    color: #088587;
+}
+
+#action_button_div {
+    margin-left: auto;
+}
+
+#create_button_div {
+    margin-left: auto;
+    width: 100px;
+}
+
+#run_now_button_div{
+    margin-right: 10px;
+    width: 100px;
+}
+
+#create_btn {
+    color: white;
+    font-family: "Lato";
+    font-weight: 700;
+}
+
+#run_now_btn {
+    color: white;
+    font-family: "Lato";
+    font-weight: 700;
+}
+
+/* environment */
+#env_group_div {
+    margin-bottom: 50px;
+}
+
+.env_select_div {
+    width: 35%;
+}
+
+.block_title_div {
+    font-size: 17px;
+    font-weight: 800;
+    color: #868686;
+    margin-bottom: 5px;
+    font-family: "Lato";
+}
+
+.env_select_dropdown_div {
+    width: 60%;
+}
+
+.env_select_dropdown_btn {
+    width: 100%;
+    background-color: #088587;
+}
+
+.env_select_dropdown_list_ul {
+    width: 60%;
+    max-height: 150px;
+    overflow: scroll;
+    background: #4fb99f;
+}
+
+.env_select_dropdown_list_item_text {
+    color: white !important;
+    font-size: 15px;
+}
+
+/* country */
+#country_select_div {
+    margin-bottom: 50px;
+}
+
+#country_radio_box_div {
+    margin-top: 15px;
+}
+
+.checkbox_input_div {
+    width: 18%;
+}
+
+.checkbox_input {
+    width: 24px;
+    height: 24px;
+}
+
+.radio_button_input_div {
+    margin-right: 30px;
+    margin-bottom: 15px;
+}
+
+.custom_radio_label {
+    padding-left: 20px !important;
+}
+
+/* mail content */
+#action_select_div {
+    margin-bottom: 50px;
+}
+
+/* time select */
+#time_select_group_div {
+    margin-bottom: 50px;
+}
+
+.time_select_div {
+    width: 35%;
+}
+
+.time_input_div {
+    width: 60%;
+}
+
+.time_input_right_span {
+    margin: auto;
+    padding: 3px;
+    border: 2px solid #049092;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #049092;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+.time_input_icon_span {
+    color: white;
+}
+
+#hour_input_right_span {
+    margin: auto;
+    padding: 4px;
+    border: 2px solid #049092;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #049092;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+#mail_receiver_list_div {
+    margin-bottom: 50px;
+}
+
+#mail_receiver_input_div {
+    width: 56%;
+}
+
+#mail_receiver_input {
+    width: 100%;
+}
+
+.time_input {
+    border-color: #049092;
+}
+
+.option_font_size{
+    font-size: 15px;
+}

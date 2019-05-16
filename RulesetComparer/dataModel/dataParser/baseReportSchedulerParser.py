@@ -1,3 +1,4 @@
+import ast
 from RulesetComparer.models import Country, MailContentType
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import config
@@ -85,3 +86,21 @@ class BaseReportSchedulerParser:
                     return True
                 else:
                     return False
+
+    @staticmethod
+    def parse_boolean_to_int(boolean):
+        if boolean:
+            return 1
+        else:
+            return 0
+
+    @staticmethod
+    def parse_int_to_boolean(int_value):
+        if int_value == 0:
+            return False
+        else:
+            return True
+
+    @staticmethod
+    def get_mail_list(receiver_list):
+        return ast.literal_eval(receiver_list)

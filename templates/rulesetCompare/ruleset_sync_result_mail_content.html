@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<head>
+    <style>
+        table, th, td {
+            border: 1.5px solid white;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .header {
+            background: #34495d;
+            color: white;
+            font-size: 10.0pt;
+            font-family: Calibri, sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .td_title {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+            font-family: Calibri, sans-serif;
+        }
+
+        .td_title_blue {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+            font-family: Calibri, sans-serif;
+            background-color: #bcd7f16b;
+        }
+
+        .td_content {
+            font-family: Calibri, sans-serif;
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+        }
+
+        .td_content_highlight {
+            font-family: Calibri, sans-serif;
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: red;
+        }
+
+        .td_content_blue {
+            font-family: Calibri, sans-serif;
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+            background-color: #bcd7f16b;
+        }
+
+        .env_title_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .env_text {
+            color: #5b9bd5;
+            font-weight: 600;
+            font-family: Calibri, sans-serif;
+            display: inline-block;
+        }
+
+        .content_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .list_title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #e69136;
+            font-family: Calibri, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="content_text">The rulesets on {{ source_environment.name }} and {{ target_environment.name }}
+        environment has been synced up at
+    </div>
+    <div class="env_text">&ensp;{{ update_time }}</div>
+</div>
+<br>
+<div class="row">
+    <div class="env_title_text">Country :</div>
+    <div class="env_text">&ensp;{{ country.full_name }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">From Environment :</div>
+    <div class="env_text">&ensp;{{ source_environment.name }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">To Environment :</div>
+    <div class="env_text">&ensp;{{ target_environment.name }}</div>
+</div>
+<br>
+<div class="content_text">Please check the following information for more details,</div>
+<div class="content_text">Thank you.</div>
+<br>
+<br>
+<div class="list_title">Rulesets Sync Summary For {{ target_environment.name }} Environment</div>
+<table style=" border-collapse: collapse; border: 1px solid black;">
+    <tr>
+        <td class="header">Added Rulesets</td>
+        <td class="header">Updated Rulesets</td>
+        <td class="header">Deleted Rulesets</td>
+    </tr>
+    <tr>
+        <td class="td_title">{{ create_rulesets|length }}</td>
+        <td class="td_title">{{ update_rulesets|length }}</td>
+        <td class="td_title">{{ deleted_rulesets|length }}</td>
+    </tr>
+</table>
+<br>
+<br>
+{% if failed_rulesets|length > 0 %}
+    <div class="list_title">Sync Up Failed Rulesets</div>
+    <table style=" border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td class="header">Ruleset</td>
+            <td class="header">Action</td>
+            <td class="header">Exception</td>
+        </tr>
+        {% for data in failed_rulesets %}
+            <tr>
+                <td class="td_title">{{ data.ruleset_name }}</td>
+                <td class="td_content">{{ data.action }}</td>
+                <td class="td_content_highlight">{{ data.exception }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+{% endif %}
+{% if create_rulesets|length > 0 or update_rulesets|length > 0 %}
+    <div class="list_title">Sync Up Success Rulesets</div>
+    <table style=" border-collapse: collapse; border: 1px solid black;">
+        <tr>
+            <td class="header">Ruleset</td>
+            <td class="header">Action</td>
+        </tr>
+        {% for data in create_rulesets %}
+            {% include 'ruleset_sync_result_table.html' %}
+        {% endfor %}
+        {% for data in update_rulesets %}
+            {% include 'ruleset_sync_result_table.html' %}
+        {% endfor %}
+        {% for data in deleted_rulesets %}
+            {% include 'ruleset_sync_result_table.html' %}
+        {% endfor %}
+    </table>
+    <br>
+    <br>
+{% endif %}
+{#{% if update_rulesets|length > 0 %}#}
+{#    <div class="list_title">Updated Rulesets</div>#}
+{#    <table style=" border-collapse: collapse; border: 1px solid black;">#}
+{#        <tr>#}
+{#            <td class="header">Ruleset</td>#}
+{#            <td class="header">Status</td>#}
+{#        </tr>#}
+{#        {% for data in update_rulesets %}#}
+{#            {% include 'ruleset_sync_result_table.html' %}#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#    <br>#}
+{#    <br>#}
+{#{% endif %}#}
+{#{% if deleted_rulesets|length > 0 %}#}
+{#    <div class="list_title">Deleted Rulesets</div>#}
+{#    <table style=" border-collapse: collapse; border: 1px solid black;">#}
+{#        <tr>#}
+{#            <td class="header">Ruleset</td>#}
+{#            <td class="header">Status</td>#}
+{#        </tr>#}
+{#        {% for data in deleted_rulesets %}#}
+{#            {% include 'ruleset_sync_result_table.html' %}#}
+{#        {% endfor %}#}
+{#    </table>#}
+{#    <br>#}
+{#    <br>#}
+{#{% endif %}#}
+</body>
+</html>

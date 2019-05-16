@@ -165,6 +165,15 @@ class UserRole(models.Model):
     objects = UserRoleManager()
 
 
+class MailContentType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+    title = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.id
+
+
 class ReportSchedulerInfoManager(models.Manager):
     def create_task(self, base_env_id, compared_env_id, module_id,
                     country_list, mail_content_type_list, mail_list_str, interval, next_proceed_time):
@@ -199,7 +208,7 @@ class ReportSchedulerInfoManager(models.Manager):
         for country_id in country_list:
             task.country_list.add(country_id)
 
-        task.mail_content_list.clear()
+        task.mail_content_type_list.clear()
         for mail_content_type in mail_content_type_list:
             task.mail_content_type_list.add(mail_content_type)
 
@@ -213,14 +222,11 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
-
-class MailContentType(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    title = models.CharField(max_length=128)
-
-    def __str__(self):
-        return self.id
+    def update_job_id(self, task_id, job_id):
+        task = self.get(id=task_id)
+        task.job_id = job_id
+        task.save()
+        return task
 
 
 class ReportSchedulerInfo(models.Model):
@@ -236,9 +242,94 @@ class ReportSchedulerInfo(models.Model):
     interval_hour = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
+    job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField()
 
     objects = ReportSchedulerInfoManager()
+
+
+class RulesetSyncUpSchedulerManager(models.Manager):
+    def create_task(self, source_env_id, target_env_id, module,
+                    country_list, action_list_str, mail_list_str,
+                    interval, next_proceed_time, backup):
+        task = self.create(source_environment_id=source_env_id,
+                           target_environment_id=target_env_id,
+                           module=module,
+                           action_list=action_list_str,
+                           mail_list=mail_list_str,
+                           interval_hour=interval,
+                           last_proceed_time=None,
+                           next_proceed_time=next_proceed_time,
+                           backup=backup,
+                           enable=1)
+
+        for country in country_list:
+            task.country_list.add(country)
+
+        return task
+
+    def update_task(self, task_id, source_env_id, target_env_id,
+                    country_list, action_list_str, mail_list_str,
+                    interval, next_proceed_time, backup):
+        task = self.get(id=task_id)
+        task.source_environment_id = source_env_id
+        task.target_environment_id = target_env_id
+        task.action_list = action_list_str
+        task.mail_list = mail_list_str
+        task.interval_hour = interval
+        task.next_proceed_time = next_proceed_time
+        task.backup = backup
+
+        task.country_list.clear()
+        for country_id in country_list:
+            task.country_list.add(country_id)
+
+        task.save()
+        return task
+
+    def update_time(self, task_id, last_proceed_time, next_proceed_time):
+        task = self.get(id=task_id)
+        task.last_proceed_time = last_proceed_time
+        task.next_proceed_time = next_proceed_time
+        task.save()
+        return task
+
+    def update_next_proceed_time(self, task_id, next_proceed_time):
+        task = self.get(id=task_id)
+        task.next_proceed_time = next_proceed_time
+
+        task.save()
+        return task
+
+    def update_task_status(self, task_id, enable):
+        task = self.get(id=task_id)
+        task.enable = enable
+        task.save()
+        return task
+
+    def update_job_id(self, task_id, job_id):
+        task = self.get(id=task_id)
+        task.job_id = job_id
+        task.save()
+        return task
+
+
+class RulesetSyncUpScheduler(models.Model):
+    id = models.AutoField(primary_key=True)
+    source_environment = models.ForeignKey(Environment, related_name='source_environment_id', on_delete=models.CASCADE)
+    target_environment = models.ForeignKey(Environment, related_name='target_environment_id', on_delete=models.CASCADE)
+    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    country_list = models.ManyToManyField(Country)
+    action_list = models.TextField()
+    mail_list = models.TextField()
+    interval_hour = models.IntegerField()
+    last_proceed_time = models.DateTimeField(null=True)
+    next_proceed_time = models.DateTimeField(null=True)
+    job_id = models.CharField(max_length=128, null=True)
+    backup = models.IntegerField()
+    enable = models.IntegerField(default=1)
+
+    objects = RulesetSyncUpSchedulerManager()
 
 
 class DataUpdateTimeManager(models.Manager):

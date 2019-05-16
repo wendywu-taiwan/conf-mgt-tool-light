@@ -1,0 +1,79 @@
+{% extends "admin_console_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/recovery.css' %}" rel="stylesheet">
+    <script src="{% static '/js/adminConsole/recovery.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="filter_env_country_div" class="recovery_container height-full admin_console_block_background">
+        <div id="select_data_div">
+            <div class="div_title_text">SELECT
+            </div>
+            <div id="select_country_and_env_div" class="custom-row">
+                <div id="select_env_div" class="col no-col-padding">
+                    <label class="drop_down_label_text col no-col-padding"
+                           for="select_env_drop_down_div">Environment</label>
+                    <div id="select_env_drop_down_div" class="custom-btn-group-1 btn-group">
+                        <button id="select-env-btn" class="drop_down_button btn btn-inverse dropdown-toggle"
+                                type="button"
+                                data-toggle="dropdown">
+                            Environment
+                        </button>
+                        <ul id="select-env-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for data in environments %}
+                                <li value="{{ data.id }}"><a href="#">{{ data.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="select_country_div" class="col no-col-padding">
+                    <label class="drop_down_label_text col no-col-padding" for="select_country">Country</label>
+                    <div id="select_country" class="custom-btn-group-1 btn-group">
+                        <button id="select-country-btn" class="drop_down_button btn btn-inverse dropdown-toggle"
+                                type="button" data-toggle="dropdown">
+                            Country
+                        </button>
+                        <ul id="select-country-list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for data in countries %}
+                                <li value="{{ data.id }}"><a href="#">{{ data.full_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="filter_div">
+                <div id="filter_input_div" class="tagsinput-primary">
+                    <label class="drop_down_label_text col no-col-padding"
+                           for="filter_tags_input">Filter(Optional)</label>
+                    <input id="filter_tags_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
+                           placeholder="ex.RS_ROOT"
+                           style="display: none;">
+                </div>
+            </div>
+            <div id="filter_btn_div">
+                <button id="filter_btn" class="btn btn-default btn-wide" onclick="filterBtnOnClick()">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="back_up_data_div"></div>
+    <script>
+        initRecoveryUrl("{% url 'recover-rulesets' %}");
+        initRulesetDiffUrl("{% url 'recover-filter-backup-ruleset-diff-page' %}", "{% url 'without-ruleset-diff-page' %}");
+        onEnvironmentSelected = function (environment_id) {
+            filterCountries(environment_id, "{% url 'recover-filter-environment-page' %}");
+        };
+
+        filterBtnOnClick = function () {
+            filterBackupRules("{% url 'recover-filter-backup-list-page' %}");
+        };
+
+        applyButtonOnClick = function () {
+            applyRulesetsRecover();
+        };
+    </script>
+{% endblock %}
