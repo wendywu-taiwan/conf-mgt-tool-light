@@ -39,6 +39,15 @@ class BaseReportSchedulerParser:
         return content_type_list
 
     @staticmethod
+    def db_time_to_date_time(start_date_time):
+        time_zone = config.TIME_ZONE.get('asia_taipei')
+
+        naive_local_time = datetime(start_date_time.year, start_date_time.month, start_date_time.day,
+                                    start_date_time.hour, start_date_time.minute, start_date_time.second)
+
+        return timeUtil.utc_to_locale_time(naive_local_time, time_zone)
+
+    @staticmethod
     def frontend_time_to_date_time(start_date_time):
         time_zone = config.TIME_ZONE.get('asia_taipei')
         frontend_time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
@@ -104,3 +113,7 @@ class BaseReportSchedulerParser:
     @staticmethod
     def get_mail_list(receiver_list):
         return ast.literal_eval(receiver_list)
+
+    @staticmethod
+    def parse_text_list(text_list):
+        return ast.literal_eval(text_list)

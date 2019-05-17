@@ -1,7 +1,7 @@
 import traceback
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.gitManager import GitManager
-from RulesetComparer.models import Environment, Country
+from RulesetComparer.models import Environment, Country, RulesetSyncUpScheduler
 from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
@@ -13,7 +13,6 @@ from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
-from RulesetComparer.dataModel.dataParser.updateReportSchedulerTaskParser import UpdateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadRulesetParser
 
 from RulesetComparer.models import ReportSchedulerInfo
@@ -22,6 +21,7 @@ from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
 from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject as ParseRuleModel
 from RulesetComparer.serializers.serializers import RuleSerializer
 from RulesetComparer.properties import dataKey
+from RulesetComparer.services import rulesetSyncUpService
 from django.template.loader import get_template
 
 
@@ -138,24 +138,25 @@ def run_report_scheduler(parser):
 
 def restart_all_scheduler():
     try:
-        info_log(None, "restart all scheduler")
-        if len(ReportSchedulerInfo.objects.all()) == 0:
-            return
-
-        scheduler_model_list = ReportSchedulerInfo.objects.all()
-        # report scheduler
-        for scheduler in scheduler_model_list:
-            country_list = scheduler.country_list.values(KEY_ID)
-            mail_content_type_list = scheduler.mail_content_type_list.values(KEY_ID)
-            parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
-            ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
-            run_report_scheduler(parser)
-
         # clear zip and ruleset file scheduler
         clear_ruleset_task = ClearRulesetFilesTask()
         scheduler = CustomJobScheduler(clear_ruleset_task.scheduler_listener)
         job = scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
         clear_ruleset_task.set_scheduled_job(job)
+
+        info_log(None, "restart all scheduler")
+        if len(ReportSchedulerInfo.objects.all()) > 0:
+            scheduler_model_list = ReportSchedulerInfo.objects.all()
+            # report scheduler
+            for scheduler in scheduler_model_list:
+                country_list = scheduler.country_list.values(KEY_ID)
+                mail_content_type_list = scheduler.mail_content_type_list.values(KEY_ID)
+                parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
+                ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
+                run_report_scheduler(parser)
+
+        rulesetSyncUpService.restart_schedulers()
+
         info_log(None, "restart all scheduler success")
     except BaseException as e:
         error_log(traceback.format_exc())

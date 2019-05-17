@@ -2,6 +2,7 @@ from django.template.loader import render_to_string
 
 from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
 from RulesetComparer.b2bRequestTask.rulesetsSyncUpTask import RulesetsSyncUpTask
+from RulesetComparer.dataModel.dataParser.dbRulesetSyncSchedulerParser import DBRulesetSyncSchedulerParser
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
@@ -67,6 +68,22 @@ def sync_up_rulesets_without_scheduler(json_data):
         except Exception as e:
             error_log(e)
             error_log(traceback.format_exc())
+
+
+def restart_schedulers():
+    try:
+        schedulers = RulesetSyncUpScheduler.objects.all()
+        if len(schedulers) == 0:
+            return
+
+        info_log("rulesetSyncUpService", "restart all schedulers")
+        for scheduler in schedulers:
+            country_list = scheduler.country_list.values(KEY_ID)
+            parser = DBRulesetSyncSchedulerParser(scheduler, country_list)
+            RulesetSyncUpScheduler.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
+            add_task_to_scheduler(scheduler.id, parser)
+    except Exception as e:
+        raise e
 
 
 def get_schedulers():

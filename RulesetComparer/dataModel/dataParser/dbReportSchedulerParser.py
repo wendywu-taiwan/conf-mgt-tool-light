@@ -32,12 +32,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
 
     @staticmethod
     def db_time_to_date_time(start_date_time):
-        time_zone = config.TIME_ZONE.get('asia_taipei')
-
-        naive_local_time = datetime(start_date_time.year, start_date_time.month, start_date_time.day,
-                                    start_date_time.hour, start_date_time.minute, start_date_time.second)
-
-        return timeUtil.utc_to_locale_time(naive_local_time, time_zone)
+        return super().db_time_to_date_time(start_date_time)
 
     def get_utc_time(self, naive_local_time):
         return super().get_utc_time(naive_local_time)
@@ -48,6 +43,9 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
     def get_local_time_shift_days(self, start_date_time):
         local_date_time = self.db_time_to_date_time(start_date_time)
         return super().get_local_time_shift_days(local_date_time)
+
+    def db_time_to_date_time(self, start_date_time):
+        return super().db_time_to_date_time(start_date_time)
 
     def get_mail_list(self, receiver_list):
         return super().get_mail_list(receiver_list)
