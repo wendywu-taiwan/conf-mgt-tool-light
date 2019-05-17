@@ -5,44 +5,35 @@ from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
+from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
 
 
-class RulesetsSyncUpTask:
-    LOG_CLASS = "RulesetSyncUpTask"
+class RulesetsSyncUpTask(BaseSchedulerTask):
 
     def __init__(self, parser):
+        BaseSchedulerTask.__init__(self)
         self.parser = parser
-        self.scheduled_job = None
+        self.logger = "RulesetSyncUpTask(%s)" % parser.task_id
+        self.task_id = parser.task_id
 
     def set_scheduled_job(self, scheduled_job):
-        self.scheduled_job = scheduled_job
+        super().set_scheduled_job(scheduled_job)
 
     def run_task(self):
-        info_log(self.LOG_CLASS, '======== ruleset sync up task start , task id : %s ========' % self.parser.task_id)
-        try:
-            if not self.task_runnable():
-                info_log(self.LOG_CLASS, "remove task")
-                self.scheduled_job.remove()
-            elif not self.task_enable():
-                info_log(self.LOG_CLASS, "task disable")
-            else:
-                info_log(self.LOG_CLASS, "task enable")
-                for country in self.parser.country_list:
-                    try:
-                        result_data = rulesetSyncUpService.sync_up_rulesets(self.parser, country)
-                        rulesetSyncUpService.send_mail(result_data)
-                    except Exception as e:
-                        error_log(e)
-                        error_log(traceback.format_exc())
-        except Exception as e:
-            raise e
+        super().run_task()
 
-    # check if task has been removed
+    def execute(self):
+        for country in self.parser.country_list:
+            try:
+                result_data = rulesetSyncUpService.sync_up_rulesets(self.parser, country)
+                rulesetSyncUpService.send_mail(result_data)
+            except Exception as e:
+                error_log(e)
+                error_log(traceback.format_exc())
+                error_log("Exception : country %s sync up ruleset fail" % country.name)
+
     def task_runnable(self):
-        if self.task_exist() and not self.new_job():
-            return True
-        else:
-            return False
+        return super().task_runnable()
 
     # check task status is enable or disable
     def task_enable(self):
@@ -59,42 +50,38 @@ class RulesetsSyncUpTask:
         else:
             return True
 
-    def new_job(self):
+    def has_new_job(self):
         try:
             task = RulesetSyncUpScheduler.objects.get(id=self.parser.task_id)
             db_job_id = task.job_id
             current_job_id = self.scheduled_job.id
-            info_log(self.LOG_CLASS, "db_job_id:" + str(db_job_id))
-            info_log(self.LOG_CLASS, "current_job_id:" + str(current_job_id))
+            info_log(self.logger, "db_job_id:" + str(db_job_id))
+            info_log(self.logger, "current_job_id:" + str(current_job_id))
             if db_job_id == current_job_id:
                 return False
             else:
                 return True
         except Exception as e:
             error_log(traceback.format_exc())
-            error_log(e.__traceback__)
-            raise e
 
-    def listener(self, event):
-        if event.exception:
-            # send mail to wendy
-            error_log(self.LOG_CLASS + ' job crashed')
-            error_log(event.exception)
-        else:
-            info_log(self.LOG_CLASS, 'job done')
-        try:
-            time_zone = config.TIME_ZONE.get('asia_taipei')
-            time_format = config.TIME_FORMAT.get('db_time_format')
-            next_date_time = self.scheduled_job.next_run_time
-            next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
-            utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, time_zone)
+    def update_next_run_time(self):
+        if RulesetSyncUpScheduler.objects.filter(id=self.task_id).count() == 0:
+            return
 
-            task = RulesetSyncUpScheduler.objects.get(id=self.parser.task_id)
-            RulesetSyncUpScheduler.objects.update_time(self.parser.task_id,
-                                                       task.next_proceed_time,
-                                                       utc_next_proceed_time)
-        except BaseException as e:
-            error_log(e)
-            error_log(traceback.format_exc())
+        time_zone = config.TIME_ZONE.get('asia_taipei')
+        time_format = config.TIME_FORMAT.get('db_time_format')
+        next_date_time = self.scheduled_job.next_run_time
+        next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
+        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, time_zone)
 
-        info_log(self.LOG_CLASS, '======== ruleset sync up task finish ========')
+        task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
+        RulesetSyncUpScheduler.objects.update_time(self.task_id,
+                                                   task.next_proceed_time,
+                                                   utc_next_proceed_time)
+        info_log(self.logger, "update_next_run_time : %s" % next_date_time)
+
+    def on_task_success(self):
+        pass
+
+    def on_task_failure(self):
+        pass

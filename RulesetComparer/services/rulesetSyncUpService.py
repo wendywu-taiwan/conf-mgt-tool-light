@@ -133,7 +133,7 @@ def update_scheduler(json_data):
 
 def add_task_to_scheduler(db_scheduler_id, parser):
     task = RulesetsSyncUpTask(parser)
-    scheduler = CustomJobScheduler(task.listener)
+    scheduler = CustomJobScheduler()
     job = scheduler.add_hours_job(task.run_task, parser.interval_hour, parser.local_time)
     # save job id to database
     RulesetSyncUpScheduler.objects.update_job_id(db_scheduler_id, job.id)

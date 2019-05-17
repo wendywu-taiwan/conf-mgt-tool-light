@@ -1,29 +1,31 @@
 from RulesetComparer.utils.fileManager import clear_folder_over_days
 from RulesetComparer.properties import config
-from RulesetComparer.utils.logger import *
 from django.template.loader import render_to_string
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.dataModel.dataBuilder.jobFailureContentBuilder import JobFailureContentBuilder
 from RulesetComparer.dataModel.dataBuilder.jobSuccessContentBuilder import JobSuccessContentBuilder
+from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
 import traceback
 
 
-class ClearRulesetFilesTask:
-    LOG_CLASS = "ClearRulesetFilesTask"
+class ClearRulesetFilesTask(BaseSchedulerTask):
     RULESET_FOLDER_EXCEPTION = ["Git", "zip", "backup", "__init__.py"]
 
     def __init__(self):
-        self.scheduled_job = None
+        BaseSchedulerTask.__init__(self)
+        self.logger = "ClearRulesetFilesTask"
         self.delete_zip_files = None
         self.delete_rulesets = None
         self.run_task_error = None
         self.tracback = None
 
     def set_scheduled_job(self, scheduled_job):
-        self.scheduled_job = scheduled_job
+        super().set_scheduled_job(scheduled_job)
 
     def run_task(self):
-        info_log(self.LOG_CLASS, " ============ run task ============ ")
+        super().run_task()
+
+    def execute(self):
         zip_file_path = config.get_file_path("rule_set_zip_file_path")
         ruleset_file_path = config.get_file_path("rule_set_path")
         ruleset_except_array = self.RULESET_FOLDER_EXCEPTION
@@ -36,30 +38,38 @@ class ClearRulesetFilesTask:
         except BaseException as e:
             self.run_task_error = e
             self.tracback = traceback.format_exc()
-            raise e
 
-    def scheduler_listener(self, event):
-        if event.exception:
-            # send mail to wendy
-            error_log(self.LOG_CLASS + ' job crashed')
-            error_log(traceback.format_exc())
+    def task_runnable(self):
+        return super().task_runnable()
+
+    def task_enable(self):
+        return True
+
+    def task_exist(self):
+        return True
+
+    def has_new_job(self):
+        return False
+
+    def update_next_run_time(self):
+        pass
+
+    def on_task_success(self):
+        # send mail
+        mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
+        if self.run_task_error is None:
+            builder = JobSuccessContentBuilder(self.logger)
+            builder.generate_clear_rulesets_files_data(self.delete_rulesets, self.delete_zip_files)
+            html_content = render_to_string('job_success_notice_content.html', builder.get_data())
+
         else:
-            try:
-                info_log(self.LOG_CLASS, " ============ finish ============ ")
-                mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
-                if self.run_task_error is None:
-                    builder = JobSuccessContentBuilder(self.LOG_CLASS)
-                    builder.generate_clear_rulesets_files_data(self.delete_rulesets, self.delete_zip_files)
-                    html_content = render_to_string('job_success_notice_content.html', builder.get_data())
+            builder = JobFailureContentBuilder(self.LOG_CLASS, self.run_task_error, self.tracback)
+            html_content = render_to_string('job_error_notice_content.html', builder.get_data())
 
-                else:
-                    builder = JobFailureContentBuilder(self.LOG_CLASS, self.run_task_error, self.tracback)
-                    html_content = render_to_string('job_error_notice_content.html', builder.get_data())
+        mail_sender.set_receiver(config.SEND_COMPARE_RESULT_MAIL.get("receivers"))
+        mail_sender.compose_msg(None, None, html_content)
+        mail_sender.send()
+        mail_sender.quit()
 
-                mail_sender.set_receiver(config.SEND_COMPARE_RESULT_MAIL.get("receivers"))
-                mail_sender.compose_msg(None, None, html_content)
-                mail_sender.send()
-                mail_sender.quit()
-            except BaseException as e:
-                error_log(traceback.format_exc())
-                raise e
+    def on_task_failure(self):
+        pass

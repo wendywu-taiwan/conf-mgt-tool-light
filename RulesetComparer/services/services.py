@@ -130,7 +130,7 @@ def delete_scheduler(task_id):
 
 def run_report_scheduler(parser):
     daily_task = DailyCompareReportTask(parser)
-    scheduler = CustomJobScheduler(daily_task.scheduler_listener)
+    scheduler = CustomJobScheduler()
     job = scheduler.add_hours_job(daily_task.run_task, parser.interval_hour, parser.local_time)
     ReportSchedulerInfo.objects.update_job_id(parser.task_id, job.id)
     daily_task.set_scheduled_job(job)
@@ -140,7 +140,7 @@ def restart_all_scheduler():
     try:
         # clear zip and ruleset file scheduler
         clear_ruleset_task = ClearRulesetFilesTask()
-        scheduler = CustomJobScheduler(clear_ruleset_task.scheduler_listener)
+        scheduler = CustomJobScheduler()
         job = scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
         clear_ruleset_task.set_scheduled_job(job)
 

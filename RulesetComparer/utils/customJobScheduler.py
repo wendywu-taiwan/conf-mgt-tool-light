@@ -14,10 +14,9 @@ job_defaults = {
 
 
 class CustomJobScheduler:
-    def __init__(self, listener):
+    def __init__(self):
         self.scheduler = BackgroundScheduler(executors=executors, job_defaults=job_defaults, timezone="Asia/Taipei")
         self.scheduler.start()
-        self.scheduler.add_listener(listener, EVENT_JOB_EXECUTED | EVENT_JOB_ERROR)
 
     def add_hours_job(self, execute_func, interval, start_date):
         job = self.scheduler.add_job(func=execute_func, trigger='interval', hours=interval,
