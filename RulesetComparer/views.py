@@ -454,9 +454,8 @@ def compare_rule_list_item_data(country_id, base_env_id, compare_env_id):
         list_data[key.COMPARE_RULE_BASE_ENV] = base_env_data
         list_data[key.COMPARE_RULE_COMPARE_ENV] = compare_env_data
         return list_data
-    except Exception:
-        error_log(traceback.format_exc())
-        return []
+    except Exception as e:
+        raise e
 
 
 def get_module_list(request):

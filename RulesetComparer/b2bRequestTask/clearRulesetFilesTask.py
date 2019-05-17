@@ -63,7 +63,7 @@ class ClearRulesetFilesTask(BaseSchedulerTask):
             html_content = render_to_string('job_success_notice_content.html', builder.get_data())
 
         else:
-            builder = JobFailureContentBuilder(self.LOG_CLASS, self.run_task_error, self.tracback)
+            builder = JobFailureContentBuilder(self.logger, self.run_task_error, self.tracback)
             html_content = render_to_string('job_error_notice_content.html', builder.get_data())
 
         mail_sender.set_receiver(config.SEND_COMPARE_RESULT_MAIL.get("receivers"))
