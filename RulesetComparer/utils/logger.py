@@ -11,7 +11,7 @@ def initialize_logger():
     logging.Formatter.converter = local_time
 
     # create error file handler and set level to error
-    handler = logging.FileHandler(os.path.join(log_dir, "error.log"), "w", encoding=None, delay="true")
+    handler = logging.FileHandler(os.path.join(log_dir, "error.log"), "w", encoding=None)
     handler.setLevel(logging.ERROR)
     formatter = logging.Formatter("%(asctime)s [%(threadName)-12.12s] [%(levelname)-5.5s]  %(message)s")
     handler.setFormatter(formatter)
