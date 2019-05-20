@@ -52,7 +52,7 @@ def print_log(log_class, level, msg, *args, **kwargs):
         log_msg = log_class + " :" + msg
     else:
         log_msg = msg
-    print("print_log , log level:"+str(level)+", log message:"+str(log_msg))
+        
     logging.log(level, log_msg, *args, **kwargs)
     print(log_msg, *args, **kwargs)
 
