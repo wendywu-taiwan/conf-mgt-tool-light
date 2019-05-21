@@ -13,7 +13,8 @@ from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services, rulesetSyncUpService, rulesetRecoverService
+from RulesetComparer.services import services, rulesetSyncService, rulesetRecoverService, rulesetSyncSchedulerService, \
+    rulesetReportSchedulerService
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
@@ -130,7 +131,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
 def admin_console_sync_scheduler_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
-        schedulers = rulesetSyncUpService.get_schedulers()
+        schedulers = rulesetSyncSchedulerService.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = RulesetSyncSchedulerBuilder(scheduler)
@@ -412,7 +413,7 @@ def download_rulesets(request):
 def recover_rulesets(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetSyncUpService.sync_up_rulesets_from_backup(request_json)
+        result_data = rulesetSyncService.sync_up_rulesets_from_backup(request_json)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -473,23 +474,8 @@ def create_module(request):
     serializer.save()
 
 
-def get_scheduler_list(request):
-    try:
-        scheduler_info_list = ReportSchedulerInfo.objects.all()
-        data_list = list()
-        for scheduler_info in scheduler_info_list:
-            data_builder = ReportSchedulerInfoBuilder(scheduler_info)
-            data_list.append(data_builder.get_data())
-        result = ResponseBuilder(data=data_list).get_data()
-        response = JsonResponse(data=result)
-        return response
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
-
-
-def get_scheduler(request, scheduler_id):
+# rulesets report job
+def get_rulesets_report_job(request, scheduler_id):
     try:
         scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
         scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
@@ -502,11 +488,27 @@ def get_scheduler(request, scheduler_id):
         return JsonResponse(result)
 
 
-def create_scheduler(request):
+def get_rulesets_report_jobs(request):
+    try:
+        schedulers = rulesetReportSchedulerService.get_schedulers()
+        data_list = list()
+        for scheduler in schedulers:
+            data_builder = ReportSchedulerInfoBuilder(scheduler)
+            data_list.append(data_builder.get_data())
+        result = ResponseBuilder(data=data_list).get_data()
+        response = JsonResponse(data=result)
+        return response
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def create_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "create_scheduler, request json =" + str(request_json))
-        scheduler_info = services.create_report_scheduler(request_json)
+        scheduler_info = rulesetReportSchedulerService.create_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
@@ -516,11 +518,11 @@ def create_scheduler(request):
         return JsonResponse(result)
 
 
-def update_scheduler(request):
+def update_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "update_scheduler, request json =" + str(request_json))
-        scheduler_info = services.update_report_scheduler(request_json)
+        scheduler_info = rulesetReportSchedulerService.update_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
@@ -530,11 +532,24 @@ def update_scheduler(request):
         return JsonResponse(result)
 
 
-def delete_scheduler(request):
+def update_rulesets_report_status(request):
+    try:
+        request_json = get_post_request_json(request)
+        scheduler = rulesetReportSchedulerService.update_scheduler_status(request_json)
+        data = ReportSchedulerInfoBuilder(scheduler).get_data()
+        result = ResponseBuilder(data=data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def delete_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         task_id = request_json["id"]
-        services.delete_scheduler(task_id)
+        rulesetReportSchedulerService.delete_scheduler(task_id)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -543,9 +558,10 @@ def delete_scheduler(request):
         return JsonResponse(result)
 
 
+# ruleset sync job
 def get_rulesets_sync_jobs(request):
     try:
-        schedulers = rulesetSyncUpService.get_schedulers()
+        schedulers = rulesetSyncSchedulerService.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = RulesetSyncSchedulerBuilder(scheduler)
@@ -564,7 +580,7 @@ def run_rulesets_sync_job(request):
     try:
 
         request_json = get_post_request_json(request)
-        run_in_background(func=rulesetSyncUpService.sync_up_rulesets_without_scheduler, parameter=request_json)
+        run_in_background(func=rulesetSyncService.sync_up_rulesets_without_scheduler, parameter=request_json)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -576,7 +592,7 @@ def run_rulesets_sync_job(request):
 def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncUpService.create_scheduler(request_json)
+        scheduler = rulesetSyncSchedulerService.create_scheduler(request_json)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -589,7 +605,7 @@ def create_rulesets_sync_job(request):
 def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncUpService.update_scheduler(request_json)
+        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -602,7 +618,7 @@ def update_rulesets_sync_job(request):
 def update_rulesets_sync_job_status(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncUpService.update_scheduler_status(request_json)
+        scheduler = rulesetSyncSchedulerService.update_scheduler_status(request_json)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -615,7 +631,7 @@ def update_rulesets_sync_job_status(request):
 def delete_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        rulesetSyncUpService.delete_scheduler(request_json)
+        rulesetSyncSchedulerService.delete_scheduler(request_json)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -626,7 +642,7 @@ def delete_rulesets_sync_job(request):
 
 def create_ruleset(request):
     try:
-        rulesetSyncUpService.create_ruleset_test()
+        rulesetSyncService.create_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -635,7 +651,7 @@ def create_ruleset(request):
 
 def update_ruleset(request):
     try:
-        rulesetSyncUpService.update_ruleset_test()
+        rulesetSyncService.update_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

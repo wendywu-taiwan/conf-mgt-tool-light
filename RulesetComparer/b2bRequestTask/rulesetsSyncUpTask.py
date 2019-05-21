@@ -1,6 +1,6 @@
 import traceback
 
-from RulesetComparer.services import rulesetSyncUpService
+from RulesetComparer.services import rulesetSyncService
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
@@ -25,8 +25,8 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
     def execute(self):
         for country in self.parser.country_list:
             try:
-                result_data = rulesetSyncUpService.sync_up_rulesets(self.parser, country)
-                rulesetSyncUpService.send_mail(result_data)
+                result_data = rulesetSyncService.sync_up_rulesets(self.parser, country)
+                rulesetSyncService.send_mail(result_data)
             except Exception as e:
                 error_log(e)
                 error_log(traceback.format_exc())

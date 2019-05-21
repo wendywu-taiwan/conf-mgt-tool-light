@@ -10,24 +10,24 @@ from RulesetComparer.utils.logger import *
 
 class ReportSchedulerInfoBuilder(BaseBuilder):
 
-    def __init__(self, info_module):
-        self.info_module = info_module
+    def __init__(self, scheduler):
+        self.scheduler = scheduler
         BaseBuilder.__init__(self)
 
     def __generate_data__(self):
         try:
-            self.result_dict["task_id"] = self.info_module.id
-            self.result_dict["base_environment"] = EnvironmentSerializer(self.info_module.base_environment).data
+            self.result_dict[KEY_TASK_ID] = self.scheduler.id
+            self.result_dict["base_environment"] = EnvironmentSerializer(self.scheduler.base_environment).data
             self.result_dict["compare_environment"] = EnvironmentSerializer(
-                self.info_module.compare_environment).data
+                self.scheduler.compare_environment).data
             self.result_dict["module"] = self.get_module_data()
-            self.result_dict["country_list"] = CountrySerializer(self.info_module.country_list, many=True).data
-            self.result_dict["mail_content_types"] = MailContentTypeSerializer(self.info_module.mail_content_type_list,many=True).data
+            self.result_dict[KEY_COUNTRY_LIST] = CountrySerializer(self.scheduler.country_list, many=True).data
+            self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypeSerializer(self.scheduler.mail_content_type_list,many=True).data
             self.result_dict["mail_list"] = self.get_mail_list()
-            self.result_dict["interval_hour"] = self.info_module.interval_hour
-            self.result_dict["last_proceed_time"] = self.get_format_time(self.info_module.last_proceed_time)
-            self.result_dict["next_proceed_time"] = self.get_format_time(self.info_module.next_proceed_time)
-            self.result_dict["status"] = self.get_status()
+            self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
+            self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
+            self.result_dict[KEY_NEXT_PROCEED_TIME] = self.get_format_time(self.scheduler.next_proceed_time)
+            self.result_dict[KEY_ENABLE] = bool(self.scheduler.enable)
 
         except Exception as e:
             error_log(traceback.format_exc())
@@ -35,9 +35,9 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
 
     def get_module_data(self):
         try:
-            module_map = {"id": self.info_module.module.id,
-                          "name": self.info_module.module.name,
-                          "icon_file_name": self.info_module.module.icon_file_name}
+            module_map = {"id": self.scheduler.module.id,
+                          "name": self.scheduler.module.name,
+                          "icon_file_name": self.scheduler.module.icon_file_name}
             return module_map
         except Exception as e:
             error_log(traceback.format_exc())
@@ -45,9 +45,9 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
 
     def get_mail_list(self):
         try:
-            return ast.literal_eval(self.info_module.mail_list)
+            return ast.literal_eval(self.scheduler.mail_list)
         except Exception:
-            return self.info_module.mail_list
+            return self.scheduler.mail_list
 
     @staticmethod
     def get_format_time(utc_date_time):
@@ -64,16 +64,6 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             local_date_time = timeUtil.utc_to_locale_time(naive_time, time_zone)
             str_time = timeUtil.date_time_to_time(local_date_time, time_format)
             return str_time
-        except Exception as e:
-            error_log(traceback.format_exc())
-            raise e
-
-    def get_status(self):
-        try:
-            if self.info_module.enable == key.STATUS_ENABLE:
-                return True
-            else:
-                return False
         except Exception as e:
             error_log(traceback.format_exc())
             raise e

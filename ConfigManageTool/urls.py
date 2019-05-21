@@ -75,11 +75,13 @@ admin_console_pattern = [
 ]
 
 ruleset_scheduler_pattern = [
-    path('<int:scheduler_id>', views.get_scheduler),
-    path('list', views.get_scheduler_list),
-    path('create', views.create_scheduler, name="create-scheduler"),
-    path('update', views.update_scheduler, name="update-scheduler"),
-    path('delete', views.delete_scheduler, name="delete-scheduler"),
+    path('<int:scheduler_id>', views.get_rulesets_report_job),
+    path('list', views.get_rulesets_report_jobs),
+    path('create', views.create_ruleset_report_job, name="create-scheduler"),
+    path('update', views.update_ruleset_report_job, name="update-scheduler"),
+    path('delete', views.delete_ruleset_report_job, name="delete-scheduler"),
+    path('update_status', views.update_rulesets_report_status, name="update-rulesets-report-job-status"),
+
 ]
 
 urlpatterns = [

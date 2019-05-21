@@ -157,12 +157,7 @@ KEY_FAILED_RULESETS = "failed_rulesets"
 KEY_SELECT_FOLDER_NAME = "select_folder_name"
 
 # RulesetSyncSchedulerBuilder
-KEY_COUNTRY_LIST = "country_list"
 KEY_RECEIVER_LIST = "receiver_list"
-KEY_INTERVAL_HOUR = "interval_hour"
-KEY_LAST_PROCEED_TIME = "last_proceed_time"
-KEY_NEXT_PROCEED_TIME = "next_proceed_time"
-KEY_ENABLE = "enable"
 KEY_BACKUP_YES = 1
 KEY_BACKUP_NO = 0
 
@@ -187,6 +182,11 @@ ACTION_LIST = 'action_list'
 KEY_EXCEPTION = "exception"
 KEY_BACKUP = "backup"
 KEY_ICON_FILE_NAME = "icon_file_name"
+KEY_COUNTRY_LIST = "country_list"
+KEY_INTERVAL_HOUR = "interval_hour"
+KEY_LAST_PROCEED_TIME = "last_proceed_time"
+KEY_NEXT_PROCEED_TIME = "next_proceed_time"
+KEY_ENABLE = "enable"
 
 # environment name
 INT2_NAME = "INT2"

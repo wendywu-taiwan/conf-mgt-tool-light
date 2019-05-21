@@ -202,7 +202,6 @@ class ReportSchedulerInfoManager(models.Manager):
         task.mail_list = mail_list_str
         task.interval_hour = interval
         task.next_proceed_time = next_proceed_time
-        task.enable = 1
 
         task.country_list.clear()
         for country_id in country_list:
@@ -225,6 +224,12 @@ class ReportSchedulerInfoManager(models.Manager):
     def update_job_id(self, task_id, job_id):
         task = self.get(id=task_id)
         task.job_id = job_id
+        task.save()
+        return task
+
+    def update_task_status(self, task_id, enable):
+        task = self.get(id=task_id)
+        task.enable = enable
         task.save()
         return task
 
