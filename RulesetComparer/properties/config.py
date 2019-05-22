@@ -10,7 +10,7 @@ FILE_PATH = {
     "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
     "server_log": "/RulesetComparer/serverlog",
     "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
-    "rule_set_zip_file_path": "RulesetComparer/rulesets/zip",
+    "rule_set_zip_file_path": "/RulesetComparer/rulesets/zip",
     "rule_set_backup_path": "RulesetComparer/rulesets/backup",
 }
 FILE_NAME = {
@@ -59,6 +59,14 @@ SEND_COMPARE_RESULT_MAIL = {
     "content": "this is the compare result",
 }
 
+SEND_CLEAR_FILES_MAIL = {
+    "sender": "no-reply@audatex.com",
+    "receivers": ["wendy.wu@audatex.com"],
+    "title": "Removed Expired Files Notice - ",
+    "ruleset_sync_title": "Ruleset Sync Up Report",
+    "content": "this is the compare result",
+}
+
 DEFAULT_LOG_TYPE = 0
 DEFAULT_MODULE_NAME = "Ruleset"
 
@@ -101,6 +109,10 @@ def get_rule_set_git_path(country):
 
 def get_file_path(path_key):
     return FILE_PATH.get(path_key)
+
+
+def get_full_file_path(path_key):
+    return settings.BASE_DIR + FILE_PATH.get(path_key)
 
 
 def get_file_name(suffix, file_name):

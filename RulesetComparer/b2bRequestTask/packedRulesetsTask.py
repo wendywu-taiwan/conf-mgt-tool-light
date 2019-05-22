@@ -36,7 +36,7 @@ class PackedRulesetsTask:
 
     def archive_file(self):
         # RulesetComparer/rulesets/zip
-        zip_file_path = get_file_path("rule_set_zip_file_path")
+        zip_file_path = get_full_file_path("rule_set_zip_file_path")
         zip_file_full_path = self.zip_file
 
         # to have single folder ruleset in zip file

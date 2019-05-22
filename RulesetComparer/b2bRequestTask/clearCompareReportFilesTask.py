@@ -2,15 +2,15 @@ from RulesetComparer.properties import config
 from RulesetComparer.b2bRequestTask.baseClearFilesTask import BaseClearFilesTask
 
 
-class ClearRulesetFilesTask(BaseClearFilesTask):
+class ClearCompareReportFilesTask(BaseClearFilesTask):
 
     def __init__(self):
         BaseClearFilesTask.__init__(self)
-        self.logger = "ClearRulesetFilesTask"
-        self.expired_day = 1
+        self.logger = "ClearCompareResultFilesTask"
+        self.expired_day = 3
         self.delete_files_path = config.get_full_file_path("compare_result")
         self.mail_setting = config.SEND_CLEAR_FILES_MAIL
-        self.not_removed_files_extension = ["Git", "zip", "backup", "__init__.py"]
+        self.not_removed_files_extension = []
 
     def run_task(self):
         super().run_task()

@@ -9,6 +9,8 @@ class BaseSchedulerTask:
         self.task_id = None
         self.scheduled_job = None
         self.logger = None
+        self.run_task_error = None
+        self.tracback = None
 
     def set_scheduled_job(self, scheduled_job):
         self.scheduled_job = scheduled_job
@@ -23,12 +25,16 @@ class BaseSchedulerTask:
                 return
 
             self.execute()
-            self.on_task_success()
-            info_log(self.logger, '======== task finish , success ========')
+
+            if self.run_task_error is None and self.tracback is None:
+                self.on_task_success()
+                info_log(self.logger, '======== task finish , success ========')
+            else:
+                self.on_task_failure()
+                info_log(self.logger, '======== task finish , success with error ========')
         except Exception as e:
-            self.on_task_failure()
-            error_log(traceback.format_exc())
             info_log(self.logger, '======== task finish , fail ========')
+            error_log(traceback.format_exc())
             raise e
 
     # check if task has been removed

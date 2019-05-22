@@ -6,6 +6,8 @@ from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleList
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
 from RulesetComparer.b2bRequestTask.clearRulesetFilesTask import ClearRulesetFilesTask
+from RulesetComparer.b2bRequestTask.clearCompareReportFilesTask import ClearCompareReportFilesTask
+from RulesetComparer.b2bRequestTask.clearRulesetArchivedFilesTask import ClearRulesetArchivedFilesTask
 
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
@@ -76,22 +78,16 @@ def download_rulesets(json_data):
 def restart_all_scheduler():
     try:
         # clear zip and ruleset file scheduler
+        clear_zip_ruleset_task = ClearRulesetArchivedFilesTask()
         clear_ruleset_task = ClearRulesetFilesTask()
+        clear_compare_report_task = ClearCompareReportFilesTask()
+
         scheduler = CustomJobScheduler()
-        job = scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
-        clear_ruleset_task.set_scheduled_job(job)
+        scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
+        scheduler.add_hours_job_now(clear_zip_ruleset_task.run_task, 24)
+        scheduler.add_hours_job_now(clear_compare_report_task.run_task, 24)
 
         info_log(None, "restart all scheduler")
-        # if len(ReportSchedulerInfo.objects.all()) > 0:
-        #     scheduler_model_list = ReportSchedulerInfo.objects.all()
-        #     # report scheduler
-        #     for scheduler in scheduler_model_list:
-        #         country_list = scheduler.country_list.values(KEY_ID)
-        #         mail_content_type_list = scheduler.mail_content_type_list.values(KEY_ID)
-        #         parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
-        #         ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
-        #         rulesetReportSchedulerService.run_report_scheduler(parser)
-        #
         rulesetReportSchedulerService.restart_schedulers()
         rulesetSyncSchedulerService.restart_schedulers()
 
