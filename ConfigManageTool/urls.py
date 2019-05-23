@@ -17,6 +17,8 @@ Including another URLconf
 from django.urls import path
 from RulesetComparer import views
 from django.conf.urls import url, include
+from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 ruleset_b2b_pattern = [
     path('create/', views.create_ruleset, name="b2b-create-ruleset"),
@@ -85,6 +87,8 @@ ruleset_scheduler_pattern = [
 ]
 
 urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),

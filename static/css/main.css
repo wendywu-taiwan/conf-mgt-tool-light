@@ -367,3 +367,8 @@ html, body {
 .cursor_pointer {
     cursor: pointer;
 }
+
+.white_block_div {
+    background-color: white;
+    box-shadow: 4px 8px 8px 0 rgba(50, 50, 50, .08);
+}

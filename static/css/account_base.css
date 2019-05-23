@@ -1,0 +1,10 @@
+#account-base-container{
+    height: 100%;
+    width: 100%;
+    background-image: url("/static/icons/background.png");
+    background-size: auto 100%;
+}
+
+#content-div{
+    margin: auto;
+}

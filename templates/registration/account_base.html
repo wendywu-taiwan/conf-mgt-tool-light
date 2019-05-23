@@ -1,0 +1,36 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="{% static '/css/fontawesome/all.css' %}" rel="stylesheet">
+    <link href="{% static '/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/flat-ui.css' %}" rel="stylesheet">
+    <link href="{% static '/css/bootstrap-clockpicker.min.css' %}" rel="stylesheet">
+    <link href="{% static '/css/account_base.css' %}" rel="stylesheet">
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
+    <link href="{% static '/css/sweetalert.css' %}" rel="stylesheet">
+    <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static '/js/sweetalert.min.js' %}"></script>
+    <script src="{% static '/js/popper.js' %}"></script>
+    <script src="{% static '/js/flat-ui.js' %}"></script>
+    <script src="{% static '/js/bootstrap-clockpicker.min.js' %}"></script>
+    <script src="{% static '/js/main.js' %}"></script>
+    <script src="{% static '/js/rest-client.js' %}"></script>
+    {% block resource %}
+    {% endblock %}
+</head>
+<body>
+<div id="account-base-container">
+    {% block content %}
+    {% endblock %}
+
+    {#    <div id="background-div">#}
+    {#        <div id="blue-block-div"></div>#}
+    {#        <div id="white-block-div"></div>#}
+    {#    </div>#}
+    {#    <div id="overlay-block-div">#}
+    {#        {% block content %}#}
+    {#        {% endblock %}#}
+    {#    </div>#}
+</div>
