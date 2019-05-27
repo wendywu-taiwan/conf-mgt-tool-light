@@ -62,7 +62,7 @@ SEND_COMPARE_RESULT_MAIL = {
 SEND_CLEAR_FILES_MAIL = {
     "sender": "no-reply@audatex.com",
     "receivers": ["wendy.wu@audatex.com"],
-    "title": "Removed Expired Files Notice - ",
+    "title": "Removed Expired Files Notice",
     "ruleset_sync_title": "Ruleset Sync Up Report",
     "content": "this is the compare result",
 }

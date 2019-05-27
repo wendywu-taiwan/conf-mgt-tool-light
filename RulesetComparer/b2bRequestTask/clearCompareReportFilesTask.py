@@ -10,7 +10,7 @@ class ClearCompareReportFilesTask(BaseClearFilesTask):
         self.expired_day = 3
         self.delete_files_path = config.get_full_file_path("compare_result")
         self.mail_setting = config.SEND_CLEAR_FILES_MAIL
-        self.not_removed_files_extension = []
+        self.not_removed_files_extension = ["__init__.py"]
 
     def run_task(self):
         super().run_task()
