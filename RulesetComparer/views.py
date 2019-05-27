@@ -2,6 +2,8 @@ import os
 import traceback
 import re
 
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -29,11 +31,18 @@ REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
 
+@login_required
+def logout_view(request):
+    logout(request)
+
+
 # admin console page
+@login_required
 def admin_console_page(request):
     return render(request, "admin_console_base.html")
 
 
+@login_required
 def admin_console_server_log_page(request, log_type=None):
     try:
         if log_type is None:
@@ -67,6 +76,7 @@ def admin_console_server_log_page(request, log_type=None):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_report_scheduler_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
@@ -86,6 +96,7 @@ def admin_console_report_scheduler_list_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_scheduler_create_page(request):
     try:
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
@@ -104,6 +115,7 @@ def admin_console_scheduler_create_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_scheduler_update_page(request, scheduler_id):
     try:
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
@@ -128,6 +140,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_sync_scheduler_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
@@ -146,6 +159,7 @@ def admin_console_sync_scheduler_list_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_sync_scheduler_create_page(request):
     try:
         git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
@@ -166,6 +180,7 @@ def admin_console_sync_scheduler_create_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_sync_scheduler_update_page(request, scheduler_id):
     try:
         git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
@@ -192,6 +207,7 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_recover_ruleset_filtered_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
@@ -208,6 +224,7 @@ def admin_console_recover_ruleset_filtered_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_recover_ruleset_filtered_environment_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()
@@ -224,6 +241,7 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
         return JsonResponse(result)
 
 
+@login_required
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
         info_data = AdminConsoleInfoBuilder().get_data()

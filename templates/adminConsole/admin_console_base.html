@@ -83,13 +83,21 @@
         </div>
     </div>
     <div id="right_area">
-        <div id="search_bar_menu" class="row">
-            <div id="search_bar_area" class="row">
-                <div id="search_icon_block">
-                    <img id="search_icon" src="{% static '/icons/search.png' %}">
+        <div id="nav_bar_top_div" class="row no-row-margin">
+            <div id="login_info_div" class="row no-row-margin" data-toggle="dropdown">
+
+                <div id="login_account_div" class="vertical_align_middle">wendywu</div>
+                <div id="dropdown_option_div" class="vertical_align_middle">
+                    <span id="dropdown_icon_span" class="fui-triangle-down"></span>
                 </div>
-                <div id="search_bar_input_block">
-                    <input id="search_bar_input" type="text" class="form-control">
+                <div id="user_action_dropdown_div" class="dropdown-menu" aria-labelledby="login_info_div">
+                    <li>
+                        <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
+                            Password</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" id="logout_link" class="dropdown-item">Log Out</a>
+                    </li>
                 </div>
             </div>
         </div>
@@ -101,4 +109,9 @@
     {% csrf_token %}
 </div>
 </body>
+<script>
+    $('#user_action_dropdown_div a').on('click', function () {
+        self.location = $(this).attr('href');
+    });
+</script>
 </html>
