@@ -4,9 +4,11 @@ from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, DataCenter, B2BService, B2BClient, \
     B2BServer, DataUpdateTime, MailContentType
+from django.contrib.auth.models import User
 
 LOG_CLASS = "initDataService"
 
+KEY_AUTH_USER = "auth_user"
 KEY_MAIL_CONTENT_TYPE = "mail_content_type"
 KEY_COUNTRY = "country"
 KEY_ENVIRONMENT = "environment"
@@ -26,6 +28,11 @@ def init_data():
         preload_data = fileManager.load_json_file(preload_data_path)
         ruleset_data = preload_data["ruleset_data"]
         update_time_data = ruleset_data["update_time"]
+
+        if has_update(update_time_data, KEY_AUTH_USER):
+            update_auth_user = init_auth_user_data(ruleset_data[KEY_AUTH_USER])
+            if update_auth_user:
+                update_local_time(update_time_data, KEY_AUTH_USER)
 
         if has_update(update_time_data, KEY_MAIL_CONTENT_TYPE):
             update_mail_content = init_mail_content_type_data(ruleset_data[KEY_MAIL_CONTENT_TYPE])
@@ -78,6 +85,32 @@ def init_data():
                 update_local_time(update_time_data, KEY_B2B_SERVER)
     except Exception as e:
         error_log(traceback.format_exc())
+        raise e
+
+
+def init_auth_user_data(auth_user_data):
+    try:
+        for user in auth_user_data:
+            username = user.get("username")
+
+            if User.objects.filter(username=username).count() > 0:
+                continue
+
+            password = user.get("password")
+            email = user.get("email")
+            is_superuser = user.get("is_superuser")
+            is_staff = user.get("is_staff")
+            is_active = user.get("is_active")
+            user_obj = User.objects.create(username=username,
+                                           email=email,
+                                           is_superuser=is_superuser,
+                                           is_staff=is_staff,
+                                           is_active=is_active)
+            user_obj.set_password(password)
+            user_obj.save()
+        info_log(LOG_CLASS, "init auth user data success")
+        return True
+    except Exception as e:
         raise e
 
 

@@ -1,13 +1,87 @@
 {
   "ruleset_data": {
-    "mail_content_type": [
+    "auth_user": [
       {
-       "name":"ruleset_count_table",
-       "title":"summary table"
+        "model": "auth.user",
+        "username": "admin",
+        "password": "audatex",
+        "email": "wendy.wu@audatex.com",
+        "is_superuser": true,
+        "is_staff": true,
+        "is_active": true
       },
       {
-        "name":"ruleset_name_list",
-        "title":" reminder list"
+        "model": "auth.user",
+        "username": "wendy.wu",
+        "password": "audatex",
+        "email": "wendy.wu@audatex.com",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "kathy.chang",
+        "password": "audatex",
+        "email": "kathy.chang@audatex.com",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "enpei.chu",
+        "email": "enpei.chu@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "sophia.lee",
+        "email": "sophia.lee@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "tommy.lin",
+        "password": "audatex",
+        "email": "tommy.lin@audatex.com",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "josh.cheng",
+        "password": "audatex",
+        "email": "josh.cheng@audatex.com",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "test.test",
+        "email": "test.test@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      }
+    ],
+    "mail_content_type": [
+      {
+        "name": "ruleset_count_table",
+        "title": "summary table"
+      },
+      {
+        "name": "ruleset_name_list",
+        "title": " reminder list"
       }
     ],
     "country": [
@@ -128,6 +202,10 @@
       {
         "data_center": "SHDC",
         "url": "http://www.audatex.cn/b2b/services/"
+      },
+      {
+        "data_center": "SGDC",
+        "url": "http://10.29.26.42:30001/b2b/services/"
       }
     ],
     "function": [
@@ -172,6 +250,22 @@
       }
     ],
     "b2b_server": [
+      {
+        "country_name": [
+          "CN",
+          "KR",
+          "TW",
+          "TH",
+          "SG",
+          "ID",
+          "VN",
+          "JP",
+          "HK",
+          "MY"
+        ],
+        "environment_name": "TEST",
+        "b2b_client_url": "http://10.29.26.42:30001/b2b/services/"
+      },
       {
         "country_name": [
           "CN",
@@ -287,6 +381,9 @@
       }
     ],
     "update_time": {
+      "auth_user": {
+        "update_time": "2019-5-28 12:00:00"
+      },
       "mail_content_type": {
         "update_time": "2019-03-15 10:55:00"
       },
@@ -297,7 +394,7 @@
         "update_time": "2019-03-12 10:30:00"
       },
       "b2b_client": {
-        "update_time": "2019-03-12 10:30:00"
+        "update_time": "2019-04-08 10:30:00"
       },
       "function": {
         "update_time": "2019-03-12 10:30:00"
@@ -315,7 +412,7 @@
         "update_time": "2019-03-12 10:30:00"
       },
       "b2b_server": {
-        "update_time": "2019-04-08 10:30:00"
+        "update_time": "2019-05-01 10:30:00"
       }
     }
   }
