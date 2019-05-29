@@ -276,7 +276,7 @@ def check_result_success(result_obj, failed_list, result_list=None):
         return False
 
 
-def send_mail(result_data):
+def send_mail(result_data, receiver=None):
     mail_sender = MailSender(config.SEND_COMPARE_RESULT_MAIL)
 
     # generate compare info json for mail content use
@@ -286,7 +286,11 @@ def send_mail(result_data):
         "ruleset_sync_title") + " for " + result_data["country"]["name"] + " - " + result_data["source_environment"][
                   "name"] + " <> " + result_data["target_environment"]["name"]
 
-    mail_sender.set_receiver(config.SEND_COMPARE_RESULT_MAIL.get("receivers"))
+    if receiver is None:
+        mail_sender.set_receiver(config.SEND_COMPARE_RESULT_MAIL.get("receivers"))
+    else:
+        mail_sender.set_receiver(receiver)
+
     mail_sender.compose_msg(subject, None, html_content)
     mail_sender.send()
     mail_sender.quit()

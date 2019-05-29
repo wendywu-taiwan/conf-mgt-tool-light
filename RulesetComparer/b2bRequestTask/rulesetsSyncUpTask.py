@@ -26,7 +26,7 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
         for country in self.parser.country_list:
             try:
                 result_data = rulesetSyncService.sync_up_rulesets(self.parser, country)
-                rulesetSyncService.send_mail(result_data)
+                rulesetSyncService.send_mail(result_data, self.parser.receiver_list)
             except Exception as e:
                 error_log(e)
                 error_log(traceback.format_exc())
