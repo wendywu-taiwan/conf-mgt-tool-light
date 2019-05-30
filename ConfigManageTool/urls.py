@@ -13,10 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
 from django.urls import path
 from RulesetComparer import views
 from django.conf.urls import url, include
+from django.contrib import admin
 
 ruleset_b2b_pattern = [
     path('create/', views.create_ruleset, name="b2b-create-ruleset"),
@@ -84,7 +84,14 @@ ruleset_scheduler_pattern = [
 
 ]
 
+ruleset_test_pattern = [
+    path('compare/local', views.compare_ruleset_test),
+]
+
 urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('ConfigManageTool/ruleset/test/', include(ruleset_test_pattern)),
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),

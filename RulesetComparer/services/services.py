@@ -1,4 +1,6 @@
 import traceback
+
+from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
@@ -17,6 +19,9 @@ from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
 from RulesetComparer.services import rulesetSyncService, rulesetSyncSchedulerService, rulesetReportSchedulerService
 from django.template.loader import get_template
 
+from RulesetComparer.utils.rulesetComparer import RulesetComparer
+from RulesetComparer.utils.rulesetUtil import load_server_ruleset_with_name
+
 
 def get_rule_list_from_b2b(environment, country):
     task = DownloadRuleListTask(environment, country)
@@ -26,6 +31,22 @@ def get_rule_list_from_b2b(environment, country):
 def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
     task = CompareRuleListTask(base_env_id, compare_env_id, country_id)
     return task
+
+
+def compare_ruleset_test():
+    try:
+        ruleset_name = "RS_KR_PROCESS"
+        # source_xml = load_git_ruleset_with_name("TW", ruleset_name)
+        source_xml = load_server_ruleset_with_name("PROD", "KR", 111111111, ruleset_name)
+        target_xml = load_server_ruleset_with_name("GIT", "KR", 111111111, ruleset_name)
+
+        diff_json = RulesetComparer(ruleset_name, source_xml, target_xml, is_module=False).get_data_by_builder()
+        # source_xml = DownloadRulesetTask(base_env_id, country_id, ruleset_name).get_ruleset_xml()
+        # compared_xml = DownloadRulesetTask(compare_env_id, country_id, ruleset_name).get_ruleset_xml()
+        # ruleset_name = "RS_TW_COPY_INTO_EXISTING_CASE_TOOLBAR"
+
+    except Exception as e:
+        raise e
 
 
 def generate_compare_report(compare_key):

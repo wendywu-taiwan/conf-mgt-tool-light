@@ -658,6 +658,15 @@ def update_ruleset(request):
         return JsonResponse(result)
 
 
+def compare_ruleset_test(request):
+    try:
+        services.compare_ruleset()
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 # todo : return json rule list response
 def json_rule_list(request, environment, country):
     response_model = services.get_rule_list_from_b2b(environment, country)
