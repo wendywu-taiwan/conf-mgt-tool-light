@@ -8,7 +8,7 @@ class ClearRulesetFilesTask(BaseClearFilesTask):
         BaseClearFilesTask.__init__(self)
         self.logger = "ClearRulesetFilesTask"
         self.expired_day = 1
-        self.delete_files_path = config.get_full_file_path("compare_result")
+        self.delete_files_path = config.get_full_file_path("rule_set_path")
         self.mail_setting = config.SEND_CLEAR_FILES_MAIL
         self.not_removed_files_extension = ["Git", "zip", "backup", "__init__.py"]
 

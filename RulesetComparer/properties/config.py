@@ -3,7 +3,7 @@ from RulesetComparer.properties.dataKey import *
 
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
-    "rule_set_path": "RulesetComparer/rulesets",
+    "rule_set_path": "/RulesetComparer/rulesets",
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result",
     "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
