@@ -60,7 +60,7 @@ def sync_up_rulesets_without_scheduler(json_data):
     for country in parser.country_list:
         try:
             result_data = sync_up_rulesets(parser, country)
-            send_mail(result_data)
+            send_mail(result_data, parser.receiver_list)
         except Exception as e:
             error_log(e)
             error_log(traceback.format_exc())
