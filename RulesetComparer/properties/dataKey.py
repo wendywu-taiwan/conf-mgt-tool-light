@@ -161,6 +161,8 @@ KEY_RECEIVER_LIST = "receiver_list"
 KEY_BACKUP_YES = 1
 KEY_BACKUP_NO = 0
 
+KEY_USER_NAME = "user_name"
+
 # common
 KEY_ID = "id"
 KEY_COUNTRY = "country"

@@ -39,7 +39,8 @@ def logout_view(request):
 # admin console page
 @login_required
 def admin_console_page(request):
-    return render(request, "admin_console_base.html")
+    result = {}
+    return render(request, "admin_console_base.html", add_user_information(request, result))
 
 
 @login_required
@@ -48,7 +49,6 @@ def admin_console_server_log_page(request, log_type=None):
         if log_type is None:
             log_type = DEFAULT_LOG_TYPE
 
-        info_data = AdminConsoleInfoBuilder().get_data()
         log_dir = settings.BASE_DIR + get_file_path("server_log")
         log_file_name = LOG_TYPE_FILE[log_type]
         full_name = log_dir + "/" + log_file_name
@@ -64,11 +64,11 @@ def admin_console_server_log_page(request, log_type=None):
         file_content = file_secure.split("\n")
 
         data = {
-            key.ADMIN_CONSOLE_INFO: info_data,
             key.LOG_TYPE_KEY: log_type,
             key.LOG_TYPE: log_file_name,
             key.LOG_CONTENT: file_content
         }
+        data = add_user_information(request, data)
         return render(request, "server_log.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -79,15 +79,14 @@ def admin_console_server_log_page(request, log_type=None):
 @login_required
 def admin_console_report_scheduler_list_page(request):
     try:
-        info_data = AdminConsoleInfoBuilder().get_data()
         scheduler_info_list = ReportSchedulerInfo.objects.all()
         data_list = list()
         for scheduler_info in scheduler_info_list:
             data_builder = ReportSchedulerInfoBuilder(scheduler_info)
             data_list.append(data_builder.get_data())
 
-        data = {key.ADMIN_CONSOLE_INFO: info_data,
-                key.SCHEDULER_LIST: data_list}
+        data = {key.SCHEDULER_LIST: data_list}
+        data = add_user_information(request, data)
 
         return render(request, "scheduler_list.html", data)
     except Exception:
@@ -102,12 +101,11 @@ def admin_console_scheduler_create_page(request):
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
-        info_data = AdminConsoleInfoBuilder().get_data()
 
         data = {key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
-                key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
-                key.ADMIN_CONSOLE_INFO: info_data}
+                key.RULESET_MAIL_CONTENT_TYPE: mail_content_types}
+        data = add_user_information(request, data)
         return render(request, "scheduler_create.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -121,7 +119,6 @@ def admin_console_scheduler_update_page(request, scheduler_id):
         environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
-        info_data = AdminConsoleInfoBuilder().get_data()
 
         scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
         scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
@@ -130,9 +127,9 @@ def admin_console_scheduler_update_page(request, scheduler_id):
             key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
             key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
             key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
-            key.ADMIN_CONSOLE_INFO: info_data,
             key.SCHEDULER_DATA: scheduler_data
         }
+        data = add_user_information(request, data)
         return render(request, "scheduler_update.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -143,15 +140,14 @@ def admin_console_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_sync_scheduler_list_page(request):
     try:
-        info_data = AdminConsoleInfoBuilder().get_data()
         schedulers = rulesetSyncSchedulerService.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = RulesetSyncSchedulerBuilder(scheduler)
             data_list.append(data_builder.get_data())
 
-        data = {key.ADMIN_CONSOLE_INFO: info_data,
-                key.SCHEDULER_LIST: data_list}
+        data = {key.SCHEDULER_LIST: data_list}
+        data = add_user_information(request, data)
         return render(request, "sync_scheduler_list.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -166,13 +162,12 @@ def admin_console_sync_scheduler_create_page(request):
         int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         action_list = config.RULESET_SYNC_UP_ACTION
-        info_data = AdminConsoleInfoBuilder().get_data()
 
         data = {key.SOURCE_ENVIRONMENT: git_environment_data,
                 key.TARGET_ENVIRONMENT: int2_environment_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
-                key.ACTION_LIST: action_list,
-                key.ADMIN_CONSOLE_INFO: info_data}
+                key.ACTION_LIST: action_list}
+        data = add_user_information(request, data)
         return render(request, "sync_scheduler_create.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -187,7 +182,6 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
         int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         action_list = config.RULESET_SYNC_UP_ACTION
-        info_data = AdminConsoleInfoBuilder().get_data()
 
         scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
         scheduler_data = RulesetSyncSchedulerBuilder(scheduler).get_data()
@@ -197,9 +191,9 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
             key.TARGET_ENVIRONMENT: int2_environment_data,
             key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
             key.ACTION_LIST: action_list,
-            key.ADMIN_CONSOLE_INFO: info_data,
             key.SCHEDULER_DATA: scheduler_data
         }
+        data = add_user_information(request, data)
         return render(request, "sync_scheduler_update.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -210,13 +204,12 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_recover_ruleset_filtered_page(request):
     try:
-        info_data = AdminConsoleInfoBuilder().get_data()
         environment_list = rulesetRecoverService.filter_environment()
         environment_json_list = EnvironmentSerializer(environment_list, many=True).data
         data = {
-            key.ADMIN_CONSOLE_INFO: info_data,
             key.KEY_ENVIRONMENTS: environment_json_list
         }
+        data = add_user_information(request, data)
         return render(request, "recovery.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -227,13 +220,12 @@ def admin_console_recover_ruleset_filtered_page(request):
 @login_required
 def admin_console_recover_ruleset_filtered_environment_page(request):
     try:
-        info_data = AdminConsoleInfoBuilder().get_data()
         request_json = get_post_request_json(request)
         countries = rulesetRecoverService.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
         data = {
-            key.ADMIN_CONSOLE_INFO: info_data,
             key.KEY_COUNTRIES: countries
         }
+        data = add_user_information(request, data)
         return render(request, "select_country_dropdown.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -244,15 +236,60 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 @login_required
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
-        info_data = AdminConsoleInfoBuilder().get_data()
         request_json = get_post_request_json(request)
         result = rulesetRecoverService.filter_backup_list(request_json)
-        result[key.ADMIN_CONSOLE_INFO] = info_data
+        result = add_user_information(request, result)
         return render(request, "backup_data_view.html", result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
+
+
+@login_required
+def admin_console_activity_log_page(request):
+    try:
+        result = {}
+        result = add_user_information(request, result)
+        return render(request, "activity_log.html", result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+@login_required
+def admin_console_ruleset_log_page(request):
+    try:
+        result = {}
+        result = add_user_information(request, result)
+        return render(request, "ruleset_log.html", result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+@login_required
+def admin_console_ruleset_log_detail_page(request):
+    try:
+        result = {}
+        result = add_user_information(request, result)
+        return render(request, "ruleset_log_detail.html", result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def add_user_information(request, result):
+    info_data = AdminConsoleInfoBuilder().get_data()
+    result[ADMIN_CONSOLE_INFO] = info_data
+
+    if request.user.is_authenticated:
+        result[KEY_USER_NAME] = request.user.username
+
+    return result
 
 
 # ruleset page
