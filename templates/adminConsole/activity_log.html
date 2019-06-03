@@ -1,0 +1,185 @@
+{% extends "admin_console_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/activity_log.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div id="activity_log_container" class="admin_console_block_background custom_container">
+        <div id="header_div" class="row no-row-margin">
+            <div class="component_title">Activity Log</div>
+        </div>
+        <div id="title_div" class="row no-row-margin">
+            <div id="title_id_div" class="id_width title_text vertical_align_middle">
+                ID
+            </div>
+            <div id="title_date_div" class="date_width title_text vertical_align_middle">
+                Date
+            </div>
+            <div id="title_author_div" class="author_width title_text vertical_align_middle">
+                Author
+            </div>
+            <div id="title_type_div" class="type_width title_text vertical_align_middle">
+                Type
+            </div>
+            <div id="title_action_div" class="action_width title_text vertical_align_middle">
+                Action
+            </div>
+            <div id="title_description_div" class="description_width title_text vertical_align_middle">
+                Description
+            </div>
+            <div id="title_button_div" class="button_width title_text vertical_align_middle">
+            </div>
+        </div>
+        <div id="log_list_div">
+            {#            {% for task in task_list %}#}
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">1</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-28 17:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    wendy.wu
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    ReportTask
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Create
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    task ID: 2<br/>
+                    environment: PROD/GIT<br/>
+                    country: KR/CN/SG<br/>
+                    next proceed time: 11:00
+                </div>
+                <div class="list_button_div button_width vertical_align_middle list_text">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">2</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-21 17:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    Wendy.Wu
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    AutoSyncTask
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Update
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    task ID: 13<br/>
+                    environment: GIT/INT2<br/>
+                    country: TW<br/>
+                    next proceed time: 11:00
+                </div>
+                <div class="list_button_div button_width vertical_align_middle">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">3</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-20 12:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    wendy.wu
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    AutoSyncTask
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Delete
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    task ID: 15<br/>
+                    environment: GIT/INT2<br/>
+                    country: CN<br/>
+                    next proceed time: 15:00
+                </div>
+                <div class="list_button_div button_width vertical_align_middle list_text">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">4</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-19 13:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    wendy.wu
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    AutoSyncTask
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Execute
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    task ID: 15<br/>
+                    environment: GIT/INT2<br/>
+                    country: CN<br/>
+                    next proceed time: 15:00
+                </div>
+                <div class="list_button_div button_width vertical_align_middle list_text">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">5</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-18 10:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    Task Manager
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    AutoSyncTask
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Execute
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    task ID: 12<br/>
+                    environment: GIT/INT2<br/>
+                    country: KR<br/>
+                    next proceed time: 15:00
+                </div>
+                <div class="list_button_div button_width vertical_align_middle list_text">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            <div class="list_row_div row">
+                <div class="list_id_div id_width vertical_align_middle list_text">5</div>
+                <div class="list_date_div date_width vertical_align_middle list_text">
+                    2019-05-17 17:22:00
+                </div>
+                <div class="list_author_div author_width vertical_align_middle list_text">
+                    kathy.chang
+                </div>
+                <div class="list_type_div type_width vertical_align_middle list_text">
+                    Recovery
+                </div>
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    Recovery
+                </div>
+                <div class="list_description_div description_width vertical_align_middle">
+                    recovery list:<br/>
+                    RS_TW_PROCESS<br/>
+                    RS_TW_DATA_ENTRY...
+                </div>
+                <div class="list_button_div button_width vertical_align_middle list_text">
+                </div>
+            </div>
+            <div class="task_divider"></div>
+            {#            {% endfor %}#}
+        </div>
+    </div>
+    <script>
+    </script>
+
+{% endblock %}

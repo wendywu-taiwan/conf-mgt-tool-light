@@ -1,0 +1,55 @@
+#ruleset_log_detail_container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+
+}
+
+#log_detail_div {
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#task_detail_div {
+    width: 45%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#ruleset_detail_div {
+    margin-top: 30px;
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.header_div {
+    margin-bottom: 20px;
+}
+
+#action_div {
+    margin-right: 20px;
+}
+
+.row_title_div {
+    font-weight: 600;
+    font-size: 15px;
+    color: #9eadbc;
+}
+
+.row_content_div {
+    font-size: 14px;
+    margin-left: auto;
+    color: #33495f;
+}
+
+.button_div {
+    margin-left: auto;
+}
+
+#ruleset_content_div {
+    background: black;
+    border-radius: 5px;
+    color: #c6c6c6;
+}
