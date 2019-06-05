@@ -30,9 +30,9 @@ def get_schedulers():
         raise e
 
 
-def create_scheduler(json_data):
+def create_scheduler(json_data, user):
     try:
-        parser = CreateRulesetSyncSchedulerParser(json_data)
+        parser = CreateRulesetSyncSchedulerParser(json_data, user)
         sync_scheduler = RulesetSyncUpScheduler.objects.create_task(parser.source_environment_id,
                                                                     parser.target_environment_id,
                                                                     parser.module,
@@ -41,7 +41,8 @@ def create_scheduler(json_data):
                                                                     parser.receiver_list,
                                                                     parser.interval_hour,
                                                                     parser.utc_time,
-                                                                    parser.backup)
+                                                                    parser.creator,
+                                                                    parser.created_time)
         parser.set_task_id(sync_scheduler.id)
         add_task_to_scheduler(sync_scheduler.id, parser)
         return sync_scheduler
@@ -49,9 +50,9 @@ def create_scheduler(json_data):
         raise e
 
 
-def update_scheduler(json_data):
+def update_scheduler(json_data, user):
     try:
-        parser = CreateRulesetSyncSchedulerParser(json_data)
+        parser = CreateRulesetSyncSchedulerParser(json_data, user)
         sync_scheduler = RulesetSyncUpScheduler.objects.update_task(parser.task_id,
                                                                     parser.source_environment_id,
                                                                     parser.target_environment_id,
@@ -60,7 +61,8 @@ def update_scheduler(json_data):
                                                                     parser.receiver_list,
                                                                     parser.interval_hour,
                                                                     parser.utc_time,
-                                                                    parser.backup)
+                                                                    parser.editor,
+                                                                    parser.updated_time)
         add_task_to_scheduler(sync_scheduler.id, parser)
         return sync_scheduler
     except Exception as e:

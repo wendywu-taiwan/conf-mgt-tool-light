@@ -6,7 +6,7 @@ from RulesetComparer.models import Environment
 
 class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
 
-    def __init__(self, json_data):
+    def __init__(self, json_data, user):
         try:
             BaseReportSchedulerParser.__init__(self)
             self.task_id = json_data.get("task_id")
@@ -22,7 +22,10 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.action_list = json_data.get("action_list")
             self.action = SyncUpAction(self.action_list)
             self.interval_hour = int(json_data.get("interval_hour"))
-            self.backup = self.parse_boolean_to_int(json_data.get("backup"))
+            self.creator = user
+            self.editor = user
+            self.created_time = self.frontend_time_to_utc_time(json_data.get("created_time"))
+            self.updated_time = self.frontend_time_to_utc_time(json_data.get("updated_time"))
             # time with timezone setting for task running
             self.local_time = self.get_local_time_shift_days(json_data.get("next_proceed_time"))
             # utc time for saving to database
@@ -38,6 +41,10 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser):
 
     def parse_country_id_list(self, country_id_list):
         return super().parse_country_id_list(country_id_list)
+
+    def frontend_time_to_utc_time(self, frontend_time):
+        if frontend_time is not None:
+            return super().frontend_time_to_utc_time(frontend_time)
 
     def frontend_time_to_date_time(self, start_date_time):
         return super().frontend_time_to_date_time(start_date_time)

@@ -647,7 +647,7 @@ def run_rulesets_sync_job(request):
 def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.create_scheduler(request_json)
+        scheduler = rulesetSyncSchedulerService.create_scheduler(request_json, request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -660,7 +660,7 @@ def create_rulesets_sync_job(request):
 def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json)
+        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json,request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)

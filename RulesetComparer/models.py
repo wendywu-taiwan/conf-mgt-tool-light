@@ -1,7 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Create your models here.
+
+def get_default_user_id():
+    return User.objects.get(username="wendy.wu").id
+
 
 class CountryManager(models.Manager):
     def create_country(self, name, full_name, icon_file_name):
@@ -256,7 +261,7 @@ class ReportSchedulerInfo(models.Model):
 class RulesetSyncUpSchedulerManager(models.Manager):
     def create_task(self, source_env_id, target_env_id, module,
                     country_list, action_list_str, mail_list_str,
-                    interval, next_proceed_time, backup):
+                    interval, next_proceed_time, creator, created_time):
         task = self.create(source_environment_id=source_env_id,
                            target_environment_id=target_env_id,
                            module=module,
@@ -265,7 +270,10 @@ class RulesetSyncUpSchedulerManager(models.Manager):
                            interval_hour=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
-                           backup=backup,
+                           creator=creator,
+                           created_time=created_time,
+                           editor=creator,
+                           updated_time=created_time,
                            enable=1)
 
         for country in country_list:
@@ -275,7 +283,7 @@ class RulesetSyncUpSchedulerManager(models.Manager):
 
     def update_task(self, task_id, source_env_id, target_env_id,
                     country_list, action_list_str, mail_list_str,
-                    interval, next_proceed_time, backup):
+                    interval, next_proceed_time, editor, updated_time):
         task = self.get(id=task_id)
         task.source_environment_id = source_env_id
         task.target_environment_id = target_env_id
@@ -283,7 +291,8 @@ class RulesetSyncUpSchedulerManager(models.Manager):
         task.mail_list = mail_list_str
         task.interval_hour = interval
         task.next_proceed_time = next_proceed_time
-        task.backup = backup
+        task.editor = editor
+        task.updated_time = updated_time
 
         task.country_list.clear()
         for country_id in country_list:
@@ -331,8 +340,11 @@ class RulesetSyncUpScheduler(models.Model):
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)
-    backup = models.IntegerField()
     enable = models.IntegerField(default=1)
+    creator = models.ForeignKey(User, default=get_default_user_id, related_name='task_creator', on_delete=models.CASCADE)
+    editor = models.ForeignKey(User, default=get_default_user_id, related_name='task_editor', on_delete=models.CASCADE)
+    created_time = models.DateTimeField(null=True)
+    updated_time = models.DateTimeField(null=True)
 
     objects = RulesetSyncUpSchedulerManager()
 

@@ -188,7 +188,11 @@ KEY_COUNTRY_LIST = "country_list"
 KEY_INTERVAL_HOUR = "interval_hour"
 KEY_LAST_PROCEED_TIME = "last_proceed_time"
 KEY_NEXT_PROCEED_TIME = "next_proceed_time"
+KEY_CREATED_TIME = "created_time"
+KEY_CREATOR = "creator"
+KEY_EDITOR = "editor"
 KEY_ENABLE = "enable"
+KEY_EMAIL = "email"
 
 # environment name
 INT2_NAME = "INT2"
