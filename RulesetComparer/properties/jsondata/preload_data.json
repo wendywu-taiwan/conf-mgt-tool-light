@@ -380,6 +380,20 @@
         "b2b_client_url": "http://www.audatex.sg/b2b/services/"
       }
     ],
+    "ruleset_action": [
+      {
+        "name": "create",
+        "capital_name": "CREATE"
+      },
+      {
+        "name": "update",
+        "capital_name": "UPDATE"
+      },
+      {
+        "name": "delete",
+        "capital_name": "DELETE"
+      }
+    ],
     "update_time": {
       "auth_user": {
         "update_time": "2019-5-28 12:00:00"
@@ -413,6 +427,9 @@
       },
       "b2b_server": {
         "update_time": "2019-05-01 10:30:00"
+      },
+      "ruleset_action": {
+        "update_time": "2019-06-18 10:30:00"
       }
     }
   }

@@ -12,6 +12,8 @@ FILE_PATH = {
     "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
     "rule_set_zip_file_path": "/RulesetComparer/rulesets/zip",
     "rule_set_backup_path": "RulesetComparer/rulesets/backup",
+    "ruleset_backup_server_version": "RulesetComparer/rulesets/backup/server_version",
+    "ruleset_backup_applied_version": "RulesetComparer/rulesets/backup/applied_version"
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -46,7 +48,8 @@ SMTP = {
     # "login_username": "mailtest20181112@gmail.com",
     # "login_password": "shqkvjarskvbkigv",
     # "host": "smtp.gmail.com",
-    "host": "10.29.25.73",
+    # "host": "10.29.25.73",
+    "host": "smtp-ch-anon.int.audatex.com",
     # "port": "465"
     "port": "25"
 }
@@ -99,12 +102,34 @@ def get_ruleset_backup_path(environment_name, country_name, date):
     return path
 
 
+def get_backup_path_server_version(backup_key):
+    path = FILE_PATH.get("ruleset_backup_server_version")
+    return path + "/" + str(backup_key)
+
+
+def get_backup_path_applied_version(backup_key):
+    path = FILE_PATH.get("ruleset_backup_applied_version")
+    return path + "/" + str(backup_key)
+
+
+def get_rs_path_backup_server_version(backup_key, ruleset_name):
+    return get_rule_set_full_file_name(get_backup_path_server_version(backup_key), ruleset_name)
+
+
+def get_rs_path_backup_applied_version(backup_key, ruleset_name):
+    return get_rule_set_full_file_name(get_backup_path_applied_version(backup_key), ruleset_name)
+
+
 def get_ruleset_git_root_path():
     return get_rule_set_git_path("")
 
 
 def get_rule_set_git_path(country):
     return FILE_PATH.get("rule_set_git") % country
+
+
+def get_rs_in_git_path(country, ruleset_name):
+    return FILE_PATH.get("rule_set_git") % country + "/" + ruleset_name
 
 
 def get_file_path(path_key):

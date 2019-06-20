@@ -633,9 +633,8 @@ def get_rulesets_sync_jobs(request):
 
 def run_rulesets_sync_job(request):
     try:
-
         request_json = get_post_request_json(request)
-        run_in_background(func=rulesetSyncService.sync_up_rulesets_without_scheduler, parameter=request_json)
+        run_in_background(rulesetSyncService.sync_up_rulesets_without_scheduler, request_json, request.user)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -660,7 +659,7 @@ def create_rulesets_sync_job(request):
 def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json,request.user)
+        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json, request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)

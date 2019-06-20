@@ -341,7 +341,8 @@ class RulesetSyncUpScheduler(models.Model):
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField(default=1)
-    creator = models.ForeignKey(User, default=get_default_user_id, related_name='task_creator', on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, default=get_default_user_id, related_name='task_creator',
+                                on_delete=models.CASCADE)
     editor = models.ForeignKey(User, default=get_default_user_id, related_name='task_editor', on_delete=models.CASCADE)
     created_time = models.DateTimeField(null=True)
     updated_time = models.DateTimeField(null=True)
@@ -366,6 +367,35 @@ class DataUpdateTime(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class RulesetLogGroup(models.Model):
+    id = models.AutoField(primary_key=True)
+    backup_key = models.CharField(max_length=128)
+    update_time = models.DateTimeField(null=True)
+    task = models.ForeignKey(RulesetSyncUpScheduler, related_name='rs_log_group_task', on_delete=models.CASCADE, null=True)
+    source_environment = models.ForeignKey(Environment, related_name='rs_log_group_source_env', on_delete=models.CASCADE)
+    target_environment = models.ForeignKey(Environment, related_name='rs_log_group_target_env', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author',null=True, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.CASCADE)
+    commit_sha = models.CharField(max_length=128, null=True)
+    log_count = models.IntegerField(default=0)
+
+
+class RulesetAction(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+    capital_name = models.CharField(max_length=128)
+
+
+class RulesetLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    ruleset_log_group = models.ForeignKey(RulesetLogGroup, related_name='ruleset_log_group',
+                                          on_delete=models.CASCADE)
+    action = models.ForeignKey(RulesetAction, related_name='ruleset_action', on_delete=models.CASCADE)
+    ruleset_name = models.CharField(max_length=128)
+    status = models.IntegerField(default=1)
+    exception = models.CharField(max_length=128, null=True)
 
 
 class Meta:

@@ -1,11 +1,13 @@
 import traceback
 
+from RulesetComparer.dataModel.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
 from RulesetComparer.services import rulesetSyncService
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
 from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
+from RulesetComparer.utils.rulesetLogManager import RulesetLogManager
 
 
 class RulesetsSyncUpTask(BaseSchedulerTask):
@@ -25,7 +27,13 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
     def execute(self):
         for country in self.parser.country_list:
             try:
-                result_data = rulesetSyncService.sync_up_rulesets(self.parser, country)
+                task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
+                rs_log_groups = RulesetLogGroupObj(self.parser, None, country)
+                rs_log_groups.set_task(task)
+                rs_log_groups.set_update_time(task.next_proceed_time)
+                rs_log_groups.log_group()
+
+                result_data = rulesetSyncService.sync_up_rulesets(rs_log_groups, self.parser, country)
                 rulesetSyncService.send_mail(result_data)
             except Exception as e:
                 error_log(e)

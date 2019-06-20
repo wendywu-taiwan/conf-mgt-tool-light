@@ -193,6 +193,7 @@ KEY_CREATOR = "creator"
 KEY_EDITOR = "editor"
 KEY_ENABLE = "enable"
 KEY_EMAIL = "email"
+KEY_STATUS = "status"
 
 # environment name
 INT2_NAME = "INT2"

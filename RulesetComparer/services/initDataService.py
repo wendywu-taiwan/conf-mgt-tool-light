@@ -3,7 +3,7 @@ from RulesetComparer.utils import fileManager, modelManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, DataCenter, B2BService, B2BClient, \
-    B2BServer, DataUpdateTime, MailContentType
+    B2BServer, DataUpdateTime, MailContentType, RulesetAction
 from django.contrib.auth.models import User
 
 LOG_CLASS = "initDataService"
@@ -19,6 +19,7 @@ KEY_DATA_CENTER = "data_center"
 KEY_B2B_SERVICE = "b2b_service"
 KEY_B2B_CLIENT = "b2b_client"
 KEY_B2B_SERVER = "b2b_server"
+KEY_RULESET_ACTION = "ruleset_action"
 
 
 def init_data():
@@ -83,6 +84,11 @@ def init_data():
             update_b2b_server = init_b2b_server(ruleset_data[KEY_B2B_SERVER])
             if update_b2b_server:
                 update_local_time(update_time_data, KEY_B2B_SERVER)
+
+        if has_update(update_time_data, KEY_RULESET_ACTION):
+            update_ruleset_action = init_ruleset_action(ruleset_data[KEY_RULESET_ACTION])
+            if update_ruleset_action:
+                update_local_time(update_time_data, KEY_RULESET_ACTION)
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
@@ -269,6 +275,21 @@ def init_b2b_server(b2b_server_data):
         return True
     except Exception as e:
         B2BServer.objects.all().delete()
+        raise e
+
+
+def init_ruleset_action(ruleset_action_data):
+    try:
+        RulesetAction.objects.all().delete()
+        for ruleset_action in ruleset_action_data:
+            name = ruleset_action["name"]
+            capital_name = ruleset_action["capital_name"]
+            RulesetAction.objects.create(name=name, capital_name=capital_name)
+
+        info_log(LOG_CLASS, "init ruleset action data success")
+        return True
+    except Exception as e:
+        RulesetAction.objects.all().delete()
         raise e
 
 
