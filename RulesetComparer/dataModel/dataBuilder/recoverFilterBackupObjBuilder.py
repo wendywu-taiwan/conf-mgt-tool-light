@@ -13,6 +13,8 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
             self.source_env_only_rulesets = pre_json.get(KEY_SOURCE_ENV_ONLY_RULESETS)
             self.target_env_only_rulesets = pre_json.get(KEY_TARGET_ENV_ONLY_RULESETS)
             self.different_rulesets = pre_json.get(KEY_DIFFERENT_RULESETS)
+            self.has_filtered_rulesets = False
+            self.log_count = 0
             BaseBuilder.__init__(self)
         except Exception as e:
             raise e
@@ -34,14 +36,16 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
             ruleset_name = ruleset_obj.get(KEY_NAME)
             if len(self.filter_keys) == 0:
                 rulesets_array.append(ruleset_name)
+                self.has_filtered_rulesets = True
             else:
                 match = string_filter(ruleset_name, self.filter_keys)
                 if match:
                     rulesets_array.append(ruleset_name)
+                    self.has_filtered_rulesets = True
 
         rulesets_object[KEY_COUNT] = len(rulesets_array)
         rulesets_object[KEY_RULESETS_ARRAY] = rulesets_array
-
+        self.log_count += len(rulesets_array)
         return rulesets_object
 
     @staticmethod

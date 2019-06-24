@@ -49,26 +49,6 @@ filterCountries = function (environmentId, postUrl) {
     ;
 };
 
-// filterBackupDates = function (postUrl) {
-//     envId = $("#select-env-btn:first-child").val();
-//     countryId = $("#select-country-btn:first-child").val();
-//     filterKeyList = $("#filter_tags_input").tagsinput('items');
-//
-//     let post_body = {
-//         "environment_id": envId,
-//         "country_id": countryId,
-//         "filter_keys": filterKeyList
-//     };
-//
-//     doPOST(postUrl, post_body, function (response) {
-//         let countryDropDownDiv = document.getElementById('select_backup_date_div');
-//         countryDropDownDiv.innerHTML = response;
-//         initBackupDatesDropDown();
-//     }, function (response) {
-//         console.log(response);
-//     });
-// };
-
 filterBackupRules = function (postUrl) {
     showWaitingDialog();
     checkFilterValid();

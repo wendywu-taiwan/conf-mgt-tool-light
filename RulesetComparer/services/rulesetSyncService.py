@@ -108,19 +108,20 @@ def sync_up_rulesets_from_backup(json_data):
 
     country = parser.country
     target_environment = parser.target_environment
-
     new_backup_key = rs_log_group.backup_key
     source_backup_key = parser.backup_key
+
+    compare_key = hash(get_current_timestamp())
+    server_rs_path = get_rule_set_path(target_environment.name, country.name, compare_key)
+    server_rs_backup_path = get_backup_path_server_version(new_backup_key)
 
     diff_data_list = []
 
     # backup deleted last time but created now ruleset
     for ruleset_name in parser.applied_to_server_rulesets:
-        compare_key = hash(get_current_timestamp())
+        # download ruleset server version
         DownloadRulesetTask(target_environment.id, country.id, ruleset_name, compare_key)
 
-        server_rs_path = get_rule_set_path(target_environment.name, country.name, compare_key)
-        server_rs_backup_path = get_backup_path_server_version(new_backup_key)
         # backup server version ruleset from ruleset folder to backup folder
         copy_ruleset(get_file_name("_xml", ruleset_name),
                      server_rs_path,
@@ -139,7 +140,6 @@ def sync_up_rulesets_from_backup(json_data):
 
     # update the updated rulesets
     sync_result_obj = update_rulesets(sync_result_obj, rs_log_group, country, target_environment, diff_data_list)
-
     builder = RecoverRulesetsResultBuilder(target_environment, country, sync_result_obj)
     return builder.get_data()
 

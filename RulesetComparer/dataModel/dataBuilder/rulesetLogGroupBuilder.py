@@ -16,14 +16,16 @@ class RulesetLogGroupBuilder(BaseBuilder):
     def __init__(self, data):
         try:
             self.data = data
+            self.update_time = self.get_format_time(self.data.get(KEY_UPDATE_TIME))
+            self.backup_key = self.data.get(KEY_BACKUP_KEY)
             BaseBuilder.__init__(self)
         except Exception as e:
             raise e
 
     def __generate_data__(self):
         self.result_dict[KEY_ID] = self.data.get(KEY_ID)
-        self.result_dict[KEY_BACKUP_KEY] = self.data.get(KEY_BACKUP_KEY)
-        self.result_dict[KEY_UPDATE_TIME] = self.get_format_time(self.data.get(KEY_UPDATE_TIME))
+        self.result_dict[KEY_BACKUP_KEY] = self.backup_key
+        self.result_dict[KEY_UPDATE_TIME] = self.update_time
         self.result_dict[KEY_TASK_ID] = self.data.get(KEY_TASK_ID)
         self.result_dict[KEY_SOURCE_ENV] = self.parse_environment(self.data.get(KEY_SOURCE_ENV_ID))
         self.result_dict[KEY_TARGET_ENV] = self.parse_environment(self.data.get(KEY_TARGET_ENV_ID))
@@ -31,6 +33,9 @@ class RulesetLogGroupBuilder(BaseBuilder):
         self.result_dict[KEY_COUNTRY] = self.parse_country(self.data.get(KEY_COUNTRY_ID))
         self.result_dict[KEY_COMMIT_SHA] = self.data.get(KEY_COMMIT_SHA)
         self.result_dict[KEY_LOG_COUNT] = self.data.get(KEY_LOG_COUNT)
+
+    def update_log_count(self, log_count):
+        self.result_dict[KEY_LOG_COUNT] = log_count
 
     def parse_user(self, user_id):
         if user_id is None:
