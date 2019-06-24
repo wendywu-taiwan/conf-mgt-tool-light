@@ -133,13 +133,16 @@ STATUS_SUCCESS = "success"
 STATUS_FAILED = "failed"
 
 # RulesetSyncPreDataBuilder
-KEY_SOURCE_ENV = "source_environment"
-KEY_TARGET_ENV = "target_environment"
 KEY_RULESETS_ARRAY = "rulesets_array"
+KEY_RULES_ARRAY = "rules_array"
 KEY_SOURCE_ENV_ONLY_RULESETS = "source_env_only_rulesets"
+KEY_SOURCE_ENV_ONLY_RULES = "source_env_only_rules"
 KEY_TARGET_ENV_ONLY_RULESETS = "target_env_only_rulesets"
+KEY_TARGET_ENV_ONLY_RULES = "target_env_only_rules"
 KEY_DIFFERENT_RULESETS = "different_rulesets"
 KEY_HAS_RECOVERY_RULESETS = "has_recovery_rulesets"
+KEY_NORMAL_RULES = "normal_rules"
+KEY_DIFFERENT_RULES = "different_rules"
 
 # RulesetFilterBackupObjectBuilder, RecoverRulesetsResultBuilder, RulesetSyncResultDataBuilder
 KEY_FOLDER_NAME = "folder_name"
@@ -147,6 +150,7 @@ KEY_BACKUP_RULESETS_LIST = "backup_rulesets_list"
 KEY_CREATED_RULESETS = "created_rulesets"
 KEY_UPDATED_RULESETS = "updated_rulesets"
 KEY_DELETED_RULESETS = "deleted_rulesets"
+KEY_APPLIED_RULESETS = "applied_rulesets"
 KEY_ACTION = "action"
 KEY_CREATED = "created"
 KEY_UPDATED = "updated"
@@ -160,6 +164,11 @@ KEY_SELECT_FOLDER_NAME = "select_folder_name"
 KEY_RECEIVER_LIST = "receiver_list"
 KEY_BACKUP_YES = 1
 KEY_BACKUP_NO = 0
+
+# BackupDatesBuilder
+KEY_RULESET_LOG_GROUP_ID = "ruleset_log_group_id"
+KEY_DATES = "dates"
+
 
 KEY_USER_NAME = "user_name"
 
@@ -183,6 +192,7 @@ KEY_UPDATED_TIME = "updated_time"
 ACTION_LIST = 'action_list'
 KEY_EXCEPTION = "exception"
 KEY_BACKUP = "backup"
+KEY_BACKUP_KEY = "backup_key"
 KEY_ICON_FILE_NAME = "icon_file_name"
 KEY_COUNTRY_LIST = "country_list"
 KEY_INTERVAL_HOUR = "interval_hour"
@@ -194,6 +204,17 @@ KEY_EDITOR = "editor"
 KEY_ENABLE = "enable"
 KEY_EMAIL = "email"
 KEY_STATUS = "status"
+KEY_BACKUP_DATES = "backup_dates"
+KEY_UPDATE_TIME = "update_time"
+KEY_SOURCE_ENV = "source_environment"
+KEY_SOURCE_ENV_ID = "source_environment_id"
+KEY_TARGET_ENV = "target_environment"
+KEY_TARGET_ENV_ID = "target_environment_id"
+KEY_AUTHOR_ID = "author_id"
+KEY_COMMIT_SHA = "commit_sha"
+KEY_LOG_COUNT = "log_count"
+KEY_RULESET_LOG_GROUPS = "ruleset_log_groups"
+KEY_RULESET_LOGS = "ruleset_logs"
 
 # environment name
 INT2_NAME = "INT2"

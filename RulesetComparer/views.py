@@ -237,9 +237,9 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
         request_json = get_post_request_json(request)
-        result = rulesetRecoverService.filter_backup_list(request_json)
-        result = add_user_information(request, result)
-        return render(request, "backup_data_view.html", result)
+        result_data = rulesetRecoverService.filter_backup_list(request_json)
+        result_data = add_user_information(request, result_data)
+        return render(request, "backup_data_view.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

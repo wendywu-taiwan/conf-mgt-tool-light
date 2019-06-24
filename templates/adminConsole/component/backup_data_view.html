@@ -4,24 +4,31 @@
     </div>
     <div id="folder_list_div">
         <div id="title_row_div" class="row no-row-margin">
-            <div id="title_date_div" class="title_text date_width vertical_align_middle">Date</div>
-            <div id="title_created_div" class="title_text action_count_width vertical_align_middle">Created</div>
-            <div id="title_updated_div" class="title_text action_count_width vertical_align_middle">Updated</div>
-            <div id="title_deleted_div" class="title_text action_count_width vertical_align_middle">Deleted</div>
+            <div class="title_text date_width vertical_align_middle">Date</div>
+            <div id="title_date_div" class="title_text author_width vertical_align_middle">Author</div>
+            <div id="title_date_div" class="title_text country_width vertical_align_middle">Country</div>
+            <div id="title_date_div" class="title_text environment_width vertical_align_middle">From</div>
+            <div id="title_date_div" class="title_text environment_width vertical_align_middle">To</div>
+            <div id="title_date_div" class="title_text count_width vertical_align_middle">Count</div>
         </div>
         <div id="content_rows_div">
-            {% for data in backup_rulesets_list %}
-                <div id="{{ data.folder_name }}" style="background-color: white"
+            {% for data in ruleset_log_groups %}
+                <div id="{{ data.backup_key }}" style="background-color: white"
                      class="content_row_div row no-row-margin"
-                     onclick="onClickBackupFolderRow(this)">
-                    <div id="title_date_div"
-                         class="content_text date_width vertical_align_middle">{{ data.date_time }}</div>
-                    <div id="title_created_div"
-                         class="content_text action_count_width vertical_align_middle">{{ data.created_rulesets.count }}</div>
-                    <div id="title_updated_div"
-                         class="content_text action_count_width vertical_align_middle">{{ data.updated_rulesets.count }}</div>
-                    <div id="title_deleted_div"
-                         class="content_text action_count_width vertical_align_middle">{{ data.deleted_rulesets.count }}</div>
+                     onclick="onClickBackupFolderRow('{{ data.backup_key }}','{{ data.target_environment.id }}')">
+                    <div id="title_update_time_div"
+                         class="content_text date_width vertical_align_middle">{{ data.update_time }}</div>
+                    <div id="title_user_name_div"
+                         class="content_text author_width vertical_align_middle">{{ data.user_name }}</div>
+                    <div id="title_country_name_div"
+                         class="content_text country_width vertical_align_middle">{{ data.country.full_name }}</div>
+                    <div id="{{ data.backup_key }}_source_env_div"
+                         class="content_text environment_width vertical_align_middle" >{{ data.source_environment.name }}</div>
+                    <div id="{{ data.backup_key }}_target_env_div"
+                         class="content_text environment_width vertical_align_middle">{{ data.target_environment.name }}</div>
+                    <div id="title_count_div"
+                         class="content_text count_width vertical_align_middle">{{ data.log_count }}</div>
+
                 </div>
                 {% if not forloop.last %}
                     <div id="row_divider" class="custom_divider"></div>
@@ -31,15 +38,15 @@
     </div>
 
 </div>
-{% for data in backup_rulesets_list %}
-    <div id="{{ data.folder_name }}_rulesets_div"
+{% for data in ruleset_logs %}
+    <div id="{{ data.backup_key }}_rulesets_div"
          class="backup_rulesets_div recovery_container admin_console_block_background">
         <div class="list_header_row_div row no-row-margin">
             <div class="title_text_div">
                 <div class="div_title_text">Ruleset List</div>
-                <div class="div_title_description_text">{{ data.date_time }}</div>
+                <div class="div_title_description_text">{{ data.update_time }}</div>
             </div>
-            <div id="{{ data.folder_name }}_button_group_div" class="button_group_div row no-row-margin">
+            <div id="{{ data.backup_key }}_button_group_div" class="button_group_div row no-row-margin">
                 <div id="apply_all_button" class="vertical_align_middle">
                     <button class="btn btn-warning btn-font-14" onclick="applyAllRulesets()">Select All</button>
                 </div>
@@ -54,7 +61,7 @@
                 <div id="title_ruleset" class="title_text ruleset_name_width">Ruleset</div>
                 <div id="title_action" class="title_text action_width"></div>
             </div>
-            {% with data.folder_name as folder_name %}
+            {% with data.backup_key as backup_key %}
                 {% for ruleset in data.created_rulesets.rulesets_array %}
                     {% with "created" as action %}
                         {% include 'backup_ruleset_row.html' %}

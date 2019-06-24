@@ -13,7 +13,7 @@
 }
 
 #backup_folder_list_div {
-    width: 60%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
@@ -87,9 +87,6 @@
     margin-right: 5%;
 }
 
-#select_country_div {
-}
-
 #filter_div {
     margin-bottom: 45px;
 }
@@ -150,11 +147,23 @@
 }
 
 .date_width {
-    width: 40%;
+    width: 25%;
 }
 
-.action_count_width {
-    width: 20%;
+.author_width{
+    width: 15%;
+}
+
+.country_width{
+    width: 17%;
+}
+
+.environment_width{
+    width: 12%;
+}
+
+.count_width{
+    width: 12%;
 }
 
 .button_group_div {

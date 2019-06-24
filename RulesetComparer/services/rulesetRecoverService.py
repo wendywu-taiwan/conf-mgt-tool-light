@@ -1,58 +1,59 @@
+from RulesetComparer.dataModel.dataBuilder.rulesetLogGroupBuilder import RulesetLogGroupBuilder
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.diffBackupRulesetParser import DiffBackupRulesetParser
 from RulesetComparer.dataModel.dataBuilder.recoverFilterBackupObjBuilder import RecoverFilterBackupObjBuilder
 from RulesetComparer.dataModel.dataBuilder.recoverFilterObjBuilder import RecoverFilterObjBuilder
 from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
-from RulesetComparer.models import Environment, Country
+from RulesetComparer.models import Environment, Country, RulesetLogGroup, RulesetLog
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.fileManager import *
 
 
 def filter_environment():
-    backup_folder_path = get_ruleset_backup_path("", "", "")
-    environment_name_list = get_files_list_in_path(backup_folder_path, "__init__.py")
     environment_list = []
-    for environment_name in environment_name_list:
-        environment = Environment.objects.get(name=environment_name)
+    environment_ids = RulesetLogGroup.objects.filter(log_count__gt=0).values_list('target_environment',
+                                                                                  flat=True).order_by(
+        'target_environment').distinct()
+
+    for env_id in environment_ids:
+        environment = Environment.objects.get(id=env_id)
         environment_list.append(environment)
 
     return environment_list
 
 
 def filter_country(environment_id):
-    environment = Environment.objects.get(id=environment_id)
-    backup_env_folder_path = get_ruleset_backup_path(environment.name, "", "")
-    country_name_list = get_files_list_in_path(backup_env_folder_path, "__init__.py")
-
     country_list = []
-    for country_name in country_name_list:
-        backup_country_folder_path = get_ruleset_backup_path(environment.name, country_name, "")
-        date_folder_names = get_files_list_in_path(backup_country_folder_path)
-        for date_folder_name in date_folder_names:
-            if has_recovery_rulesets(environment.name, country_name, date_folder_name):
-                country = Country.objects.get(name=country_name)
-                country_list.append(country)
-                break
+    country_ids = RulesetLogGroup.objects.filter(log_count__gt=0, target_environment=environment_id).values_list(
+        'country', flat=True).order_by('country').distinct()
+
+    for country_id in country_ids:
+        country = Country.objects.get(id=country_id)
+        country_list.append(country)
+
     return country_list
 
 
 def filter_backup_list(json_data):
     parser = GetFilteredRulesetParser(json_data)
-    backup_date_folder_path = get_ruleset_backup_path(parser.environment.name,
-                                                      parser.country.name,
-                                                      "")
-    date_folder_names = get_files_list_in_path(backup_date_folder_path)
-    backup_ruleset_objects = []
-    for date_folder_name in date_folder_names:
-        backup_ruleset_path = get_ruleset_backup_path(parser.environment.name,
-                                                      parser.country.name,
-                                                      date_folder_name)
-        pre_json = load_auto_sync_pre_json_file(backup_ruleset_path)
-        backup_ruleset_object = RecoverFilterBackupObjBuilder(date_folder_name, pre_json, parser.filter_keys)
-        if has_recovery_rulesets(parser.environment.name, parser.country.name, date_folder_name):
-            backup_ruleset_objects.append(backup_ruleset_object.get_data())
+    log_list = []
+    log_group_list = []
+    ruleset_log_groups = RulesetLogGroup.objects.filter(log_count__gt=0, target_environment=parser.environment.id,
+                                                        country=parser.country.id).values().order_by('-update_time').distinct()
 
-    result_data = RecoverFilterObjBuilder(parser.country, parser.environment, backup_ruleset_objects).get_data()
+    for obj in ruleset_log_groups:
+        log_group_result_obj = RulesetLogGroupBuilder(obj).get_data()
+        log_group_list.append(log_group_result_obj)
+        pre_json = load_auto_sync_pre_json_file(get_sync_pre_data_path(obj.get(KEY_BACKUP_KEY)))
+        log_result_obj = RecoverFilterBackupObjBuilder(pre_json,
+                                                       log_group_result_obj[KEY_UPDATE_TIME],
+                                                       log_group_result_obj[KEY_BACKUP_KEY],
+                                                       parser.filter_keys).get_data()
+        log_list.append(log_result_obj)
+
+    result_data = {KEY_RULESET_LOG_GROUPS: log_group_list,
+                   KEY_RULESET_LOGS: log_list}
+
     return result_data
 
 

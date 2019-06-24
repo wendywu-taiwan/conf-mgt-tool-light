@@ -62,4 +62,7 @@ class RulesetLogGroupObj:
                                            status=status,
                                            exception=exception)
 
-        self.log_list.append(rs_log)
+        # ruleset create from source to target no need to backup
+        # ruleset delete function is not implemented now
+        if action.name == RULESET_UPDATE:
+            self.log_list.append(rs_log)

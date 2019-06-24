@@ -10,7 +10,7 @@ $(function () {
     initCountryDropDown();
 });
 
-let envId, countryId, backupFolderName;
+let envId, countryId, backupKey, currentTargetEnvId;
 let filterKeyList = [];
 let rulesetsMap = {};
 let allRulesetMaps = {};
@@ -31,7 +31,7 @@ initCountryDropDown = function () {
         $("#select-country-btn:first-child").text($(this).text());
         $("#select-country-btn:first-child").val($(this).val());
     });
-}
+};
 
 filterCountries = function (environmentId, postUrl) {
     let post_body = {
@@ -48,6 +48,26 @@ filterCountries = function (environmentId, postUrl) {
     )
     ;
 };
+
+// filterBackupDates = function (postUrl) {
+//     envId = $("#select-env-btn:first-child").val();
+//     countryId = $("#select-country-btn:first-child").val();
+//     filterKeyList = $("#filter_tags_input").tagsinput('items');
+//
+//     let post_body = {
+//         "environment_id": envId,
+//         "country_id": countryId,
+//         "filter_keys": filterKeyList
+//     };
+//
+//     doPOST(postUrl, post_body, function (response) {
+//         let countryDropDownDiv = document.getElementById('select_backup_date_div');
+//         countryDropDownDiv.innerHTML = response;
+//         initBackupDatesDropDown();
+//     }, function (response) {
+//         console.log(response);
+//     });
+// };
 
 filterBackupRules = function (postUrl) {
     showWaitingDialog();
@@ -84,28 +104,18 @@ applyRulesetsRecover = function () {
 
     showWaitingDialog();
     let ruleset, rulesetAction;
-    let createdRulesets = [];
-    let updatedRulesets = [];
-    let deletedRulesets = [];
+    let appliedRulesets = [];
 
     for (ruleset in rulesetsMap) {
         rulesetAction = rulesetsMap[ruleset];
-        if (rulesetAction == "created") {
-            createdRulesets.push(ruleset);
-        } else if (rulesetAction == "updated") {
-            updatedRulesets.push(ruleset);
-        } else {
-            deletedRulesets.push(ruleset);
-        }
+        appliedRulesets.push(ruleset);
     }
 
     let post_body = {
-        "environment_id": envId,
+        "target_environment_id": currentTargetEnvId,
         "country_id": countryId,
-        "select_folder_name": backupFolderName,
-        "created_rulesets": createdRulesets,
-        "updated_rulesets": updatedRulesets,
-        "deleted_rulesets": deletedRulesets
+        "backup_key": backupKey,
+        "applied_rulesets": appliedRulesets,
     };
 
     doPOST(recoveryUrl, post_body, function (response) {
@@ -144,7 +154,7 @@ rulesetDiffPage = function (rulesetName) {
     let post_body = {
         "environment_id": envId,
         "country_id": countryId,
-        "backup_folder_name": backupFolderName,
+        "backup_key": backupKey,
         "ruleset_name": rulesetName
     };
 
@@ -175,7 +185,7 @@ function checkAllRecover(failedRulesets, updateRulesets, createRulesets, deleted
     let deletedCount = deletedRulesets == null ? 0 : deletedRulesets.length;
     let recoverRulesetCount = failedCount + createdCount + updatedCount + deletedCount;
     if (recoverRulesetCount == Object.keys(allRulesetMaps).length) {
-        allRulesetsRecoveredArray.push(backupFolderName);
+        allRulesetsRecoveredArray.push(backupKey);
         changeButtonStatus(false);
     } else {
         changeButtonStatus(true);
@@ -192,9 +202,9 @@ function showSuccessRulesetRow(rulesetList) {
         let ruleset = rulesetList[i];
         let rulesetName = ruleset["ruleset_name"];
 
-        let normalRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_checked_row_div');
-        let failedRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_fail_row_div');
-        let successRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_success_row_div');
+        let normalRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_checked_row_div');
+        let failedRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_fail_row_div');
+        let successRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_success_row_div');
         normalRulesetRow.style.display = 'none';
         failedRulesetRow.style.display = 'none';
         successRulesetRow.style.display = 'block';
@@ -211,10 +221,10 @@ function showFailureRulesetRow(rulesetList) {
         let ruleset = rulesetList[i];
         let rulesetName = ruleset["ruleset_name"];
 
-        let normalRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_checked_row_div');
-        let failedRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_fail_row_div');
-        let successRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_success_row_div');
-        let exceptionDiv = document.getElementById(backupFolderName + "_" + rulesetName + '_row_exception_div');
+        let normalRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_checked_row_div');
+        let failedRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_fail_row_div');
+        let successRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_success_row_div');
+        let exceptionDiv = document.getElementById(backupKey + "_" + rulesetName + '_row_exception_div');
 
         normalRulesetRow.style.display = 'none';
         failedRulesetRow.style.display = 'block';
@@ -224,9 +234,9 @@ function showFailureRulesetRow(rulesetList) {
 }
 
 function showNormalRulesetRow(rulesetName) {
-    let normalRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_checked_row_div');
-    let failedRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_fail_row_div');
-    let successRulesetRow = document.getElementById(backupFolderName + "_" + rulesetName + '_success_row_div');
+    let normalRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_checked_row_div');
+    let failedRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_fail_row_div');
+    let successRulesetRow = document.getElementById(backupKey + "_" + rulesetName + '_success_row_div');
     normalRulesetRow.style.display = 'block';
     failedRulesetRow.style.display = 'none';
     successRulesetRow.style.display = 'none';
@@ -292,18 +302,20 @@ function clearAllInputSelected() {
     }
 }
 
-onClickBackupFolderRow = function (selectedItem) {
+onClickBackupFolderRow = function (backupId, targetEnvId) {
+    console.log("backupId:" + backupId+", targetEnvId:"+targetEnvId);
+    backupKey = backupId;
+    currentTargetEnvId = targetEnvId;
+
     clearAllInputSelected();
     removeWithAnimate(document.getElementById('filter_env_country_div'));
     var rowElements = document.getElementsByClassName('content_row_div');
-    var selectedItemId = selectedItem.id;
     var i, rowElement, rowElementId, rowElementRulesetDiv;
     for (i = 0; i < rowElements.length; i++) {
         rowElement = rowElements[i];
         rowElementId = rowElement.id;
         rowElementRulesetDiv = document.getElementById(rowElementId + "_rulesets_div");
-        if (rowElementId == selectedItemId) {
-            backupFolderName = rowElementId;
+        if (rowElementId == backupId) {
             rowElementRulesetDiv.style.display = 'block';
             rowElement.style.backgroundColor = '#edf9f6';
             currentRulesetListDiv = rowElementRulesetDiv;
@@ -314,7 +326,7 @@ onClickBackupFolderRow = function (selectedItem) {
         }
     }
     // check if all rulesets been recovered
-    if (arrayContains(backupFolderName, allRulesetsRecoveredArray)) {
+    if (arrayContains(backupKey, allRulesetsRecoveredArray)) {
         changeButtonStatus(false);
     } else {
         changeButtonStatus(true);
@@ -322,7 +334,7 @@ onClickBackupFolderRow = function (selectedItem) {
 };
 
 function changeButtonStatus(status) {
-    let button_group_div = document.getElementById(backupFolderName + "_button_group_div");
+    let button_group_div = document.getElementById(backupKey + "_button_group_div");
     if (status) {
         button_group_div.style.display = 'flex';
     } else {

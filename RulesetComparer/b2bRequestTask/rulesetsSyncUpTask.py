@@ -7,7 +7,6 @@ from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
 from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
-from RulesetComparer.utils.rulesetLogManager import RulesetLogManager
 
 
 class RulesetsSyncUpTask(BaseSchedulerTask):
@@ -30,7 +29,7 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
                 task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
                 rs_log_groups = RulesetLogGroupObj(self.parser, None, country)
                 rs_log_groups.set_task(task)
-                rs_log_groups.set_update_time(task.next_proceed_time)
+                rs_log_groups.set_update_time(task.last_proceed_time)
                 rs_log_groups.log_group()
 
                 result_data = rulesetSyncService.sync_up_rulesets(rs_log_groups, self.parser, country)

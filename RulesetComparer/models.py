@@ -374,7 +374,7 @@ class RulesetLogGroup(models.Model):
     backup_key = models.CharField(max_length=128)
     update_time = models.DateTimeField(null=True)
     task = models.ForeignKey(RulesetSyncUpScheduler, related_name='rs_log_group_task', on_delete=models.CASCADE, null=True)
-    source_environment = models.ForeignKey(Environment, related_name='rs_log_group_source_env', on_delete=models.CASCADE)
+    source_environment = models.ForeignKey(Environment, related_name='rs_log_group_source_env', on_delete=models.CASCADE, null=True)
     target_environment = models.ForeignKey(Environment, related_name='rs_log_group_target_env', on_delete=models.CASCADE)
     author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author',null=True, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.CASCADE)

@@ -13,7 +13,8 @@ FILE_PATH = {
     "rule_set_zip_file_path": "/RulesetComparer/rulesets/zip",
     "rule_set_backup_path": "RulesetComparer/rulesets/backup",
     "ruleset_backup_server_version": "RulesetComparer/rulesets/backup/server_version",
-    "ruleset_backup_applied_version": "RulesetComparer/rulesets/backup/applied_version"
+    "ruleset_backup_applied_version": "RulesetComparer/rulesets/backup/applied_version",
+    "ruleset_backup_pre_sync_data": "RulesetComparer/rulesets/backup/pre_sync"
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -118,6 +119,10 @@ def get_rs_path_backup_server_version(backup_key, ruleset_name):
 
 def get_rs_path_backup_applied_version(backup_key, ruleset_name):
     return get_rule_set_full_file_name(get_backup_path_applied_version(backup_key), ruleset_name)
+
+
+def get_sync_pre_data_path(backup_key):
+    return FILE_PATH.get("ruleset_backup_pre_sync_data") + "/" + backup_key
 
 
 def get_ruleset_git_root_path():
