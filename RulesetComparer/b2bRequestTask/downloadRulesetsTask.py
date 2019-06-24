@@ -1,7 +1,9 @@
 from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
+from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import dataKey
+from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
 
 
 class DownloadRulesetsTask(BaseRequestTask):
@@ -46,8 +48,14 @@ class DownloadRulesetsTask(BaseRequestTask):
         return super().get_result_data()
 
     def save_file(self, response_xml, ruleset_name):
-        fileManager.create_folder(self.file_name_with_path)
+
+        ruleset_xml = response_xml.payload[response_xml.payload.index('<BRERuleList'):]
+
+        # replace xml tag
+        ruleset_list = RulesetObject(ruleset_xml, ruleset_name).get_rules_model_array()
+        new_ruleset_xml = build_ruleset_xml(ruleset_list)
 
         # save file
-        payload = response_xml.payload[response_xml.payload.index('<BRERuleList'):]
-        fileManager.save_file(get_rule_set_full_file_name(self.file_name_with_path, ruleset_name), payload)
+        # payload = response_xml.payload[response_xml.payload.index('<BRERuleList'):]
+        fileManager.create_folder(self.file_name_with_path)
+        fileManager.save_file(get_rule_set_full_file_name(self.file_name_with_path, ruleset_name), new_ruleset_xml)

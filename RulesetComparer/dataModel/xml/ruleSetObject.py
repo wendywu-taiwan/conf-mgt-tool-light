@@ -49,6 +49,19 @@ class RulesetObject(BaseModel):
 
         return rule.fullValue
 
+    def get_rules_model_array(self, name_list=None):
+        array = list()
+
+        if name_list is None:
+            name_list = self.get_rule_combined_key_list()
+
+        for rule in name_list:
+            rule_model = self.rulesMap[rule]
+            if rule_model is None:
+                continue
+            array.append(rule_model)
+        return array
+
     def get_rules_data_array(self, name_list=None):
         array = list()
 
