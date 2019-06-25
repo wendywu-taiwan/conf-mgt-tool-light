@@ -19,6 +19,7 @@ from RulesetComparer.dataModel.dataParser.recoverRulesetsParser import RecoverRu
 from RulesetComparer.dataModel.dataBuilder.recoverRulesetsResultBuilder import RecoverRulesetsResultBuilder
 from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
 from RulesetComparer.dataModel.dataBuilder.diffUpdateRulesetBuilder import DiffUpdateRulesetBuilder
+from RulesetComparer.dataModel.dataBuilder.diffCreateRulesetBuilder import DiffCreateRulesetBuilder
 
 
 def create_ruleset_test():
@@ -115,31 +116,43 @@ def sync_up_rulesets_from_backup(json_data):
     server_rs_path = get_rule_set_path(target_environment.name, country.name, compare_key)
     server_rs_backup_path = get_backup_path_server_version(new_backup_key)
 
-    diff_data_list = []
+    create_ruleset_list = []
+    update_ruleset_list = []
 
     # backup deleted last time but created now ruleset
     for ruleset_name in parser.applied_to_server_rulesets:
-        # download ruleset server version
-        DownloadRulesetTask(target_environment.id, country.id, ruleset_name, compare_key)
 
-        # backup server version ruleset from ruleset folder to backup folder
-        copy_ruleset(get_file_name("_xml", ruleset_name),
-                     server_rs_path,
-                     server_rs_backup_path)
         # backup applied backup ruleset from backup folder to new backup folder
         copy_ruleset(get_file_name("_xml", ruleset_name),
                      get_backup_path_server_version(source_backup_key),
                      get_backup_path_applied_version(new_backup_key))
 
+        # download ruleset server version
+        ruleset_exist = DownloadRulesetTask(target_environment.id, country.id, ruleset_name, compare_key).ruleset_exist
+
+        # if server not having ruleset, add to create ruleset list
+        if ruleset_exist is False:
+            create_ruleset_data = DiffCreateRulesetBuilder(ruleset_name).get_data()
+            create_ruleset_list.append(create_ruleset_data)
+            continue
+
+        # backup server version ruleset from ruleset folder to backup folder
+        copy_ruleset(get_file_name("_xml", ruleset_name),
+                     server_rs_path,
+                     server_rs_backup_path)
+
         source_xml = load_backup_applied_version_rs(new_backup_key, ruleset_name)
         target_xml = load_backup_server_version_rs(new_backup_key, ruleset_name)
 
         ruleset_comparer = RulesetComparer(ruleset_name, source_xml, target_xml, False)
-        diff_data = DiffUpdateRulesetBuilder(ruleset_comparer).get_data()
-        diff_data_list.append(diff_data)
+        update_ruleset_data = DiffUpdateRulesetBuilder(ruleset_comparer).get_data()
+        update_ruleset_list.append(update_ruleset_data)
 
-    # update the updated rulesets
-    sync_result_obj = update_rulesets(sync_result_obj, rs_log_group, country, target_environment, diff_data_list)
+    # create not exist rulesets
+    sync_result_obj = create_rulesets(sync_result_obj, rs_log_group, country, target_environment, create_ruleset_list)
+    # update rulesets
+    sync_result_obj = update_rulesets(sync_result_obj, rs_log_group, country, target_environment, update_ruleset_list)
+
     builder = RecoverRulesetsResultBuilder(target_environment, country, sync_result_obj)
     return builder.get_data()
 

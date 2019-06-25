@@ -44,10 +44,8 @@ def filter_backup_list(json_data):
     for obj in ruleset_log_groups:
         log_group_obj = RulesetLogGroupBuilder(obj)
         pre_json = load_auto_sync_pre_json_file(get_sync_pre_data_path(obj.get(KEY_BACKUP_KEY)))
-        log_result_obj = RecoverFilterBackupObjBuilder(pre_json,
-                                                       log_group_obj.update_time,
-                                                       log_group_obj.backup_key,
-                                                       parser.filter_keys)
+        log_result_obj = RecoverFilterBackupObjBuilder(pre_json, log_group_obj.update_time,
+                                                       log_group_obj.backup_key, parser.filter_keys)
 
         log_group_obj.update_log_count(log_result_obj.log_count)
 
