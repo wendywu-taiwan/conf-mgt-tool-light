@@ -73,6 +73,7 @@ SEND_CLEAR_FILES_MAIL = {
 
 DEFAULT_LOG_TYPE = 0
 DEFAULT_MODULE_NAME = "Ruleset"
+USER_NAME_TASK_MANAGER = "TaskManager"
 
 LOG_TYPE_FILE = {
     0: "info.log",

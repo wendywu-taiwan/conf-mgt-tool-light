@@ -7,7 +7,9 @@ class RulesetLogGroupObj:
 
     def __init__(self, parser, user, country):
         self.rs_log_group = None
-        self.log_list = []
+        self.created_list = []
+        self.updated_list = []
+        self.deleted_list = []
         self.source_environment = parser.source_environment
         self.target_environment = parser.target_environment
         self.user = user
@@ -32,7 +34,9 @@ class RulesetLogGroupObj:
             hash(self.source_environment)) + str(hash(self.target_environment))
 
     def update_log_group_log_count(self):
-        self.rs_log_group.log_count = len(self.log_list)
+        self.rs_log_group.created = len(self.created_list)
+        self.rs_log_group.updated = len(self.updated_list)
+        self.rs_log_group.log_count = len(self.created_list) + len(self.updated_list)
         self.rs_log_group.save()
 
     def log_group(self):
@@ -63,6 +67,8 @@ class RulesetLogGroupObj:
                                            exception=exception)
 
         # ruleset create from source to target no need to backup
+        if action.name == RULESET_CREATE:
+            self.created_list.append(rs_log)
         # ruleset delete function is not implemented now
         if action.name == RULESET_UPDATE:
-            self.log_list.append(rs_log)
+            self.updated_list.append(rs_log)

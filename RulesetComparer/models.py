@@ -379,6 +379,9 @@ class RulesetLogGroup(models.Model):
     author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author',null=True, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.CASCADE)
     commit_sha = models.CharField(max_length=128, null=True)
+    created = models.IntegerField(default=0)
+    updated = models.IntegerField(default=0)
+    deleted = models.IntegerField(default=0)
     log_count = models.IntegerField(default=0)
 
 

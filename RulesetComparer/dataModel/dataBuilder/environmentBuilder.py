@@ -3,6 +3,8 @@ from RulesetComparer.properties.config import *
 
 
 class EnvironmentBuilder(BaseBuilder):
+    ENVIRONMENT_BACKUP = "Backup"
+
     def __init__(self, environment):
         try:
             self.environment = environment
@@ -11,6 +13,11 @@ class EnvironmentBuilder(BaseBuilder):
             raise e
 
     def __generate_data__(self):
-        self.result_dict[KEY_ID] = self.environment.id
-        self.result_dict[KEY_NAME] = self.environment.name
-        self.result_dict[KEY_FULL_NAME] = self.environment.full_name
+        if self.environment is None:
+            self.result_dict[KEY_ID] = self.ENVIRONMENT_BACKUP
+            self.result_dict[KEY_NAME] = self.ENVIRONMENT_BACKUP
+            self.result_dict[KEY_FULL_NAME] = self.ENVIRONMENT_BACKUP
+        else:
+            self.result_dict[KEY_ID] = self.environment.id
+            self.result_dict[KEY_NAME] = self.environment.name
+            self.result_dict[KEY_FULL_NAME] = self.environment.full_name

@@ -66,6 +66,24 @@
       },
       {
         "model": "auth.user",
+        "username": "evelyn.lin",
+        "email": "evelyn.lin@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "TaskManager",
+        "email": "test.test@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
         "username": "test.test",
         "email": "test.test@audatex.com",
         "password": "audatex",
@@ -396,7 +414,7 @@
     ],
     "update_time": {
       "auth_user": {
-        "update_time": "2019-5-28 12:00:00"
+        "update_time": "2019-6-25 12:00:00"
       },
       "mail_content_type": {
         "update_time": "2019-03-15 10:55:00"

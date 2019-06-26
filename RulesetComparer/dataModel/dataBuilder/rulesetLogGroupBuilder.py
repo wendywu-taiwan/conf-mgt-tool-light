@@ -51,6 +51,9 @@ class RulesetLogGroupBuilder(BaseBuilder):
 
     @staticmethod
     def parse_environment(environment_id):
+        if environment_id is None:
+            return EnvironmentBuilder(None).get_data()
+
         environment = Environment.objects.get(id=environment_id)
         return EnvironmentBuilder(environment).get_data()
 

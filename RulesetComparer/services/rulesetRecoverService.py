@@ -11,9 +11,8 @@ from RulesetComparer.utils.fileManager import *
 
 def filter_environment():
     environment_list = []
-    environment_ids = RulesetLogGroup.objects.filter(log_count__gt=0).values_list('target_environment',
-                                                                                  flat=True).order_by(
-        'target_environment').distinct()
+    environment_ids = RulesetLogGroup.objects.filter(
+        updated__gt=0).values_list('target_environment', flat=True).order_by('target_environment').distinct()
 
     for env_id in environment_ids:
         environment = Environment.objects.get(id=env_id)
@@ -24,7 +23,8 @@ def filter_environment():
 
 def filter_country(environment_id):
     country_list = []
-    country_ids = RulesetLogGroup.objects.filter(log_count__gt=0, target_environment=environment_id).values_list(
+    country_ids = RulesetLogGroup.objects.filter(
+        updated__gt=0, target_environment=environment_id).values_list(
         'country', flat=True).order_by('country').distinct()
 
     for country_id in country_ids:
@@ -38,8 +38,9 @@ def filter_backup_list(json_data):
     parser = GetFilteredRulesetParser(json_data)
     log_list = []
     log_group_list = []
-    ruleset_log_groups = RulesetLogGroup.objects.filter(log_count__gt=0, target_environment=parser.environment.id,
-                                                        country=parser.country.id).values().order_by('-update_time').distinct()
+    ruleset_log_groups = RulesetLogGroup.objects.filter(
+        updated__gt=0, target_environment=parser.environment.id, country=parser.country.id).values().order_by(
+        '-update_time').distinct()
 
     for obj in ruleset_log_groups:
         log_group_obj = RulesetLogGroupBuilder(obj)

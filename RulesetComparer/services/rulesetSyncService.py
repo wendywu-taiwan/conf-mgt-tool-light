@@ -153,6 +153,8 @@ def sync_up_rulesets_from_backup(json_data):
     # update rulesets
     sync_result_obj = update_rulesets(sync_result_obj, rs_log_group, country, target_environment, update_ruleset_list)
 
+    # update rulesets count
+    rs_log_group.update_log_group_log_count()
     builder = RecoverRulesetsResultBuilder(target_environment, country, sync_result_obj)
     return builder.get_data()
 

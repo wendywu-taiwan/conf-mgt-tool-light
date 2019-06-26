@@ -7,6 +7,7 @@ from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
 from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
+from django.contrib.auth.models import User
 
 
 class RulesetsSyncUpTask(BaseSchedulerTask):
@@ -27,7 +28,8 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
         for country in self.parser.country_list:
             try:
                 task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
-                rs_log_groups = RulesetLogGroupObj(self.parser, None, country)
+                user = User.objects.get(username=USER_NAME_TASK_MANAGER)
+                rs_log_groups = RulesetLogGroupObj(self.parser, user, country)
                 rs_log_groups.set_task(task)
                 rs_log_groups.set_update_time(task.last_proceed_time)
                 rs_log_groups.log_group()
