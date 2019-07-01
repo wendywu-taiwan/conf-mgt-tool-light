@@ -11,287 +11,170 @@
             <div class="component_title">Filter</div>
         </div>
         <div id="filter_column_div">
-            <div id="author_select_div" class="row no-row-margin filter_row">
-                <div class="filter_title_div vertical_align_middle">Author</div>
-                <div class="filter_tags_div row no-row-margin">
-                    <button id="all_author_button" class="btn btn-outline-primary">All</button>
-                    <button id="wendy_button" class="btn btn-outline-primary">wendy.wu</button>
-                    <button id="task_manager_button" class="btn btn-outline-primary">Task Manager</button>
-                </div>
-            </div>
-            <div id="environment_select_div" class="row no-row-margin filter_row">
-                <div class="filter_title_div vertical_align_middle">Environment</div>
-                <div class="filter_tags_div row no-row-margin">
-                    <button id="all_author_button" class="btn btn-outline-primary">All</button>
-                    <button id="int2_button" class="btn btn-outline-primary">INT2</button>
-                </div>
-            </div>
-            <div id="country_select_div" class="row no-row-margin filter_row">
-                <div class="filter_title_div vertical_align_middle">Country</div>
-                <div class="filter_tags_div row no-row-margin">
-                    <button id="all_country_button" class="btn btn-outline-primary">All</button>
-                    <button id="tw_country_button" class="btn btn-outline-primary">TW</button>
-                    <button id="kr_country_button" class="btn btn-outline-primary">KR</button>
-                </div>
-            </div>
-            <div id="order_select_div" class="row no-row-margin filter_row">
-                <div class="filter_title_div vertical_align_middle">Order</div>
-                <div class="filter_tags_div row no-row-margin">
-                    <button id="ascend_button" class="btn btn-outline-primary">Ascend</button>
-                    <button id="descend_button" class="btn btn-outline-primary">Descend</button>
-                </div>
-            </div>
-            <div id="filter_text_div" class="row no-row-margin filter_row">
-                <div class="filter_title_div vertical_align_middle">Filter</div>
-                <div id="filter_div">
-                    <div id="filter_input_div" class="tagsinput-primary">
-                        <input id="filter_tags_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
-                               placeholder="ex.RS_ROOT"
-                               style="display: none;">
+            <div class="row no-row-margin">
+                <div id="author_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Author</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="user_tag_all" class="user_tag filter_tag_div" onclick="selectAll(this,'user_tag')">All
+                        </div>
+                        {% for data in users %}
+                            <div id="user_tag_{{ data.id }}" class="user_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'user_tag')">{{ data.name }}</div>
+                        {% endfor %}
                     </div>
                 </div>
-                <div id="filter_btn_div">
-                    <button id="filter_btn" class="btn btn-default btn-wide" onclick="filterBtnOnClick()">
-                        Search
-                    </button>
+                <div id="environment_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Environment</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="environment_tag_all" class="environment_tag filter_tag_div"
+                             onclick="selectAll(this,'environment_tag')">All
+                        </div>
+                        {% for data in environments %}
+                            <div id="environment_tag_{{ data.id }}" class="environment_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'environment_tag')">{{ data.name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div id="country_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Country</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="country_tag_all" class="country_tag filter_tag_div"
+                             onclick="selectAll(this,'country_tag')">
+                            All
+                        </div>
+                        {% for data in countries %}
+                            <div id="country_tag_{{ data.id }}" class="country_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'country_tag')">{{ data.full_name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="order_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Order</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="ascend" class="order_tag filter_tag_div" onclick="selectOrder(this)">Ascend</div>
+                        <div id="descend" class="order_tag filter_tag_div clicked" onclick="selectOrder(this)">Descend
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="filter_text_div" class="filter_row">
+                <div class="filter_title_div vertical_align_middle">Ruleset Filter</div>
+                <div class="row no-row-margin">
+                    <div id="filter_div">
+                        <div id="filter_input_div" class="tagsinput-primary">
+                            <input id="filter_tags_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
+                                   placeholder="ex.RS_ROOT"
+                                   style="display: none;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="header_div row no-row-margin">
-            <div class="component_title">Ruleset Log</div>
-        </div>
-        <div id="title_div" class="row no-row-margin">
-            <div id="title_id_div" class="id_width title_text vertical_align_middle">
-                ID
-            </div>
-            <div id="title_date_div" class="date_width title_text vertical_align_middle">
-                Date
-            </div>
-            <div id="title_author_div" class="author_width title_text vertical_align_middle">
-                Author
-            </div>
-            <div id="title_action_div" class="action_width title_text vertical_align_middle">
-                Action
-            </div>
-            <div id="title_environment_div" class="environment_width title_text vertical_align_middle">
-                Source
-            </div>
-            <div id="title_environment_div" class="environment_width title_text vertical_align_middle">
-                Target
-            </div>
-            <div id="title_country_div" class="country_width title_text vertical_align_middle">
-                Country
-            </div>
-            <div id="title_ruleset_div" class="ruleset_width title_text_left vertical_align_middle">
-                Ruleset
-            </div>
-            <div id="title_button_div" class="button_width title_text vertical_align_middle">
-            </div>
-        </div>
-        <div id="log_list_div">
-            {#                        {% for task in task_list %}#}
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">1</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-28 17:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    wendy.wu
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text">
-                     {% include 'create_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    GIT
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/taiwan.png' %}">
-                        <div class="country_name_tips">TW</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle list_text_left">
-                    RS_TW_PROCESS
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">2</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-28 13:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    wendy.wu
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text list_text">
-                     {% include 'update_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    GIT
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/taiwan.png' %}">
-                        <div class="country_name_tips">TW</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle">
-                    RS_TW_DATA_ENTRY
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">3</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-25 17:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    wendy.wu
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text">
-                     {% include 'delete_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    GIT
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/taiwan.png' %}">
-                        <div class="country_name_tips">TW</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle">
-                    RS_TW_FUBON
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">4</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-21 13:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    Task Manager
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text">
-                     {% include 'create_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    Backup
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/south-korea.png' %}">
-                        <div class="country_name_tips">KR</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle">
-                    RS_KR_PROCESS
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">5</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-21 13:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    Task Manager
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text">
-                     {% include 'update_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    GIT
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/south-korea.png' %}">
-                        <div class="country_name_tips">KR</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle">
-                    RS_MERITZ_STYLESHEET
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            <div class="list_row_div row">
-                <div class="list_id_div id_width vertical_align_middle list_text">6</div>
-                <div class="list_date_div date_width vertical_align_middle list_text">
-                    2019-05-21 13:22:00
-                </div>
-                <div class="list_author_div author_width vertical_align_middle list_text">
-                    Task Manager
-                </div>
-                <div class="list_action_div action_width vertical_align_middle list_text">
-                     {% include 'update_action_tag.html' %}
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    Backup
-                </div>
-                <div class="environment_width vertical_align_middle list_text">
-                    INT2
-                </div>
-                <div class="country_width vertical_align_middle row no-row-margin">
-                    <div class="country_div">
-                        <img class="task_nation_flag"
-                             src="{% static '/icons/national_flag/south-korea.png' %}">
-                        <div class="country_name_tips">KR</div>
-                    </div>
-                </div>
-                <div class="list_text_left ruleset_width vertical_align_middle">
-                    RS_KR_RULESCHECK
-                </div>
-                <div class="list_button_div button_width vertical_align_middle">
-                    <img class="more_icon_size"
-                         src="{% static '/icons/detail.png' %}">
-                </div>
-            </div>
-            <div class="task_divider"></div>
-            {#            {% endfor %}#}
+        <div id="ruleset_log_list_div">
+            {% include 'ruleset_log_list.html' %}
         </div>
     </div>
     <script>
+        let TAG_CLICKED = "clicked";
+        let ALL_TAG = "all";
+        let USER_TAG = "user_tag";
+        let ENVIRONMENT_TAG = "environment_tag";
+        let COUNTRY_TAG = "country_tag";
+        let ORDER_TAG = "order_tag";
+
+        $(function () {
+            initFilterUrl("{% url 'ruleset-log-list-filter' %}", "{% url 'ruleset-log-list-page' %}")
+        });
+
+        function selectFilterTag(div, tagName) {
+            div.classList.toggle(TAG_CLICKED);
+            addFilterTagToList(div, tagName);
+
+            let selectAll = true;
+            let selectAllDiv = null;
+
+            var tagElements = document.getElementsByClassName(tagName);
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+
+                // save the select all div
+                if (tagElement.id.includes(ALL_TAG)) {
+                    selectAllDiv = tagElement;
+                    continue;
+                }
+                // check if every tag been selected
+                if (!tagElement.classList.contains(TAG_CLICKED)) {
+                    selectAll = false;
+                    break;
+                }
+            }
+            // update the select all div status
+            if (selectAll)
+                addDivClicked(selectAllDiv);
+            else
+                removeDivClicked(selectAllDiv);
+        }
+
+        function selectAll(selectAllDiv, tagName) {
+            var tagElements = document.getElementsByClassName(tagName);
+            let selectAll = (!selectAllDiv.classList.contains(TAG_CLICKED));
+
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+
+                if (selectAll)
+                    addDivClicked(tagElement);
+                else
+                    removeDivClicked(tagElement);
+
+                // don't add the all div to array
+                if (tagElement != selectAllDiv)
+                    addFilterTagToList(tagElement, tagName);
+            }
+        }
+
+        function addDivClicked(div) {
+            if (div != null && !div.classList.contains(TAG_CLICKED))
+                div.classList.add(TAG_CLICKED);
+        }
+
+        function removeDivClicked(div) {
+            if (div != null && div.classList.contains(TAG_CLICKED))
+                div.classList.remove(TAG_CLICKED);
+        }
+
+        function addFilterTagToList(div, tagName) {
+            let tagSplitArray = (div.id).split("_");
+            let tagId = tagSplitArray[2];
+            console.log("clickFilterTag, tagName =" + tagName + ", tagId =" + tagId);
+            if (tagName == USER_TAG) {
+                addFilterUserId(tagId);
+            } else if (tagName == ENVIRONMENT_TAG) {
+                addFilterEnvironmentsId(tagId);
+            } else if (tagName == COUNTRY_TAG) {
+                addFilterCountriesId(tagId);
+            }
+        }
+
+        function selectOrder(selectOrderDiv) {
+            if (selectOrderDiv.classList.contains(TAG_CLICKED)) {
+                removeDivClicked(selectOrderDiv);
+                return;
+            }
+
+            setOrder(selectOrderDiv.id);
+            selectOrderDiv.classList.toggle(TAG_CLICKED);
+
+            // order is single select option so remove another
+            var tagElements = document.getElementsByClassName(ORDER_TAG);
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+                if (tagElement != selectOrderDiv)
+                    removeDivClicked(tagElement)
+            }
+        }
     </script>
 
 {% endblock %}

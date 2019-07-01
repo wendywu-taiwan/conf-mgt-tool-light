@@ -27,6 +27,7 @@ class RulesetLogListResultBuilder(BaseBuilder):
             KEY_FILTER_COUNTRIES_IDS: self.parser.filter_countries_ids,
             KEY_FILTER_KEYS: self.parser.filter_keys,
             KEY_ORDER: self.parser.order,
+            KEY_TOTAL_PAGES: self.parser.total_pages,
             KEY_PAGE: self.parser.page,
             KEY_LIMIT: self.parser.limit
         }
@@ -45,14 +46,15 @@ class RulesetLogListResultBuilder(BaseBuilder):
     def get_environments(self):
         env_id_list = []
         env_data_list = []
-        source_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0).values_list("source_environment").distinct()
-        target_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0).values_list("target_environment").distinct()
+        source_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0).values_list(
+            "source_environment").distinct()
+        target_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0).values_list(
+            "target_environment").distinct()
         env_id_list = self.get_distinct_environment_id(env_id_list, source_environment_ids)
         env_id_list = self.get_distinct_environment_id(env_id_list, target_environment_ids)
 
         for env_obj in env_id_list:
-            environment = Environment.objects.get(id=env_obj[0])
-            env_data = EnvironmentBuilder(environment).get_data()
+            env_data = EnvironmentBuilder(env_obj[0]).get_data()
             env_data_list.append(env_data)
 
         return env_data_list

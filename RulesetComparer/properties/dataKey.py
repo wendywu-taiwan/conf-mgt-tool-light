@@ -230,6 +230,7 @@ KEY_AUTHOR = "author"
 KEY_AUTHOR_ID = "author_id"
 KEY_RULESET_NAME = "ruleset_name"
 KEY_PAGE = "page"
+KEY_TOTAL_PAGES = "total_pages"
 KEY_LIMIT = "limit"
 KEY_RULESET_LOG_LIST = "ruleset_log_list"
 

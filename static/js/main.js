@@ -106,3 +106,10 @@ function openNewPageWithHTML(url, html) {
     var newWindows = window.open(url);
     newWindows.document.write(html);
 }
+
+function arrayRemove(arr, value) {
+   return arr.filter(function(ele){
+       return ele != value;
+   });
+
+}

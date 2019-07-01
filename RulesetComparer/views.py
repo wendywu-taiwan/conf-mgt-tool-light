@@ -16,7 +16,7 @@ from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
 from RulesetComparer.services import services, rulesetSyncService, rulesetRecoverService, rulesetSyncSchedulerService, \
-    rulesetReportSchedulerService
+    rulesetReportSchedulerService, rulesetLogService
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
@@ -98,7 +98,7 @@ def admin_console_report_scheduler_list_page(request):
 @login_required
 def admin_console_scheduler_create_page(request):
     try:
-        environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
+        environment_list_data = EnvironmentSerializer(Environment.objects.filter(active=1), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
 
@@ -116,7 +116,7 @@ def admin_console_scheduler_create_page(request):
 @login_required
 def admin_console_scheduler_update_page(request, scheduler_id):
     try:
-        environment_list_data = EnvironmentSerializer(Environment.objects.all(), many=True).data
+        environment_list_data = EnvironmentSerializer(Environment.objects.filter(active=1), many=True).data
         country_list_data = CountrySerializer(Country.objects.all(), many=True).data
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
 
@@ -246,24 +246,42 @@ def admin_console_recover_ruleset_backup_list_page(request):
         return JsonResponse(result)
 
 
+#  entrance for ruleset log list page init
 @login_required
-def admin_console_activity_log_page(request):
+def admin_console_ruleset_log_list_page(request):
     try:
-        result = {}
-        result = add_user_information(request, result)
-        return render(request, "activity_log.html", result)
+        request_json = get_post_request_json(request)
+        result_data = rulesetLogService.get_ruleset_log_list(request_json, False)
+        result_data = add_user_information(request, result_data)
+        return render(request, "ruleset_log.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
 
+#  entrance for ruleset log list filter change
 @login_required
-def admin_console_ruleset_log_page(request):
+def admin_console_ruleset_log_list_filter_page(request):
     try:
-        result = {}
-        result = add_user_information(request, result)
-        return render(request, "ruleset_log.html", result)
+        request_json = get_post_request_json(request)
+        result_data = rulesetLogService.get_ruleset_log_list(request_json, True)
+        result_data = add_user_information(request, result_data)
+        return render(request, "ruleset_log_list.html", result_data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+# entrance for ruleset log list page change
+@login_required
+def admin_console_ruleset_log_list_page_change(request):
+    try:
+        request_json = get_post_request_json(request)
+        result_data = rulesetLogService.get_ruleset_log_list(request_json, False)
+        result_data = add_user_information(request, result_data)
+        return render(request, "ruleset_log_list.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -296,7 +314,7 @@ def add_user_information(request, result):
 def rule_download_page(request):
     try:
         country_list = Country.objects.all()
-        environment_list = Environment.objects.all()
+        environment_list = Environment.objects.filter(active=1)
 
         response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
                     key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
@@ -317,7 +335,7 @@ def rule_download_page(request):
 def environment_select_page(request):
     try:
         country_list = Country.objects.all()
-        environment_list = Environment.objects.all()
+        environment_list = Environment.objects.filter(active=1)
 
         response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
                     key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
@@ -468,7 +486,7 @@ def download_rulesets(request):
 def recover_rulesets(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetSyncService.sync_up_rulesets_from_backup(request_json)
+        result_data = rulesetSyncService.sync_up_rulesets_from_backup(request_json, request.user)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
     except Exception:

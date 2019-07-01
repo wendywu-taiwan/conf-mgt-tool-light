@@ -37,3 +37,13 @@ def get_array_split_by_comma(array):
     if array is None:
         return ""
     return array.split(",")
+
+
+@register.filter
+def subtract(value, arg):
+    return value - arg
+
+
+@register.filter
+def add(value, arg):
+    return value + arg

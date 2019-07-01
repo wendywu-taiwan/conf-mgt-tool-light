@@ -22,8 +22,8 @@ class RulesetSyncSchedulerBuilder(BaseBuilder):
 
     def __build_scheduler_json__(self):
         self.result_dict[KEY_TASK_ID] = self.scheduler.id
-        self.result_dict[KEY_SOURCE_ENV] = EnvironmentBuilder(self.scheduler.source_environment).get_data()
-        self.result_dict[KEY_TARGET_ENV] = EnvironmentBuilder(self.scheduler.target_environment).get_data()
+        self.result_dict[KEY_SOURCE_ENV] = EnvironmentBuilder(self.scheduler.source_environment.id).get_data()
+        self.result_dict[KEY_TARGET_ENV] = EnvironmentBuilder(self.scheduler.target_environment.id).get_data()
         self.result_dict[KEY_COUNTRY_LIST] = self.get_country_list()
         self.result_dict[ACTION_LIST] = self.get_action_list()
         self.result_dict[KEY_RECEIVER_LIST] = self.get_mail_list()
