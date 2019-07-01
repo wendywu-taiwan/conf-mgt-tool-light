@@ -89,11 +89,11 @@
         <div class="list_row_div row">
             {% if data.status == "success" %}
                 <div class="list_status_div status_width vertical_align_middle list_text">
-                    <span class="fui-check"></span>
+                    <span class="icon_success fui-check"></span>
                 </div>
             {% else %}
                 <div class="list_status_div status_width vertical_align_middle list_text">
-                    <span class="fui-cross"></span>
+                    <span class="icon_failure fui-cross"></span>
                 </div>
             {% endif %}
             <div class="list_id_div id_width vertical_align_middle list_text">{{ data.log_id }}</div>

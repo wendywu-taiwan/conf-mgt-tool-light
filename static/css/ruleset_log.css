@@ -167,6 +167,14 @@
     color: #849aa4;
 }
 
+.list_status_div .icon_success{
+    color: #1abc9c;
+}
+
+.list_status_div .icon_failure{
+    color: #db5f69;
+}
+
 #ruleset_log_container .status_width {
     width: 5%;
     margin-right: 1%;
