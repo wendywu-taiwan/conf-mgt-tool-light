@@ -34,8 +34,8 @@ class Country(models.Model):
 
 
 class EnvironmentManager(models.Manager):
-    def create_environment(self, name, full_name):
-        environment = self.create(name=name, full_name=full_name)
+    def create_environment(self, name, full_name, active):
+        environment = self.create(name=name, full_name=full_name, active=active)
         return environment
 
     def environment_list(self, ids):
@@ -50,6 +50,7 @@ class Environment(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     full_name = models.CharField(max_length=128)
+    active = models.IntegerField(default=0)
 
     objects = EnvironmentManager()
 
@@ -98,7 +99,7 @@ class B2BClientManager(models.Manager):
 
 class B2BClient(models.Model):
     id = models.AutoField(primary_key=True)
-    data_center = models.ForeignKey(DataCenter, related_name="data_center", on_delete=models.CASCADE)
+    data_center = models.ForeignKey(DataCenter, related_name="data_center", on_delete=models.PROTECT)
     url = models.URLField()
 
     objects = B2BClientManager()
@@ -117,11 +118,11 @@ class B2BServerManager(models.Manager):
 class B2BServer(models.Model):
     id = models.AutoField(primary_key=True)
     country = models.ForeignKey(Country, related_name='country',
-                                on_delete=models.CASCADE)
+                                on_delete=models.PROTECT)
     environment = models.ForeignKey(Environment, related_name='environment',
-                                    on_delete=models.CASCADE)
+                                    on_delete=models.PROTECT)
     client = models.ForeignKey(B2BClient, related_name='client',
-                               on_delete=models.CASCADE)
+                               on_delete=models.PROTECT)
     objects = B2BClientManager()
 
     def __str__(self):
@@ -242,10 +243,10 @@ class ReportSchedulerInfoManager(models.Manager):
 class ReportSchedulerInfo(models.Model):
     id = models.AutoField(primary_key=True)
     base_environment = models.ForeignKey(Environment, related_name='base_environment_id',
-                                         on_delete=models.CASCADE)
+                                         on_delete=models.PROTECT)
     compare_environment = models.ForeignKey(Environment, related_name='compare_environment_id',
-                                            on_delete=models.CASCADE)
-    module = models.ForeignKey(Module, related_name='module_id', on_delete=models.CASCADE)
+                                            on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, related_name='module_id', on_delete=models.PROTECT)
     country_list = models.ManyToManyField(Country)
     mail_content_type_list = models.ManyToManyField(MailContentType)
     mail_list = models.TextField()
@@ -330,9 +331,9 @@ class RulesetSyncUpSchedulerManager(models.Manager):
 
 class RulesetSyncUpScheduler(models.Model):
     id = models.AutoField(primary_key=True)
-    source_environment = models.ForeignKey(Environment, related_name='source_environment_id', on_delete=models.CASCADE)
-    target_environment = models.ForeignKey(Environment, related_name='target_environment_id', on_delete=models.CASCADE)
-    module = models.ForeignKey(Module, on_delete=models.CASCADE)
+    source_environment = models.ForeignKey(Environment, related_name='source_environment_id', on_delete=models.PROTECT)
+    target_environment = models.ForeignKey(Environment, related_name='target_environment_id', on_delete=models.PROTECT)
+    module = models.ForeignKey(Module, on_delete=models.PROTECT)
     country_list = models.ManyToManyField(Country)
     action_list = models.TextField()
     mail_list = models.TextField()
@@ -342,8 +343,8 @@ class RulesetSyncUpScheduler(models.Model):
     job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField(default=1)
     creator = models.ForeignKey(User, default=get_default_user_id, related_name='task_creator',
-                                on_delete=models.CASCADE)
-    editor = models.ForeignKey(User, default=get_default_user_id, related_name='task_editor', on_delete=models.CASCADE)
+                                on_delete=models.PROTECT)
+    editor = models.ForeignKey(User, default=get_default_user_id, related_name='task_editor', on_delete=models.PROTECT)
     created_time = models.DateTimeField(null=True)
     updated_time = models.DateTimeField(null=True)
 
@@ -373,11 +374,15 @@ class RulesetLogGroup(models.Model):
     id = models.AutoField(primary_key=True)
     backup_key = models.CharField(max_length=128)
     update_time = models.DateTimeField(null=True)
-    task = models.ForeignKey(RulesetSyncUpScheduler, related_name='rs_log_group_task', on_delete=models.CASCADE, null=True)
-    source_environment = models.ForeignKey(Environment, related_name='rs_log_group_source_env', on_delete=models.CASCADE, null=True)
-    target_environment = models.ForeignKey(Environment, related_name='rs_log_group_target_env', on_delete=models.CASCADE)
-    author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author',null=True, on_delete=models.CASCADE)
-    country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.CASCADE)
+    task = models.ForeignKey(RulesetSyncUpScheduler, related_name='rs_log_group_task', on_delete=models.SET_NULL,
+                             null=True)
+    source_environment = models.ForeignKey(Environment, related_name='rs_log_group_source_env',
+                                           on_delete=models.PROTECT, null=True)
+    target_environment = models.ForeignKey(Environment, related_name='rs_log_group_target_env',
+                                           on_delete=models.PROTECT)
+    author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author', null=True,
+                               on_delete=models.PROTECT)
+    country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.PROTECT)
     commit_sha = models.CharField(max_length=128, null=True)
     created = models.IntegerField(default=0)
     updated = models.IntegerField(default=0)
@@ -394,8 +399,8 @@ class RulesetAction(models.Model):
 class RulesetLog(models.Model):
     id = models.AutoField(primary_key=True)
     ruleset_log_group = models.ForeignKey(RulesetLogGroup, related_name='ruleset_log_group',
-                                          on_delete=models.CASCADE)
-    action = models.ForeignKey(RulesetAction, related_name='ruleset_action', on_delete=models.CASCADE)
+                                          on_delete=models.PROTECT)
+    action = models.ForeignKey(RulesetAction, related_name='ruleset_action', on_delete=models.PROTECT)
     ruleset_name = models.CharField(max_length=128)
     status = models.IntegerField(default=1)
     exception = models.CharField(max_length=128, null=True)

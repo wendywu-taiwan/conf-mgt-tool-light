@@ -94,9 +94,12 @@ class GetRulesetLogListParser:
 
     def add_log_group_ids_query(self, log_group_ids):
         query = Q()
-        for id_obj in log_group_ids:
-            log_group_id = id_obj.get("id")
-            query.add(Q(ruleset_log_group=log_group_id), Q.OR)
+        if len(log_group_ids) == 0:
+            query.add(Q(ruleset_log_group=None), Q.OR)
+        else:
+            for id_obj in log_group_ids:
+                log_group_id = id_obj.get("id")
+                query.add(Q(ruleset_log_group=log_group_id), Q.OR)
 
         self.log_query.add(query, Q.AND)
 

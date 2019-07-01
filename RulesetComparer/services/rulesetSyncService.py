@@ -100,11 +100,11 @@ def sync_up_rulesets(rs_log_group, parser, country):
     return builder.get_data()
 
 
-def sync_up_rulesets_from_backup(json_data):
+def sync_up_rulesets_from_backup(json_data, user):
     parser = RecoverRulesetsParser(json_data)
     sync_result_obj = RulesetsSyncResultListObj()
 
-    rs_log_group = RulesetLogGroupObj(parser, None, parser.country)
+    rs_log_group = RulesetLogGroupObj(parser, user, parser.country)
     rs_log_group.log_group()
 
     country = parser.country

@@ -62,7 +62,7 @@ class RulesetLogListResultBuilder(BaseBuilder):
     @staticmethod
     def get_countries():
         country_data_list = []
-        countries = RulesetLogGroup.objects.filter(updated__gt=0).values_list("country").distinct()
+        countries = RulesetLogGroup.objects.filter(log_count__gt=0).values_list("country").distinct()
         for country_obj in countries:
             country = Country.objects.get(id=country_obj[0])
             country_data = CountryBuilder(country).get_data()
