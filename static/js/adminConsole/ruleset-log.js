@@ -39,30 +39,33 @@ changePage = function (newPage) {
 };
 
 addFilterUserId = function (id) {
-    if (filterUserIds.includes(id)) {
-        filterUserIds = arrayRemove(filterUserIds, id);
-    } else {
+    if (!filterUserIds.includes(id))
         filterUserIds.push(id);
-    }
-    filterLogList();
+};
+
+removeFilterUserId = function (id) {
+    if (filterUserIds.includes(id))
+        filterUserIds = arrayRemove(filterUserIds, id);
 };
 
 addFilterEnvironmentsId = function (id) {
-    if (filterEnvironmentIds.includes(id)) {
-        filterEnvironmentIds = arrayRemove(filterEnvironmentIds, id);
-    } else {
+    if (!filterEnvironmentIds.includes(id))
         filterEnvironmentIds.push(id);
-    }
-    filterLogList();
+};
+
+removeFilterEnvironmentsId = function (id) {
+    if (filterEnvironmentIds.includes(id))
+        filterEnvironmentIds = arrayRemove(filterEnvironmentIds, id);
 };
 
 addFilterCountriesId = function (id) {
-    if (filterCountryIds.includes(id)) {
-        filterCountryIds = arrayRemove(filterCountryIds, id);
-    } else {
+    if (!filterCountryIds.includes(id))
         filterCountryIds.push(id);
-    }
-    filterLogList();
+};
+
+removeFilterCountriesId = function (id) {
+    if (filterCountryIds.includes(id))
+        filterCountryIds = arrayRemove(filterCountryIds, id);
 };
 
 setOrder = function (orderStr) {

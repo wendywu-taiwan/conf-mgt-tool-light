@@ -89,12 +89,19 @@
         });
 
         function selectFilterTag(div, tagName) {
-            div.classList.toggle(TAG_CLICKED);
-            addFilterTagToList(div, tagName);
+            let select = (!div.classList.contains(TAG_CLICKED));
+            if (select) {
+                addDivClicked(div);
+                addFilterTagToList(div, tagName);
+            } else {
+                removeDivClicked(div);
+                removeFilterTagFromList(div, tagName);
+            }
+
+            filterLogList();
 
             let selectAll = true;
             let selectAllDiv = null;
-
             var tagElements = document.getElementsByClassName(tagName);
             for (let i = 0; i < tagElements.length; i++) {
                 let tagElement = tagElements[i];
@@ -124,15 +131,16 @@
             for (let i = 0; i < tagElements.length; i++) {
                 let tagElement = tagElements[i];
 
-                if (selectAll)
+                if (selectAll) {
                     addDivClicked(tagElement);
-                else
-                    removeDivClicked(tagElement);
-
-                // don't add the all div to array
-                if (tagElement != selectAllDiv)
                     addFilterTagToList(tagElement, tagName);
+                }
+                else {
+                    removeDivClicked(tagElement);
+                    removeFilterTagFromList(tagElement, tagName);
+                }
             }
+            filterLogList();
         }
 
         function addDivClicked(div) {
@@ -146,8 +154,10 @@
         }
 
         function addFilterTagToList(div, tagName) {
-            let tagSplitArray = (div.id).split("_");
-            let tagId = tagSplitArray[2];
+            if (div.id.includes(ALL_TAG))
+                return;
+
+            let tagId = getTagId(div.id);
             console.log("clickFilterTag, tagName =" + tagName + ", tagId =" + tagId);
             if (tagName == USER_TAG) {
                 addFilterUserId(tagId);
@@ -156,6 +166,25 @@
             } else if (tagName == COUNTRY_TAG) {
                 addFilterCountriesId(tagId);
             }
+        }
+
+        function removeFilterTagFromList(div, tagName) {
+            if (div.id.includes(ALL_TAG))
+                return;
+
+            let tagId = getTagId(div.id);
+            if (tagName == USER_TAG) {
+                removeFilterUserId(tagId);
+            } else if (tagName == ENVIRONMENT_TAG) {
+                removeFilterEnvironmentsId(tagId);
+            } else if (tagName == COUNTRY_TAG) {
+                removeFilterCountriesId(tagId);
+            }
+        }
+
+        function getTagId(divId) {
+            let tagSplitArray = (divId).split("_");
+            return tagSplitArray[2];
         }
 
         function selectOrder(selectOrderDiv) {
