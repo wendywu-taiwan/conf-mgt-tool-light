@@ -1,0 +1,14 @@
+<div id="ruleset_content_div">
+    {% for row_data in ruleset_data %}
+        {% if row_data == "level3" %}
+            <div class="div_content_level_3">
+            {#            &ensp;&ensp;&ensp;&ensp;#}
+        {% elif row_data == "level2" %}
+            <div class="div_content_level_2">
+        {% elif row_data == "level1" %}
+            <div class="div_content_level_1">
+                {% else %}
+                {{ row_data }}</div>
+        {% endif %}
+    {% endfor %}
+    </div>

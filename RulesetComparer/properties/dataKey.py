@@ -233,6 +233,8 @@ KEY_PAGE = "page"
 KEY_TOTAL_PAGES = "total_pages"
 KEY_LIMIT = "limit"
 KEY_RULESET_LOG_LIST = "ruleset_log_list"
+KEY_LOG_DATA = "log_data"
+KEY_RULESET_DATA = "ruleset_data"
 
 # environment name
 INT2_NAME = "INT2"

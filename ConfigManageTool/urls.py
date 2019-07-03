@@ -71,6 +71,12 @@ admin_console_ruleset_pattern = [
          name="recover-filter-backup-ruleset-diff-page"),
     path('recover/rulesets', views.recover_rulesets,
          name="recover-rulesets"),
+    path('ruleset_log/list', views.admin_console_ruleset_log_list_page, name="ruleset-log-list"),
+    path('ruleset_log/list/filter', views.admin_console_ruleset_log_list_filter_page, name="ruleset-log-list-filter"),
+    path('ruleset_log/list/page', views.admin_console_ruleset_log_list_page_change, name="ruleset-log-list-page"),
+    path('ruleset_log/detail/<int:log_id>', views.admin_console_ruleset_log_detail_page, name="ruleset-log-detail"),
+    path('ruleset_log/detail/ruleset', views.get_ruleset, name="ruleset-log-detail-ruleset"),
+
 ]
 
 admin_console_pattern = [

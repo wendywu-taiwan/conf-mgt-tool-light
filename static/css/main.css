@@ -408,3 +408,8 @@ html, body {
     font-family: inherit;
     text-align: center;
 }
+
+.custom_button{
+    color: white;
+    background-color: #34619b;
+}

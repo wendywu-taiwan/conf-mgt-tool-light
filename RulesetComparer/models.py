@@ -396,6 +396,12 @@ class RulesetAction(models.Model):
     capital_name = models.CharField(max_length=128)
 
 
+class RulesetLogManager(models.Manager):
+    def get_ruleset_log(self, log_id):
+        log = self.filter(id=log_id).values()
+        return log[0]
+
+
 class RulesetLog(models.Model):
     id = models.AutoField(primary_key=True)
     ruleset_log_group = models.ForeignKey(RulesetLogGroup, related_name='ruleset_log_group',
@@ -404,6 +410,8 @@ class RulesetLog(models.Model):
     ruleset_name = models.CharField(max_length=128)
     status = models.IntegerField(default=1)
     exception = models.CharField(max_length=128, null=True)
+
+    objects = RulesetLogManager()
 
 
 class Meta:

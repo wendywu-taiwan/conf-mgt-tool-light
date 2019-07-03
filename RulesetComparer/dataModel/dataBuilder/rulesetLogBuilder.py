@@ -30,6 +30,7 @@ class RulesetLogBuilder(BaseBuilder):
 
     def __generate_data__(self):
         self.result_dict[KEY_LOG_ID] = self.data.get(KEY_ID)
+        self.result_dict[KEY_BACKUP_KEY] = self.ruleset_log_obj.get(KEY_BACKUP_KEY)
         self.result_dict[KEY_UPDATE_TIME] = self.ruleset_log_obj.get(KEY_UPDATE_TIME)
         self.result_dict[KEY_USER_NAME] = self.ruleset_log_obj.get(KEY_USER_NAME)
         self.result_dict[KEY_ACTION] = RulesetActionBuilder(self.action).get_data()
@@ -37,6 +38,7 @@ class RulesetLogBuilder(BaseBuilder):
         self.result_dict[KEY_TARGET_ENV] = self.ruleset_log_obj.get(KEY_TARGET_ENV)
         self.result_dict[KEY_COUNTRY] = self.ruleset_log_obj.get(KEY_COUNTRY)
         self.result_dict[KEY_RULESET_NAME] = self.ruleset_name
+        self.result_dict[KEY_COMMIT_SHA] = self.parse_none(self.ruleset_log_obj.get(KEY_COMMIT_SHA))
         self.result_dict[KEY_STATUS] = self.parse_status()
         self.result_dict[KEY_EXCEPTION] = self.parse_none(self.exception)
 

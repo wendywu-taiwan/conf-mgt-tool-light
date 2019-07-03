@@ -3,50 +3,109 @@
 
 {% block resource %}
     <link href="{% static '/css/ruleset_log_detail.css' %}" rel="stylesheet">
-    <script src="{% static '/js/adminConsole/ruleset-log.js' %}"></script>
+    <script src="{% static '/js/adminConsole/ruleset-log-detail.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div id="ruleset_log_detail_container" class="row no-row-margin">
-        <div id="log_detail_div" class="admin_console_block_background custom_container">
-            <div class="header_div row no-row-margin">
-                <div id="action_div" class="vertical_align_middle"> {% include 'update_action_tag.html' %}</div>
-                <div class="component_title vertical_align_middle">RS_TW_PROCESS</div>
-            </div>
-            <div id="information_div">
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Log ID</div>
-                    <div class="vertical_align_middle row_content_div">1</div>
+        <div id="ruleset_detail_top_div" class="row no-row-margin">
+            <div id="log_detail_div" class="admin_console_block_background custom_container">
+                <div class="header_div row no-row-margin">
+                    {% if log_data.action.name == 'create' %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'create_action_tag.html' %}</div>
+                    {% elif log_data.action.name == 'update' %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'update_action_tag.html' %}</div>
+                    {% else %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'delete_action_tag.html' %}</div>
+                    {% endif %}
+                    <div class="component_title vertical_align_middle">{{ log_data.ruleset_name }}</div>
                 </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Date Time</div>
-                    <div class="vertical_align_middle row_content_div">2019-05-28 17:22:00</div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Author</div>
-                    <div class="row_content_div vertical_align_middle">Task Manager</div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Task ID</div>
-                    <div class="vertical_align_middle row_content_div">1</div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Source Environment</div>
-                    <div class="row_content_div vertical_align_middle">GIT</div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Target Environment</div>
-                    <div class="row_content_div vertical_align_middle">INT2</div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Country</div>
-                    <div class="row_content_div vertical_align_middle">
-                        TW
+                <div id="information_div">
+                    <div class="row no-row-margin information_row">
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Log ID</div>
+                            <div class="vertical_align_middle row_content_div">{{ log_data.log_id }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Task ID</div>
+                            <div class="vertical_align_middle row_content_div">1</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Update Time</div>
+                            <div class="vertical_align_middle row_content_div">{{ log_data.update_time }}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="row no-row-margin">
-                    <div class="row_title_div vertical_align_middle">Commit SHA</div>
-                    <div class="row_content_div vertical_align_middle">
-                        f002352
+                    <div class="row no-row-margin information_row">
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Author</div>
+                            <div class="row_content_div vertical_align_middle">{{ log_data.user_name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Country</div>
+                            <div class="row_content_div vertical_align_middle">
+                                {{ log_data.country.full_name }}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Commit SHA</div>
+                            <div class="row_content_div vertical_align_middle">
+                                {{ log_data.commit_sha }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-row-margin information_row">
+                        <div class="col ">
+                            <div class="row_title_div vertical_align_middle">From</div>
+                            <div class="row_content_div vertical_align_middle">{{ log_data.source_environment.name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">To</div>
+                            <div class="row_content_div vertical_align_middle">{{ log_data.target_environment.name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Result</div>
+                            <div class="vertical_align_middle row_content_div">{{ log_data.status }}</div>
+                        </div>
+                    </div>
+                    {% if log_data.exception %}
+                        <div class="row no-row-margin information_row">
+                            <div class="col">
+                                <div class="row_title_div vertical_align_middle">Exception</div>
+                                <div id="exception_content" class="vertical_align_middle">{{ log_data.exception }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div id="show_ruleset_div" class="row no-row-margin information_row">
+                        <div class="row_title_div vertical_align_middle show_ruleset_div_width">Show Ruleset</div>
+                        <div class="show_ruleset_div_width">
+                            {% if log_data.action.name == "delete" %}
+                                <button type="button"
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">{{ log_data.source_environment.name }}
+                                    Version
+                                </button>
+                            {% else %}
+                                <button type="button"
+                                        class="btn custom_button btn-sm show_ruleset_button_width"
+                                        onclick="getRuleset('source')">{{ log_data.source_environment.name }}
+                                    Version
+                                </button>
+                            {% endif %}
+                        </div>
+                        <div class="show_ruleset_div_width">
+                            {% if log_data.action.name == "create" %}
+                                <button type="button"
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width"
+                                >{{ log_data.target_environment.name }}
+                                    Version
+                                </button>
+                            {% else %}
+                                <button type="button"
+                                        class="btn custom_button btn-sm show_ruleset_button_width"
+                                        onclick="getRuleset('target')"
+                                >{{ log_data.target_environment.name }}
+                                    Version
+                                </button>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,73 +121,16 @@
                     <button type="button" class="btn btn-primary btn-sm">Apply</button>
                 </div>
             </div>
-            <div id="ruleset_content_div">
-                "
-                <BRERuleListType>
-                    <Rule>
-                        <CountryOrganizationId>HK</CountryOrganizationId>
-                        <Context>
-                            <OrganizationId>RS_HK_NEWUI</OrganizationId>
-                        </Context>
-                        <RuleType>Configuration</RuleType>
-                        <Key>breNavigationMenu</Key>
-                        <Expression>{
-                            "menuItems": [
-                            {
-                            "name": "worklist",
-                            "label": "Claim Manager",
-                            "icon": "/XStatic/images/bre/menu_icons/small/icon-claim-manager.svg",
-                            "process": "NO_PROCESS",
-                            "step": "WorkListGrid",
-                            "newPage": false
-                            },
-                            {
-                            "name": "messagelist",
-                            "label": "Messages",
-                            "icon": "/XStatic/images/bre/menu_icons/small/icon-menu-compose-mail-redacted.svg",
-                            "process": "NO_PROCESS",
-                            "step": "MessageListGrid",
-                            "newPage": false
-                            },
-                            {
-                            "name": "support",
-                            "label": "Support",
-                            "icon": "/XStatic/images/bre/menu_icons/small/icon-support.svg",
-                            "link": ${#supportLink},
-                            "newPage": false
-                            },
-                            {
-                            "name": "logout",
-                            "label": "Log out",
-                            "icon": "/XStatic/images/bre/menu_icons/small/icon-logout.svg",
-                            "link": "/sso/logout",
-                            "newPage": false
-                            }
-                            ]
-                            }
-                        </Expression>
-                        <Status>Active</Status>
-                        <CreatedBy>mid_Member.Manager</CreatedBy>
-                        <LastUpdatedBy>mid_Member.Manager</LastUpdatedBy>
-                    </Rule>
-                    <Rule>
-                        <CountryOrganizationId>HK</CountryOrganizationId>
-                        <Context>
-                            <OrganizationId>RS_HK_NEWUI</OrganizationId>
-                        </Context>
-                        <RuleType>Variable</RuleType>
-                        <Key>supportLink</Key>
-                        <Value>"mailto:support.apac1@audatex.com?subject=Support&amp;body="</Value>
-                        <Status>Active</Status>
-                        <CreatedBy>mid_Member.Manager</CreatedBy>
-                        <LastUpdatedBy>mid_Member.Manager</LastUpdatedBy>
-                    </Rule>
-                </BRERuleListType>
-                "
-            </div>
+            <div id="ruleset_content_div"></div>
         </div>
     </div>
     <script>
+        $(function () {
+            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}');
+            initUrl("{% url 'ruleset-log-detail-ruleset' %}", null, null, null, null, null);
+        });
+
+
     </script>
 
 {% endblock %}

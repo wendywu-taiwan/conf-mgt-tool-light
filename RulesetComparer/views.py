@@ -289,9 +289,9 @@ def admin_console_ruleset_log_list_page_change(request):
 
 
 @login_required
-def admin_console_ruleset_log_detail_page(request):
+def admin_console_ruleset_log_detail_page(request, log_id):
     try:
-        result = {}
+        result = {KEY_LOG_DATA: rulesetLogService.get_ruleset_log_detail(log_id)}
         result = add_user_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
     except Exception:
@@ -724,6 +724,18 @@ def create_ruleset(request):
 def update_ruleset(request):
     try:
         rulesetSyncService.update_ruleset_test()
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def get_ruleset(request):
+    try:
+        request_json = get_post_request_json(request)
+        ruleset = rulesetLogService.get_ruleset(request_json)
+        result = {KEY_RULESET_DATA: ruleset}
+        return render(request, "ruleset_content_view.html", result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

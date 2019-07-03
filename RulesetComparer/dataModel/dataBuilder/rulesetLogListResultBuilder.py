@@ -3,7 +3,7 @@ from RulesetComparer.dataModel.dataBuilder.environmentBuilder import Environment
 from RulesetComparer.dataModel.dataBuilder.userBuilder import UserBuilder
 from RulesetComparer.dataModel.dataBuilder.countryBuilder import CountryBuilder
 from RulesetComparer.properties.config import *
-from RulesetComparer.models import RulesetLogGroup, Environment, Country
+from RulesetComparer.models import RulesetLogGroup, Country
 from django.contrib.auth.models import User
 
 

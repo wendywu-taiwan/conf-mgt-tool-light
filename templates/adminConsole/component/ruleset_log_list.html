@@ -134,7 +134,7 @@
             </div>
             <div class="list_button_div button_width vertical_align_middle">
                 <img class="more_icon_size"
-                     src="{% static '/icons/detail.png' %}">
+                     src="{% static '/icons/detail.png' %}" onclick="directToDetail('{% url 'ruleset-log-detail' data.log_id %}')">
             </div>
         </div>
         <div class="task_divider"></div>

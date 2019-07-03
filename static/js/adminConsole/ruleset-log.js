@@ -99,3 +99,7 @@ refreshLogList = function (url) {
         showErrorDialog(response);
     });
 };
+
+directToDetail = function (detailUrl) {
+    window.open(detailUrl);
+};
