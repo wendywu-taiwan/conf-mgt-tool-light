@@ -128,34 +128,22 @@ applyRulesetsRecover = function () {
     ;
 };
 
-rulesetDiffPage = function (rulesetName) {
+openDiffResultPage = function (url) {
     showWaitingDialog();
-
-    let post_body = {
-        "environment_id": envId,
-        "country_id": countryId,
-        "backup_key": backupKey,
-        "ruleset_name": rulesetName
-    };
-
-    doPOST(diffDataUrl, post_body, function (response) {
-            let statusCode = response["status_code"];
-
-            if (statusCode == null) {
-                stopDialog();
-                openNewPageWithHTML(diffPageUrl, response);
-            } else {
-                if (statusCode == 233)
-                    showSuccessDialog("Backup ruleset is same as current version on the server.");
-                if (statusCode == 500)
-                    showErrorDialog(response["message"])
-            }
-        }, function (response) {
-            console.log("response:" + String(response));
-            showErrorDialog(response["message"]);
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == null) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 233)
+                showSuccessDialog("Ruleset is no difference.");
+            if (statusCode == 500)
+                showErrorDialog(response["message"])
         }
-    )
-    ;
+    }, function (response) {
+        showErrorDialog(response);
+    });
 };
 
 function checkAllRecover(failedRulesets, updateRulesets, createRulesets, deletedRulesets) {
@@ -283,7 +271,7 @@ function clearAllInputSelected() {
 }
 
 onClickBackupFolderRow = function (backupId, targetEnvId) {
-    console.log("backupId:" + backupId+", targetEnvId:"+targetEnvId);
+    console.log("backupId:" + backupId + ", targetEnvId:" + targetEnvId);
     backupKey = backupId;
     currentTargetEnvId = targetEnvId;
 

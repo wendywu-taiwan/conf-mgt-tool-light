@@ -1,11 +1,7 @@
 from RulesetComparer.dataModel.dataBuilder.rulesetLogGroupBuilder import RulesetLogGroupBuilder
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
-from RulesetComparer.dataModel.dataParser.diffBackupRulesetParser import DiffBackupRulesetParser
 from RulesetComparer.dataModel.dataBuilder.recoverFilterBackupObjBuilder import RecoverFilterBackupObjBuilder
-from RulesetComparer.dataModel.dataBuilder.recoverFilterObjBuilder import RecoverFilterObjBuilder
-from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
 from RulesetComparer.models import Environment, Country, RulesetLogGroup, RulesetLog
-from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.fileManager import *
 
 
@@ -58,13 +54,6 @@ def filter_backup_list(json_data):
                    KEY_RULESET_LOGS: log_list}
 
     return result_data
-
-
-def diff_backup_ruleset(json_data):
-    parser = DiffBackupRulesetParser(json_data)
-    comparer = RulesetComparer(parser.ruleset_name, parser.backup_ruleset_xml, parser.server_ruleset_xml, False)
-    builder = DiffRulesetPageBuilder(parser.ruleset_name, KEY_BACKUP, parser.environment.name, comparer.get_diff_data())
-    return builder.get_data()
 
 
 def has_recovery_rulesets(env_name, country_name, date_name):
