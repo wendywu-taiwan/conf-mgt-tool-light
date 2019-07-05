@@ -17,17 +17,18 @@ class DownloadRulesetParser:
             self.ruleset_resource_path = None
             self.rule_name_list = []
             self.rule_name_xml_list = []
-            self.parse_ruleset_type()
 
             if KEY_RULESET_NAME in json_data:
                 self.parse_ruleset(json_data[KEY_RULESET_NAME])
             elif RULESET_NAME_LIST in json_data:
                 self.parse_rulesets(json_data[RULESET_NAME_LIST])
+
+            self.parse_ruleset_type()
         except BaseException as e:
             raise e
 
     def parse_ruleset_type(self):
-        if self.backup_key is not '':
+        if self.backup_key is not None and self.backup_key is not '':
             if self.backup_folder == ENVIRONMENT_SOURCE:
                 self.ruleset_resource_path = get_backup_path_applied_version(self.backup_key)
             else:
