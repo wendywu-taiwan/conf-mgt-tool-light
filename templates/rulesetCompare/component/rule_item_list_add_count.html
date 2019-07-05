@@ -24,7 +24,7 @@
             <span class="span_inactive badge badge-light">{{ data.add_count }}</span>
         </button>
     {% else %}
-        <a href="{% url 'rule-diff' compare_hash_key data.name %}">
+        <a onclick="openDiffResultPage('{% url 'ruleset-diff-compare-result' compare_hash_key data.name %}')">
             <button type="submit" class="button_add btn btn-primary">
                 {{ compare_env.name }} Only
                 <span class="span_add badge badge-light">{{ data.add_count }}</span>

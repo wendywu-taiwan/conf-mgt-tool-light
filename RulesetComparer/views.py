@@ -378,39 +378,14 @@ def ruleset_detail_backup_page(request, backup_key, backup_folder, ruleset_name)
         return JsonResponse(result)
 
 
-def ruleset_diff_page(request, compare_key, rule_name):
+def ruleset_diff_page(request, compare_key, ruleset_name):
     try:
-        result_data = fileManager.load_compare_result_file(compare_key)
-        base_env = result_data[key.COMPARE_RULE_BASE_ENV]
-        compare_env = result_data[key.COMPARE_RULE_COMPARE_ENV]
-
-        diff_rules_data = result_data[key.COMPARE_RESULT_DIFF_DATA]
-        rule_data = diff_rules_data[rule_name]
-
-        add_list = RuleSerializer(rule_data[key.RULE_LIST_ITEM_TABLE_TYPE_ADD], many=True).data
-        remove_list = RuleSerializer(rule_data[key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE], many=True).data
-        modify_list = ModifiedRuleValueSerializer(rule_data[key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY], many=True).data
-        normal_list = RuleSerializer(rule_data[key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL], many=True).data
-
-        data = {
-            key.RULE_KEY_RULE_NAME: rule_name,
-            key.RULE_DIFF_KEY_BASE_ENV_NAME: base_env["name"],
-            key.RULE_DIFF_KEY_COMPARED_ENV_NAME: compare_env["name"],
-            key.RULE_DIFF_KEY_ADD_LIST: add_list,
-            key.RULE_DIFF_KEY_REMOVE_LIST: remove_list,
-            key.RULE_DIFF_KEY_MODIFY_LIST: modify_list,
-            key.RULE_DIFF_KEY_NORMAL_LIST: normal_list
-        }
-        return render(request, "rule_show_diff.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
-        return JsonResponse(result)
-
-
-def without_ruleset_diff_page(request):
-    try:
-        return render(request, "rule_show_diff.html")
+        data = services.ruleset_diff_compare_result(compare_key, ruleset_name)
+        if data[RULE_DIFF_HAS_CHANGES] is False:
+            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "rule_show_diff.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
@@ -434,21 +409,6 @@ def ruleset_diff_backup_page(request, backup_key, ruleset_name):
 def ruleset_diff_backup_with_server_page(request, backup_key, backup_folder, ruleset_name):
     try:
         data = services.ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name)
-        if data[RULE_DIFF_HAS_CHANGES] is False:
-            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
-            return JsonResponse(result)
-        else:
-            return render(request, "rule_show_diff.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
-        return JsonResponse(result)
-
-
-def backup_diff_page(request):
-    try:
-        request_json = get_post_request_json(request)
-        data = rulesetRecoverService.diff_backup_ruleset(request_json)
         if data[RULE_DIFF_HAS_CHANGES] is False:
             result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
             return JsonResponse(result)

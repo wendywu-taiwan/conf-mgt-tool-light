@@ -15,15 +15,10 @@ let filterKeyList = [];
 let rulesetsMap = {};
 let allRulesetMaps = {};
 let allRulesetsRecoveredArray = [];
-let recoveryUrl, diffDataUrl, diffPageUrl, currentRulesetListDiv;
+let recoveryUrl, currentRulesetListDiv;
 
 initRecoveryUrl = function (url) {
     recoveryUrl = url;
-};
-
-initRulesetDiffUrl = function (dataUrl, pageUrl) {
-    diffDataUrl = dataUrl;
-    diffPageUrl = pageUrl;
 };
 
 initCountryDropDown = function () {
