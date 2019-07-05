@@ -79,13 +79,13 @@
                         <div class="show_ruleset_div_width">
                             {% if log_data.action.name == "delete" %}
                                 <button type="button"
-                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">{{ log_data.source_environment.name }}
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">Backup {{ log_data.source_environment.name }}
                                     Version
                                 </button>
                             {% else %}
                                 <button type="button"
                                         class="btn custom_button btn-sm show_ruleset_button_width"
-                                        onclick="getRuleset('source')">{{ log_data.source_environment.name }}
+                                        onclick="getRuleset('source')">Backup {{ log_data.source_environment.name }}
                                     Version
                                 </button>
                             {% endif %}
@@ -94,14 +94,14 @@
                             {% if log_data.action.name == "create" %}
                                 <button type="button"
                                         class="disabled btn custom_button btn-sm show_ruleset_button_width"
-                                >{{ log_data.target_environment.name }}
+                                >Backup {{ log_data.target_environment.name }}
                                     Version
                                 </button>
                             {% else %}
                                 <button type="button"
                                         class="btn custom_button btn-sm show_ruleset_button_width"
                                         onclick="getRuleset('target')"
-                                >{{ log_data.target_environment.name }}
+                                >Backup {{ log_data.target_environment.name }}
                                     Version
                                 </button>
                             {% endif %}
@@ -110,18 +110,19 @@
                 </div>
             </div>
         </div>
-        <div id="ruleset_detail_div" class="admin_console_block_background custom_container">
+        <div id="ruleset_detail_div_source" class="ruleset_detail_div admin_console_block_background custom_container">
             <div class="header_div row no-row-margin">
                 <div class="component_title vertical_align_middle">Ruleset Information</div>
                 <div class="button_div">
                     <button type="button" class="btn btn-primary btn-sm"
-                            onclick="onClickPretty()">
+                            onclick="onClickPrettySourceEnv()">
                         Pretty
                     </button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
-                    <button type="button" class="btn btn-primary btn-sm">Diff Server</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerSourceEnv()">Diff Server Version
+                    </button>
                     {% if log_data.action.name == "update" %}
-                        <button type="button" class="btn btn-primary btn-sm">Diff Before</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">Diff {{ log_data.target_environment.name }} Version</button>
                     {% endif %}
                     <button type="button" class="btn btn-primary btn-sm">Apply</button>
                 </div>
@@ -129,17 +130,50 @@
             <div id="ruleset_content_div"></div>
         </div>
     </div>
+    <div id="ruleset_detail_div_target" class="ruleset_detail_div admin_console_block_background custom_container">
+        <div class="header_div row no-row-margin">
+            <div class="component_title vertical_align_middle">Ruleset Information</div>
+            <div class="button_div">
+                <button type="button" class="btn btn-primary btn-sm"
+                        onclick="onClickPrettyTargetEnv()">
+                    Pretty
+                </button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerTargetEnv()">Diff Server Version</button>
+                {% if log_data.action.name == "update" %}
+                    <button type="button" class="btn btn-primary btn-sm">Diff {{ log_data.source_environment.name }}</button>
+                {% endif %}
+                <button type="button" class="btn btn-primary btn-sm">Apply</button>
+            </div>
+        </div>
+        <div id="ruleset_content_div"></div>
+    </div>
+    </div>
     <script>
         $(function () {
-            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}','{{ log_data.source_environment.id }}','{{ log_data.target_environment.id }}','{{ log_data.country.id }}');
-            initUrl("{% url 'ruleset-log-detail-ruleset' %}","{% url 'packed-ruleset-download' %}", null, null, null);
+            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}', '{{ log_data.source_environment.id }}', '{{ log_data.target_environment.id }}', '{{ log_data.country.id }}');
+            initUrl("{% url 'ruleset-log-detail-ruleset' %}", "{% url 'packed-ruleset-download' %}", null, null, null);
         });
 
-        function onClickPretty() {
-            if (backupFolder == "source")
-                rulesetDetailBackupPage('{% url 'rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
-            else
-                rulesetDetailBackupPage('{% url 'rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
+        function onClickPrettySourceEnv() {
+            openNewPage('{% url 'rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
+        }
+
+        function onClickPrettyTargetEnv() {
+            openNewPage('{% url 'rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
+        }
+
+
+        function onClickDiffBackup() {
+            openDiffResultPage('{% url 'ruleset-diff-backup' log_data.backup_key log_data.ruleset_name %}');
+        }
+
+        function onClickDiffServerSourceEnv() {
+            openDiffResultPage('{% url 'ruleset-diff-backup-with-server' log_data.backup_key "source" log_data.ruleset_name %}');
+        }
+
+        function onClickDiffServerTargetEnv() {
+            openDiffResultPage('{% url 'ruleset-diff-backup-with-server' log_data.backup_key "target" log_data.ruleset_name %}');
         }
     </script>
 

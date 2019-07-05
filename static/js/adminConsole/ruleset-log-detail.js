@@ -28,7 +28,7 @@ getRuleset = function (environment_version) {
     };
 
     doPOST(getRulesetUrl, post_body, function (response) {
-        let rsDetailDiv = document.getElementById('ruleset_detail_div');
+        let rsDetailDiv = document.getElementById('ruleset_detail_div_' + environment_version);
         let rsContentDiv = document.getElementById('ruleset_content_div');
         rsContentDiv.innerHTML = response;
         rsDetailDiv.style.display = "block";
@@ -70,9 +70,35 @@ function downloadRuleset() {
     })
 }
 
-rulesetDetailBackupPage = function (url) {
-    doGET(url, function () {
-        window.open(url);
+openNewPage = function (url) {
+    showWaitingDialog();
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == null) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 500)
+                showErrorDialog(response["message"])
+        }
+    }, function (response) {
+        showErrorDialog(response);
+    });
+};
+
+openDiffResultPage = function (url) {
+    showWaitingDialog();
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == null) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 233)
+                showSuccessDialog("Ruleset is no difference.");
+            if (statusCode == 500)
+                showErrorDialog(response["message"])
+        }
     }, function (response) {
         showErrorDialog(response);
     });

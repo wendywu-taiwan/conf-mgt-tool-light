@@ -417,6 +417,34 @@ def without_ruleset_diff_page(request):
         return JsonResponse(result)
 
 
+def ruleset_diff_backup_page(request, backup_key, ruleset_name):
+    try:
+        data = services.ruleset_diff_backup(backup_key, ruleset_name)
+        if data[RULE_DIFF_HAS_CHANGES] is False:
+            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "rule_show_diff.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+def ruleset_diff_backup_with_server_page(request, backup_key, backup_folder, ruleset_name):
+    try:
+        data = services.ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name)
+        if data[RULE_DIFF_HAS_CHANGES] is False:
+            result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "rule_show_diff.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def backup_diff_page(request):
     try:
         request_json = get_post_request_json(request)

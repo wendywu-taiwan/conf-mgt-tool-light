@@ -10,7 +10,7 @@
 }
 
 #log_detail_div {
-    width: 60%;
+    width: 80%;
     margin-right: auto;
     margin-left: auto;
 }
@@ -19,7 +19,7 @@
     width: 30%;
 }
 
-#ruleset_detail_div {
+.ruleset_detail_div {
     margin-top: 30px;
     width: 95%;
     margin-left: auto;
@@ -78,6 +78,7 @@
     background: black;
     border-radius: 5px;
     color: #c6c6c6;
+    font-size: 16px;
 }
 
 .div_content_level_1{

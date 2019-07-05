@@ -33,6 +33,16 @@ ruleset_b2b_pattern = [
     path('scheduler/sync/delete', views.delete_rulesets_sync_job, name="delete-rulesets-sync-job")
 ]
 
+ruleset_pattern = [
+    path('detail/<str:environment_id>/<str:country_id>/<str:compare_key>/<str:ruleset_name>',
+         views.ruleset_detail_page, name="rule-detail"),
+    path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+         views.ruleset_detail_backup_page, name="rule-detail-backup"),
+    path('diff/backup/<str:backup_key>/<str:ruleset_name>', views.ruleset_diff_backup_page, name="ruleset-diff-backup"),
+    path('diff/backup/with/server/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+         views.ruleset_diff_backup_with_server_page, name="ruleset-diff-backup-with-server"),
+]
+
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
     path('packed/', views.download_rulesets, name="packed-ruleset-download"),
@@ -40,10 +50,10 @@ ruleset_download_pattern = [
 ]
 ruleset_comparer_pattern = [
     path('select/', views.environment_select_page, name="environment-select"),
-    path('detail/<str:environment_id>/<str:country_id>/<str:compare_key>/<str:ruleset_name>',
-         views.ruleset_detail_page, name="rule-detail"),
-    path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
-         views.ruleset_detail_backup_page, name="rule-detail-backup"),
+    # path('detail/<str:environment_id>/<str:country_id>/<str:compare_key>/<str:ruleset_name>',
+    #      views.ruleset_detail_page, name="rule-detail"),
+    # path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+    #      views.ruleset_detail_backup_page, name="rule-detail-backup"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.ruleset_diff_page, name="rule-diff"),
     path('diff/', views.without_ruleset_diff_page, name="without-ruleset-diff-page"),
@@ -99,6 +109,7 @@ ruleset_scheduler_pattern = [
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('ConfigManageTool/ruleset/', include(ruleset_pattern)),
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),

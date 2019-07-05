@@ -1,13 +1,14 @@
 import traceback
 
+from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetDetailBuilder import RulesetDetailBuilder
 from RulesetComparer.dataModel.rulesetLoader.gitRulesetLoader import GitRulesetLoader
 from RulesetComparer.dataModel.rulesetLoader.serverRulesetLoader import ServerRulesetLoader
 from RulesetComparer.dataModel.rulesetLoader.backupRulesetLoader import BackupRulesetLoader
 from RulesetComparer.models import Environment
 from RulesetComparer.utils.logger import *
-from RulesetComparer.utils.gitManager import GitManager
-from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.dataModel.dataParser.rulesetDiffBackupParser import RulesetDiffBackupParser
+from RulesetComparer.dataModel.dataParser.rulesetDiffBackupWithServerParser import RulesetDiffBackupWithServerParser
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
@@ -22,6 +23,8 @@ from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadR
 from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
 from RulesetComparer.services import rulesetSyncService, rulesetSyncSchedulerService, rulesetReportSchedulerService
 from django.template.loader import get_template
+
+from RulesetComparer.utils.rulesetComparer import RulesetComparer
 
 
 def get_rule_list_from_b2b(environment, country):
@@ -84,6 +87,20 @@ def download_rulesets(json_data):
         return task.zip_file
     except Exception:
         error_log(traceback.format_exc())
+
+
+def ruleset_diff_backup(backup_key, ruleset_name):
+    parser = RulesetDiffBackupParser(backup_key, ruleset_name)
+    comparer = RulesetComparer(parser.ruleset_name, parser.source_ruleset_xml, parser.target_ruleset_xml, False)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, parser.source_environment.name, parser.target_environment.name, comparer.get_diff_data())
+    return builder.get_data()
+
+
+def ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name):
+    parser = RulesetDiffBackupWithServerParser(backup_key, backup_folder, ruleset_name)
+    comparer = RulesetComparer(parser.ruleset_name, parser.backup_ruleset_xml, parser.server_ruleset_xml, False)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, BACKUP_ENVIRONMENT_NAME, parser.environment.name, comparer.get_diff_data())
+    return builder.get_data()
 
 
 def restart_all_scheduler():
