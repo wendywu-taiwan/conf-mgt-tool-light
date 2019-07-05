@@ -1,15 +1,14 @@
-let getRulesetUrl, prettyUrl, downloadRulesetUrl, diffServerUrl, diffOtherVersionUrl, applyUrl;
+let getRulesetUrl, downloadRulesetUrl, diffServerUrl, diffOtherVersionUrl, applyUrl;
 let rulesetName, backupKey;
+let backupFolder;
 
 initData = function (name, key) {
     rulesetName = name;
     backupKey = key;
 };
 
-initUrl = function (getRuleset, pretty, download, diffServer, diffOther, apply) {
-    console.log("initUrl,getRuleset :"+getRuleset);
+initUrl = function (getRuleset, download, diffServer, diffOther, apply) {
     getRulesetUrl = getRuleset;
-    prettyUrl = pretty;
     downloadRulesetUrl = download;
     diffServerUrl = diffServer;
     diffOtherVersionUrl = diffOther;
@@ -18,6 +17,7 @@ initUrl = function (getRuleset, pretty, download, diffServer, diffOther, apply) 
 
 
 getRuleset = function (environment_version) {
+    backupFolder = environment_version;
     let post_body = {
         "ruleset_name": rulesetName,
         "backup_key": backupKey,
@@ -33,3 +33,11 @@ getRuleset = function (environment_version) {
         showErrorDialog(response);
     });
 };
+
+rulesetDetailBackupPage = function (url) {
+    doGET(url, function () {
+        window.open(url);
+    }, function (response) {
+        showErrorDialog(response);
+    });
+}

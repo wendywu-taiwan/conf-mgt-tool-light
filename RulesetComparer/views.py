@@ -358,24 +358,19 @@ def environment_select_page(request):
         return JsonResponse(result)
 
 
-def rule_detail_page(request, environment_id, compare_key, rule_name):
+def ruleset_detail_page(request, environment_id, country_id, compare_key, ruleset_name):
     try:
-        result_data = fileManager.load_compare_result_file(compare_key)
-        environment = Environment.objects.get(id=environment_id)
-        detail_rules_data = result_data[key.COMPARE_RESULT_DETAIL_DATA]
-        country_data = result_data[key.COMPARE_RULE_LIST_COUNTRY]
+        data = services.ruleset_detail_page_data(environment_id, country_id, compare_key, ruleset_name)
+        return render(request, "rule_show_detail.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
-        rule_data = detail_rules_data[rule_name]
-        # add format to value and expression column
-        rules_data = RuleSerializer(rule_data, many=True).data
 
-        data = {key.RULE_KEY_ENVIRONMENT_NAME: environment.name,
-                key.RULE_KEY_ENVIRONMENT_ID: environment.id,
-                key.RULE_KEY_COUNTRY_NAME: country_data[key.COUNTRY_KEY_NAME],
-                key.RULE_KEY_COUNTRY_ID: country_data[key.COUNTRY_KEY_ID],
-                key.RULE_KEY_COMPARE_HASH_KEY: compare_key,
-                key.RULE_KEY_RULE_NAME: rule_name,
-                key.RULE_KEY_RULE_DATA: rules_data}
+def ruleset_detail_backup_page(request, backup_key, backup_folder, ruleset_name):
+    try:
+        data = services.ruleset_detail_backup_page_data(backup_key, backup_folder, ruleset_name)
         return render(request, "rule_show_detail.html", data)
     except Exception:
         error_log(traceback.format_exc())

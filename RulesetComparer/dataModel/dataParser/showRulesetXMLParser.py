@@ -2,7 +2,7 @@ from RulesetComparer.utils.rulesetUtil import *
 import re
 
 
-class RulesetDetailParser:
+class ShowRulesetXMLParser:
     JSON_KEY_BACKUP_KEY = "backup_key"
     JSON_KEY_ENVIRONMENT_VERSION = "environment_version"
     JSON_KEY_RULESET_NAME = "ruleset_name"

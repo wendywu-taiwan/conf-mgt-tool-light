@@ -114,10 +114,15 @@
             <div class="header_div row no-row-margin">
                 <div class="component_title vertical_align_middle">Ruleset Information</div>
                 <div class="button_div">
-                    <button type="button" class="btn btn-primary btn-sm">Pretty</button>
+                    <button type="button" class="btn btn-primary btn-sm"
+                            onclick="onClickPretty()">
+                        Pretty
+                    </button>
                     <button type="button" class="btn btn-primary btn-sm">Download</button>
                     <button type="button" class="btn btn-primary btn-sm">Diff Server</button>
-                    <button type="button" class="btn btn-primary btn-sm">Diff Before</button>
+                    {% if log_data.action.name == "update" %}
+                        <button type="button" class="btn btn-primary btn-sm">Diff Before</button>
+                    {% endif %}
                     <button type="button" class="btn btn-primary btn-sm">Apply</button>
                 </div>
             </div>
@@ -127,10 +132,15 @@
     <script>
         $(function () {
             initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}');
-            initUrl("{% url 'ruleset-log-detail-ruleset' %}", null, null, null, null, null);
+            initUrl("{% url 'ruleset-log-detail-ruleset' %}", null, null, null, null);
         });
 
-
+        function onClickPretty() {
+            if (backupFolder == "source")
+                rulesetDetailBackupPage('{% url 'rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
+            else
+                rulesetDetailBackupPage('{% url 'rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
+        }
     </script>
 
 {% endblock %}

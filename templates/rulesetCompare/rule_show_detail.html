@@ -35,19 +35,19 @@
                 <div class="content">
                     <div class="custom-row info_row">
                         <div class="info_title">Environment</div>
-                        <div class="info_content">{{ environment_name }}</div>
+                        <div class="info_content">{{ environment.name }}</div>
                     </div>
                     <div class="custom-row info_row">
                         <div class="info_title">Country</div>
-                        <div class="info_content">{{ country_name }}</div>
+                        <div class="info_content">{{ country.name }}</div>
                     </div>
                     <div class="custom-row info_row">
                         <div class="info_title">Name</div>
-                        <div class="info_content">{{ rule_name }}</div>
+                        <div class="info_content">{{ ruleset_name }}</div>
                     </div>
                     <div class="custom-row info_row">
                         <div class="info_title">Total</div>
-                        <div class="info_content">{{ rule_data|length }}</div>
+                        <div class="info_content">{{ ruleset_data|length }}</div>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 <div class="add_rules">
-                    {% for data in rule_data %}
+                    {% for data in ruleset_data %}
                         <div id="process_line" class="row rule_data_line">
                             <div class="rule_data_title">Process</div>
                             <div class="col-9 rule_data_value">{{ data.process }}</div>
@@ -120,10 +120,15 @@
     </div>
     <script>
     $(function () {
-        setData("{{ compare_hash_key }}", "{{ country_id }}", "{{ environment_id }}", "{{ rule_name }}");
+        initData(
+            "{{ ruleset_path_info.compare_hash_key }}",
+            "{{ ruleset_path_info.backup_key }}",
+            "{{ ruleset_path_info.backup_folder }}",
+            "{{ country.id }}", "{{ environment.id }}", "{{ ruleset_name }}"
+        );
     });
+
         downloadSelectedRulesOnClick = function () {
-            console.log("click downloadSelectedRulesOnClick");
             downloadRulesFromServer("{% url 'packed-ruleset-download' %}");
         }
     </script>

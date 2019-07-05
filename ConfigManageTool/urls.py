@@ -40,8 +40,10 @@ ruleset_download_pattern = [
 ]
 ruleset_comparer_pattern = [
     path('select/', views.environment_select_page, name="environment-select"),
-    path('detail/<str:environment_id>/<str:compare_key>/<str:rule_name>',
-         views.rule_detail_page, name="rule-detail"),
+    path('detail/<str:environment_id>/<str:country_id>/<str:compare_key>/<str:ruleset_name>',
+         views.ruleset_detail_page, name="rule-detail"),
+    path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+         views.ruleset_detail_backup_page, name="rule-detail-backup"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.ruleset_diff_page, name="rule-diff"),
     path('diff/', views.without_ruleset_diff_page, name="without-ruleset-diff-page"),

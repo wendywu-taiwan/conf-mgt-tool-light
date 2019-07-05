@@ -51,7 +51,7 @@ class RulesetLogGroupBuilder(BaseBuilder):
 
     @staticmethod
     def parse_environment(environment_id):
-        return EnvironmentBuilder(environment_id).get_data()
+        return EnvironmentBuilder(id=environment_id).get_data()
 
     @staticmethod
     def get_format_time(utc_date_time):

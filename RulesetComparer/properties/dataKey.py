@@ -204,6 +204,7 @@ ACTION_LIST = 'action_list'
 KEY_EXCEPTION = "exception"
 KEY_BACKUP = "backup"
 KEY_BACKUP_KEY = "backup_key"
+KEY_BACKUP_FOLDER = "backup_folder"
 KEY_ICON_FILE_NAME = "icon_file_name"
 KEY_COUNTRY_LIST = "country_list"
 KEY_INTERVAL_HOUR = "interval_hour"
@@ -235,6 +236,7 @@ KEY_LIMIT = "limit"
 KEY_RULESET_LOG_LIST = "ruleset_log_list"
 KEY_LOG_DATA = "log_data"
 KEY_RULESET_DATA = "ruleset_data"
+KEY_RULESET_PATH_INFO = "ruleset_path_info"
 
 # environment name
 INT2_NAME = "INT2"

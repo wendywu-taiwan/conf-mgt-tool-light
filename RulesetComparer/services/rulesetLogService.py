@@ -1,7 +1,7 @@
 from RulesetComparer.dataModel.dataParser.getRulesetLogListParser import GetRulesetLogListParser
 from RulesetComparer.dataModel.dataBuilder.rulesetLogListResultBuilder import RulesetLogListResultBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetLogBuilder import RulesetLogBuilder
-from RulesetComparer.dataModel.dataParser.rulesetDetailParser import RulesetDetailParser
+from RulesetComparer.dataModel.dataParser.showRulesetXMLParser import ShowRulesetXMLParser
 from RulesetComparer.models import RulesetLog
 
 
@@ -27,5 +27,5 @@ def get_ruleset_log_detail(detail_id):
 
 
 def get_ruleset(json_data):
-    parser = RulesetDetailParser(json_data)
+    parser = ShowRulesetXMLParser(json_data)
     return parser.ruleset_array

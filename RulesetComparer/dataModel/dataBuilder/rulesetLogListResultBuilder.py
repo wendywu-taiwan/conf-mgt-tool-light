@@ -54,7 +54,7 @@ class RulesetLogListResultBuilder(BaseBuilder):
         env_id_list = self.get_distinct_environment_id(env_id_list, target_environment_ids)
 
         for env_obj in env_id_list:
-            env_data = EnvironmentBuilder(env_obj[0]).get_data()
+            env_data = EnvironmentBuilder(id=env_obj[0]).get_data()
             env_data_list.append(env_data)
 
         return env_data_list

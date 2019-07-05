@@ -18,7 +18,7 @@ class RecoverRulesetsResultBuilder(BaseBuilder):
             raise e
 
     def __generate_data__(self):
-        self.result_dict[KEY_TARGET_ENV] = EnvironmentBuilder(self.target_env.id).get_data()
+        self.result_dict[KEY_TARGET_ENV] = EnvironmentBuilder(environment=self.target_env).get_data()
         self.result_dict[KEY_COUNTRY] = CountryBuilder(self.country).get_data()
         self.result_dict[KEY_UPDATED_TIME] = self.get_current_time()
         self.result_dict[KEY_FAILED_RULESETS] = self.failed_rulesets_list
