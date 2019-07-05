@@ -118,7 +118,7 @@
                             onclick="onClickPretty()">
                         Pretty
                     </button>
-                    <button type="button" class="btn btn-primary btn-sm">Download</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
                     <button type="button" class="btn btn-primary btn-sm">Diff Server</button>
                     {% if log_data.action.name == "update" %}
                         <button type="button" class="btn btn-primary btn-sm">Diff Before</button>
@@ -131,8 +131,8 @@
     </div>
     <script>
         $(function () {
-            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}');
-            initUrl("{% url 'ruleset-log-detail-ruleset' %}", null, null, null, null);
+            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}','{{ log_data.source_environment.id }}','{{ log_data.target_environment.id }}','{{ log_data.country.id }}');
+            initUrl("{% url 'ruleset-log-detail-ruleset' %}","{% url 'packed-ruleset-download' %}", null, null, null);
         });
 
         function onClickPretty() {

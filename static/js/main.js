@@ -8,8 +8,12 @@ function stopDialog() {
 }
 
 function showWaitingDialog() {
+    showDialog("Please Wait..");
+}
+
+function showDialog(title) {
     swal({
-        title: "Please Wait..",
+        title: title,
         imageUrl: "/static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
@@ -108,8 +112,8 @@ function openNewPageWithHTML(url, html) {
 }
 
 function arrayRemove(arr, value) {
-   return arr.filter(function(ele){
-       return ele != value;
-   });
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
 
 }

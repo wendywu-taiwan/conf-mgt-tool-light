@@ -1,10 +1,12 @@
 let getRulesetUrl, downloadRulesetUrl, diffServerUrl, diffOtherVersionUrl, applyUrl;
-let rulesetName, backupKey;
-let backupFolder;
+let rulesetName, backupKey, backupFolder, sourceEnvId, targetEnvId, countryId;
 
-initData = function (name, key) {
+initData = function (name, key, source_env_id, target_env_id, country_id) {
     rulesetName = name;
     backupKey = key;
+    sourceEnvId = source_env_id;
+    targetEnvId = target_env_id;
+    countryId = country_id;
 };
 
 initUrl = function (getRuleset, download, diffServer, diffOther, apply) {
@@ -17,6 +19,7 @@ initUrl = function (getRuleset, download, diffServer, diffOther, apply) {
 
 
 getRuleset = function (environment_version) {
+    showDialog("Loading...");
     backupFolder = environment_version;
     let post_body = {
         "ruleset_name": rulesetName,
@@ -29,10 +32,43 @@ getRuleset = function (environment_version) {
         let rsContentDiv = document.getElementById('ruleset_content_div');
         rsContentDiv.innerHTML = response;
         rsDetailDiv.style.display = "block";
+        stopDialog();
     }, function (response) {
         showErrorDialog(response);
     });
 };
+
+function downloadRuleset() {
+    showWaitingDialog();
+    let postEnvId;
+    if (backupFolder == "source") {
+        postEnvId = sourceEnvId;
+    } else {
+        postEnvId = targetEnvId;
+    }
+
+    let post_body = {
+        "backup_key": backupKey,
+        "backup_folder": backupFolder,
+        "ruleset_name": rulesetName,
+        "environment_id": postEnvId,
+        "country_id": countryId
+    };
+
+    jQuery.ajax({
+        url: downloadRulesetUrl,
+        method: 'POST',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        data: JSON.stringify(post_body),
+        mimeType: 'text/plain; charset=x-user-defined',
+        responseType: 'arraybuffer',
+    }).then(function success(data) {
+        stopDialog();
+        downloadZipFile(data);
+    })
+}
 
 rulesetDetailBackupPage = function (url) {
     doGET(url, function () {
@@ -40,4 +76,4 @@ rulesetDetailBackupPage = function (url) {
     }, function (response) {
         showErrorDialog(response);
     });
-}
+};
