@@ -9,7 +9,7 @@ from RulesetComparer.models import Environment
 from RulesetComparer.utils.logger import *
 from RulesetComparer.dataModel.dataParser.rulesetDiffBackupParser import RulesetDiffBackupParser
 from RulesetComparer.dataModel.dataParser.rulesetDiffBackupWithServerParser import RulesetDiffBackupWithServerParser
-from RulesetComparer.dataModel.dataParser.rulesetDiffCompareResultParser import RulesetDiffBackupParser
+from RulesetComparer.dataModel.dataParser.rulesetDiffCompareResultParser import RulesetDiffCompareResultParser
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
@@ -93,7 +93,7 @@ def download_rulesets(json_data):
 # diff page open with compare result data
 def ruleset_diff_compare_result(compare_key, ruleset_name):
     result_data = fileManager.load_compare_result_file(compare_key)
-    parser = RulesetDiffBackupParser(result_data, ruleset_name)
+    parser = RulesetDiffCompareResultParser(result_data, ruleset_name)
     builder = DiffRulesetPageBuilder(parser.ruleset_name, parser.source_environment.name,
                                      parser.target_environment.name, parser.ruleset_diff_data)
     return builder.get_data()

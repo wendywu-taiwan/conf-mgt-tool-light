@@ -79,14 +79,13 @@
                         <div class="show_ruleset_div_width">
                             {% if log_data.action.name == "delete" %}
                                 <button type="button"
-                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">Backup {{ log_data.source_environment.name }}
-                                    Version
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">Backup
+                                    Applied Version
                                 </button>
                             {% else %}
                                 <button type="button"
                                         class="btn custom_button btn-sm show_ruleset_button_width"
-                                        onclick="getRuleset('source')">Backup {{ log_data.source_environment.name }}
-                                    Version
+                                        onclick="getRuleset('source')">Backup Applied Version
                                 </button>
                             {% endif %}
                         </div>
@@ -94,15 +93,13 @@
                             {% if log_data.action.name == "create" %}
                                 <button type="button"
                                         class="disabled btn custom_button btn-sm show_ruleset_button_width"
-                                >Backup {{ log_data.target_environment.name }}
-                                    Version
+                                >Backup Server Version
                                 </button>
                             {% else %}
                                 <button type="button"
                                         class="btn custom_button btn-sm show_ruleset_button_width"
                                         onclick="getRuleset('target')"
-                                >Backup {{ log_data.target_environment.name }}
-                                    Version
+                                >Backup Server Version
                                 </button>
                             {% endif %}
                         </div>
@@ -119,40 +116,44 @@
                         Pretty
                     </button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerSourceEnv()">Diff Server Version
+                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerSourceEnv()">Compare With Server
                     </button>
                     {% if log_data.action.name == "update" %}
-                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">Diff {{ log_data.target_environment.name }} Version</button>
+                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
+                            Compare Backup Rulesets
+                        </button>
                     {% endif %}
-                    <button type="button" class="btn btn-primary btn-sm">Apply</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="applyToServer()">Apply</button>
                 </div>
             </div>
-            <div id="ruleset_content_div"></div>
+            <div id="ruleset_content_div_source" class="ruleset_content_div"></div>
         </div>
-    </div>
-    <div id="ruleset_detail_div_target" class="ruleset_detail_div admin_console_block_background custom_container">
-        <div class="header_div row no-row-margin">
-            <div class="component_title vertical_align_middle">Ruleset Information</div>
-            <div class="button_div">
-                <button type="button" class="btn btn-primary btn-sm"
-                        onclick="onClickPrettyTargetEnv()">
-                    Pretty
-                </button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
-                <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerTargetEnv()">Diff Server Version</button>
-                {% if log_data.action.name == "update" %}
-                    <button type="button" class="btn btn-primary btn-sm">Diff {{ log_data.source_environment.name }}</button>
-                {% endif %}
-                <button type="button" class="btn btn-primary btn-sm">Apply</button>
+        <div id="ruleset_detail_div_target" class="ruleset_detail_div admin_console_block_background custom_container">
+            <div class="header_div row no-row-margin">
+                <div class="component_title vertical_align_middle">Ruleset Information</div>
+                <div class="button_div">
+                    <button type="button" class="btn btn-primary btn-sm"
+                            onclick="onClickPrettyTargetEnv()">
+                        Pretty
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerTargetEnv()">Compare With Server
+                    </button>
+                    {% if log_data.action.name == "update" %}
+                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
+                            Compare Backup Rulesets
+                        </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary btn-sm" onclick="applyToServer()">Apply</button>
+                </div>
             </div>
+            <div id="ruleset_content_div_target" class="ruleset_content_div"></div>
         </div>
-        <div id="ruleset_content_div"></div>
-    </div>
     </div>
     <script>
         $(function () {
             initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}', '{{ log_data.source_environment.id }}', '{{ log_data.target_environment.id }}', '{{ log_data.country.id }}');
-            initUrl("{% url 'ruleset-log-detail-ruleset' %}", "{% url 'packed-ruleset-download' %}", null, null, null);
+            initUrl("{% url 'ruleset-log-detail-ruleset' %}", "{% url 'packed-ruleset-download' %}", "{% url 'ruleset-apply-to-server' %}");
         });
 
         function onClickPrettySourceEnv() {

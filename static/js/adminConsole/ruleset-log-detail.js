@@ -1,5 +1,7 @@
-let getRulesetUrl, downloadRulesetUrl, diffServerUrl, diffOtherVersionUrl, applyUrl;
+let getRulesetUrl, downloadRulesetUrl, applyUrl;
 let rulesetName, backupKey, backupFolder, sourceEnvId, targetEnvId, countryId;
+let EnvTypeSource = "source";
+let EnvTypeTarget = "target";
 
 initData = function (name, key, source_env_id, target_env_id, country_id) {
     rulesetName = name;
@@ -9,11 +11,9 @@ initData = function (name, key, source_env_id, target_env_id, country_id) {
     countryId = country_id;
 };
 
-initUrl = function (getRuleset, download, diffServer, diffOther, apply) {
+initUrl = function (getRuleset, download, apply) {
     getRulesetUrl = getRuleset;
     downloadRulesetUrl = download;
-    diffServerUrl = diffServer;
-    diffOtherVersionUrl = diffOther;
     applyUrl = apply;
 };
 
@@ -28,10 +28,18 @@ getRuleset = function (environment_version) {
     };
 
     doPOST(getRulesetUrl, post_body, function (response) {
+        let hideDetailDiv;
         let rsDetailDiv = document.getElementById('ruleset_detail_div_' + environment_version);
-        let rsContentDiv = document.getElementById('ruleset_content_div');
+        let rsContentDiv = document.getElementById('ruleset_content_div_' + environment_version);
+
+        if (environment_version == EnvTypeSource)
+            hideDetailDiv = document.getElementById('ruleset_detail_div_' + EnvTypeTarget);
+        else
+            hideDetailDiv = document.getElementById('ruleset_detail_div_' + EnvTypeSource);
+
         rsContentDiv.innerHTML = response;
         rsDetailDiv.style.display = "block";
+        hideDetailDiv.style.display = "none";
         stopDialog();
     }, function (response) {
         showErrorDialog(response);
@@ -68,6 +76,35 @@ function downloadRuleset() {
         stopDialog();
         downloadZipFile(data);
     })
+}
+
+
+function applyToServer() {
+    showWaitingDialog();
+
+    let post_body = {
+        "backup_key": backupKey,
+        "backup_folder": backupFolder,
+        "ruleset_name": rulesetName,
+        "environment_id": targetEnvId,
+        "country_id": countryId
+    };
+
+    doPOST(applyUrl, post_body, function (response) {
+            let statusCode = response["status_code"];
+            let message = response["message"];
+
+            if (response == null || statusCode != 200) {
+                showErrorDialog(message);
+                return;
+            }
+
+            successDialog("Update Success");
+        }, function (response) {
+            console.log("response:" + String(response));
+            showErrorDialog("Update Fail")
+        }
+    );
 }
 
 openNewPage = function (url) {

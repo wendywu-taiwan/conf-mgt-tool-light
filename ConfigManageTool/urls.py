@@ -43,6 +43,8 @@ ruleset_pattern = [
     path('diff/backup/<str:backup_key>/<str:ruleset_name>', views.ruleset_diff_backup_page, name="ruleset-diff-backup"),
     path('diff/backup/with/server/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
          views.ruleset_diff_backup_with_server_page, name="ruleset-diff-backup-with-server"),
+    path('apply/to/server',
+         views.apply_ruleset_to_server, name="ruleset-apply-to-server"),
 ]
 
 ruleset_download_pattern = [

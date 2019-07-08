@@ -478,6 +478,18 @@ def recover_rulesets(request):
         return JsonResponse(result)
 
 
+def apply_ruleset_to_server(request):
+    try:
+        request_json = get_post_request_json(request)
+        result_data = rulesetSyncService.sync_up_ruleset_from_backup(request_json, request.user)
+        result = ResponseBuilder(data=result_data).get_data()
+        return JsonResponse(data=result)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
 def download_compare_report(request, compare_key):
     try:
         file_path = fileManager.get_compare_result_full_file_name("_html", compare_key)

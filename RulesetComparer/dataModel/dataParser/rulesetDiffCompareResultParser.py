@@ -1,7 +1,7 @@
 from RulesetComparer.utils.rulesetUtil import *
 
 
-class RulesetDiffBackupParser:
+class RulesetDiffCompareResultParser:
     def __init__(self, compare_result_data, ruleset_name):
         try:
             self.compare_result_data = compare_result_data
