@@ -13,6 +13,7 @@ from RulesetComparer.b2bRequestTask.createRulesetTask import CreateRulesetTask
 from RulesetComparer.b2bRequestTask.updateRulesetTask import UpdateRulesetTask
 from RulesetComparer.b2bRequestTask.clearRulesetTask import ClearRulesetTask
 from RulesetComparer.dataModel.dataParser.createRulesetSyncSchedulerParser import CreateRulesetSyncSchedulerParser
+from RulesetComparer.dataModel.dataParser.applyRulesetToServerParser import ApplyRulesetToServerParser
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncPreDataBuilder import RulesetSyncPreDataBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncResultDataBuilder import RulesetSyncResultDataBuilder
 from RulesetComparer.dataModel.dataParser.recoverRulesetsParser import RecoverRulesetsParser
@@ -102,31 +103,36 @@ def sync_up_rulesets(rs_log_group, parser, country):
 
 def sync_up_rulesets_from_backup(json_data, user):
     parser = RecoverRulesetsParser(json_data)
+    return sync_backup_rulesets(parser, user)
+
+
+def sync_up_ruleset_from_backup(json_data, user):
+    parser = ApplyRulesetToServerParser(json_data)
+    return sync_backup_rulesets(parser, user)
+
+
+def sync_backup_rulesets(parser, user):
     sync_result_obj = RulesetsSyncResultListObj()
+
+    country = parser.country
+    target_environment = parser.target_environment
+    compare_key = hash(get_current_timestamp())
 
     rs_log_group = RulesetLogGroupObj(parser, user, parser.country)
     rs_log_group.log_group()
 
-    country = parser.country
-    target_environment = parser.target_environment
     new_backup_key = rs_log_group.backup_key
-    source_backup_key = parser.backup_key
 
-    compare_key = hash(get_current_timestamp())
     server_rs_path = get_rule_set_path(target_environment.name, country.name, compare_key)
     server_rs_backup_path = get_backup_path_server_version(new_backup_key)
+    applied_rs_path = parser.ruleset_path
+    applied_rs_backup_path = get_backup_path_applied_version(new_backup_key)
 
     create_ruleset_list = []
     update_ruleset_list = []
 
     # backup deleted last time but created now ruleset
-    for ruleset_name in parser.applied_to_server_rulesets:
-
-        # backup applied backup ruleset from backup folder to new backup folder
-        copy_ruleset(get_file_name("_xml", ruleset_name),
-                     get_backup_path_server_version(source_backup_key),
-                     get_backup_path_applied_version(new_backup_key))
-
+    for ruleset_name in parser.rulesets:
         # download ruleset server version
         ruleset_exist = DownloadRulesetTask(target_environment.id, country.id, ruleset_name, compare_key).ruleset_exist
 
@@ -136,10 +142,11 @@ def sync_up_rulesets_from_backup(json_data, user):
             create_ruleset_list.append(create_ruleset_data)
             continue
 
+        # backup applied backup ruleset from backup folder to new backup folder
+        copy_ruleset(get_file_name("_xml", ruleset_name), applied_rs_path, applied_rs_backup_path)
+
         # backup server version ruleset from ruleset folder to backup folder
-        copy_ruleset(get_file_name("_xml", ruleset_name),
-                     server_rs_path,
-                     server_rs_backup_path)
+        copy_ruleset(get_file_name("_xml", ruleset_name), server_rs_path, server_rs_backup_path)
 
         source_xml = load_backup_applied_version_rs(new_backup_key, ruleset_name)
         target_xml = load_backup_server_version_rs(new_backup_key, ruleset_name)

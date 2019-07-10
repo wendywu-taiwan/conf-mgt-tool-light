@@ -12,7 +12,7 @@ $(function () {
 
 let envId, countryId, backupKey, currentTargetEnvId;
 let filterKeyList = [];
-let rulesetsMap = {};
+let appliedRulesets = [];
 let allRulesetMaps = {};
 let allRulesetsRecoveredArray = [];
 let recoveryUrl, currentRulesetListDiv;
@@ -72,19 +72,12 @@ filterBackupRules = function (postUrl) {
 };
 
 applyRulesetsRecover = function () {
-    if (Object.keys(rulesetsMap).length == 0) {
+    if (appliedRulesets.length == 0) {
         showWarningDialog("please select at least one ruleset to recover");
         return;
     }
 
     showWaitingDialog();
-    let ruleset, rulesetAction;
-    let appliedRulesets = [];
-
-    for (ruleset in rulesetsMap) {
-        rulesetAction = rulesetsMap[ruleset];
-        appliedRulesets.push(ruleset);
-    }
 
     let post_body = {
         "target_environment_id": currentTargetEnvId,
@@ -221,12 +214,11 @@ checkFilterValid = function () {
     return true;
 };
 
-function onSelectedRules(inputItem, rulesetName, action) {
-    rulesetsMap[rulesetName] = action;
+function onSelectedRules(inputItem, rulesetName) {
     if (inputItem.checked) {
-        rulesetsMap[rulesetName] = action;
+        appliedRulesets.push(rulesetName);
     } else {
-        delete rulesetsMap[rulesetName];
+        appliedRulesets = arrayRemove(appliedRulesets, rulesetName);
     }
 }
 
@@ -246,7 +238,10 @@ function applyAllRulesets() {
         let input = inputs[index];
         input.checked = true;
     }
-    rulesetsMap = allRulesetMaps;
+
+    for (let ruleset in allRulesetMaps) {
+        appliedRulesets.push(ruleset);
+    }
 }
 
 function clearAllInputSelected() {
@@ -254,7 +249,7 @@ function clearAllInputSelected() {
         return;
     }
 
-    rulesetsMap = {};
+    appliedRulesets = [];
     allRulesetMaps = {};
 
     let container = currentRulesetListDiv;

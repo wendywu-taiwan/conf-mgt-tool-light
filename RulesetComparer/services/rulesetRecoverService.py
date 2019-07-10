@@ -34,21 +34,19 @@ def filter_backup_list(json_data):
     parser = GetFilteredRulesetParser(json_data)
     log_list = []
     log_group_list = []
-    ruleset_log_groups = RulesetLogGroup.objects.filter(
-        updated__gt=0, target_environment=parser.environment.id, country=parser.country.id).values().order_by(
-        '-update_time').distinct()
 
-    for obj in ruleset_log_groups:
-        log_group_obj = RulesetLogGroupBuilder(obj)
-        pre_json = load_auto_sync_pre_json_file(get_sync_pre_data_path(obj.get(KEY_BACKUP_KEY)))
-        log_result_obj = RecoverFilterBackupObjBuilder(pre_json, log_group_obj.update_time,
-                                                       log_group_obj.backup_key, parser.filter_keys)
+    for log_group in parser.log_groups:
+        log_group_obj = RulesetLogGroupBuilder(log_group)
+        ruleset_logs = parser.get_logs_query_result(log_group_obj.backup_key)
 
-        log_group_obj.update_log_count(log_result_obj.log_count)
+        if ruleset_logs is None:
+            continue
 
-        if log_result_obj.has_filtered_rulesets is True:
-            log_list.append(log_result_obj.get_data())
-            log_group_list.append(log_group_obj.get_data())
+        log_result_obj = RecoverFilterBackupObjBuilder(log_group_obj, ruleset_logs)
+        log_group_obj.update_log_count(log_result_obj.ruleset_count)
+
+        log_list.append(log_result_obj.get_data())
+        log_group_list.append(log_group_obj.get_data())
 
     result_data = {KEY_RULESET_LOG_GROUPS: log_group_list,
                    KEY_RULESET_LOGS: log_list}

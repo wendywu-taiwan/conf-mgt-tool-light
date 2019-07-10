@@ -4,56 +4,28 @@ from RulesetComparer.utils.stringFilter import *
 
 
 class RecoverFilterBackupObjBuilder(BaseBuilder):
-    def __init__(self, pre_json, update_time, backup_key, filter_keys):
+    def __init__(self, ruleset_log_group, ruleset_logs):
         try:
-            self.json_data = pre_json
-            self.filter_keys = filter_keys
-            self.update_time = update_time
-            self.backup_key = backup_key
-            self.source_env_only_rulesets = pre_json.get(KEY_SOURCE_ENV_ONLY_RULESETS)
-            self.target_env_only_rulesets = pre_json.get(KEY_TARGET_ENV_ONLY_RULESETS)
-            self.different_rulesets = pre_json.get(KEY_DIFFERENT_RULESETS)
-            self.has_filtered_rulesets = False
-            self.log_count = 0
+            self.ruleset_log_group = ruleset_log_group
+            self.ruleset_logs = ruleset_logs
+            self.update_time = ruleset_log_group.update_time
+            self.backup_key = ruleset_log_group.backup_key
+            self.ruleset_count = len(ruleset_logs)
             BaseBuilder.__init__(self)
         except Exception as e:
             raise e
 
     def __generate_data__(self):
-        # self.result_dict[KEY_CREATED_RULESETS] = self.__generate_rulesets_object__(self.source_env_only_rulesets)
         self.result_dict[KEY_UPDATE_TIME] = self.update_time
         self.result_dict[KEY_BACKUP_KEY] = self.backup_key
-        self.result_dict[KEY_CREATED_RULESETS] = self.__generate_no_rulesets_object__()
-        self.result_dict[KEY_UPDATED_RULESETS] = self.__generate_rulesets_object__(self.different_rulesets)
-        self.result_dict[KEY_DELETED_RULESETS] = self.__generate_no_rulesets_object__()
-        # self.result_dict[KEY_DELETED_RULESETS] = self.__generate_rulesets_object__(self.target_env_only_rulesets)
+        self.result_dict[KEY_COUNT] = self.ruleset_count
+        self.result_dict[KEY_RULESETS] = self.__generate_rulesets_object__()
 
-    def __generate_rulesets_object__(self, rulesets):
-        rulesets_object = {}
+    def __generate_rulesets_object__(self):
         rulesets_array = []
 
-        for ruleset_obj in rulesets.get(KEY_RULESETS_ARRAY):
-            ruleset_name = ruleset_obj.get(KEY_NAME)
-            if len(self.filter_keys) == 0:
-                rulesets_array.append(ruleset_name)
-                self.has_filtered_rulesets = True
-            else:
-                match = string_filter(ruleset_name, self.filter_keys)
-                if match:
-                    rulesets_array.append(ruleset_name)
-                    self.has_filtered_rulesets = True
+        for ruleset_log in self.ruleset_logs:
+            ruleset_name = ruleset_log.get(KEY_RULESET_NAME)
+            rulesets_array.append(ruleset_name)
 
-        rulesets_object[KEY_COUNT] = len(rulesets_array)
-        rulesets_object[KEY_RULESETS_ARRAY] = rulesets_array
-        self.log_count += len(rulesets_array)
-        return rulesets_object
-
-    @staticmethod
-    def __generate_no_rulesets_object__():
-        rulesets_object = {}
-        rulesets_array = []
-
-        rulesets_object[KEY_COUNT] = len(rulesets_array)
-        rulesets_object[KEY_RULESETS_ARRAY] = rulesets_array
-
-        return rulesets_object
+        return rulesets_array

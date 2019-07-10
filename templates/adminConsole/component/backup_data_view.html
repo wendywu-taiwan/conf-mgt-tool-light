@@ -23,7 +23,7 @@
                     <div id="title_country_name_div"
                          class="content_text country_width vertical_align_middle">{{ data.country.full_name }}</div>
                     <div id="{{ data.backup_key }}_source_env_div"
-                         class="content_text environment_width vertical_align_middle" >{{ data.source_environment.name }}</div>
+                         class="content_text environment_width vertical_align_middle">{{ data.source_environment.name }}</div>
                     <div id="{{ data.backup_key }}_target_env_div"
                          class="content_text environment_width vertical_align_middle">{{ data.target_environment.name }}</div>
                     <div id="title_count_div"
@@ -62,20 +62,8 @@
                 <div id="title_action" class="title_text action_width"></div>
             </div>
             {% with data.backup_key as backup_key %}
-                {% for ruleset in data.created_rulesets.rulesets_array %}
-                    {% with "created" as action %}
-                        {% include 'backup_ruleset_row.html' %}
-                    {% endwith %}
-                {% endfor %}
-                {% for ruleset in data.updated_rulesets.rulesets_array %}
-                    {% with "updated" as action %}
-                        {% include 'backup_ruleset_row.html' %}
-                    {% endwith %}
-                {% endfor %}
-                {% for ruleset in data.deleted_rulesets.rulesets_array %}
-                    {% with "deleted" as action %}
-                        {% include 'backup_ruleset_row.html' %}
-                    {% endwith %}
+                {% for ruleset in data.rulesets %}
+                    {% include 'backup_ruleset_row.html' %}
                 {% endfor %}
             {% endwith %}
         </div>

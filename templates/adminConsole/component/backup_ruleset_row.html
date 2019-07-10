@@ -6,14 +6,13 @@
             <input type="checkbox" data-toggle="switch" name="{{ ruleset }}" value="{{ action }}"
                    data-on-color="primary"
                    data-off-color="default" id="switch-03"
-                   onchange="onSelectedRules(this,'{{ ruleset }}','{{ action }}')"
-                   onclick="onSelectedRules(this,'{{ ruleset }}','{{ action }}')"/>
+                   onclick="onSelectedRules(this,'{{ ruleset }}')"/>
         </div>
         <div id="row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
             {{ ruleset }}
         </div>
         <div id="row_action_div" class="content_text action_width">
-            <button class="btn btn-info btn-font-14 diff_button" onclick="openDiffResultPage('{% url 'ruleset-diff-backup' backup_key ruleset %}')">Diff</button>
+            <button class="btn btn-info btn-font-14 diff_button" onclick="openDiffResultPage('{% url 'ruleset-diff-backup-with-server' backup_key "target" ruleset %}')">Diff</button>
         </div>
     </div>
 </div>
