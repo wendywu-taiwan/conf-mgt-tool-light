@@ -194,11 +194,6 @@
         "full_name": "system backup",
         "name": "Backup",
         "active": false
-      },
-      {
-        "full_name": "test",
-        "name": "TEST",
-        "active": true
       }
     ],
     "b2b_client": [
@@ -237,10 +232,6 @@
       {
         "data_center": "SHDC",
         "url": "http://www.audatex.cn/b2b/services/"
-      },
-      {
-        "data_center": "SGDC",
-        "url": "http://10.29.26.42:30001/b2b/services/"
       }
     ],
     "function": [
@@ -285,22 +276,6 @@
       }
     ],
     "b2b_server": [
-      {
-        "country_name": [
-          "CN",
-          "KR",
-          "TW",
-          "TH",
-          "SG",
-          "ID",
-          "VN",
-          "JP",
-          "HK",
-          "MY"
-        ],
-        "environment_name": "TEST",
-        "b2b_client_url": "http://10.29.26.42:30001/b2b/services/"
-      },
       {
         "country_name": [
           "CN",

@@ -2,6 +2,7 @@ import traceback
 
 from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetDetailBuilder import RulesetDetailBuilder
+from RulesetComparer.dataModel.dataBuilder.filterRulesetDownloadPageBuilder import FilterRulesetDownloadPageBuilder
 from RulesetComparer.dataModel.rulesetLoader.gitRulesetLoader import GitRulesetLoader
 from RulesetComparer.dataModel.rulesetLoader.serverRulesetLoader import ServerRulesetLoader
 from RulesetComparer.dataModel.rulesetLoader.backupRulesetLoader import BackupRulesetLoader
@@ -45,22 +46,19 @@ def generate_compare_report(compare_key):
     fileManager.save_compare_result_html(compare_key, html)
 
 
-def get_filtered_ruleset_list(json_data):
-    try:
-        parser = GetFilteredRulesetParser(json_data)
-        if parser.is_git:
-            git_file_path = get_rule_set_git_path(parser.country.name)
-            rule_name_list = fileManager.get_rule_name_list(git_file_path)
-        else:
-            task = DownloadRuleListTask(parser.environment.id,
-                                        parser.country.id)
-            rule_name_list = task.get_result_data()
+def get_filtered_ruleset_page_data(json_data):
+    parser = GetFilteredRulesetParser(json_data)
 
-        filter_name_list = stringFilter.array_filter(rule_name_list, parser.filter_keys)
-        return filter_name_list
-    except Exception:
-        error_log(traceback.format_exc())
-        return traceback.print_exc()
+    if parser.is_git:
+        git_file_path = get_rule_set_git_path(parser.country.name)
+        rule_name_list = fileManager.get_rule_name_list(git_file_path)
+    else:
+        task = DownloadRuleListTask(parser.environment.id, parser.country.id)
+        rule_name_list = task.get_result_data()
+
+    builder = FilterRulesetDownloadPageBuilder(parser.country, parser.environment,
+                                               parser.filter_keys, rule_name_list)
+    return builder.get_data()
 
 
 def ruleset_detail_page_data(environment_id, country_id, compare_key, ruleset_name):
@@ -90,7 +88,7 @@ def download_rulesets(json_data):
         error_log(traceback.format_exc())
 
 
-# diff page open with compare result data
+# open diff page with compare result data
 def ruleset_diff_compare_result(compare_key, ruleset_name):
     result_data = fileManager.load_compare_result_file(compare_key)
     parser = RulesetDiffCompareResultParser(result_data, ruleset_name)
@@ -99,7 +97,7 @@ def ruleset_diff_compare_result(compare_key, ruleset_name):
     return builder.get_data()
 
 
-# diff page open with backup rulesets compare data
+# open diff page with two backup rulesets compare data
 def ruleset_diff_backup(backup_key, ruleset_name):
     parser = RulesetDiffBackupParser(backup_key, ruleset_name)
     comparer = RulesetComparer(parser.ruleset_name, parser.source_ruleset_xml, parser.target_ruleset_xml, False)
@@ -108,7 +106,7 @@ def ruleset_diff_backup(backup_key, ruleset_name):
     return builder.get_data()
 
 
-# diff page open with backup ruleset compare with server ruleset data
+# open diff page with backup ruleset compare with server ruleset data
 def ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name):
     parser = RulesetDiffBackupWithServerParser(backup_key, backup_folder, ruleset_name)
     comparer = RulesetComparer(parser.ruleset_name, parser.backup_ruleset_xml, parser.server_ruleset_xml, False)

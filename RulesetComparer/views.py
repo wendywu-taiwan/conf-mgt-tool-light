@@ -24,6 +24,7 @@ from RulesetComparer.dataModel.dataBuilder.responseBuilder import ResponseBuilde
 from RulesetComparer.dataModel.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
 from RulesetComparer.dataModel.dataBuilder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetDownloadPageBuilder import RulesetDownloadPageBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.statusCode import *
 
@@ -313,19 +314,13 @@ def add_user_information(request, result):
 # ruleset page
 def rule_download_page(request):
     try:
-        country_list = Country.objects.all()
-        environment_list = Environment.objects.filter(active=1)
-
-        response = {key.ENVIRONMENT_SELECT_COUNTRY: CountrySerializer(country_list, many=True).data,
-                    key.ENVIRONMENT_SELECT_ENVIRONMENT: EnvironmentSerializer(environment_list, many=True).data}
-
         if request.method == REQUEST_POST:
             request_json = get_post_request_json(request)
-            info_log("API", "filter rule names, request json =" + str(request_json))
-            filtered_rule_names = services.get_filtered_ruleset_list(request_json)
-            return render(request, "rule_download_table.html", {key.RULE_NAME_LIST: filtered_rule_names})
+            result_data = services.get_filtered_ruleset_page_data(request_json)
+            return render(request, "rule_download_table.html", result_data)
         else:
-            return render(request, "rule_download.html", response)
+            page_data = RulesetDownloadPageBuilder().get_data()
+            return render(request, "rule_download.html", page_data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
