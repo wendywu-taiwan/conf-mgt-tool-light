@@ -4,6 +4,7 @@ from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 from RulesetComparer.dataModel.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
 from RulesetComparer.properties.apiResponse import RESPONSE_EXPORT_RULESET_NOT_FOUND
+from RulesetComparer.utils.timeUtil import get_current_timestamp
 
 
 class DownloadRulesetTask(BaseRequestTask):
@@ -16,11 +17,13 @@ class DownloadRulesetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
         self.ruleset_name = ruleset_name
         self.result_builder = None
+        if compare_hash_key is None:
+            compare_hash_key = hash(get_current_timestamp())
         self.compare_hash_key = compare_hash_key
         self.ruleset_exist = True
 
         self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
-        self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, compare_hash_key)
+        self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, self.compare_hash_key)
         self.request_data()
 
     def request_data(self):

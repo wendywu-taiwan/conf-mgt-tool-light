@@ -34,7 +34,9 @@ ruleset_b2b_pattern = [
 ]
 
 ruleset_pattern = [
-    path('detail/<str:environment_id>/<str:country_id>/<str:compare_key>/<str:ruleset_name>',
+    path('detail_download/<str:environment_id>/<str:country_id>/<str:ruleset_name>',
+         views.ruleset_detail_page, name="rule-detail-download"),
+    path('detail/<str:environment_id>/<str:country_id>/<str:ruleset_name>/<str:compare_key>',
          views.ruleset_detail_page, name="rule-detail"),
     path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
          views.ruleset_detail_backup_page, name="rule-detail-backup"),
@@ -49,6 +51,7 @@ ruleset_pattern = [
 
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
+    path('filter/', views.rule_download_filter_page, name="ruleset-download-filter-page"),
     path('packed/', views.download_rulesets, name="packed-ruleset-download"),
 
 ]

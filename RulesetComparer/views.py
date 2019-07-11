@@ -314,13 +314,20 @@ def add_user_information(request, result):
 # ruleset page
 def rule_download_page(request):
     try:
-        if request.method == REQUEST_POST:
-            request_json = get_post_request_json(request)
-            result_data = services.get_filtered_ruleset_page_data(request_json)
-            return render(request, "rule_download_table.html", result_data)
-        else:
-            page_data = RulesetDownloadPageBuilder().get_data()
-            return render(request, "rule_download.html", page_data)
+        page_data = RulesetDownloadPageBuilder().get_data()
+        return render(request, "rule_download.html", page_data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
+
+
+# ruleset page
+def rule_download_filter_page(request):
+    try:
+        request_json = get_post_request_json(request)
+        result_data = services.get_filtered_ruleset_page_data(request_json)
+        return render(request, "rule_download_table.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -353,9 +360,9 @@ def environment_select_page(request):
         return JsonResponse(result)
 
 
-def ruleset_detail_page(request, environment_id, country_id, compare_key, ruleset_name):
+def ruleset_detail_page(request, environment_id, country_id, ruleset_name, compare_key=None):
     try:
-        data = services.ruleset_detail_page_data(environment_id, country_id, compare_key, ruleset_name)
+        data = services.ruleset_detail_page_data(environment_id, country_id, ruleset_name, compare_key)
         return render(request, "rule_show_detail.html", data)
     except Exception:
         error_log(traceback.format_exc())

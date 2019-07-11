@@ -1,5 +1,6 @@
 import traceback
 
+from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
 from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
 from RulesetComparer.dataModel.dataBuilder.rulesetDetailBuilder import RulesetDetailBuilder
 from RulesetComparer.dataModel.dataBuilder.filterRulesetDownloadPageBuilder import FilterRulesetDownloadPageBuilder
@@ -61,11 +62,14 @@ def get_filtered_ruleset_page_data(json_data):
     return builder.get_data()
 
 
-def ruleset_detail_page_data(environment_id, country_id, compare_key, ruleset_name):
+def ruleset_detail_page_data(environment_id, country_id, ruleset_name, compare_key=None):
     environment = Environment.objects.get(id=environment_id)
     if environment.name == GIT_NAME:
         ruleset_loader = GitRulesetLoader(country_id, ruleset_name, False)
     else:
+        if compare_key is None:
+            compare_key = DownloadRulesetTask(environment_id, country_id, ruleset_name).compare_hash_key
+
         ruleset_loader = ServerRulesetLoader(compare_key, environment_id,
                                              country_id, ruleset_name)
     return RulesetDetailBuilder(ruleset_loader).get_data()
