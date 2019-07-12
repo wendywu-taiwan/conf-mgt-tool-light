@@ -729,7 +729,7 @@ def update_ruleset(request):
 
 def compare_ruleset_test(request):
     try:
-        services.compare_ruleset()
+        pass
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

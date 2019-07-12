@@ -43,16 +43,7 @@ def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
 
 def compare_ruleset_test():
     try:
-        ruleset_name = "RS_KR_PROCESS"
-        # source_xml = load_git_ruleset_with_name("TW", ruleset_name)
-        source_xml = load_server_ruleset_with_name("PROD", "KR", 111111111, ruleset_name)
-        target_xml = load_server_ruleset_with_name("GIT", "KR", 111111111, ruleset_name)
-
-        diff_json = RulesetComparer(ruleset_name, source_xml, target_xml, is_module=False).get_data_by_builder()
-        # source_xml = DownloadRulesetTask(base_env_id, country_id, ruleset_name).get_ruleset_xml()
-        # compared_xml = DownloadRulesetTask(compare_env_id, country_id, ruleset_name).get_ruleset_xml()
-        # ruleset_name = "RS_TW_COPY_INTO_EXISTING_CASE_TOOLBAR"
-
+        pass
     except Exception as e:
         raise e
 
