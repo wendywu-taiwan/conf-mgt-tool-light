@@ -3,10 +3,12 @@ from RulesetComparer.utils import fileManager, modelManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, DataCenter, B2BService, B2BClient, \
-    B2BServer, DataUpdateTime, MailContentType
+    B2BServer, DataUpdateTime, MailContentType, RulesetAction
+from django.contrib.auth.models import User
 
 LOG_CLASS = "initDataService"
 
+KEY_AUTH_USER = "auth_user"
 KEY_MAIL_CONTENT_TYPE = "mail_content_type"
 KEY_COUNTRY = "country"
 KEY_ENVIRONMENT = "environment"
@@ -17,6 +19,7 @@ KEY_DATA_CENTER = "data_center"
 KEY_B2B_SERVICE = "b2b_service"
 KEY_B2B_CLIENT = "b2b_client"
 KEY_B2B_SERVER = "b2b_server"
+KEY_RULESET_ACTION = "ruleset_action"
 
 
 def init_data():
@@ -26,6 +29,11 @@ def init_data():
         preload_data = fileManager.load_json_file(preload_data_path)
         ruleset_data = preload_data["ruleset_data"]
         update_time_data = ruleset_data["update_time"]
+
+        if has_update(update_time_data, KEY_AUTH_USER):
+            update_auth_user = init_auth_user_data(ruleset_data[KEY_AUTH_USER])
+            if update_auth_user:
+                update_local_time(update_time_data, KEY_AUTH_USER)
 
         if has_update(update_time_data, KEY_MAIL_CONTENT_TYPE):
             update_mail_content = init_mail_content_type_data(ruleset_data[KEY_MAIL_CONTENT_TYPE])
@@ -76,74 +84,102 @@ def init_data():
             update_b2b_server = init_b2b_server(ruleset_data[KEY_B2B_SERVER])
             if update_b2b_server:
                 update_local_time(update_time_data, KEY_B2B_SERVER)
+
+        if has_update(update_time_data, KEY_RULESET_ACTION):
+            update_ruleset_action = init_ruleset_action(ruleset_data[KEY_RULESET_ACTION])
+            if update_ruleset_action:
+                update_local_time(update_time_data, KEY_RULESET_ACTION)
     except Exception as e:
         error_log(traceback.format_exc())
         raise e
 
 
+def init_auth_user_data(auth_user_data):
+    try:
+        for user in auth_user_data:
+            username = user.get("username")
+
+            if User.objects.filter(username=username).count() > 0:
+                continue
+
+            password = user.get("password")
+            email = user.get("email")
+            is_superuser = user.get("is_superuser")
+            is_staff = user.get("is_staff")
+            is_active = user.get("is_active")
+            user_obj = User.objects.update_or_create(username=username,
+                                                     email=email,
+                                                     is_superuser=is_superuser,
+                                                     is_staff=is_staff,
+                                                     is_active=is_active)
+            user_obj.set_password(password)
+            user_obj.save()
+        info_log(LOG_CLASS, "init auth user data success")
+        return True
+    except Exception as e:
+        raise e
+
+
 def init_mail_content_type_data(mail_content_types):
     try:
-        MailContentType.objects.all().delete()
         for mail_content_type in mail_content_types:
             name = mail_content_type["name"]
             title = mail_content_type["title"]
-            MailContentType.objects.create(name=name, title=title)
+            MailContentType.objects.update_or_create(name=name, title=title)
         info_log(LOG_CLASS, "init mail content data success")
         return True
     except Exception as e:
-        MailContentType.objects.all().delete()
         raise e
 
 
 def init_country_data(country_list):
     try:
-        Country.objects.all().delete()
         for country_obj in country_list:
             name = country_obj["name"]
             full_name = country_obj["full_name"]
             icon_file_name = country_obj["icon_file_name"]
-            Country.objects.create_country(name, full_name, icon_file_name)
+            Country.objects.update_or_create(name=name, full_name=full_name, icon_file_name=icon_file_name)
         info_log(LOG_CLASS, "init country data success")
         return True
     except Exception as e:
-        Country.objects.all().delete()
         raise e
 
 
 def init_environment_data(environment_data):
     try:
-        Environment.objects.all().delete()
         for environment_obj in environment_data:
-            name = environment_obj["name"]
-            full_name = environment_obj["full_name"]
-            Environment.objects.create_environment(name, full_name)
+            name = environment_obj.get("name")
+            full_name = environment_obj.get("full_name")
+            active = environment_obj.get("active")
+            if active:
+                active = 1
+            else:
+                active = 0
+            Environment.objects.update_or_create(name=name, full_name=full_name, active=active)
         info_log(LOG_CLASS, "init environment data success")
         return True
     except Exception as e:
-        Environment.objects.all().delete()
         raise e
 
 
 def init_function_data(function_data):
     try:
-        Function.objects.all().delete()
         for function_obj in function_data:
             name = function_obj["name"]
             icon_file_name = function_obj["icon_file_name"]
-            Function.objects.create(name=name, icon_file_name=icon_file_name)
+            Function.objects.update_or_create(name=name, icon_file_name=icon_file_name)
         info_log(LOG_CLASS, "init function data success")
         return True
     except Exception as e:
-        Function.objects.all().delete()
         raise e
 
 
 def init_module_data(module_data):
     try:
-        Module.objects.all().delete()
         for module_obj in module_data:
             name = module_obj['name']
-            module = Module.objects.create(name=name)
+            result_tuple = Module.objects.update_or_create(name=name)
+            module = result_tuple[0]
             function_list = module_obj['functions']
             for function_name in function_list:
                 db_function = Function.objects.get(name=function_name)
@@ -154,16 +190,15 @@ def init_module_data(module_data):
         info_log(LOG_CLASS, "init module data success")
         return True
     except Exception as e:
-        Module.objects.all().delete()
         raise e
 
 
 def init_user_role_data(user_role_data):
     try:
-        UserRole.objects.all().delete()
         for user_role_obj in user_role_data:
             name = user_role_obj['name']
-            user_role = UserRole.objects.create(name=name)
+            result_tuple = UserRole.objects.update_or_create(name=name)
+            user_role = result_tuple[0]
             module_list = user_role_obj['modules']
             for module_name in module_list:
                 db_module = Module.objects.get(name=module_name)
@@ -173,69 +208,73 @@ def init_user_role_data(user_role_data):
         info_log(LOG_CLASS, "init user role data success")
         return True
     except Exception as e:
-        UserRole.objects.all().delete()
         raise e
 
 
 def init_data_center(data_center_data):
     try:
-        DataCenter.objects.all().delete()
         for data_center_obj in data_center_data:
             name = data_center_obj['name']
-            DataCenter.objects.create(name=name)
+            DataCenter.objects.update_or_create(name=name)
 
         info_log(LOG_CLASS, "init data center data success")
         return True
     except Exception as e:
-        DataCenter.objects.all().delete()
         raise e
 
 
 def init_b2b_service(b2b_service_data):
     try:
-        B2BService.objects.all().delete()
         for b2b_service_obj in b2b_service_data:
             name = b2b_service_obj['name']
             url = b2b_service_obj['url']
-            B2BService.objects.create(name=name, url=url)
+            B2BService.objects.update_or_create(name=name, url=url)
 
         info_log(LOG_CLASS, "init b2b service data success")
         return True
     except Exception as e:
-        B2BService.objects.all().delete()
         raise e
 
 
 def init_b2b_client(b2b_client_data):
     try:
-        B2BClient.objects.all().delete()
         for b2b_client_obj in b2b_client_data:
             data_center = DataCenter.objects.get(name=b2b_client_obj["data_center"])
             url = b2b_client_obj["url"]
-            B2BClient.objects.create(data_center=data_center, url=url)
+            B2BClient.objects.update_or_create(data_center=data_center, url=url)
 
         info_log(LOG_CLASS, "init b2b client data success")
         return True
     except Exception as e:
-        B2BClient.objects.all().delete()
         raise e
 
 
 def init_b2b_server(b2b_server_data):
     try:
-        B2BServer.objects.all().delete()
         for b2b_server_obj in b2b_server_data:
             country_name_list = b2b_server_obj["country_name"]
             environment = Environment.objects.get(name=b2b_server_obj["environment_name"])
             b2b_client = B2BClient.objects.get(url=b2b_server_obj["b2b_client_url"])
             for country_name in country_name_list:
                 country = Country.objects.get(name=country_name)
-                B2BServer.objects.create(country=country, environment=environment, client=b2b_client)
+                B2BServer.objects.update_or_create(country=country, environment=environment, client=b2b_client)
 
         info_log(LOG_CLASS, "init b2b server data success")
         return True
     except Exception as e:
-        B2BServer.objects.all().delete()
+        raise e
+
+
+def init_ruleset_action(ruleset_action_data):
+    try:
+        for ruleset_action in ruleset_action_data:
+            name = ruleset_action["name"]
+            capital_name = ruleset_action["capital_name"]
+            RulesetAction.objects.update_or_create(name=name, capital_name=capital_name)
+
+        info_log(LOG_CLASS, "init ruleset action data success")
+        return True
+    except Exception as e:
         raise e
 
 

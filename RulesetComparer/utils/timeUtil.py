@@ -173,6 +173,21 @@ def get_current_utc_time():
     return datetime.utcnow()
 
 
+def get_frontend_format_time(utc_date_time):
+    if utc_date_time is None:
+        return None
+
+    time_zone = config.TIME_ZONE.get('asia_taipei')
+    time_format = config.TIME_FORMAT.get('db_time_format')
+
+    naive_time = get_naive_time(utc_date_time.year, utc_date_time.month, utc_date_time.day,
+                                utc_date_time.hour, utc_date_time.minute, utc_date_time.second)
+
+    local_date_time = utc_to_locale_time(naive_time, time_zone)
+    str_time = date_time_to_time(local_date_time, time_format)
+    return str_time
+
+
 def compare_git_time(left, right):
     format = config.TIME_FORMAT.get('git_time_format')
     time_zone = -7

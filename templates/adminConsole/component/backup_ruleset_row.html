@@ -1,24 +1,23 @@
 {% load staticfiles %}
 {# normal template for ruleset row with checkbox / ruleset name / diff button #}
-<div id="{{ folder_name }}_{{ ruleset }}_checked_row_div">
+<div id="{{ backup_key }}_{{ ruleset }}_checked_row_div">
     <div class="rulesets_list_row_div row no-row-margin">
         <div class="content_text checkbox_space_set checkbox_rule_name check_width no-col-padding vertical_align_middle">
             <input type="checkbox" data-toggle="switch" name="{{ ruleset }}" value="{{ action }}"
                    data-on-color="primary"
                    data-off-color="default" id="switch-03"
-                   onchange="onSelectedRules(this,'{{ ruleset }}','{{ action }}')"
-                   onclick="onSelectedRules(this,'{{ ruleset }}','{{ action }}')"/>
+                   onclick="onSelectedRules(this,'{{ ruleset }}')"/>
         </div>
         <div id="row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
             {{ ruleset }}
         </div>
         <div id="row_action_div" class="content_text action_width">
-            <button class="btn btn-info btn-font-14 diff_button" onclick="rulesetDiffPage('{{ ruleset }}')">Diff</button>
+            <button class="btn btn-info btn-font-14 diff_button" onclick="openDiffResultPage('{% url 'ruleset-diff-backup-with-server' backup_key "target" ruleset %}')">Diff</button>
         </div>
     </div>
 </div>
 {# success recover template for ruleset row with success icon / ruleset name / successtext #}
-<div id="{{ folder_name }}_{{ ruleset }}_success_row_div" class="recover_success_div">
+<div id="{{ backup_key }}_{{ ruleset }}_success_row_div" class="recover_success_div">
     <div class="rulesets_list_row_div row no-row-margin">
         <div class="recover_success_icon content_text check_width no-col-padding vertical_align_middle">
             <span class="fui-check"></span>
@@ -31,15 +30,15 @@
     </div>
 </div>
 {# failed recover template for ruleset row with failed icon / ruleset name / fail message #}
-<div id="{{ folder_name }}_{{ ruleset }}_fail_row_div" class="recover_failed_div">
+<div id="{{ backup_key }}_{{ ruleset }}_fail_row_div" class="recover_failed_div">
     <div class="rulesets_list_row_div row no-row-margin">
         <div class="recover_failed_icon content_text checkbox_space_set checkbox_rule_name check_width no-col-padding vertical_align_middle">
             <span class="fui-cross"></span>
         </div>
-        <div id="{{ folder_name }}_{{ ruleset }}_row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
+        <div id="{{ backup_key }}_{{ ruleset }}_row_ruleset_name_div" class="row_ruleset_name vertical_align_middle ruleset_name_width">
             {{ ruleset }}
         </div>
-        <div id="{{ folder_name }}_{{ ruleset }}_row_exception_div" class="recover_failed_message message_width">
+        <div id="{{ backup_key }}_{{ ruleset }}_row_exception_div" class="recover_failed_message message_width">
             {{ exception }}
         </div>
     </div>

@@ -1,11 +1,16 @@
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
 from RulesetComparer.properties.config import *
+from RulesetComparer.models import Environment
 
 
 class EnvironmentBuilder(BaseBuilder):
-    def __init__(self, environment):
+
+    def __init__(self, id=None, environment=None):
         try:
-            self.environment = environment
+            if id is None:
+                self.environment = environment
+            else:
+                self.environment = Environment.objects.get(id=id)
             BaseBuilder.__init__(self)
         except Exception as e:
             raise e

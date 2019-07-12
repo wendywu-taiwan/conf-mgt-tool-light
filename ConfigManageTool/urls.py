@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+
 from RulesetComparer import views
 from django.conf.urls import url, include
 from django.contrib import admin
@@ -29,18 +30,32 @@ ruleset_b2b_pattern = [
     path('scheduler/sync/delete', views.delete_rulesets_sync_job, name="delete-rulesets-sync-job")
 ]
 
+ruleset_pattern = [
+    path('detail_download/<str:environment_id>/<str:country_id>/<str:ruleset_name>',
+         views.ruleset_detail_page, name="rule-detail-download"),
+    path('detail/<str:environment_id>/<str:country_id>/<str:ruleset_name>/<str:compare_key>',
+         views.ruleset_detail_page, name="rule-detail"),
+    path('detail_backup/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+         views.ruleset_detail_backup_page, name="rule-detail-backup"),
+    path('diff/<str:compare_key>/<str:ruleset_name>',
+         views.ruleset_diff_page, name="ruleset-diff-compare-result"),
+    path('diff/backup/<str:backup_key>/<str:ruleset_name>', views.ruleset_diff_backup_page, name="ruleset-diff-backup"),
+    path('diff/backup/with/server/<str:backup_key>/<str:backup_folder>/<str:ruleset_name>',
+         views.ruleset_diff_backup_with_server_page, name="ruleset-diff-backup-with-server"),
+    path('apply/to/server',
+         views.apply_ruleset_to_server, name="ruleset-apply-to-server"),
+]
+
 ruleset_download_pattern = [
     path('', views.rule_download_page, name="ruleset-download-page"),
+    path('filter/', views.rule_download_filter_page, name="ruleset-download-filter-page"),
     path('packed/', views.download_rulesets, name="packed-ruleset-download"),
 
 ]
 ruleset_comparer_pattern = [
     path('select/', views.environment_select_page, name="environment-select"),
-    path('detail/<str:environment_id>/<str:compare_key>/<str:rule_name>',
-         views.rule_detail_page, name="rule-detail"),
     path('diff/<str:compare_key>/<str:rule_name>',
          views.ruleset_diff_page, name="rule-diff"),
-    path('diff/', views.without_ruleset_diff_page, name="without-ruleset-diff-page"),
     path('report/mail/<str:compare_key>',
          views.send_mail, name="report-send"),
     path('report/download/<str:compare_key>',
@@ -63,10 +78,14 @@ admin_console_ruleset_pattern = [
          name="recover-filter-environment-page"),
     path('recover/filter/backup/list', views.admin_console_recover_ruleset_backup_list_page,
          name="recover-filter-backup-list-page"),
-    path('recover/filter/backup/ruleset/diff', views.backup_diff_page,
-         name="recover-filter-backup-ruleset-diff-page"),
     path('recover/rulesets', views.recover_rulesets,
          name="recover-rulesets"),
+    path('ruleset_log/list', views.admin_console_ruleset_log_list_page, name="ruleset-log-list"),
+    path('ruleset_log/list/filter', views.admin_console_ruleset_log_list_filter_page, name="ruleset-log-list-filter"),
+    path('ruleset_log/list/page', views.admin_console_ruleset_log_list_page_change, name="ruleset-log-list-page"),
+    path('ruleset_log/detail/<int:log_id>', views.admin_console_ruleset_log_detail_page, name="ruleset-log-detail"),
+    path('ruleset_log/detail/ruleset', views.get_ruleset, name="ruleset-log-detail-ruleset"),
+
 ]
 
 admin_console_pattern = [
@@ -92,6 +111,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('ConfigManageTool/ruleset/test/', include(ruleset_test_pattern)),
+    path('ConfigManageTool/ruleset/', include(ruleset_pattern)),
     path('ConfigManageTool/ruleset/b2b/', include(ruleset_b2b_pattern)),
     path('ConfigManageTool/ruleset/download/', include(ruleset_download_pattern)),
     path('ConfigManageTool/ruleset/compare/', include(ruleset_comparer_pattern)),

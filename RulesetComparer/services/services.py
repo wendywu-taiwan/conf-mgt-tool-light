@@ -1,9 +1,17 @@
 import traceback
 
 from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
+from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
+from RulesetComparer.dataModel.dataBuilder.rulesetDetailBuilder import RulesetDetailBuilder
+from RulesetComparer.dataModel.dataBuilder.filterRulesetDownloadPageBuilder import FilterRulesetDownloadPageBuilder
+from RulesetComparer.dataModel.rulesetLoader.gitRulesetLoader import GitRulesetLoader
+from RulesetComparer.dataModel.rulesetLoader.serverRulesetLoader import ServerRulesetLoader
+from RulesetComparer.dataModel.rulesetLoader.backupRulesetLoader import BackupRulesetLoader
+from RulesetComparer.models import Environment
 from RulesetComparer.utils.logger import *
-from RulesetComparer.utils.gitManager import GitManager
-from RulesetComparer.b2bRequestTask.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.dataModel.dataParser.rulesetDiffBackupParser import RulesetDiffBackupParser
+from RulesetComparer.dataModel.dataParser.rulesetDiffBackupWithServerParser import RulesetDiffBackupWithServerParser
+from RulesetComparer.dataModel.dataParser.rulesetDiffCompareResultParser import RulesetDiffCompareResultParser
 from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
@@ -15,8 +23,8 @@ from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
 from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadRulesetParser
 
-from RulesetComparer.utils import rulesetUtil, fileManager, stringFilter
-from RulesetComparer.services import rulesetSyncService, rulesetSyncSchedulerService, rulesetReportSchedulerService
+from RulesetComparer.utils import fileManager
+from RulesetComparer.services import rulesetSyncSchedulerService, rulesetReportSchedulerService
 from django.template.loader import get_template
 
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
@@ -56,44 +64,76 @@ def generate_compare_report(compare_key):
     fileManager.save_compare_result_html(compare_key, html)
 
 
-def get_filtered_ruleset_list(json_data):
-    try:
-        parser = GetFilteredRulesetParser(json_data)
-        if parser.is_git:
-            git_file_path = get_rule_set_git_path(parser.country.name)
-            rule_name_list = fileManager.get_rule_name_list(git_file_path)
-        else:
-            task = DownloadRuleListTask(parser.environment.id,
-                                        parser.country.id)
-            rule_name_list = task.get_result_data()
+def get_filtered_ruleset_page_data(json_data):
+    parser = GetFilteredRulesetParser(json_data)
 
-        filter_name_list = stringFilter.array_filter(rule_name_list, parser.filter_keys)
-        return filter_name_list
-    except Exception:
-        error_log(traceback.format_exc())
-        return traceback.print_exc()
+    if parser.is_git:
+        git_file_path = get_rule_set_git_path(parser.country.name)
+        rule_name_list = fileManager.get_rule_name_list(git_file_path)
+    else:
+        task = DownloadRuleListTask(parser.environment.id, parser.country.id)
+        rule_name_list = task.get_result_data()
+
+    builder = FilterRulesetDownloadPageBuilder(parser.country, parser.environment,
+                                               parser.filter_keys, rule_name_list)
+    return builder.get_data()
+
+
+def ruleset_detail_page_data(environment_id, country_id, ruleset_name, compare_key=None):
+    environment = Environment.objects.get(id=environment_id)
+    if environment.name == GIT_NAME:
+        ruleset_loader = GitRulesetLoader(country_id, ruleset_name, False)
+    else:
+        if compare_key is None:
+            compare_key = DownloadRulesetTask(environment_id, country_id, ruleset_name).compare_hash_key
+
+        ruleset_loader = ServerRulesetLoader(compare_key, environment_id,
+                                             country_id, ruleset_name)
+    return RulesetDetailBuilder(ruleset_loader).get_data()
+
+
+def ruleset_detail_backup_page_data(backup_key, backup_folder, ruleset_name):
+    ruleset_loader = BackupRulesetLoader(backup_key, backup_folder, ruleset_name)
+    return RulesetDetailBuilder(ruleset_loader).get_data()
 
 
 def download_rulesets(json_data):
     try:
         parser = DownloadRulesetParser(json_data)
-
-        if parser.environment.name == GIT.get("environment_name"):
-            # update git to latest code
-            manager = GitManager(get_ruleset_git_root_path(), settings.GIT_BRANCH_DEVELOP)
-            manager.pull()
-            resource_path = get_rule_set_git_path(parser.country.name)
-        else:
-            if parser.ruleset_exist is False:
-                task = DownloadRulesetsTask(parser.environment.id, parser.country.id, parser.rule_name_list,
-                                            parser.compare_hash_key)
-            resource_path = get_rule_set_path(parser.environment.name, parser.country.name, parser.compare_hash_key)
-
-        copied_path = get_rule_set_path(parser.environment.name, parser.country.name, parser.compare_hash_key * 2)
+        copied_key = hash(timeUtil.get_current_timestamp())
+        resource_path = parser.ruleset_resource_path
+        copied_path = get_rule_set_path(parser.environment.name, parser.country.name, copied_key)
         task = PackedRulesetsTask(parser.rule_name_xml_list, resource_path, copied_path)
         return task.zip_file
     except Exception:
         error_log(traceback.format_exc())
+
+
+# open diff page with compare result data
+def ruleset_diff_compare_result(compare_key, ruleset_name):
+    result_data = fileManager.load_compare_result_file(compare_key)
+    parser = RulesetDiffCompareResultParser(result_data, ruleset_name)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, parser.source_environment.name,
+                                     parser.target_environment.name, parser.ruleset_diff_data)
+    return builder.get_data()
+
+
+# open diff page with two backup rulesets compare data
+def ruleset_diff_backup(backup_key, ruleset_name):
+    parser = RulesetDiffBackupParser(backup_key, ruleset_name)
+    comparer = RulesetComparer(parser.ruleset_name, parser.source_ruleset_xml, parser.target_ruleset_xml, False)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, parser.source_environment.name,
+                                     parser.target_environment.name, comparer.get_diff_data())
+    return builder.get_data()
+
+
+# open diff page with backup ruleset compare with server ruleset data
+def ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name):
+    parser = RulesetDiffBackupWithServerParser(backup_key, backup_folder, ruleset_name)
+    comparer = RulesetComparer(parser.ruleset_name, parser.backup_ruleset_xml, parser.server_ruleset_xml, False)
+    builder = DiffRulesetPageBuilder(parser.ruleset_name, BACKUP_ENVIRONMENT_NAME, parser.environment.name,
+                                     comparer.get_diff_data())
+    return builder.get_data()
 
 
 def restart_all_scheduler():

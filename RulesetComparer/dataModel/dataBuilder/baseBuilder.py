@@ -19,3 +19,9 @@ class BaseBuilder:
     def get_data(self):
         return self.result_dict
 
+    @staticmethod
+    def parse_none(data):
+        if data is None:
+            return ""
+        else:
+            return data

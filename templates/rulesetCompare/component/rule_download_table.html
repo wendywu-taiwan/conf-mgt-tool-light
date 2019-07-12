@@ -13,9 +13,8 @@
                 </div>
                 <div id="row_action_div" class="action_space_set icon_div no-col-padding vertical_align_middle">
                     <div>
-                        <a href="" class="btn">
-                            <img class="detail_icon" src="{% static '/icons/details_yellow.png' %}">
-                        </a>
+                        <img class="detail_icon" src="{% static '/icons/details_yellow.png' %}"
+                             onclick="openNewPage('{% url 'rule-detail-download' environment.id country.id data %}')">
                     </div>
                 </div>
             </div>

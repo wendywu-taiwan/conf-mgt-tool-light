@@ -81,9 +81,16 @@
             <div id="action_checkbox_div" class="row no_row_margin">
                 {% for action in action_list %}
                     <div class="checkbox_input_div form-check form-check-inline">
-                        <input onclick="actionCheckboxOnChanged(this)" class="form-check-input checkbox_input"
-                               type="checkbox"
-                               id="action_{{ action }}" value="{{ action }}">
+                        {% if action == "delete" %}
+                            <input class="form-check-input checkbox_input"
+                                   disabled
+                                   type="checkbox"
+                                   id="action_{{ action }}" value="{{ action }}">
+                        {% else %}
+                            <input onclick="actionCheckboxOnChanged(this)" class="form-check-input checkbox_input"
+                                   type="checkbox"
+                                   id="action_{{ action }}" value="{{ action }}">
+                        {% endif %}
                         <label class="option_font_size form-check-label" for="action_{{ action }}"> {{ action }}</label>
                     </div>
                 {% endfor %}

@@ -2,7 +2,9 @@ import traceback
 import ast
 from RulesetComparer.properties import config
 from RulesetComparer.dataModel.dataBuilder.baseBuilder import BaseBuilder
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, ModuleSerializer
+from RulesetComparer.dataModel.dataBuilder.environmentBuilder import EnvironmentBuilder
+from RulesetComparer.dataModel.dataBuilder.countryBuilder import CountryBuilder
+from RulesetComparer.dataModel.dataBuilder.userBuilder import UserBuilder
 from RulesetComparer.utils.logger import *
 
 
@@ -15,21 +17,31 @@ class RulesetSyncSchedulerBuilder(BaseBuilder):
     def __generate_data__(self):
         try:
             self.__build_scheduler_json__()
-        except Exception:
-            self.result_dict[KEY_EXCEPTION] = self.scheduler
+        except Exception as e:
+            self.result_dict[KEY_EXCEPTION] = e
 
     def __build_scheduler_json__(self):
         self.result_dict[KEY_TASK_ID] = self.scheduler.id
-        self.result_dict[KEY_SOURCE_ENV] = EnvironmentSerializer(self.scheduler.source_environment).data
-        self.result_dict[KEY_TARGET_ENV] = EnvironmentSerializer(self.scheduler.target_environment).data
-        self.result_dict[KEY_COUNTRY_LIST] = CountrySerializer(self.scheduler.country_list, many=True).data
+        self.result_dict[KEY_SOURCE_ENV] = EnvironmentBuilder(environment=self.scheduler.source_environment).get_data()
+        self.result_dict[KEY_TARGET_ENV] = EnvironmentBuilder(environment=self.scheduler.target_environment).get_data()
+        self.result_dict[KEY_COUNTRY_LIST] = self.get_country_list()
         self.result_dict[ACTION_LIST] = self.get_action_list()
         self.result_dict[KEY_RECEIVER_LIST] = self.get_mail_list()
+        self.result_dict[KEY_CREATOR] = UserBuilder(self.scheduler.creator).get_data()
+        self.result_dict[KEY_EDITOR] = UserBuilder(self.scheduler.editor).get_data()
         self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
+        self.result_dict[KEY_CREATED_TIME] = self.get_format_time(self.scheduler.created_time)
+        self.result_dict[KEY_UPDATED_TIME] = self.get_format_time(self.scheduler.updated_time)
         self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
         self.result_dict[KEY_NEXT_PROCEED_TIME] = self.get_format_time(self.scheduler.next_proceed_time)
-        self.result_dict[KEY_BACKUP] = bool(self.scheduler.backup)
         self.result_dict[KEY_ENABLE] = bool(self.scheduler.enable)
+
+    def get_country_list(self):
+        country_list = []
+        for country in self.scheduler.country_list.all():
+            country_data = CountryBuilder(country).get_data()
+            country_list.append(country_data)
+        return country_list
 
     def get_mail_list(self):
         try:

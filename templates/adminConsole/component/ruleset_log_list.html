@@ -1,0 +1,142 @@
+{% load staticfiles %}
+{% load filters %}
+
+<div class="header_div row no-row-margin">
+    <div class="component_title">Ruleset Log</div>
+    {% if total_pages != 0 %}
+        <div id="ruleset_log_list_pager_div" class="vertical_align_middle">
+            <ul class="pagination-plain">
+                {% if page != 1 %}
+                    <li class="previous">
+                        <a href="javascript:changePage('{{ page|subtract:1 }}')"> << </a>
+                    </li>
+                    <li class="">
+                        <a href="javascript:changePage(1)"> 1 </a>
+                    </li>
+                    {% if page > 6 %}
+                        <li class="">
+                            <a href="#"> ... </a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+                {% for i in 'xxxx' %}
+                    {% if page|subtract:forloop.revcounter  > 1 %}
+                        <li>
+                            <a href="javascript:changePage('{{ page|subtract:forloop.revcounter }}')">{{ page|subtract:forloop.revcounter }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                <li class="active">
+                    <a href="javascript:changePage('{{ page }}')">{{ page }}</a>
+                </li>
+                {% for i in 'xxxx' %}
+                    {% if page|add:forloop.counter < total_pages %}
+                        <li>
+                            <a href="javascript:changePage('{{ page|add:forloop.counter }}')">{{ page|add:forloop.counter }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+                {% if page != total_pages %}
+                    {% if page < total_pages|subtract:5 %}
+                        <li class="">
+                            <a href="#"> ... </a>
+                        </li>
+                    {% endif %}
+                    <li class="">
+                        <a href="javascript:changePage('{{ total_pages }}')"> {{ total_pages }} </a>
+                    </li>
+                    <li class="next">
+                        <a href="javascript:changePage('{{ page|add:1 }}')"> >> </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+<div id="title_div" class="row no-row-margin">
+    <div id="title_status_div" class="status_width title_text vertical_align_middle">
+        Status
+    </div>
+    <div id="title_id_div" class="id_width title_text vertical_align_middle">
+        ID
+    </div>
+    <div id="title_date_div" class="date_width title_text vertical_align_middle">
+        Date
+    </div>
+    <div id="title_author_div" class="author_width title_text vertical_align_middle">
+        Author
+    </div>
+    <div id="title_action_div" class="action_width title_text vertical_align_middle">
+        Action
+    </div>
+    <div id="title_environment_div" class="environment_width title_text vertical_align_middle">
+        Source
+    </div>
+    <div id="title_environment_div" class="environment_width title_text vertical_align_middle">
+        Target
+    </div>
+    <div id="title_country_div" class="country_width title_text vertical_align_middle">
+        Country
+    </div>
+    <div id="title_ruleset_div" class="ruleset_width title_text_left vertical_align_middle">
+        Ruleset
+    </div>
+    <div id="title_button_div" class="button_width title_text vertical_align_middle">
+    </div>
+</div>
+<div id="log_list_div">
+    {% for data in ruleset_log_list %}
+        <div class="list_row_div row">
+            {% if data.status == "success" %}
+                <div class="list_status_div status_width vertical_align_middle list_text">
+                    <span class="icon_success fui-check"></span>
+                </div>
+            {% else %}
+                <div class="list_status_div status_width vertical_align_middle list_text">
+                    <span class="icon_failure fui-cross"></span>
+                </div>
+            {% endif %}
+            <div class="list_id_div id_width vertical_align_middle list_text">{{ data.log_id }}</div>
+            <div class="list_date_div date_width vertical_align_middle list_text">
+                {{ data.update_time }}
+            </div>
+            <div class="list_author_div author_width vertical_align_middle list_text">
+                {{ data.user_name }}
+            </div>
+            {% if data.action.name == "create" %}
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    {% include 'create_action_tag.html' %}
+                </div>
+            {% elif data.action.name == "update" %}
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    {% include 'update_action_tag.html' %}
+                </div>
+            {% else %}
+                <div class="list_action_div action_width vertical_align_middle list_text">
+                    {% include 'delete_action_tag.html' %}
+                </div>
+            {% endif %}
+            <div class="environment_width vertical_align_middle list_text">
+                {{ data.source_environment.name }}
+            </div>
+            <div class="environment_width vertical_align_middle list_text">
+                {{ data.target_environment.name }}
+            </div>
+            <div class="country_width vertical_align_middle row no-row-margin">
+                <div class="country_div">
+                    <img class="task_nation_flag"
+                         src="{% static '/icons/national_flag/'|add:data.country.icon_file_name %}">
+                    <div class="country_name_tips">{{ data.country.name }}</div>
+                </div>
+            </div>
+            <div class="list_text_left ruleset_width vertical_align_middle list_text_left">
+                {{ data.ruleset_name }}
+            </div>
+            <div class="list_button_div button_width vertical_align_middle">
+                <img class="more_icon_size"
+                     src="{% static '/icons/detail.png' %}" onclick="directToDetail('{% url 'ruleset-log-detail' data.log_id %}')">
+            </div>
+        </div>
+        <div class="task_divider"></div>
+    {% endfor %}
+</div>

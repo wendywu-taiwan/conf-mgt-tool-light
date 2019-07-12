@@ -16,9 +16,9 @@ html, body {
     overflow: scroll;
 }
 
-#search_bar_menu {
+#nav_bar_top_div {
     width: 100%;
-    height: 60px;
+    height: 40px;
     background-color: white;
     margin-left: 0px;
     margin-right: 0px;
@@ -40,22 +40,6 @@ html, body {
     width: 100%;
     padding-top: 30px;
     padding-bottom: 30px;
-}
-
-#search_bar_area {
-    margin-left: 5%;
-    margin-right: 20px;
-    width: 50%;
-}
-
-#search_icon_block {
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-right: 20px;
-}
-
-#search_icon {
-    width: 24px;
 }
 
 #next_icon_block {
@@ -302,7 +286,7 @@ html, body {
     margin-right: 10%;
 }
 
-#recover_icon{
+#recover_icon {
     width: 26px;
 }
 
@@ -411,26 +395,31 @@ html, body {
     margin-right: 15%;
 }
 
-#server_log_div {
-    margin-bottom: 5%;
-}
-
 #task_manager_div {
+    margin-top: 5%;
 }
 
-#task_manager_list_div {
+.manager_list_div {
     padding-left: 30%;
     padding-right: 20%;
     padding-top: 5px;
     padding-bottom: 5px;
 }
 
-#recover_function_div{
+#recover_function_div {
     margin-top: 5%;
+}
+
+#server_log_div {
+    margin-top: 10px;
 }
 
 #report_task_div {
     margin-top: 10px;
+}
+
+#ruleset_log_div {
+    margin-top: 15px;
 }
 
 #auto_sync_task_div {
@@ -442,6 +431,32 @@ html, body {
     font-size: 16px;
     font-family: sans-serif;
     font-weight: 800;
+}
+
+#login_info_div {
+    margin-left: auto;
+    margin-right: 3%;
+}
+
+#login_account_div {
+    font-size: 16px;
+    color: #22345d;
+    margin-right: 20px;
+}
+
+#dropdown_icon_span {
+    font-size: 12px;
+}
+
+#user_action_dropdown_div {
+    background-color: white;
+    font-size: 16px;
+}
+
+#user_action_dropdown_div a {
+    font-size: 16px;
+    margin: 5px;
+    color: #22345d;
 }
 
 /* end admin console create task */

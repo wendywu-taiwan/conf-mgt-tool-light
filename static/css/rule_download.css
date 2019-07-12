@@ -87,8 +87,8 @@
 
 #show_rule_name_list_div .rule_name_item {
     margin: auto;
-    margin-top: 4px;
-    margin-bottom: 4px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 #show_rule_name_list_div .checkbox_rule_name {
@@ -163,6 +163,7 @@
 
 #row_action_div .detail_icon {
     width: 24px;
+    cursor: pointer;
 }
 
 #rule_name_table_div .checkbox_space_set {

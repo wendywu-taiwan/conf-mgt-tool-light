@@ -1,11 +1,13 @@
 import traceback
 
+from RulesetComparer.dataModel.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
 from RulesetComparer.services import rulesetSyncService
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
 from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
+from django.contrib.auth.models import User
 
 
 class RulesetsSyncUpTask(BaseSchedulerTask):
@@ -25,8 +27,15 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
     def execute(self):
         for country in self.parser.country_list:
             try:
-                result_data = rulesetSyncService.sync_up_rulesets(self.parser, country)
-                rulesetSyncService.send_mail(result_data, self.parser.receiver_list)
+                task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
+                user = User.objects.get(username=USER_NAME_TASK_MANAGER)
+                rs_log_groups = RulesetLogGroupObj(self.parser, user, country)
+                rs_log_groups.set_task(task)
+                rs_log_groups.set_update_time(task.last_proceed_time)
+                rs_log_groups.log_group()
+
+                result_data = rulesetSyncService.sync_up_rulesets(rs_log_groups, self.parser, country)
+                rulesetSyncService.send_mail(result_data)
             except Exception as e:
                 error_log(e)
                 error_log(traceback.format_exc())

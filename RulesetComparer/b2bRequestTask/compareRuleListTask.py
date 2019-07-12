@@ -149,13 +149,13 @@ class CompareRuleListTask:
             else:
                 rule_list_item_parser.set_modify_rule(base_ruleset_object.get_rules_count(),
                                                       compare_ruleset_object.get_rules_count(),
-                                                      comparer.get_compare_key_count(),
-                                                      comparer.get_base_key_count(),
+                                                      comparer.get_target_only_count(),
+                                                      comparer.get_source_only_count(),
                                                       comparer.get_difference_count())
                 self.different_rulesets.append(rule_list_item_parser.get_data())
                 self.ruleset_diff_map[ruleset_name] = comparer.get_diff_data()
-                self.compare_env_only_rules_count += comparer.get_compare_key_count()
-                self.base_env_only_rules_count += comparer.get_base_key_count()
+                self.compare_env_only_rules_count += comparer.get_target_only_count()
+                self.base_env_only_rules_count += comparer.get_source_only_count()
                 self.different_rules_count += comparer.get_difference_count()
 
     def save_result_file(self):

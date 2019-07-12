@@ -9,6 +9,12 @@ from RulesetComparer.properties import config
 from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
 
 
+def load_rule_file_with_path(path, ruleset_name):
+    file_name_with_path = get_rule_set_full_file_name(path, ruleset_name)
+    rule_set_file = load_file(file_name_with_path)
+    return rule_set_file
+
+
 def load_rule_file_with_id(env_id, country_id, compare_key, rule_set_name):
     env = Environment.objects.get(id=env_id)
     country = Country.objects.get(id=country_id)
@@ -24,26 +30,30 @@ def load_ruleset_with_name(rule_set_name, env_name, country_name, compare_key):
 
 
 def load_server_ruleset_with_name(env_name, country_name, compare_key, rule_set_name):
-    file_path = get_rule_set_path(env_name,
-                                  country_name,
-                                  compare_key)
-    file_name_with_path = get_rule_set_full_file_name(file_path, rule_set_name)
-    rule_set_file = load_file(file_name_with_path)
-    return rule_set_file
+    file_path = get_rule_set_path(env_name, country_name, compare_key)
+    return load_rule_file_with_path(file_path, rule_set_name)
 
 
 def load_git_ruleset_with_name(country_name, rule_set_name):
     file_path = get_rule_set_git_path(country_name)
-    file_name_with_path = get_rule_set_full_file_name(file_path, rule_set_name)
-    rule_set_file = load_file(file_name_with_path)
-    return rule_set_file
+    return load_rule_file_with_path(file_path, rule_set_name)
+
+
+def load_backup_server_version_rs(backup_key, ruleset_name):
+    rs_path = get_rs_path_backup_server_version(backup_key, ruleset_name)
+    ruleset_xml = load_file(rs_path)
+    return ruleset_xml
+
+
+def load_backup_applied_version_rs(backup_key, ruleset_name):
+    rs_path = get_rs_path_backup_applied_version(backup_key, ruleset_name)
+    ruleset_xml = load_file(rs_path)
+    return ruleset_xml
 
 
 def load_backup_ruleset_with_name(env_name, country_name, selected_folder_name, ruleset_name):
     backup_folder_path = get_ruleset_backup_path(env_name, country_name, selected_folder_name)
-    file_name_with_path = get_rule_set_full_file_name(backup_folder_path, ruleset_name)
-    ruleset_file = load_file(file_name_with_path)
-    return ruleset_file
+    return load_rule_file_with_path(backup_folder_path, ruleset_name)
 
 
 def build_ruleset_xml(rule_model_list):

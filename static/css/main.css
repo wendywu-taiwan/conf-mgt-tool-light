@@ -359,11 +359,57 @@ html, body {
     margin-right: auto;
 }
 
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.custom_container {
+    padding: 20px;
+    height: 100%;
+}
+
 .admin_console_block_background {
     background-color: white;
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
-.cursor_pointer {
-    cursor: pointer;
+.white_block_div {
+    background-color: white;
+    box-shadow: 4px 8px 8px 0 rgba(50, 50, 50, .08);
+}
+
+
+.create_action_div {
+    border-color: #3cc8ab;
+    background: #3cc8ab;
+}
+
+.update_action_div {
+    border-color: #62c5d5;
+    background: #62c5d5;
+}
+
+.delete_action_div {
+    border-color: #f28379;
+    background: #f28379;
+}
+
+.action_div {
+    margin-left: auto;
+    border: 1px solid;
+    border-radius: 10px;
+    width: 80px;
+    color: white;
+    font-weight: 700;
+    padding-top: 2px;
+    font-size: 10px;
+    padding-bottom: 2px;
+    margin-right: auto;
+    font-family: inherit;
+    text-align: center;
+}
+
+.custom_button{
+    color: white;
+    background-color: #34619b;
 }

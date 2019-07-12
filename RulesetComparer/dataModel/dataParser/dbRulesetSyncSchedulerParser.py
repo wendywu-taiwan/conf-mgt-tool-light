@@ -19,7 +19,6 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.action_list = self.get_action_list(scheduler.action_list)
             self.action = SyncUpAction(self.action_list)
             self.interval_hour = scheduler.interval_hour
-            self.backup = self.parse_int_to_boolean(scheduler.backup)
             self.enable = self.parse_int_to_boolean(scheduler.enable)
             # time with timezone setting for task running
             self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
@@ -39,6 +38,10 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
 
     def parse_int_to_boolean(self, int_value):
         return super().parse_int_to_boolean(int_value)
+
+    def frontend_time_to_utc_time(self, frontend_time):
+        if frontend_time is not None:
+            return super().frontend_time_to_utc_time(frontend_time)
 
     def get_local_time_shift_days(self, start_date_time):
         local_date_time = self.db_time_to_date_time(start_date_time)

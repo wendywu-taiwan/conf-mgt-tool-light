@@ -8,8 +8,12 @@ function stopDialog() {
 }
 
 function showWaitingDialog() {
+    showDialog("Please Wait..");
+}
+
+function showDialog(title) {
     swal({
-        title: "Please Wait..",
+        title: title,
         imageUrl: "/static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
@@ -106,3 +110,26 @@ function openNewPageWithHTML(url, html) {
     var newWindows = window.open(url);
     newWindows.document.write(html);
 }
+
+function arrayRemove(arr, value) {
+    return arr.filter(function (ele) {
+        return ele != value;
+    });
+
+}
+
+openNewPage = function (url) {
+    showWaitingDialog();
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == null) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 500)
+                showErrorDialog(response["message"])
+        }
+    }, function (response) {
+        showErrorDialog(response);
+    });
+};

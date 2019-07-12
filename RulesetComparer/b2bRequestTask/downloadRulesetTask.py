@@ -3,6 +3,8 @@ from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 from RulesetComparer.dataModel.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
+from RulesetComparer.properties.apiResponse import RESPONSE_EXPORT_RULESET_NOT_FOUND
+from RulesetComparer.utils.timeUtil import get_current_timestamp
 
 
 class DownloadRulesetTask(BaseRequestTask):
@@ -15,11 +17,13 @@ class DownloadRulesetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
         self.ruleset_name = ruleset_name
         self.result_builder = None
+        if compare_hash_key is None:
+            compare_hash_key = hash(get_current_timestamp())
         self.compare_hash_key = compare_hash_key
-        self.saved_file = self.check_save_file()
+        self.ruleset_exist = True
 
         self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
-        self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, compare_hash_key)
+        self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, self.compare_hash_key)
         self.request_data()
 
     def request_data(self):
@@ -32,12 +36,16 @@ class DownloadRulesetTask(BaseRequestTask):
 
         info_log(self.LOG_CLASS, '======== download ruleset %s ========' % self.ruleset_name)
         response = self.client.service.exportRuleset(request_params)
+        response_message = response.message[0]
 
         if response.returnCode != 0:
             info_log(self.LOG_CLASS, "exportRuleset response loginId :" + str(response.loginId))
-            info_log(self.LOG_CLASS, "exportRuleset error message :" + str(response.message))
+            info_log(self.LOG_CLASS, "exportRuleset error message :" + str(response_message))
 
-        if self.saved_file:
+        if response_message.messageCode == RESPONSE_EXPORT_RULESET_NOT_FOUND:
+            self.ruleset_exist = False
+
+        if self.check_save_file():
             self.save_file(response, self.ruleset_name)
 
         self.b2b_response_data = response
@@ -56,7 +64,7 @@ class DownloadRulesetTask(BaseRequestTask):
         return super().get_result_data()
 
     def check_save_file(self):
-        if self.compare_hash_key is None:
+        if self.compare_hash_key is None or self.ruleset_exist is False:
             return False
         else:
             return True

@@ -19,9 +19,9 @@ class RulesCompareModel(BaseBuilder):
             self.get_rules_compared_json(self.compare_env, self.comparer.get_right_rules_array())),
 
         base_env_data = self.get_rules_compared_json(self.base_env,
-                                                     self.comparer.get_base_rules_array())
+                                                     self.comparer.get_source_rules_array())
         compared_env_data = self.get_rules_compared_json(self.compare_env,
-                                                         self.comparer.get_compared_rules_array())
+                                                         self.comparer.get_target_rules_array())
         dictionary = {
             key.RULE_SET_NAME: self.rule_set_name,
             key.RULE_SET_BASE_ONLY_DATA: base_env_data,

@@ -75,8 +75,8 @@ createTask = function () {
         "action_list": actionList,
         "receiver_list": mailList,
         "interval_hour": intervalHour,
-        "next_proceed_time": startDateTime,
-        "backup": backup
+        "created_time":getCurrentDataTime(),
+        "next_proceed_time": startDateTime
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -108,7 +108,7 @@ updateTask = function (task_id) {
         "receiver_list": mailList,
         "interval_hour": intervalHour,
         "next_proceed_time": startDateTime,
-        "backup": backup
+        "updated_time":getCurrentDataTime()
     };
 
     doPOST(postUrl, post_body, function (response) {

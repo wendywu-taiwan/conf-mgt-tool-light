@@ -37,16 +37,39 @@
             </div>
         </div>
         <div id="function_list">
-            <div id="server_log_div" class="function_div">
-                <a href="{% url 'server-log' %}">
+             <div id="log_manager_div" class="function_div">
+                <a data-toggle="collapse" href="#log_manager_list_div" role="button" aria-expanded="false"
+                   aria-controls="log_manager_list_div">
                     <div class="row no-row-margin">
                         <div class="function_icon_div">
                             <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
                         </div>
-                        <div class="function_text vertical_align_middle">Server Log</div>
+                        <div class="function_text vertical_align_middle">Log Manager</div>
                     </div>
                 </a>
             </div>
+            <div id="log_manager_list_div" class="manager_list_div collapse multi-collapse">
+                <div id="server_log_div">
+                    <a href="{% url 'server-log' %}">
+                        <div class="sub_function_text vertical_align_middle">Server Log</div>
+                    </a>
+                </div>
+                <div id="ruleset_log_div">
+                    <a href="{% url 'ruleset-log-list' %}">
+                        <div class="sub_function_text vertical_align_middle">Ruleset Log</div>
+                    </a>
+                </div>
+            </div>
+{#            <div id="server_log_div" class="function_div">#}
+{#                <a href="{% url 'server-log' %}">#}
+{#                    <div class="row no-row-margin">#}
+{#                        <div class="function_icon_div">#}
+{#                            <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">#}
+{#                        </div>#}
+{#                        <div class="function_text vertical_align_middle">Server Log</div>#}
+{#                    </div>#}
+{#                </a>#}
+{#            </div>#}
             <div id="task_manager_div" class="function_div">
                 <a data-toggle="collapse" href="#task_manager_list_div" role="button" aria-expanded="false"
                    aria-controls="task_manager_list_div">
@@ -58,7 +81,7 @@
                     </div>
                 </a>
             </div>
-            <div id="task_manager_list_div" class="collapse multi-collapse">
+            <div id="task_manager_list_div" class="manager_list_div collapse multi-collapse">
                 <div id="report_task_div">
                     <a href="{% url 'report-scheduler-list' %}">
                         <div class="sub_function_text vertical_align_middle">ReportTask</div>
@@ -83,13 +106,21 @@
         </div>
     </div>
     <div id="right_area">
-        <div id="search_bar_menu" class="row">
-            <div id="search_bar_area" class="row">
-                <div id="search_icon_block">
-                    <img id="search_icon" src="{% static '/icons/search.png' %}">
+        <div id="nav_bar_top_div" class="row no-row-margin">
+            <div id="login_info_div" class="row no-row-margin" data-toggle="dropdown">
+
+                <div id="login_account_div" class="vertical_align_middle">{{ user_name }}</div>
+                <div id="dropdown_option_div" class="vertical_align_middle">
+                    <span id="dropdown_icon_span" class="fui-triangle-down"></span>
                 </div>
-                <div id="search_bar_input_block">
-                    <input id="search_bar_input" type="text" class="form-control">
+                <div id="user_action_dropdown_div" class="dropdown-menu" aria-labelledby="login_info_div">
+                    <li>
+                        <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
+                            Password</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'logout' %}" id="logout_link" class="dropdown-item">Log Out</a>
+                    </li>
                 </div>
             </div>
         </div>
@@ -101,4 +132,9 @@
     {% csrf_token %}
 </div>
 </body>
+<script>
+    $('#user_action_dropdown_div a').on('click', function () {
+        self.location = $(this).attr('href');
+    });
+</script>
 </html>

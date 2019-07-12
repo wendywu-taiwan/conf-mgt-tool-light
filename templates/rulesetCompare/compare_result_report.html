@@ -1191,7 +1191,7 @@
             <div id="rule_value_line" class="row rule_data_line">
                 <div class="rule_data_title">Rule Value</div>
                 <div class="col-9 rule_data_value">
-                    {% for value in data.value|get_array_split_by_comma %}
+                {% for value in data.value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1200,7 +1200,7 @@
             <div id="rule_expression_line" class="row rule_data_line">
                 <div class="rule_data_title">Rule Expression</div>
                 <div class="col-9 rule_data_value">
-                    {% for expression in data.expression|get_array_split_by_comma %}
+                {% for expression in data.expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1261,7 +1261,7 @@
             <div class="row rule_data_line">
                 <div class="rule_data_title">Rule Value</div>
                 <div class="col-9 rule_data_value">
-                    {% for value in data.value|get_array_split_by_comma %}
+                {% for value in data.value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1270,7 +1270,7 @@
             <div class="row rule_data_line">
                 <div class="rule_data_title">Rule Expression</div>
                 <div class="col-9 rule_data_value">
-                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {% for expression in data.expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1370,7 +1370,7 @@
                 <div class="rule_data_title">Rule Value</div>
                 <div class="rule_data_value"></div>
                 <div class="rule_data_value">
-                    {% for value in data.value|get_array_split_by_comma %}
+                    {% for value in data.value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1383,7 +1383,7 @@
                 <div class="rule_data_title">Rule Expression</div>
                 <div class="rule_data_value"></div>
                 <div class="rule_data_value">
-                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {% for expression in data.expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1463,7 +1463,7 @@
             <div class="row rule_data_line">
                 <div class="rule_data_title">Rule Value</div>
                 <div class="rule_data_value">
-                    {% for value in data.value|get_array_split_by_comma %}
+                    {% for value in data.value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1476,7 +1476,7 @@
             <div class="row rule_data_line">
                 <div class="rule_data_title">Rule Expression</div>
                 <div class="rule_data_value">
-                    {% for expression in data.expression|get_array_split_by_comma %}
+                    {% for expression in data.expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1559,7 +1559,7 @@
                 <div class="rule_data_title">Rule Value</div>
                 {% if data.base_value %}
                 <div class="highlight_data_value">
-                    {% for value in data.base_value|get_array_split_by_comma %}
+                    {% for value in data.base_value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1568,7 +1568,7 @@
                 {% endif %}
                 {% if data.compare_value %}
                 <div class="highlight_data_value">
-                    {% for value in data.compare_value|get_array_split_by_comma %}
+                    {% for value in data.compare_value %}
                     {{ value }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1584,7 +1584,7 @@
                 <div class="rule_data_title">Rule Expression</div>
                 {% if data.base_expression %}
                 <div class="highlight_data_value">
-                    {% for expression in data.base_expression|get_array_split_by_comma %}
+                    {% for expression in data.base_expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>
@@ -1593,7 +1593,7 @@
                 {% endif %}
                 {% if data.compare_expression %}
                 <div class="highlight_data_value">
-                    {% for expression in data.compare_expression|get_array_split_by_comma %}
+                    {% for expression in data.compare_expression %}
                     {{ expression }}{% if not forloop.last %},<br/>{% endif %}
                     {% endfor %}
                 </div>

@@ -55,6 +55,14 @@ class BaseReportSchedulerParser:
         date_time = timeUtil.time_to_date_time(start_date_time, frontend_time_format)
         return timeUtil.date_time_change_time_zone(date_time, time_zone)
 
+    @staticmethod
+    def frontend_time_to_utc_time(frontend_time):
+        time_zone = config.TIME_ZONE.get('asia_taipei')
+        frontend_time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
+        date_time = timeUtil.time_to_date_time(frontend_time, frontend_time_format)
+        utc_time = timeUtil.local_time_to_utc(date_time, time_zone)
+        return utc_time
+
     def get_local_time_shift_days(self, local_date_time):
         current_date_time = timeUtil.get_current_date_time()
 
