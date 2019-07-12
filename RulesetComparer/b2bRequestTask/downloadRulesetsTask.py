@@ -48,7 +48,6 @@ class DownloadRulesetsTask(BaseRequestTask):
         return super().get_result_data()
 
     def save_file(self, response_xml, ruleset_name):
-
         ruleset_xml = response_xml.payload[response_xml.payload.index('<BRERuleList'):]
 
         # replace xml tag
@@ -56,6 +55,5 @@ class DownloadRulesetsTask(BaseRequestTask):
         new_ruleset_xml = build_ruleset_xml(ruleset_list)
 
         # save file
-        # payload = response_xml.payload[response_xml.payload.index('<BRERuleList'):]
         fileManager.create_folder(self.file_name_with_path)
         fileManager.save_file(get_rule_set_full_file_name(self.file_name_with_path, ruleset_name), new_ruleset_xml)
