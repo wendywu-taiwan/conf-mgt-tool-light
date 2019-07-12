@@ -2,12 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-# Create your models here.
-
-def get_default_user_id():
-    return User.objects.get(username="wendy.wu").id
-
-
 class CountryManager(models.Manager):
     def create_country(self, name, full_name, icon_file_name):
         country = self.create(name=name, full_name=full_name, icon_file_name=icon_file_name)
