@@ -107,13 +107,17 @@ def init_auth_user_data(auth_user_data):
             is_superuser = user.get("is_superuser")
             is_staff = user.get("is_staff")
             is_active = user.get("is_active")
-            user_obj, created = User.objects.update_or_create(username=username,
-                                                              email=email,
+
+            if User.objects.filter(username=username).exists():
+                User.objects.filter(username=username).update(email=email,
+                                                              password=password,
                                                               is_superuser=is_superuser,
-                                                              is_staff=is_staff,
                                                               is_active=is_active)
-            user_obj.set_password(password)
-            user_obj.save()
+            else:
+                user_obj = User.objects.create(username=username, email=email, is_superuser=is_superuser,
+                                               is_staff=is_staff, is_active=is_active)
+                user_obj.set_password(password)
+                user_obj.save()
         info_log(LOG_CLASS, "init auth user data success")
         return True
     except Exception as e:
@@ -125,7 +129,12 @@ def init_mail_content_type_data(mail_content_types):
         for mail_content_type in mail_content_types:
             name = mail_content_type["name"]
             title = mail_content_type["title"]
-            MailContentType.objects.update_or_create(name=name, title=title)
+
+            if MailContentType.objects.filter(name=name).exists():
+                MailContentType.objects.filter(name=name).update(title=title)
+            else:
+                MailContentType.objects.create(name=name, title=title)
+
         info_log(LOG_CLASS, "init mail content data success")
         return True
     except Exception as e:
@@ -138,7 +147,12 @@ def init_country_data(country_list):
             name = country_obj["name"]
             full_name = country_obj["full_name"]
             icon_file_name = country_obj["icon_file_name"]
-            Country.objects.update_or_create(name=name, full_name=full_name, icon_file_name=icon_file_name)
+
+            if Country.objects.filter(name=name, full_name=full_name).exists():
+                Country.objects.filter(name=name).update(full_name=full_name, icon_file_name=icon_file_name)
+            else:
+                Country.objects.create(name=name, full_name=full_name, icon_file_name=icon_file_name)
+
         info_log(LOG_CLASS, "init country data success")
         return True
     except Exception as e:
@@ -151,7 +165,10 @@ def init_environment_data(environment_data):
             name = environment_obj.get("name")
             full_name = environment_obj.get("full_name")
             active = environment_obj.get("active")
-            Environment.objects.update_or_create(name=name, full_name=full_name, active=active)
+            if Environment.objects.filter(name=name).exists():
+                Environment.objects.filter(name=name).update(full_name=full_name, active=active)
+            else:
+                Environment.objects.create(name=name, full_name=full_name, active=active)
         info_log(LOG_CLASS, "init environment data success")
         return True
     except Exception as e:
@@ -163,7 +180,11 @@ def init_function_data(function_data):
         for function_obj in function_data:
             name = function_obj["name"]
             icon_file_name = function_obj["icon_file_name"]
-            Function.objects.update_or_create(name=name, icon_file_name=icon_file_name)
+
+            if Function.objects.filter(name=name).exists():
+                Function.objects.filter(name=name).update(icon_file_name=icon_file_name)
+            else:
+                Function.objects.create(name=name, icon_file_name=icon_file_name)
         info_log(LOG_CLASS, "init function data success")
         return True
     except Exception as e:
@@ -174,8 +195,12 @@ def init_module_data(module_data):
     try:
         for module_obj in module_data:
             name = module_obj['name']
-            result_tuple = Module.objects.update_or_create(name=name)
-            module = result_tuple[0]
+
+            if Module.objects.filter(name=name).exists():
+                module = Module.objects.get(name=name)
+            else:
+                module = Module.objects.create(name=name)
+
             function_list = module_obj['functions']
             for function_name in function_list:
                 db_function = Function.objects.get(name=function_name)
@@ -193,8 +218,12 @@ def init_user_role_data(user_role_data):
     try:
         for user_role_obj in user_role_data:
             name = user_role_obj['name']
-            result_tuple = UserRole.objects.update_or_create(name=name)
-            user_role = result_tuple[0]
+
+            if UserRole.objects.filter(name=name).exists():
+                user_role = UserRole.objects.get(name=name)
+            else:
+                user_role = UserRole.objects.create(name=name)
+
             module_list = user_role_obj['modules']
             for module_name in module_list:
                 db_module = Module.objects.get(name=module_name)
@@ -211,8 +240,11 @@ def init_data_center(data_center_data):
     try:
         for data_center_obj in data_center_data:
             name = data_center_obj['name']
-            DataCenter.objects.update_or_create(name=name)
 
+            if DataCenter.objects.filter(name=name).exists():
+                pass
+            else:
+                DataCenter.objects.create(name=name)
         info_log(LOG_CLASS, "init data center data success")
         return True
     except Exception as e:
@@ -224,7 +256,11 @@ def init_b2b_service(b2b_service_data):
         for b2b_service_obj in b2b_service_data:
             name = b2b_service_obj['name']
             url = b2b_service_obj['url']
-            B2BService.objects.update_or_create(name=name, url=url)
+
+            if B2BService.objects.filter(name=name).exists():
+                B2BService.objects.filter(name=name).update(url=url)
+            else:
+                B2BService.objects.create(name=name, url=url)
 
         info_log(LOG_CLASS, "init b2b service data success")
         return True
@@ -237,7 +273,11 @@ def init_b2b_client(b2b_client_data):
         for b2b_client_obj in b2b_client_data:
             data_center = DataCenter.objects.get(name=b2b_client_obj["data_center"])
             url = b2b_client_obj["url"]
-            B2BClient.objects.update_or_create(data_center=data_center, url=url)
+
+            if B2BClient.objects.filter(data_center=data_center).exists():
+                B2BClient.objects.filter(data_center=data_center).update(url=url)
+            else:
+                B2BClient.objects.create(data_center=data_center, url=url)
 
         info_log(LOG_CLASS, "init b2b client data success")
         return True
@@ -253,7 +293,11 @@ def init_b2b_server(b2b_server_data):
             b2b_client = B2BClient.objects.get(url=b2b_server_obj["b2b_client_url"])
             for country_name in country_name_list:
                 country = Country.objects.get(name=country_name)
-                B2BServer.objects.update_or_create(country=country, environment=environment, client=b2b_client)
+
+                if B2BServer.objects.filter(country=country, environment=environment).exists():
+                    B2BServer.objects.filter(country=country, environment=environment).update(client=b2b_client)
+                else:
+                    B2BServer.objects.create(country=country, environment=environment, client=b2b_client)
 
         info_log(LOG_CLASS, "init b2b server data success")
         return True
@@ -266,8 +310,11 @@ def init_ruleset_action(ruleset_action_data):
         for ruleset_action in ruleset_action_data:
             name = ruleset_action["name"]
             capital_name = ruleset_action["capital_name"]
-            RulesetAction.objects.update_or_create(name=name, capital_name=capital_name)
 
+            if RulesetAction.objects.filter(name=name).exists():
+                RulesetAction.objects.filter(name=name).update(capital_name=capital_name)
+            else:
+                RulesetAction.objects.create(name=name, capital_name=capital_name)
         info_log(LOG_CLASS, "init ruleset action data success")
         return True
     except Exception as e:
