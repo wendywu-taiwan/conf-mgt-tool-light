@@ -417,9 +417,6 @@
       "environment": {
         "update_time": "2019-7-12 17:50:00"
       },
-      "b2b_client": {
-        "update_time": "2019-7-12 17:50:00"
-      },
       "function": {
         "update_time": "2019-7-12 17:50:00"
       },
@@ -429,10 +426,13 @@
       "user_role": {
         "update_time": "2019-7-12 17:50:00"
       },
-      "b2b_service": {
+      "data_center": {
         "update_time": "2019-7-12 18:00:00"
       },
-      "data_center": {
+      "b2b_client": {
+        "update_time": "2019-7-12 18:18:00"
+      },
+      "b2b_service": {
         "update_time": "2019-7-12 18:00:00"
       },
       "b2b_server": {
