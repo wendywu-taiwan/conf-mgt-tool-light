@@ -336,7 +336,10 @@ def get_db_date_time(time):
 def update_local_time(update_time_data, table_name):
     new_date_time = get_date_time(update_time_data[table_name]["update_time"])
     info_log(LOG_CLASS, "update " + table_name + " time:" + str(new_date_time))
-    DataUpdateTime.objects.update_or_create(table=table_name, update_time=new_date_time)
+    if DataUpdateTime.objects.filter(table=table_name).exists():
+        DataUpdateTime.objects.filter(table=table_name).update(update_time=new_date_time)
+    else:
+        DataUpdateTime.objects.create(table=table_name, update_time=new_date_time)
 
 
 def has_update(update_time_data, table_name):
