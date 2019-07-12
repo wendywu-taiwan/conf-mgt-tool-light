@@ -44,7 +44,7 @@ def admin_console_page(request):
     return render(request, "admin_console_base.html", add_user_information(request, result))
 
 
-@login_required
+# @login_required
 def admin_console_server_log_page(request, log_type=None):
     try:
         if log_type is None:

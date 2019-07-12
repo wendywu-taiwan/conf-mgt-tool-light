@@ -31,6 +31,7 @@ def init_data():
         update_time_data = ruleset_data["update_time"]
 
         if has_update(update_time_data, KEY_AUTH_USER):
+            info_log(LOG_CLASS, "auth_user has update")
             update_auth_user = init_auth_user_data(ruleset_data[KEY_AUTH_USER])
             if update_auth_user:
                 update_local_time(update_time_data, KEY_AUTH_USER)
@@ -46,6 +47,7 @@ def init_data():
                 update_local_time(update_time_data, KEY_COUNTRY)
 
         if has_update(update_time_data, KEY_ENVIRONMENT):
+            info_log(LOG_CLASS, "environment has update")
             update_environment = init_environment_data(ruleset_data[KEY_ENVIRONMENT])
             if update_environment:
                 update_local_time(update_time_data, KEY_ENVIRONMENT)
@@ -86,6 +88,7 @@ def init_data():
                 update_local_time(update_time_data, KEY_B2B_SERVER)
 
         if has_update(update_time_data, KEY_RULESET_ACTION):
+            info_log(LOG_CLASS, "rulesetaction has update")
             update_ruleset_action = init_ruleset_action(ruleset_data[KEY_RULESET_ACTION])
             if update_ruleset_action:
                 update_local_time(update_time_data, KEY_RULESET_ACTION)
@@ -96,12 +99,9 @@ def init_data():
 
 def init_auth_user_data(auth_user_data):
     try:
+
         for user in auth_user_data:
             username = user.get("username")
-
-            if User.objects.filter(username=username).count() > 0:
-                continue
-
             password = user.get("password")
             email = user.get("email")
             is_superuser = user.get("is_superuser")
