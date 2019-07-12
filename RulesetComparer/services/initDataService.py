@@ -294,7 +294,7 @@ def update_local_time(update_time_data, table_name):
 
 def has_update(update_time_data, table_name):
     local_update_time_obj = DataUpdateTime.objects.get_data_update_time(table_name)
-
+    info_log(LOG_CLASS, "has_update , table_name:" + table_name + ", time:" + local_update_time_obj)
     if local_update_time_obj is None:
         return True
 
