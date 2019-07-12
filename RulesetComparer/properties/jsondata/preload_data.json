@@ -158,42 +158,42 @@
       {
         "full_name": "production",
         "name": "PROD",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "production2",
         "name": "PROD2",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "cae",
         "name": "CAE",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "ct",
         "name": "CT",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "int1",
         "name": "INT1",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "int2",
         "name": "INT2",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "git",
         "name": "GIT",
-        "active": true
+        "active": 1
       },
       {
         "full_name": "system backup",
         "name": "Backup",
-        "active": false
+        "active": 0
       }
     ],
     "b2b_client": [
@@ -406,40 +406,40 @@
     ],
     "update_time": {
       "auth_user": {
-        "update_time": "2019-6-28 18:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "mail_content_type": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "country": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "environment": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "b2b_client": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "function": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "module": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "user_role": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "b2b_service": {
-        "update_time": "2019-7-1 13:30:00"
+        "update_time": "2019-7-12 17:30:00"
       },
       "data_center": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "b2b_server": {
-        "update_time": "2019-7-1 13:00:00"
+        "update_time": "2019-7-12 17:00:00"
       },
       "ruleset_action": {
-        "update_time": "2019-6-28 18:00:00"
+        "update_time": "2019-7-12 17:00:00"
       }
     }
   }

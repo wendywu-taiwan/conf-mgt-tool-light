@@ -151,10 +151,6 @@ def init_environment_data(environment_data):
             name = environment_obj.get("name")
             full_name = environment_obj.get("full_name")
             active = environment_obj.get("active")
-            if active:
-                active = 1
-            else:
-                active = 0
             Environment.objects.update_or_create(name=name, full_name=full_name, active=active)
         info_log(LOG_CLASS, "init environment data success")
         return True
@@ -291,15 +287,9 @@ def get_db_date_time(time):
 
 
 def update_local_time(update_time_data, table_name):
-    local_update_time = DataUpdateTime.objects.get_data_update_time(table_name)
-
     new_date_time = get_date_time(update_time_data[table_name]["update_time"])
     info_log(LOG_CLASS, "update " + table_name + " time:" + str(new_date_time))
-    if local_update_time is None:
-        DataUpdateTime.objects.create(table=table_name, update_time=new_date_time)
-    else:
-        local_update_time.update_time = new_date_time
-        local_update_time.save()
+    DataUpdateTime.objects.update_or_create(table=table_name, update_time=new_date_time)
 
 
 def has_update(update_time_data, table_name):
