@@ -107,11 +107,11 @@ def init_auth_user_data(auth_user_data):
             is_superuser = user.get("is_superuser")
             is_staff = user.get("is_staff")
             is_active = user.get("is_active")
-            user_obj = User.objects.update_or_create(username=username,
-                                                     email=email,
-                                                     is_superuser=is_superuser,
-                                                     is_staff=is_staff,
-                                                     is_active=is_active)
+            user_obj, created = User.objects.update_or_create(username=username,
+                                                              email=email,
+                                                              is_superuser=is_superuser,
+                                                              is_staff=is_staff,
+                                                              is_active=is_active)
             user_obj.set_password(password)
             user_obj.save()
         info_log(LOG_CLASS, "init auth user data success")
