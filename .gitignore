@@ -9,6 +9,6 @@ RulesetComparer/compare_result
 RulesetComparer/serverlog
 db.sqlite3
 auth_data.json
-RulesetComparer/rulesets/zip
 RulesetComparer/migrations
 RulesetComparer/rulesets/backup
+RulesetComparer/rulesets/zip/*.zip
