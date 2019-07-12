@@ -59,7 +59,6 @@ class RuleModel(BaseModel):
         etree.SubElement(rule, XMLKey.CREATED_BY).text = 'mid_Member.Manager'
         etree.SubElement(rule, XMLKey.LAST_UPDATE_DBY).text = 'mid_Member.Manager'
 
-        # logger.info_log("RuleModel", etree.tostring(rule, pretty_print=True))
         return rule
 
     def _gen_combined_key(self):

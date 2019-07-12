@@ -1,7 +1,7 @@
 from django.template.loader import render_to_string
 
 from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
-from RulesetComparer.dataModel.dataObject.rulesetLogGroupObj import RulesetLogGroup, RulesetLogGroupObj
+from RulesetComparer.dataModel.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.rulesetUtil import *
@@ -184,11 +184,6 @@ def backup_rulesets(backup_key, sync_up_pre_json):
         else:
             source_rs_path = get_rule_set_path(source_env_name, country_name, compare_key)
         source_rs_backup_path = get_backup_path_applied_version(backup_key)
-
-        info_log("backup rulesets", "server_rs_path : " + server_rs_path)
-        info_log("backup rulesets", "source_rs_path : " + source_rs_path)
-        info_log("backup rulesets", "server_rs_backup_path : " + server_rs_backup_path)
-        info_log("backup rulesets", "source_rs_backup_path : " + source_rs_backup_path)
 
         # backup source environment only rs (it will create new ruleset to target env)
         for ruleset_obj in source_env_only_rulesets:
