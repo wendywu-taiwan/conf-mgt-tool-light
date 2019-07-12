@@ -109,10 +109,10 @@ def init_auth_user_data(auth_user_data):
             is_active = user.get("is_active")
 
             if User.objects.filter(username=username).exists():
-                User.objects.filter(username=username).update(email=email,
-                                                              password=password,
-                                                              is_superuser=is_superuser,
-                                                              is_active=is_active)
+                user_obj = User.objects.get(username=username)
+                user_obj.set_password(password)
+                user_obj.email = email
+                user_obj.save()
             else:
                 user_obj = User.objects.create(username=username, email=email, is_superuser=is_superuser,
                                                is_staff=is_staff, is_active=is_active)
