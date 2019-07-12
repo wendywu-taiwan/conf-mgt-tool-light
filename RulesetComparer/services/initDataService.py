@@ -257,8 +257,8 @@ def init_b2b_service(b2b_service_data):
             name = b2b_service_obj['name']
             url = b2b_service_obj['url']
 
-            if B2BService.objects.filter(name=name).exists():
-                B2BService.objects.filter(name=name).update(url=url)
+            if B2BService.objects.filter(url=url).exists():
+                pass
             else:
                 B2BService.objects.create(name=name, url=url)
 
@@ -274,8 +274,8 @@ def init_b2b_client(b2b_client_data):
             data_center = DataCenter.objects.get(name=b2b_client_obj["data_center"])
             url = b2b_client_obj["url"]
 
-            if B2BClient.objects.filter(data_center=data_center).exists():
-                B2BClient.objects.filter(data_center=data_center).update(url=url)
+            if B2BClient.objects.filter(url=url).exists():
+                pass
             else:
                 B2BClient.objects.create(data_center=data_center, url=url)
 
