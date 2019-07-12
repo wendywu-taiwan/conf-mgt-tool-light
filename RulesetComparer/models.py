@@ -342,9 +342,9 @@ class RulesetSyncUpScheduler(models.Model):
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField(default=1)
-    creator = models.ForeignKey(User, default=get_default_user_id, related_name='task_creator',
+    creator = models.ForeignKey(User, null=True, related_name='task_creator',
                                 on_delete=models.PROTECT)
-    editor = models.ForeignKey(User, default=get_default_user_id, related_name='task_editor', on_delete=models.PROTECT)
+    editor = models.ForeignKey(User, null=True, related_name='task_editor', on_delete=models.PROTECT)
     created_time = models.DateTimeField(null=True)
     updated_time = models.DateTimeField(null=True)
 
@@ -380,7 +380,7 @@ class RulesetLogGroup(models.Model):
                                            on_delete=models.PROTECT, null=True)
     target_environment = models.ForeignKey(Environment, related_name='rs_log_group_target_env',
                                            on_delete=models.PROTECT)
-    author = models.ForeignKey(User, default=get_default_user_id, related_name='rs_log_group_author', null=True,
+    author = models.ForeignKey(User, related_name='rs_log_group_author', null=True,
                                on_delete=models.PROTECT)
     country = models.ForeignKey(Country, related_name='rs_log_group_country', on_delete=models.PROTECT)
     commit_sha = models.CharField(max_length=128, null=True)
