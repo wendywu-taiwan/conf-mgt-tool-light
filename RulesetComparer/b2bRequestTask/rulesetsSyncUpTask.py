@@ -35,7 +35,7 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
                 rs_log_groups.log_group()
 
                 result_data = rulesetSyncService.sync_up_rulesets(rs_log_groups, self.parser, country)
-                rulesetSyncService.send_mail(result_data)
+                rulesetSyncService.send_mail(result_data, self.parser.receiver_list)
             except Exception as e:
                 error_log(e)
                 error_log(traceback.format_exc())
