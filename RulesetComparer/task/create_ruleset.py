@@ -1,15 +1,16 @@
-from RulesetComparer.task.baseRequestTask import BaseRequestTask
+from RulesetComparer.task.base_request import BaseRequestTask
 from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder
 
 
-class ClearRulesetTask(BaseRequestTask):
-    LOG_CLASS = "ClearRulesetTask"
+class CreateRulesetTask(BaseRequestTask):
+    LOG_CLASS = "CreateRulesetTask"
 
-    def __init__(self, target_environment, country, ruleset_name):
+    def __init__(self, target_environment, country, ruleset_name, ruleset_xml):
         BaseRequestTask.__init__(self)
         self.ruleset_name = ruleset_name
+        self.ruleset_xml = ruleset_xml
         self.parse_data(target_environment.id, country.id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.request_data()
 
@@ -20,22 +21,24 @@ class ClearRulesetTask(BaseRequestTask):
         super().request_data()
 
     def execute(self):
-        info_log(self.LOG_CLASS, '======== clear ruleset %s ========' % self.ruleset_name)
+        info_log(self.LOG_CLASS, '======== create ruleset %s ========' % self.ruleset_name)
         info_log(self.LOG_CLASS, "environment = %s , country = %s" % (self.environment, self.country))
 
         request_params = [{"name": "loginId", "value": self.auth_data.get_account()},
                           {"name": "password", "value": self.auth_data.get_password()},
-                          {"name": "rulesetName", "value": self.ruleset_name}]
+                          {"name": "rulesetName", "value": self.ruleset_name},
+                          {"name": "rulesetCountry", "value": self.country.name}]
 
-        response = self.client.service.clearRuleset(request_params)
+        response = self.client.service.createRuleset(request_params,
+                                                     payload=self.ruleset_xml.replace('BRERuleListType', 'BRERuleList'))
         if response.returnCode != 0:
-            info_log(self.LOG_CLASS, "clear ruleset response loginId :" + str(response.loginId))
-            info_log(self.LOG_CLASS, "clear ruleset error message :" + str(response.message))
+            info_log(self.LOG_CLASS, "create ruleset response loginId :" + str(response.loginId))
+            info_log(self.LOG_CLASS, "create error message :" + str(response.message))
         self.b2b_response_data = response
-        info_log(self.LOG_CLASS, '======== clear ruleset finish ========')
+        info_log(self.LOG_CLASS, '======== create ruleset finish ========')
 
     def parse_result_data(self):
-        builder = RulesetB2BActionResultBuilder(self.ruleset_name, key.RULESET_CLEAR, self.b2b_response_data)
+        builder = RulesetB2BActionResultBuilder(self.ruleset_name, key.RULESET_CREATE, self.b2b_response_data)
         self.result_data = builder.get_data()
         self.success = builder.success
 

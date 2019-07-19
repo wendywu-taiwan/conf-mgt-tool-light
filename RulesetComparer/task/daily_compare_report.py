@@ -1,6 +1,6 @@
 import traceback
 
-from RulesetComparer.task.compareRuleListTask import CompareRuleListTask
+from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
@@ -8,7 +8,7 @@ from RulesetComparer.properties import config
 from django.template.loader import render_to_string
 from RulesetComparer.models import Environment, ReportSchedulerInfo
 from RulesetComparer.date_model.json_builder.compare_report_info import CompareReportInfoBuilder
-from RulesetComparer.task.baseSchedulerTask import BaseSchedulerTask
+from RulesetComparer.task.base_scheduler import BaseSchedulerTask
 
 
 class DailyCompareReportTask(BaseSchedulerTask):

@@ -1,4 +1,4 @@
-from RulesetComparer.task.rulesetsSyncUpTask import RulesetsSyncUpTask
+from RulesetComparer.task.rulesets_sync import RulesetsSyncUpTask
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.date_model.json_parser.db_ruleset_sync_scheduler import DBRulesetSyncSchedulerParser
 from RulesetComparer.models import RulesetSyncUpScheduler

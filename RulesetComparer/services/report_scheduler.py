@@ -1,4 +1,4 @@
-from RulesetComparer.task.dailyCompareReportTask import DailyCompareReportTask
+from RulesetComparer.task.daily_compare_report import DailyCompareReportTask
 from RulesetComparer.date_model.json_parser.create_report_scheduler import CreateReportSchedulerTaskParser
 from RulesetComparer.date_model.json_parser.db_report_scheduler import DBReportSchedulerParser
 from RulesetComparer.models import ReportSchedulerInfo

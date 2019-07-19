@@ -1,6 +1,6 @@
 from django.template.loader import render_to_string
 
-from RulesetComparer.task.downloadRulesetTask import DownloadRulesetTask
+from RulesetComparer.task.download_ruleset import DownloadRulesetTask
 from RulesetComparer.date_model.data_object.log_group import RulesetLogGroupObj
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
@@ -8,10 +8,10 @@ from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.fileManager import *
 from RulesetComparer.properties.key import *
-from RulesetComparer.task.compareRuleListTask import CompareRuleListTask
-from RulesetComparer.task.createRulesetTask import CreateRulesetTask
-from RulesetComparer.task.updateRulesetTask import UpdateRulesetTask
-from RulesetComparer.task.clearRulesetTask import ClearRulesetTask
+from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
+from RulesetComparer.task.create_ruleset import CreateRulesetTask
+from RulesetComparer.task.update_ruleset import UpdateRulesetTask
+from RulesetComparer.task.clear_ruleset import ClearRulesetTask
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.date_model.json_parser.apply_ruleset_to_server import ApplyRulesetToServerParser
 from RulesetComparer.date_model.json_builder.ruleset_sync_pre_data import RulesetSyncPreDataBuilder

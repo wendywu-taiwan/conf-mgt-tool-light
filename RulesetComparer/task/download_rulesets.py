@@ -1,4 +1,4 @@
-from RulesetComparer.task.baseRequestTask import BaseRequestTask
+from RulesetComparer.task.base_request import BaseRequestTask
 from RulesetComparer.date_model.xml.ruleset import RulesetObject
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.logger import *

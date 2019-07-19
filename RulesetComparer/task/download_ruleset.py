@@ -1,5 +1,5 @@
 from RulesetComparer.utils.fileManager import *
-from RulesetComparer.task.baseRequestTask import BaseRequestTask
+from RulesetComparer.task.base_request import BaseRequestTask
 from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder

@@ -6,7 +6,7 @@ from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
 from RulesetComparer.models import RulesetSyncUpScheduler
-from RulesetComparer.task.baseSchedulerTask import BaseSchedulerTask
+from RulesetComparer.task.base_scheduler import BaseSchedulerTask
 from django.contrib.auth.models import User
 
 

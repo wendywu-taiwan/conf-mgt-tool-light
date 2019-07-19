@@ -1,6 +1,6 @@
 import traceback
 
-from RulesetComparer.task.downloadRulesetTask import DownloadRulesetTask
+from RulesetComparer.task.download_ruleset import DownloadRulesetTask
 from RulesetComparer.date_model.json_builder.diff_ruleset_page import DiffRulesetPageBuilder
 from RulesetComparer.date_model.json_builder.ruleset_detail_page import RulesetDetailBuilder
 from RulesetComparer.date_model.json_builder.filter_ruleset_download_page import FilterRulesetDownloadPageBuilder
@@ -12,12 +12,12 @@ from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_parser.ruleset_diff_backup import RulesetDiffBackupParser
 from RulesetComparer.date_model.json_parser.ruleset_diff_backup_with_server import RulesetDiffBackupWithServerParser
 from RulesetComparer.date_model.json_parser.ruleset_diff_result import RulesetDiffCompareResultParser
-from RulesetComparer.task.downloadRuleListTask import DownloadRuleListTask
-from RulesetComparer.task.compareRuleListTask import CompareRuleListTask
-from RulesetComparer.task.packedRulesetsTask import PackedRulesetsTask
-from RulesetComparer.task.clearRulesetFilesTask import ClearRulesetFilesTask
-from RulesetComparer.task.clearCompareReportFilesTask import ClearCompareReportFilesTask
-from RulesetComparer.task.clearRulesetArchivedFilesTask import ClearRulesetArchivedFilesTask
+from RulesetComparer.task.download_ruleset_list import DownloadRuleListTask
+from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
+from RulesetComparer.task.packed_rulesets import PackedRulesetsTask
+from RulesetComparer.task.clear_ruleset_files import ClearRulesetFilesTask
+from RulesetComparer.task.clear_report_files import ClearCompareReportFilesTask
+from RulesetComparer.task.clear_ruleset_zip_files import ClearRulesetArchivedFilesTask
 
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.date_model.json_parser.get_filter_ruleset import GetFilteredRulesetParser

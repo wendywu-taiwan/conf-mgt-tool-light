@@ -1,4 +1,4 @@
-from RulesetComparer.task.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.task.download_rulesets import DownloadRulesetsTask
 from RulesetComparer.properties.config import *
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils import timeUtil

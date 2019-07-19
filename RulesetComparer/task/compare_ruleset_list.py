@@ -2,8 +2,8 @@ import traceback
 
 from django.template.loader import get_template
 
-from RulesetComparer.task.downloadRuleListTask import DownloadRuleListTask
-from RulesetComparer.task.downloadRulesetsTask import DownloadRulesetsTask
+from RulesetComparer.task.download_ruleset_list import DownloadRuleListTask
+from RulesetComparer.task.download_rulesets import DownloadRulesetsTask
 from RulesetComparer.date_model.json_builder.ruleset_list_item import RuleListItemBuilder
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import config
