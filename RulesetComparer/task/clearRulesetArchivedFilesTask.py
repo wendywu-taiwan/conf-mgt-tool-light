@@ -11,7 +11,7 @@ class ClearRulesetArchivedFilesTask(BaseClearFilesTask):
         self.expired_day = 1
         self.delete_files_path = config.get_full_file_path("rule_set_zip_file_path")
         self.mail_setting = config.SEND_CLEAR_FILES_MAIL
-        self.not_removed_files_extension = ["__init__.py"]
+        self.not_removed_files_extension = ["__init__.py", "init.py"]
 
     def run_task(self):
         super().run_task()

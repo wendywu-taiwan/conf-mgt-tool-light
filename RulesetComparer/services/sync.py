@@ -1,7 +1,7 @@
 from django.template.loader import render_to_string
 
 from RulesetComparer.task.downloadRulesetTask import DownloadRulesetTask
-from RulesetComparer.date_model.data_object.rulesetLogGroupObj import RulesetLogGroupObj
+from RulesetComparer.date_model.data_object.log_group import RulesetLogGroupObj
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.rulesetUtil import *
@@ -14,13 +14,13 @@ from RulesetComparer.task.updateRulesetTask import UpdateRulesetTask
 from RulesetComparer.task.clearRulesetTask import ClearRulesetTask
 from RulesetComparer.date_model.json_parser.createRulesetSyncSchedulerParser import CreateRulesetSyncSchedulerParser
 from RulesetComparer.date_model.json_parser.applyRulesetToServerParser import ApplyRulesetToServerParser
-from RulesetComparer.date_model.json_builder.rulesetSyncPreDataBuilder import RulesetSyncPreDataBuilder
-from RulesetComparer.date_model.json_builder.rulesetSyncResultDataBuilder import RulesetSyncResultDataBuilder
+from RulesetComparer.date_model.json_builder.ruleset_sync_pre_data import RulesetSyncPreDataBuilder
+from RulesetComparer.date_model.json_builder.ruleset_sync_result_data import RulesetSyncResultDataBuilder
 from RulesetComparer.date_model.json_parser.recoverRulesetsParser import RecoverRulesetsParser
-from RulesetComparer.date_model.json_builder.recoverRulesetsResultBuilder import RecoverRulesetsResultBuilder
+from RulesetComparer.date_model.json_builder.reocover_ruleset_result import RecoverRulesetsResultBuilder
 from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
-from RulesetComparer.date_model.json_builder.diffUpdateRulesetBuilder import DiffUpdateRulesetBuilder
-from RulesetComparer.date_model.json_builder.diffCreateRulesetBuilder import DiffCreateRulesetBuilder
+from RulesetComparer.date_model.json_builder.diff_update_ruleset import DiffUpdateRulesetBuilder
+from RulesetComparer.date_model.json_builder.diff_create_ruleset import DiffCreateRulesetBuilder
 
 
 def create_ruleset_test():

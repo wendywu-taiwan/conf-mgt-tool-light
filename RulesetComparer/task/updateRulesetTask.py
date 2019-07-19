@@ -3,7 +3,7 @@ from RulesetComparer.date_model.xml.ruleSetObject import RulesetObject
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
-from RulesetComparer.date_model.json_builder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
+from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder
 
 
 class UpdateRulesetTask(BaseRequestTask):
