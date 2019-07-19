@@ -15,8 +15,8 @@ from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services, rulesetSyncService, rulesetRecoverService, rulesetSyncSchedulerService, \
-    rulesetReportSchedulerService, rulesetLogService
+from RulesetComparer.services import services, sync, recover, sync_scheduler, \
+    report_scheduler, log
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
@@ -141,7 +141,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_sync_scheduler_list_page(request):
     try:
-        schedulers = rulesetSyncSchedulerService.get_schedulers()
+        schedulers = sync_scheduler.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = RulesetSyncSchedulerBuilder(scheduler)
@@ -205,7 +205,7 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_recover_ruleset_filtered_page(request):
     try:
-        environment_list = rulesetRecoverService.filter_environment()
+        environment_list = recover.filter_environment()
         environment_json_list = EnvironmentSerializer(environment_list, many=True).data
         data = {
             key.KEY_ENVIRONMENTS: environment_json_list
@@ -222,7 +222,7 @@ def admin_console_recover_ruleset_filtered_page(request):
 def admin_console_recover_ruleset_filtered_environment_page(request):
     try:
         request_json = get_post_request_json(request)
-        countries = rulesetRecoverService.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
+        countries = recover.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
         data = {
             key.KEY_COUNTRIES: countries
         }
@@ -238,7 +238,7 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetRecoverService.filter_backup_list(request_json)
+        result_data = recover.filter_backup_list(request_json)
         result_data = add_user_information(request, result_data)
         return render(request, "backup_data_view.html", result_data)
     except Exception:
@@ -252,7 +252,7 @@ def admin_console_recover_ruleset_backup_list_page(request):
 def admin_console_ruleset_log_list_page(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetLogService.get_ruleset_log_list(request_json, False)
+        result_data = log.get_ruleset_log_list(request_json, False)
         result_data = add_user_information(request, result_data)
         return render(request, "ruleset_log.html", result_data)
     except Exception:
@@ -266,7 +266,7 @@ def admin_console_ruleset_log_list_page(request):
 def admin_console_ruleset_log_list_filter_page(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetLogService.get_ruleset_log_list(request_json, True)
+        result_data = log.get_ruleset_log_list(request_json, True)
         result_data = add_user_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
@@ -280,7 +280,7 @@ def admin_console_ruleset_log_list_filter_page(request):
 def admin_console_ruleset_log_list_page_change(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetLogService.get_ruleset_log_list(request_json, False)
+        result_data = log.get_ruleset_log_list(request_json, False)
         result_data = add_user_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
@@ -292,7 +292,7 @@ def admin_console_ruleset_log_list_page_change(request):
 @login_required
 def admin_console_ruleset_log_detail_page(request, log_id):
     try:
-        result = {KEY_LOG_DATA: rulesetLogService.get_ruleset_log_detail(log_id)}
+        result = {KEY_LOG_DATA: log.get_ruleset_log_detail(log_id)}
         result = add_user_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
     except Exception:
@@ -471,7 +471,7 @@ def download_rulesets(request):
 def recover_rulesets(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetSyncService.sync_up_rulesets_from_backup(request_json, request.user)
+        result_data = sync.sync_up_rulesets_from_backup(request_json, request.user)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -483,7 +483,7 @@ def recover_rulesets(request):
 def apply_ruleset_to_server(request):
     try:
         request_json = get_post_request_json(request)
-        result_data = rulesetSyncService.sync_up_ruleset_from_backup(request_json, request.user)
+        result_data = sync.sync_up_ruleset_from_backup(request_json, request.user)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -560,7 +560,7 @@ def get_rulesets_report_job(request, scheduler_id):
 
 def get_rulesets_report_jobs(request):
     try:
-        schedulers = rulesetReportSchedulerService.get_schedulers()
+        schedulers = report_scheduler.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = ReportSchedulerInfoBuilder(scheduler)
@@ -578,7 +578,7 @@ def create_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "create_scheduler, request json =" + str(request_json))
-        scheduler_info = rulesetReportSchedulerService.create_scheduler(request_json)
+        scheduler_info = report_scheduler.create_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
@@ -592,7 +592,7 @@ def update_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "update_scheduler, request json =" + str(request_json))
-        scheduler_info = rulesetReportSchedulerService.update_report_scheduler(request_json)
+        scheduler_info = report_scheduler.update_report_scheduler(request_json)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
@@ -605,7 +605,7 @@ def update_ruleset_report_job(request):
 def update_rulesets_report_status(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetReportSchedulerService.update_scheduler_status(request_json)
+        scheduler = report_scheduler.update_scheduler_status(request_json)
         data = ReportSchedulerInfoBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -619,7 +619,7 @@ def delete_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         task_id = request_json["id"]
-        rulesetReportSchedulerService.delete_scheduler(task_id)
+        report_scheduler.delete_scheduler(task_id)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -631,7 +631,7 @@ def delete_ruleset_report_job(request):
 # ruleset sync job
 def get_rulesets_sync_jobs(request):
     try:
-        schedulers = rulesetSyncSchedulerService.get_schedulers()
+        schedulers = sync_scheduler.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
             data_builder = RulesetSyncSchedulerBuilder(scheduler)
@@ -649,7 +649,7 @@ def get_rulesets_sync_jobs(request):
 def run_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        run_in_background(rulesetSyncService.sync_up_rulesets_without_scheduler, request_json, request.user)
+        run_in_background(sync.sync_up_rulesets_without_scheduler, request_json, request.user)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -661,7 +661,7 @@ def run_rulesets_sync_job(request):
 def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.create_scheduler(request_json, request.user)
+        scheduler = sync_scheduler.create_scheduler(request_json, request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -674,7 +674,7 @@ def create_rulesets_sync_job(request):
 def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.update_scheduler(request_json, request.user)
+        scheduler = sync_scheduler.update_scheduler(request_json, request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -687,7 +687,7 @@ def update_rulesets_sync_job(request):
 def update_rulesets_sync_job_status(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = rulesetSyncSchedulerService.update_scheduler_status(request_json)
+        scheduler = sync_scheduler.update_scheduler_status(request_json)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
@@ -700,7 +700,7 @@ def update_rulesets_sync_job_status(request):
 def delete_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        rulesetSyncSchedulerService.delete_scheduler(request_json)
+        sync_scheduler.delete_scheduler(request_json)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
     except Exception:
@@ -711,7 +711,7 @@ def delete_rulesets_sync_job(request):
 
 def create_ruleset(request):
     try:
-        rulesetSyncService.create_ruleset_test()
+        sync.create_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -720,7 +720,7 @@ def create_ruleset(request):
 
 def update_ruleset(request):
     try:
-        rulesetSyncService.update_ruleset_test()
+        sync.update_ruleset_test()
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -739,7 +739,7 @@ def compare_ruleset_test(request):
 def get_ruleset(request):
     try:
         request_json = get_post_request_json(request)
-        ruleset = rulesetLogService.get_ruleset(request_json)
+        ruleset = log.get_ruleset(request_json)
         result = {KEY_RULESET_DATA: ruleset}
         return render(request, "ruleset_content_view.html", result)
     except Exception:

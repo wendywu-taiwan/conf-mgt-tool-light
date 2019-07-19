@@ -24,7 +24,7 @@ from RulesetComparer.date_model.dataParser.getFilteredRulesetParser import GetFi
 from RulesetComparer.date_model.dataParser.downloadRulesetParser import DownloadRulesetParser
 
 from RulesetComparer.utils import fileManager
-from RulesetComparer.services import rulesetSyncSchedulerService, rulesetReportSchedulerService
+from RulesetComparer.services import sync_scheduler, report_scheduler
 from django.template.loader import get_template
 
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
@@ -140,8 +140,8 @@ def restart_all_scheduler():
         scheduler.add_hours_job_now(clear_compare_report_task.run_task, 24)
 
         info_log(None, "restart all scheduler")
-        rulesetReportSchedulerService.restart_schedulers()
-        rulesetSyncSchedulerService.restart_schedulers()
+        report_scheduler.restart_schedulers()
+        sync_scheduler.restart_schedulers()
 
         info_log(None, "restart all scheduler success")
     except BaseException as e:

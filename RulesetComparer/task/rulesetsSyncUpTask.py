@@ -1,7 +1,7 @@
 import traceback
 
 from RulesetComparer.date_model.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
-from RulesetComparer.services import rulesetSyncService
+from RulesetComparer.services import sync
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.properties import config
@@ -34,8 +34,8 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
                 rs_log_groups.set_update_time(task.last_proceed_time)
                 rs_log_groups.log_group()
 
-                result_data = rulesetSyncService.sync_up_rulesets(rs_log_groups, self.parser, country)
-                rulesetSyncService.send_mail(result_data, self.parser.receiver_list)
+                result_data = sync.sync_up_rulesets(rs_log_groups, self.parser, country)
+                sync.send_mail(result_data, self.parser.receiver_list)
             except Exception as e:
                 error_log(e)
                 error_log(traceback.format_exc())
