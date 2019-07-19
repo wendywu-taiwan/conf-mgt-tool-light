@@ -4,7 +4,7 @@ from django.template.loader import get_template
 
 from RulesetComparer.task.downloadRuleListTask import DownloadRuleListTask
 from RulesetComparer.task.downloadRulesetsTask import DownloadRulesetsTask
-from RulesetComparer.dataModel.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
+from RulesetComparer.date_model.dataBuilder.ruleListItemBuilder import RuleListItemBuilder
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import config
 from RulesetComparer.properties import dataKey as key

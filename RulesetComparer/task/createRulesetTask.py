@@ -1,7 +1,7 @@
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *
-from RulesetComparer.dataModel.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
+from RulesetComparer.date_model.dataBuilder.rulesetB2BActionResultBuilder import RulesetB2BActionResultBuilder
 
 
 class CreateRulesetTask(BaseRequestTask):

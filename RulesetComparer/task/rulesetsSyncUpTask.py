@@ -1,6 +1,6 @@
 import traceback
 
-from RulesetComparer.dataModel.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
+from RulesetComparer.date_model.dataObject.rulesetLogGroupObj import RulesetLogGroupObj
 from RulesetComparer.services import rulesetSyncService
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import timeUtil

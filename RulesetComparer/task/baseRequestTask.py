@@ -1,7 +1,7 @@
 from zeep import Client
 from abc import abstractmethod
 from RulesetComparer.models import Country, Environment, B2BServer, B2BService
-from RulesetComparer.dataModel.dataParser.authDataParser import AuthDataParser
+from RulesetComparer.date_model.dataParser.authDataParser import AuthDataParser
 
 
 class BaseRequestTask:

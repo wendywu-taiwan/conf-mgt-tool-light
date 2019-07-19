@@ -1,5 +1,5 @@
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
-from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
+from RulesetComparer.date_model.xml.ruleSetObject import RulesetObject
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import dataKey
