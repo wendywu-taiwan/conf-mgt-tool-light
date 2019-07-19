@@ -1,4 +1,4 @@
-from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
+from RulesetComparer.task.downloadRulesetTask import DownloadRulesetTask
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.models import RulesetLogGroup
 

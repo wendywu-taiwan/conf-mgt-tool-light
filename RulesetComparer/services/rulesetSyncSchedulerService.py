@@ -1,4 +1,4 @@
-from RulesetComparer.b2bRequestTask.rulesetsSyncUpTask import RulesetsSyncUpTask
+from RulesetComparer.task.rulesetsSyncUpTask import RulesetsSyncUpTask
 from RulesetComparer.dataModel.dataParser.createRulesetSyncSchedulerParser import CreateRulesetSyncSchedulerParser
 from RulesetComparer.dataModel.dataParser.dbRulesetSyncSchedulerParser import DBRulesetSyncSchedulerParser
 from RulesetComparer.models import RulesetSyncUpScheduler

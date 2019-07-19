@@ -1,5 +1,5 @@
 from RulesetComparer.properties import config
-from RulesetComparer.b2bRequestTask.baseClearFilesTask import BaseClearFilesTask
+from RulesetComparer.task.baseClearFilesTask import BaseClearFilesTask
 
 
 class ClearRulesetFilesTask(BaseClearFilesTask):

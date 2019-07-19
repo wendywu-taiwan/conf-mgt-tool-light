@@ -1,4 +1,4 @@
-from RulesetComparer.b2bRequestTask.baseRequestTask import BaseRequestTask
+from RulesetComparer.task.baseRequestTask import BaseRequestTask
 from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
 from RulesetComparer.properties import dataKey
 from RulesetComparer.utils.logger import *

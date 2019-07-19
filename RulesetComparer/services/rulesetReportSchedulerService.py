@@ -1,4 +1,4 @@
-from RulesetComparer.b2bRequestTask.dailyCompareReportTask import DailyCompareReportTask
+from RulesetComparer.task.dailyCompareReportTask import DailyCompareReportTask
 from RulesetComparer.dataModel.dataParser.createReportSchedulerTaskParser import CreateReportSchedulerTaskParser
 from RulesetComparer.dataModel.dataParser.dbReportSchedulerParser import DBReportSchedulerParser
 from RulesetComparer.models import ReportSchedulerInfo

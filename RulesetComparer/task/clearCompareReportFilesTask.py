@@ -1,15 +1,14 @@
-from ConfigManageTool import settings
 from RulesetComparer.properties import config
-from RulesetComparer.b2bRequestTask.baseClearFilesTask import BaseClearFilesTask
+from RulesetComparer.task.baseClearFilesTask import BaseClearFilesTask
 
 
-class ClearRulesetArchivedFilesTask(BaseClearFilesTask):
+class ClearCompareReportFilesTask(BaseClearFilesTask):
 
     def __init__(self):
         BaseClearFilesTask.__init__(self)
-        self.logger = "ClearRulesetArchivedFilesTask"
-        self.expired_day = 1
-        self.delete_files_path = config.get_full_file_path("rule_set_zip_file_path")
+        self.logger = "ClearCompareResultFilesTask"
+        self.expired_day = 3
+        self.delete_files_path = config.get_full_file_path("compare_result")
         self.mail_setting = config.SEND_CLEAR_FILES_MAIL
         self.not_removed_files_extension = ["__init__.py"]
 

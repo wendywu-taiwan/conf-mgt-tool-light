@@ -6,7 +6,7 @@ from RulesetComparer.utils.logger import error_log
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.dataModel.dataBuilder.jobFailureContentBuilder import JobFailureContentBuilder
 from RulesetComparer.dataModel.dataBuilder.jobSuccessContentBuilder import JobSuccessContentBuilder
-from RulesetComparer.b2bRequestTask.baseSchedulerTask import BaseSchedulerTask
+from RulesetComparer.task.baseSchedulerTask import BaseSchedulerTask
 import traceback
 
 
