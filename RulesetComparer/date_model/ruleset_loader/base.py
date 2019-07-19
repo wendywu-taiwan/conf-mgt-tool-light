@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from RulesetComparer.utils.rulesetUtil import *
-from RulesetComparer.date_model.xml.ruleSetObject import RulesetObject
+from RulesetComparer.date_model.xml.ruleset import RulesetObject
 
 
 class BaseRulesetLoader:

@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.xml.baseParser import BaseModel
+from RulesetComparer.date_model.xml.base import BaseModel
 from RulesetComparer.properties import xmlKey as XMLKey
 
 

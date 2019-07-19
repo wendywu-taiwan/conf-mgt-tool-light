@@ -1,5 +1,5 @@
-from RulesetComparer.date_model.xml.baseParser import BaseModel
-from RulesetComparer.date_model.xml.ruleParser import RuleModel
+from RulesetComparer.date_model.xml.base import BaseModel
+from RulesetComparer.date_model.xml.rule import RuleModel
 from RulesetComparer.date_model.json_builder.ruleset import RuleSetBuilder
 from RulesetComparer.properties import xmlKey as XMLKey
 
