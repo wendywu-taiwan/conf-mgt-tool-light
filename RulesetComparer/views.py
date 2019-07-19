@@ -20,11 +20,11 @@ from RulesetComparer.services import services, sync, recover, sync_scheduler, \
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 
-from RulesetComparer.date_model.dataBuilder.responseBuilder import ResponseBuilder
-from RulesetComparer.date_model.dataBuilder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
-from RulesetComparer.date_model.dataBuilder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
-from RulesetComparer.date_model.dataBuilder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
-from RulesetComparer.date_model.dataBuilder.rulesetDownloadPageBuilder import RulesetDownloadPageBuilder
+from RulesetComparer.date_model.json_builder.responseBuilder import ResponseBuilder
+from RulesetComparer.date_model.json_builder.reportSchedulerInfoBuilder import ReportSchedulerInfoBuilder
+from RulesetComparer.date_model.json_builder.rulesetSyncSchedulerBuilder import RulesetSyncSchedulerBuilder
+from RulesetComparer.date_model.json_builder.adminConsoleInfoBuilder import AdminConsoleInfoBuilder
+from RulesetComparer.date_model.json_builder.rulesetDownloadPageBuilder import RulesetDownloadPageBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.statusCode import *
 

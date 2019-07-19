@@ -1,7 +1,7 @@
-from RulesetComparer.date_model.dataParser.getRulesetLogListParser import GetRulesetLogListParser
-from RulesetComparer.date_model.dataBuilder.rulesetLogListResultBuilder import RulesetLogListResultBuilder
-from RulesetComparer.date_model.dataBuilder.rulesetLogBuilder import RulesetLogBuilder
-from RulesetComparer.date_model.dataParser.showRulesetXMLParser import ShowRulesetXMLParser
+from RulesetComparer.date_model.json_parser.getRulesetLogListParser import GetRulesetLogListParser
+from RulesetComparer.date_model.json_builder.rulesetLogListResultBuilder import RulesetLogListResultBuilder
+from RulesetComparer.date_model.json_builder.rulesetLogBuilder import RulesetLogBuilder
+from RulesetComparer.date_model.json_parser.showRulesetXMLParser import ShowRulesetXMLParser
 from RulesetComparer.models import RulesetLog
 
 

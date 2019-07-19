@@ -4,8 +4,8 @@ from django.template.loader import render_to_string
 
 from RulesetComparer.utils.logger import error_log
 from RulesetComparer.utils.mailSender import MailSender
-from RulesetComparer.date_model.dataBuilder.jobFailureContentBuilder import JobFailureContentBuilder
-from RulesetComparer.date_model.dataBuilder.jobSuccessContentBuilder import JobSuccessContentBuilder
+from RulesetComparer.date_model.json_builder.jobFailureContentBuilder import JobFailureContentBuilder
+from RulesetComparer.date_model.json_builder.jobSuccessContentBuilder import JobSuccessContentBuilder
 from RulesetComparer.task.baseSchedulerTask import BaseSchedulerTask
 import traceback
 

@@ -7,7 +7,7 @@ from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.properties import config
 from django.template.loader import render_to_string
 from RulesetComparer.models import Environment, ReportSchedulerInfo
-from RulesetComparer.date_model.dataBuilder.compareReportInfoBuilder import CompareReportInfoBuilder
+from RulesetComparer.date_model.json_builder.compareReportInfoBuilder import CompareReportInfoBuilder
 from RulesetComparer.task.baseSchedulerTask import BaseSchedulerTask
 
 
