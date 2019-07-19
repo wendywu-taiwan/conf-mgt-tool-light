@@ -1,6 +1,6 @@
 from RulesetComparer.utils.timeUtil import get_current_utc_time
 from RulesetComparer.models import RulesetLogGroup, RulesetAction, RulesetLog
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 
 class RulesetLogGroupObj:

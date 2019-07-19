@@ -1,6 +1,6 @@
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
 from RulesetComparer.date_model.xml.ruleset import RulesetObject
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
 from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder
@@ -18,7 +18,7 @@ class UpdateRulesetTask(BaseRequestTask):
         self.source_xml = source_xml
         self.target_xml = target_xml
         self.diff_json = diff_json
-        self.parse_data(target_environment.id, country.id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
+        self.parse_data(target_environment.id, country.id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.request_data()
 
     def execute(self):
@@ -52,7 +52,7 @@ class UpdateRulesetTask(BaseRequestTask):
         info_log(self.LOG_CLASS, '======== update ruleset finish ========')
 
     def parse_result_data(self):
-        self.result_data = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE,
+        self.result_data = RulesetB2BActionResultBuilder(self.ruleset_name, key.RULESET_UPDATE,
                                                          self.b2b_response_data).get_data()
 
     @staticmethod

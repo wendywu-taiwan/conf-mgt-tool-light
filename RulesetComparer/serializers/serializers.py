@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from RulesetComparer.models import Country, Environment, Function, Module, UserRole, MailContentType
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 
 
 class UserRoleSerializer(serializers.ModelSerializer):
@@ -63,11 +63,11 @@ class RuleSerializer(serializers.Serializer):
     expression = serializers.SerializerMethodField()
 
     def get_value(self, data):
-        result = data[dataKey.RULE_KEY_RULE_VALUE].split(",")
+        result = data[key.RULE_KEY_RULE_VALUE].split(",")
         return result
 
     def get_expression(self, data):
-        result = data[dataKey.RULE_KEY_RULE_EXPRESSION].split(",")
+        result = data[key.RULE_KEY_RULE_EXPRESSION].split(",")
         return result
 
     def create(self, validated_data):
@@ -90,19 +90,19 @@ class ModifiedRuleValueSerializer(serializers.Serializer):
     compare_expression = serializers.SerializerMethodField()
 
     def get_base_value(self, data):
-        result = data[dataKey.RULE_MODIFIED_KEY_BASE_VALUE].split(",")
+        result = data[key.RULE_MODIFIED_KEY_BASE_VALUE].split(",")
         return result
 
     def get_base_expression(self, data):
-        result = data[dataKey.RULE_MODIFIED_KEY_BASE_EXPRESSION].split(",")
+        result = data[key.RULE_MODIFIED_KEY_BASE_EXPRESSION].split(",")
         return result
 
     def get_compare_value(self, data):
-        result = data[dataKey.RULE_MODIFIED_KEY_COMPARE_VALUE].split(",")
+        result = data[key.RULE_MODIFIED_KEY_COMPARE_VALUE].split(",")
         return result
 
     def get_compare_expression(self, data):
-        result = data[dataKey.RULE_MODIFIED_KEY_COMPARE_EXPRESSION].split(",")
+        result = data[key.RULE_MODIFIED_KEY_COMPARE_EXPRESSION].split(",")
         return result
 
     def create(self, validated_data):

@@ -7,7 +7,7 @@ from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.fileManager import *
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 from RulesetComparer.task.compareRuleListTask import CompareRuleListTask
 from RulesetComparer.task.createRulesetTask import CreateRulesetTask
 from RulesetComparer.task.updateRulesetTask import UpdateRulesetTask
@@ -18,7 +18,7 @@ from RulesetComparer.date_model.json_builder.ruleset_sync_pre_data import Rulese
 from RulesetComparer.date_model.json_builder.ruleset_sync_result_data import RulesetSyncResultDataBuilder
 from RulesetComparer.date_model.json_parser.recover_ruleset import RecoverRulesetsParser
 from RulesetComparer.date_model.json_builder.reocover_ruleset_result import RecoverRulesetsResultBuilder
-from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
+from RulesetComparer.properties.key import STATUS_SUCCESS, STATUS_FAILED
 from RulesetComparer.date_model.json_builder.diff_update_ruleset import DiffUpdateRulesetBuilder
 from RulesetComparer.date_model.json_builder.diff_create_ruleset import DiffCreateRulesetBuilder
 

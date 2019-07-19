@@ -7,7 +7,7 @@ from RulesetComparer.task.downloadRulesetsTask import DownloadRulesetsTask
 from RulesetComparer.date_model.json_builder.ruleset_list_item import RuleListItemBuilder
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.properties import config
-from RulesetComparer.properties import dataKey as key
+from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer
 from RulesetComparer.utils import fileManager, rulesetUtil
 from RulesetComparer.utils.gitManager import GitManager

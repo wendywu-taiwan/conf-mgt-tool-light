@@ -1,4 +1,4 @@
-import RulesetComparer.properties.dataKey as key
+import RulesetComparer.properties.key as key
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
 
 

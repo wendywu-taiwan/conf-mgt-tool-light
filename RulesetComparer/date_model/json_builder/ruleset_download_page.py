@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 from RulesetComparer.models import Country, Environment
 from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
 from RulesetComparer.date_model.json_builder.country import CountryBuilder

@@ -1,6 +1,6 @@
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
 from RulesetComparer.date_model.xml.ruleset_list import RuleListModel
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 
 
@@ -12,7 +12,7 @@ class DownloadRuleListTask(BaseRequestTask):
 
     def __init__(self, environment_id, country_id):
         BaseRequestTask.__init__(self)
-        self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
+        self.parse_data(environment_id, country_id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.request_data()
 
     def parse_data(self, environment_id, country_id, b2b_service_name):

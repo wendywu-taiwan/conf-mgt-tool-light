@@ -5,7 +5,7 @@ from RulesetComparer.utils.timeUtil import get_frontend_format_time
 from RulesetComparer.models import RulesetLogGroup, RulesetAction
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
 from RulesetComparer.date_model.json_builder.ruleset_action import RulesetActionBuilder
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 
 class RulesetLogBuilder(BaseBuilder):

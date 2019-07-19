@@ -1,6 +1,6 @@
 import xml.etree.ElementTree as ET
 import abc
-from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.properties import xml_key as XMLKey
 
 
 class BaseModel:

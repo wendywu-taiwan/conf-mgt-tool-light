@@ -12,7 +12,7 @@ from RulesetComparer.models import Country, Environment, Module, ReportScheduler
     RulesetSyncUpScheduler
 from RulesetComparer.utils.threadManager import *
 from RulesetComparer.properties import config
-from RulesetComparer.properties import dataKey as key
+from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
     ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
 from RulesetComparer.services import services, sync, recover, sync_scheduler, \
@@ -26,7 +26,7 @@ from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import Rules
 from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.utils.logger import *
-from RulesetComparer.properties.statusCode import *
+from RulesetComparer.properties.status_code import *
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'

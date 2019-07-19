@@ -4,7 +4,7 @@ from RulesetComparer.date_model.json_parser.db_report_scheduler import DBReportS
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.logger import info_log
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 
 def restart_schedulers():

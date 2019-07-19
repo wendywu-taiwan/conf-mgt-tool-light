@@ -1,9 +1,9 @@
 from RulesetComparer.utils.fileManager import *
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder
-from RulesetComparer.properties.apiResponse import RESPONSE_EXPORT_RULESET_NOT_FOUND
+from RulesetComparer.properties.api_response import RESPONSE_EXPORT_RULESET_NOT_FOUND
 from RulesetComparer.utils.timeUtil import get_current_timestamp
 
 
@@ -22,7 +22,7 @@ class DownloadRulesetTask(BaseRequestTask):
         self.compare_hash_key = compare_hash_key
         self.ruleset_exist = True
 
-        self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
+        self.parse_data(environment_id, country_id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, self.compare_hash_key)
         self.request_data()
 
@@ -52,7 +52,7 @@ class DownloadRulesetTask(BaseRequestTask):
         info_log(self.LOG_CLASS, '======== download ruleset finished ========')
 
     def parse_result_data(self):
-        self.result_builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_UPDATE,
+        self.result_builder = RulesetB2BActionResultBuilder(self.ruleset_name, key.RULESET_UPDATE,
                                                             self.b2b_response_data)
         self.success = self.result_builder.success
         self.result_data = self.result_builder.get_data()

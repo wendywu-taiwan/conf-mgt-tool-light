@@ -1,6 +1,6 @@
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
 from RulesetComparer.serializers.serializers import ModifiedRuleValueSerializer
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 from RulesetComparer.date_model.json_builder.ruleset_json import RulesetJsonBuilder
 
 

@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 
 
 class UpdateReportSchedulerTaskParser(BaseReportSchedulerParser):
@@ -18,7 +18,7 @@ class UpdateReportSchedulerTaskParser(BaseReportSchedulerParser):
             self.local_time = self.get_local_time_shift_days(json_data.get("start_date_time"))
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
-            self.enable = dataKey.STATUS_ENABLE
+            self.enable = key.STATUS_ENABLE
         except Exception as e:
             raise e
 

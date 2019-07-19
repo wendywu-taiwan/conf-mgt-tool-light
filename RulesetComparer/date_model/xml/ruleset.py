@@ -1,7 +1,7 @@
 from RulesetComparer.date_model.xml.base import BaseModel
 from RulesetComparer.date_model.xml.rule import RuleModel
 from RulesetComparer.date_model.json_builder.ruleset import RuleSetBuilder
-from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.properties import xml_key as XMLKey
 
 
 # this is for handling ruleset data, a ruleset file contains many rules

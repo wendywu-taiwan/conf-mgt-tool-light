@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.xml.base import BaseModel
-from RulesetComparer.properties import xmlKey as XMLKey
+from RulesetComparer.properties import xml_key as XMLKey
 from RulesetComparer.utils import logger
 from lxml import etree
 

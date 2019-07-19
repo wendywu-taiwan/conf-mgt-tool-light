@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from RulesetComparer.properties.dataKey import STATUS_SUCCESS, STATUS_FAILED
+from RulesetComparer.properties.key import STATUS_SUCCESS, STATUS_FAILED
 
 
 class RulesetB2BActionResultBuilder(BaseBuilder):

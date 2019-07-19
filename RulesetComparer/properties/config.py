@@ -1,5 +1,5 @@
 from django.conf import settings
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",

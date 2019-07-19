@@ -2,7 +2,7 @@ from RulesetComparer.task.baseRequestTask import BaseRequestTask
 from RulesetComparer.date_model.xml.ruleset import RulesetObject
 from RulesetComparer.utils import fileManager
 from RulesetComparer.utils.logger import *
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 from RulesetComparer.utils.rulesetUtil import build_ruleset_xml
 
 
@@ -14,7 +14,7 @@ class DownloadRulesetsTask(BaseRequestTask):
 
     def __init__(self, environment_id, country_id, ruleset_list, compare_hash_key):
         BaseRequestTask.__init__(self)
-        self.parse_data(environment_id, country_id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
+        self.parse_data(environment_id, country_id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.ruleset_list = ruleset_list
         self.file_name_with_path = get_rule_set_path(self.environment.name, self.country.name, compare_hash_key)
         self.request_data()

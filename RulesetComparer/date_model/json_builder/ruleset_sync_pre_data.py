@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 
 class RulesetSyncPreDataBuilder(BaseBuilder):

@@ -1,5 +1,5 @@
 from RulesetComparer.task.baseRequestTask import BaseRequestTask
-from RulesetComparer.properties import dataKey
+from RulesetComparer.properties import key
 from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_builder.ruleset_b2b_action_result import RulesetB2BActionResultBuilder
 
@@ -11,7 +11,7 @@ class CreateRulesetTask(BaseRequestTask):
         BaseRequestTask.__init__(self)
         self.ruleset_name = ruleset_name
         self.ruleset_xml = ruleset_xml
-        self.parse_data(target_environment.id, country.id, dataKey.B2B_SERVICE_RULESET_ASSIGNMENT)
+        self.parse_data(target_environment.id, country.id, key.B2B_SERVICE_RULESET_ASSIGNMENT)
         self.request_data()
 
     def parse_data(self, environment_id, country_id, b2b_service_name):
@@ -38,7 +38,7 @@ class CreateRulesetTask(BaseRequestTask):
         info_log(self.LOG_CLASS, '======== create ruleset finish ========')
 
     def parse_result_data(self):
-        builder = RulesetB2BActionResultBuilder(self.ruleset_name, dataKey.RULESET_CREATE, self.b2b_response_data)
+        builder = RulesetB2BActionResultBuilder(self.ruleset_name, key.RULESET_CREATE, self.b2b_response_data)
         self.result_data = builder.get_data()
         self.success = builder.success
 
