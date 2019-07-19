@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.data_object.sync_action import SyncUpAction
-from RulesetComparer.date_model.json_parser.baseReportSchedulerParser import BaseReportSchedulerParser
+from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 from RulesetComparer.utils.modelManager import get_default_module
 from RulesetComparer.models import Environment
 

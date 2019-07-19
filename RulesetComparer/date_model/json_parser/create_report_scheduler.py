@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_parser.baseReportSchedulerParser import BaseReportSchedulerParser
+from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 
 
 class CreateReportSchedulerTaskParser(BaseReportSchedulerParser):

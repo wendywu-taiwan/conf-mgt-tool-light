@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
-from RulesetComparer.date_model.json_parser.getFilteredRulesetParser import GetFilteredRulesetParser
+from RulesetComparer.date_model.json_parser.get_filter_ruleset import GetFilteredRulesetParser
 from RulesetComparer.date_model.json_builder.recover_filter_backup import RecoverFilterBackupObjBuilder
 from RulesetComparer.models import Environment, Country, RulesetLogGroup, RulesetLog
 from RulesetComparer.utils.fileManager import *

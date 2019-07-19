@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.ruleset_loader.baseRulesetLoader import BaseRulesetLoader
+from RulesetComparer.date_model.ruleset_loader.base import BaseRulesetLoader
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.models import RulesetLogGroup
 

@@ -1,5 +1,5 @@
 from RulesetComparer.utils.rulesetUtil import *
-from RulesetComparer.date_model.json_parser.baseApplyRulesetParser import BaseApplyRulesetParser
+from RulesetComparer.date_model.json_parser.base_apply_ruleset import BaseApplyRulesetParser
 
 
 class ApplyRulesetToServerParser(BaseApplyRulesetParser):
