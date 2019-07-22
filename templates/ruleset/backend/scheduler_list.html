@@ -5,7 +5,7 @@
         <div id="task_list_header_div" class="row no_row_margin">
             <div class="component_title">TASK</div>
             <div id="create_task_button_div">
-                <a href="{% url 'task-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
+                <a href="{% url 'RulesetComparer:task-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
             </div>
         </div>
         <div class="title_div row">
@@ -87,7 +87,7 @@
                 </div>
                 <div id="task_action_div" class="row no_row_margin">
                     <div>
-                        <a href="{% url 'task-update' task.task_id %}" class="btn">
+                        <a href="{% url 'RulesetComparer:task-update' task.task_id %}" class="btn">
                             <img id="task_edit_icon" src="{% static '/icons/edit.png' %}">
                         </a>
                     </div>
@@ -113,10 +113,10 @@
                         "id": task_id
                     };
 
-                    doPOST("{% url 'delete-scheduler' %}", post_body, function (response) {
+                    doPOST("{% url 'RulesetComparer:delete-scheduler' %}", post_body, function (response) {
                         successDialog("delete task success", function () {
                             console.log(response);
-                            window.location = "{% url 'report-scheduler-list' %}";
+                            window.location = "{% url 'RulesetComparer:report-scheduler-list' %}";
                         });
                     }, function (response) {
                         console.log(response);
@@ -145,10 +145,10 @@
                 "enable": status
             };
 
-            doPOST("{% url 'update-rulesets-report-job-status' %}", post_body, function (response) {
+            doPOST("{% url 'RulesetComparer:update-rulesets-report-job-status' %}", post_body, function (response) {
                 successDialog("update scheduler success", function () {
                     console.log(response);
-                    window.location = "{% url 'report-scheduler-list' %}";
+                    window.location = "{% url 'RulesetComparer:report-scheduler-list' %}";
                 });
             }, function (response) {
                 console.log(response);

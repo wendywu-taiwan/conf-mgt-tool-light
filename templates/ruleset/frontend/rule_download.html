@@ -103,15 +103,15 @@
 
     <script>
         filterBtnOnClick = function () {
-            filterRules("{% url 'ruleset-download-filter-page' %}");
+            filterRules("{% url 'RulesetComparer:ruleset-download-filter-page' %}");
         };
 
         downloadAllRulesOnClick = function () {
-            downloadAllRules("{% url 'packed-ruleset-download' %}");
+            downloadAllRules("{% url 'RulesetComparer:packed-ruleset-download' %}");
         };
 
         downloadSelectedRulesOnClick = function () {
-            downloadSelectedRules("{% url 'packed-ruleset-download' %}");
+            downloadSelectedRules("{% url 'RulesetComparer:packed-ruleset-download' %}");
         };
     </script>
 {% endblock %}

@@ -153,28 +153,28 @@
     <script>
         $(function () {
             initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}', '{{ log_data.source_environment.id }}', '{{ log_data.target_environment.id }}', '{{ log_data.country.id }}');
-            initUrl("{% url 'ruleset-log-detail-ruleset' %}", "{% url 'packed-ruleset-download' %}", "{% url 'ruleset-apply-to-server' %}");
+            initUrl("{% url 'RulesetComparer:ruleset-log-detail-ruleset' %}", "{% url 'RulesetComparer:packed-ruleset-download' %}", "{% url 'RulesetComparer:ruleset-apply-to-server' %}");
         });
 
         function onClickPrettySourceEnv() {
-            openNewPage('{% url 'rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
         }
 
         function onClickPrettyTargetEnv() {
-            openNewPage('{% url 'rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
         }
 
 
         function onClickDiffBackup() {
-            openDiffResultPage('{% url 'ruleset-diff-backup' log_data.backup_key log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup' log_data.backup_key log_data.ruleset_name %}');
         }
 
         function onClickDiffServerSourceEnv() {
-            openDiffResultPage('{% url 'ruleset-diff-backup-with-server' log_data.backup_key "source" log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' log_data.backup_key "source" log_data.ruleset_name %}');
         }
 
         function onClickDiffServerTargetEnv() {
-            openDiffResultPage('{% url 'ruleset-diff-backup-with-server' log_data.backup_key "target" log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' log_data.backup_key "target" log_data.ruleset_name %}');
         }
     </script>
 

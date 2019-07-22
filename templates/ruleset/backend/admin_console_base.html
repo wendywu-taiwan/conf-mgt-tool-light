@@ -37,7 +37,7 @@
             </div>
         </div>
         <div id="function_list">
-             <div id="log_manager_div" class="function_div">
+            <div id="log_manager_div" class="function_div">
                 <a data-toggle="collapse" href="#log_manager_list_div" role="button" aria-expanded="false"
                    aria-controls="log_manager_list_div">
                     <div class="row no-row-margin">
@@ -50,26 +50,16 @@
             </div>
             <div id="log_manager_list_div" class="manager_list_div collapse multi-collapse">
                 <div id="server_log_div">
-                    <a href="{% url 'server-log' %}">
+                    <a href="{% url 'RulesetComparer:server-log' %}">
                         <div class="sub_function_text vertical_align_middle">Server Log</div>
                     </a>
                 </div>
                 <div id="ruleset_log_div">
-                    <a href="{% url 'ruleset-log-list' %}">
+                    <a href="{% url 'RulesetComparer:ruleset-log-list' %}">
                         <div class="sub_function_text vertical_align_middle">Ruleset Log</div>
                     </a>
                 </div>
             </div>
-{#            <div id="server_log_div" class="function_div">#}
-{#                <a href="{% url 'server-log' %}">#}
-{#                    <div class="row no-row-margin">#}
-{#                        <div class="function_icon_div">#}
-{#                            <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">#}
-{#                        </div>#}
-{#                        <div class="function_text vertical_align_middle">Server Log</div>#}
-{#                    </div>#}
-{#                </a>#}
-{#            </div>#}
             <div id="task_manager_div" class="function_div">
                 <a data-toggle="collapse" href="#task_manager_list_div" role="button" aria-expanded="false"
                    aria-controls="task_manager_list_div">
@@ -83,18 +73,18 @@
             </div>
             <div id="task_manager_list_div" class="manager_list_div collapse multi-collapse">
                 <div id="report_task_div">
-                    <a href="{% url 'report-scheduler-list' %}">
+                    <a href="{% url 'RulesetComparer:report-scheduler-list' %}">
                         <div class="sub_function_text vertical_align_middle">ReportTask</div>
                     </a>
                 </div>
                 <div id="auto_sync_task_div">
-                    <a href="{% url 'sync-scheduler-list' %}">
+                    <a href="{% url 'RulesetComparer:sync-scheduler-list' %}">
                         <div class="sub_function_text vertical_align_middle">AutoSyncTask</div>
                     </a>
                 </div>
             </div>
             <div id="recover_function_div" class="function_div">
-                <a href="{% url 'recover-filter-page' %}">
+                <a href="{% url 'RulesetComparer:recover-filter-page' %}">
                     <div class="row no-row-margin">
                         <div class="function_icon_div">
                             <img id="recover_icon" class="function_icon" src="{% static '/icons/recover_icon.png' %}">

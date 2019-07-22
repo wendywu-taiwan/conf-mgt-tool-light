@@ -12,7 +12,7 @@
             {{ ruleset }}
         </div>
         <div id="row_action_div" class="content_text action_width">
-            <button class="btn btn-info btn-font-14 diff_button" onclick="openDiffResultPage('{% url 'ruleset-diff-backup-with-server' backup_key "target" ruleset %}')">Diff</button>
+            <button class="btn btn-info btn-font-14 diff_button" onclick="openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' backup_key "target" ruleset %}')">Diff</button>
         </div>
     </div>
 </div>

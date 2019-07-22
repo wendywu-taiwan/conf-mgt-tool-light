@@ -9,7 +9,7 @@
         <div id="header_div" class="row no-row-margin">
             <div class="component_title">TASK</div>
             <div id="create_task_button_div">
-                <a href="{% url 'sync-scheduler-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
+                <a href="{% url 'RulesetComparer:sync-scheduler-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
             </div>
         </div>
         <div id="title_div" class="row no-row-margin">
@@ -95,7 +95,7 @@
                     </div>
                     <div id="task_action_column_div" class="vertical_align_middle action_div_width row no_row_margin">
                         <div class="margin_l_auto">
-                            <a href="{% url 'sync-scheduler-update' task.task_id %}" class="btn">
+                            <a href="{% url 'RulesetComparer:sync-scheduler-update' task.task_id %}" class="btn">
                                 <img class="icon" src="{% static '/icons/edit.png' %}">
                             </a>
                         </div>
@@ -120,10 +120,10 @@
                         "task_id": task_id
                     };
 
-                    doPOST("{% url 'delete-rulesets-sync-job' %}", post_body, function (response) {
+                    doPOST("{% url 'RulesetComparer:delete-rulesets-sync-job' %}", post_body, function (response) {
                         successDialog("delete task success", function () {
                             console.log(response);
-                            window.location = "{% url 'sync-scheduler-list' %}";
+                            window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
                         });
                     }, function (response) {
                         console.log(response);
@@ -152,10 +152,10 @@
                 "enable": status
             };
 
-            doPOST("{% url 'update-rulesets-sync-job-status' %}", post_body, function (response) {
+            doPOST("{% url 'RulesetComparer:update-rulesets-sync-job-status' %}", post_body, function (response) {
                 successDialog("update scheduler success", function () {
                     console.log(response);
-                    window.location = "{% url 'sync-scheduler-list' %}";
+                    window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
                 });
             }, function (response) {
                 console.log(response);

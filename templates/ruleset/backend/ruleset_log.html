@@ -85,7 +85,7 @@
         let ORDER_TAG = "order_tag";
 
         $(function () {
-            initFilterUrl("{% url 'ruleset-log-list-filter' %}", "{% url 'ruleset-log-list-page' %}")
+            initFilterUrl("{% url 'RulesetComparer:ruleset-log-list-filter' %}", "{% url 'RulesetComparer:ruleset-log-list-page' %}")
         });
 
         function selectFilterTag(div, tagName) {

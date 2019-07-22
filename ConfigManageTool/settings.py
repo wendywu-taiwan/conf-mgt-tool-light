@@ -63,11 +63,11 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ['templates',
                  'templates/registration',
-                 'templates/rulesetCompare',
-                 'templates/adminConsole',
-                 'templates/adminConsole/component',
-                 'templates/rulesetCompare/component',
-                 'templates/rulesetCompare/mailContent'
+                 'templates/ruleset',
+                 'templates/ruleset/frontend',
+                 'templates/ruleset/frontend/component',
+                 'templates/ruleset/backend',
+                 'templates/ruleset/backend/component',
                  ],
         'APP_DIRS': True,
         'OPTIONS': {

@@ -1,13 +1,13 @@
 <div class="col count_div">
     {% if data.table_type == 'remove' %}
-        <a onclick="rulesetDetailPage('{% url 'rule-detail' base_env.id country.id data.name compare_hash_key %}')">
+        <a onclick="rulesetDetailPage('{% url 'RulesetComparer:rule-detail' base_env.id country.id data.name compare_hash_key %}')">
             <button type="submit" class="button_minus btn btn-primary">
                 {{ base_env.name }}
                 <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
             </button>
         </a>
     {% elif data.table_type == 'normal' %}
-        <a onclick="rulesetDetailPage('{% url 'rule-detail' base_env.id country.id data.name compare_hash_key %}')">
+        <a onclick="rulesetDetailPage('{% url 'RulesetComparer:rule-detail' base_env.id country.id data.name compare_hash_key %}')">
             <button type="submit" class="button_minus btn btn-primary">
                 {{ base_env.name }}
                 <span class="span_minus badge badge-light">{{ data.base_count }}</span>
@@ -24,7 +24,7 @@
             <span class="span_inactive badge badge-light">{{ data.remove_count }}</span>
         </button>
     {% else %}
-        <a onclick="openDiffResultPage('{% url 'ruleset-diff-compare-result' compare_hash_key data.name %}')">
+        <a onclick="openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-compare-result' compare_hash_key data.name %}')">
             <button type="submit" class="button_minus btn btn-primary">
                 {{ base_env.name }} Only
                 <span class="span_minus badge badge-light">{{ data.remove_count }}</span>
