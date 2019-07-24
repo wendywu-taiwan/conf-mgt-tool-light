@@ -1,6 +1,6 @@
 from zeep import Client
 from abc import abstractmethod
-from RulesetComparer.models import Country, Environment, B2BServer, B2BService
+from permission.models import Country, Environment, B2BServer, B2BService
 from RulesetComparer.date_model.json_parser.auth_data import AuthDataParser
 
 

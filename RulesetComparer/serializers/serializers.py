@@ -1,13 +1,8 @@
 from rest_framework import serializers
 
-from RulesetComparer.models import Country, Environment, Function, Module, UserRole, MailContentType
+from RulesetComparer.models import MailContentType
+from permission.models import Country, Environment, Module, Function
 from RulesetComparer.properties import key
-
-
-class UserRoleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserRole
-        fields = ('id', 'name', 'modules')
 
 
 class FunctionSerializer(serializers.ModelSerializer):

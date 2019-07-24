@@ -1,0 +1,209 @@
+{
+  "user_role_permission": [
+    {
+      "user_name": "wendy.wu",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "kathy.chang",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "enpei.chu",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "sophia.lee",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "tommy.lin",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "josh.cheng",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "evelyn.lin",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "TaskManager",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    }
+  ],
+  "update_time": {
+    "user_role_permission": {
+      "update_time": "2019-7-12 18:10:00"
+    }
+  }
+}

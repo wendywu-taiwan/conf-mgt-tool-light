@@ -12,7 +12,9 @@ class RulesetcomparerConfig(AppConfig):
             return
 
         if 'runserver' in sys.argv:
+            from common.services.init_data import init_data
+            init_data()
+            from common.services.migrate_data import clear_data
+            clear_data()
             from RulesetComparer.services.services import restart_all_scheduler
             restart_all_scheduler()
-            from RulesetComparer.services.initDataService import init_data
-            init_data()

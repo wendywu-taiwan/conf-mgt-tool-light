@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'RulesetComparer',
+    'common',
+    'permission',
     'zeep',
     'lxml',
     'xhtml2pdf',
