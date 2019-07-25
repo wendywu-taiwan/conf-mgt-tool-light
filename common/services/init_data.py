@@ -191,13 +191,13 @@ def create_or_update_role_permission(role_permission, function_array, module_nam
         else:
             editable = 0
 
-        if RoleFunctionPermission.objects.filter(permission_role=role_permission,
+        if RoleFunctionPermission.objects.filter(role_permission=role_permission,
                                                  function=function).exists():
-            RoleFunctionPermission.objects.filter(permission_role=role_permission,
+            RoleFunctionPermission.objects.filter(role_permission=role_permission,
                                                   function=function).update(visible=visible,
                                                                             editable=editable)
         else:
-            RoleFunctionPermission.objects.create(permission_role=role_permission,
+            RoleFunctionPermission.objects.create(role_permission=role_permission,
                                                   function=function, visible=visible, editable=editable)
 
 

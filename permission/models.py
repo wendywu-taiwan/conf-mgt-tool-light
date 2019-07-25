@@ -175,6 +175,15 @@ class RolePermissionManager(models.Manager):
         role_type = RoleType.objects.get(name=role_type_name)
         return self.get(role_type=role_type, environment=environment, country=country)
 
+    def get_role_permission_by_user_env_country_id(self, user_id, environment_id, country_id):
+        role_permission_ids = self.filter(user_role_permission_role_permission__user_id=user_id,
+                                          environment_id=environment_id,
+                                          country_id=country_id).values_list("id", flat=True)
+        if len(role_permission_ids) > 0:
+            return role_permission_ids[0]
+        else:
+            return None
+
 
 class RolePermission(models.Model):
     id = models.AutoField(primary_key=True)
@@ -185,6 +194,25 @@ class RolePermission(models.Model):
     objects = RolePermissionManager()
 
 
+class UserRolePermissionManager(models.Manager):
+    def get_role_permission_ids(self, user):
+        array = []
+        if not self.filter(user=user).exists():
+            return array
+
+        permission_ids = self.filter(user=user).values_list("role_permission", flat=True)
+        for permission_id in permission_ids:
+            array.append(permission_id)
+        return array
+
+    def get_distinct_users(self):
+        array = []
+        users = self.filter().values_list("user_id", flat=True).order_by("user_id")
+        for user in users:
+            array.append(user)
+        return array
+
+
 class UserRolePermission(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, related_name='user_role_permission_user', null=True,
@@ -193,11 +221,22 @@ class UserRolePermission(models.Model):
                                         null=True, on_delete=models.PROTECT)
 
 
+class RoleFunctionPermissionManager(models.Manager):
+    def get_role_function_permission(self, role_permission_id, function_id):
+        role_function_permission = self.filter(role_permission_id=role_permission_id, function_id=function_id).values()
+        if len(role_function_permission) > 0:
+            return role_function_permission[0]
+        else:
+            return None
+
+
 class RoleFunctionPermission(models.Model):
     id = models.AutoField(primary_key=True)
-    permission_role = models.ForeignKey(RolePermission, related_name='role_function_role_permission', null=True,
+    role_permission = models.ForeignKey(RolePermission, related_name='role_function_role_permission', null=True,
                                         on_delete=models.PROTECT)
     function = models.ForeignKey(Function, related_name='role_function_permission_function', null=True,
                                  on_delete=models.PROTECT)
     visible = models.IntegerField(default=0)
     editable = models.IntegerField(default=0)
+
+    objects = RoleFunctionPermissionManager()
