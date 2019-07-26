@@ -153,6 +153,7 @@ def init_role_permission(data):
 def init_role_function_permission(data):
     for role_function_permission_obj in data:
         environment_name = role_function_permission_obj.get("environment_name")
+        print("role_function_permission_obj, environment:" + environment_name)
         country_name = role_function_permission_obj.get("country_name")
         module_name = role_function_permission_obj.get("module_name")
         role_function_array = role_function_permission_obj.get("role_function_permission")
@@ -171,7 +172,7 @@ def init_role_function_permission(data):
                 role_permission = RolePermission.objects.get_role_permission(role_type_name, environment_name,
                                                                              country_name)
                 create_or_update_role_permission(role_permission, function_permission_array, module_name)
-        return True
+    return True
 
 
 def create_or_update_role_permission(role_permission, function_array, module_name):
@@ -214,7 +215,8 @@ def init_user_role_permission(data):
             if country_name == "all":
                 countries = Country.objects.all()
                 for country in countries:
-                    role_permission = RolePermission.objects.get_role_permission(role_type, environment_name, country.name)
+                    role_permission = RolePermission.objects.get_role_permission(role_type, environment_name,
+                                                                                 country.name)
                     create_user_role_permission(user, role_permission)
             else:
                 role_permission = RolePermission.objects.get_role_permission(role_type, environment_name, country_name)

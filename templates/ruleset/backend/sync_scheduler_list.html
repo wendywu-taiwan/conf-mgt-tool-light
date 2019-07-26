@@ -117,14 +117,21 @@
                     showWaitingDialog();
 
                     let post_body = {
-                        "task_id": task_id
+                        "id": task_id
                     };
 
                     doPOST("{% url 'RulesetComparer:delete-rulesets-sync-job' %}", post_body, function (response) {
-                        successDialog("delete task success", function () {
-                            console.log(response);
-                            window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
-                        });
+                        let statusCode = response["status_code"];
+                        let message = response["message"];
+
+                        if (response == null || statusCode != 200) {
+                            showErrorDialog(message);
+                        } else {
+                            successDialog("delete task success", function () {
+                                console.log(response);
+                                window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                            });
+                        }
                     }, function (response) {
                         console.log(response);
                         showErrorDialog("delete task fail")
@@ -153,10 +160,17 @@
             };
 
             doPOST("{% url 'RulesetComparer:update-rulesets-sync-job-status' %}", post_body, function (response) {
-                successDialog("update scheduler success", function () {
-                    console.log(response);
-                    window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
-                });
+                let statusCode = response["status_code"];
+                let message = response["message"];
+
+                if (response == null || statusCode != 200) {
+                    showErrorDialog(message);
+                } else {
+                    successDialog("update scheduler success", function () {
+                        console.log(response);
+                        window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                    });
+                }
             }, function (response) {
                 console.log(response);
                 showErrorDialog("update scheduler fail")

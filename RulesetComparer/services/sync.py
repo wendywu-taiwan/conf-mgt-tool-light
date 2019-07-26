@@ -59,11 +59,10 @@ def update_ruleset_test():
         raise e
 
 
-def sync_up_rulesets_without_scheduler(json_data, user):
-    parser = CreateRulesetSyncSchedulerParser(json_data, user)
+def sync_up_rulesets_without_scheduler(parser):
     for country in parser.country_list:
         try:
-            rs_log_groups = RulesetLogGroupObj(parser, user, country)
+            rs_log_groups = RulesetLogGroupObj(parser, parser.user, country)
             rs_log_groups.log_group()
 
             result_data = sync_up_rulesets(rs_log_groups, parser, country)
@@ -102,12 +101,12 @@ def sync_up_rulesets(rs_log_group, parser, country):
 
 
 def sync_up_rulesets_from_backup(json_data, user):
-    parser = RecoverRulesetsParser(json_data)
+    parser = RecoverRulesetsParser(json_data, user)
     return sync_backup_rulesets(parser, user)
 
 
 def sync_up_ruleset_from_backup(json_data, user):
-    parser = ApplyRulesetToServerParser(json_data)
+    parser = ApplyRulesetToServerParser(json_data, user)
     return sync_backup_rulesets(parser, user)
 
 

@@ -22,7 +22,8 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
                 self.scheduler.compare_environment).data
             self.result_dict["module"] = self.get_module_data()
             self.result_dict[KEY_COUNTRY_LIST] = CountrySerializer(self.scheduler.country_list, many=True).data
-            self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypeSerializer(self.scheduler.mail_content_type_list,many=True).data
+            self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypeSerializer(
+                self.scheduler.mail_content_type_list, many=True).data
             self.result_dict["mail_list"] = self.get_mail_list()
             self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
             self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
@@ -37,7 +38,7 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
         try:
             module_map = {"id": self.scheduler.module.id,
                           "name": self.scheduler.module.name,
-                          "icon_file_name": self.scheduler.module.icon_file_name}
+                          "display_name": self.scheduler.module.display_name}
             return module_map
         except Exception as e:
             error_log(traceback.format_exc())

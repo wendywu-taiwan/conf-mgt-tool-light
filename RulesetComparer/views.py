@@ -8,6 +8,8 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
+
+from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
     RulesetSyncUpScheduler
 from RulesetComparer.utils.threadManager import *
@@ -19,6 +21,7 @@ from RulesetComparer.services import services, sync, recover, sync_scheduler, \
     report_scheduler, log
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
+from RulesetComparer.properties.message import *
 
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder
@@ -27,6 +30,7 @@ from RulesetComparer.date_model.json_builder.admin_console_info import AdminCons
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.status_code import *
+from common.data_object.error.PermissionDeniedError import PermissionDeniedError
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
@@ -468,27 +472,35 @@ def download_rulesets(request):
         return JsonResponse(result)
 
 
+# recovery - apply ruleset
 def recover_rulesets(request):
     try:
         request_json = get_post_request_json(request)
         result_data = sync.sync_up_rulesets_from_backup(request_json, request.user)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
 
+# ruleset log detail - apply ruleset
 def apply_ruleset_to_server(request):
     try:
         request_json = get_post_request_json(request)
         result_data = sync.sync_up_ruleset_from_backup(request_json, request.user)
         result = ResponseBuilder(data=result_data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        result = ResponseBuilder(status_code=INTERNAL_SERVER_ERROR, message="Internal Server Error").get_data()
         return JsonResponse(result)
 
 
@@ -578,10 +590,13 @@ def create_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "create_scheduler, request json =" + str(request_json))
-        scheduler_info = report_scheduler.create_scheduler(request_json)
+        scheduler_info = report_scheduler.create_scheduler(request_json, request.user)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -592,10 +607,13 @@ def update_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
         info_log("API", "update_scheduler, request json =" + str(request_json))
-        scheduler_info = report_scheduler.update_report_scheduler(request_json)
+        scheduler_info = report_scheduler.update_report_scheduler(request_json, request.user)
         info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -605,10 +623,13 @@ def update_ruleset_report_job(request):
 def update_rulesets_report_status(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = report_scheduler.update_scheduler_status(request_json)
+        scheduler = report_scheduler.update_scheduler_status(request_json, request.user)
         data = ReportSchedulerInfoBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -618,10 +639,12 @@ def update_rulesets_report_status(request):
 def delete_ruleset_report_job(request):
     try:
         request_json = get_post_request_json(request)
-        task_id = request_json["id"]
-        report_scheduler.delete_scheduler(task_id)
+        report_scheduler.delete_scheduler(request_json, request.user)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -649,9 +672,13 @@ def get_rulesets_sync_jobs(request):
 def run_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        run_in_background(sync.sync_up_rulesets_without_scheduler, request_json, request.user)
+        parser = CreateRulesetSyncSchedulerParser(request_json, request.user)
+        run_in_background(sync.sync_up_rulesets_without_scheduler, parser)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -665,6 +692,9 @@ def create_rulesets_sync_job(request):
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -678,6 +708,9 @@ def update_rulesets_sync_job(request):
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -687,10 +720,13 @@ def update_rulesets_sync_job(request):
 def update_rulesets_sync_job_status(request):
     try:
         request_json = get_post_request_json(request)
-        scheduler = sync_scheduler.update_scheduler_status(request_json)
+        scheduler = sync_scheduler.update_scheduler_status(request_json, request.user)
         data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -700,9 +736,12 @@ def update_rulesets_sync_job_status(request):
 def delete_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
-        sync_scheduler.delete_scheduler(request_json)
+        sync_scheduler.delete_scheduler(request_json, request.user)
         result = ResponseBuilder().get_data()
         return JsonResponse(data=result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

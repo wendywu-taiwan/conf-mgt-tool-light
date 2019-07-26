@@ -1,6 +1,8 @@
 from RulesetComparer.task.daily_compare_report import DailyCompareReportTask
 from RulesetComparer.date_model.json_parser.create_report_scheduler import CreateReportSchedulerTaskParser
 from RulesetComparer.date_model.json_parser.db_report_scheduler import DBReportSchedulerParser
+from RulesetComparer.date_model.json_parser.delete_report_scheduler import DeleteReportSchedulerParser
+from RulesetComparer.date_model.json_parser.update_report_scheduler_status import UpdateReportSchedulerStatusParser
 from RulesetComparer.models import ReportSchedulerInfo
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.logger import info_log
@@ -32,9 +34,9 @@ def get_schedulers():
         raise e
 
 
-def create_scheduler(json_data):
+def create_scheduler(json_data, user):
     try:
-        parser = CreateReportSchedulerTaskParser(json_data)
+        parser = CreateReportSchedulerTaskParser(json_data, user)
         report_scheduler = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
                                                                    parser.compare_env_id,
                                                                    parser.module_id,
@@ -51,9 +53,9 @@ def create_scheduler(json_data):
         raise e
 
 
-def update_report_scheduler(json_data):
+def update_report_scheduler(json_data, user):
     try:
-        parser = CreateReportSchedulerTaskParser(json_data)
+        parser = CreateReportSchedulerTaskParser(json_data, user)
         report_scheduler = ReportSchedulerInfo.objects.update_task(parser.task_id,
                                                                    parser.base_env_id,
                                                                    parser.compare_env_id,
@@ -68,9 +70,10 @@ def update_report_scheduler(json_data):
         raise e
 
 
-def delete_scheduler(task_id):
+def delete_scheduler(json_data, user):
     try:
-        ReportSchedulerInfo.objects.filter(id=task_id).delete()
+        parser = DeleteReportSchedulerParser(json_data, user)
+        ReportSchedulerInfo.objects.filter(id=parser.task_id).delete()
     except Exception as e:
         raise e
 
@@ -83,12 +86,7 @@ def add_task_to_scheduler(parser):
     daily_task.set_scheduled_job(job)
 
 
-def update_scheduler_status(json_data):
-    task_id = json_data.get(KEY_TASK_ID)
-    enable = json_data.get(KEY_ENABLE)
-    if enable:
-        enable = 1
-    else:
-        enable = 0
-    task = ReportSchedulerInfo.objects.update_task_status(task_id, enable)
+def update_scheduler_status(json_data, user):
+    parser = UpdateReportSchedulerStatusParser(json_data, user)
+    task = ReportSchedulerInfo.objects.update_task_status(parser.task_id, parser.enable)
     return task

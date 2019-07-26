@@ -1,7 +1,10 @@
 from RulesetComparer.task.rulesets_sync import RulesetsSyncUpTask
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
+from RulesetComparer.date_model.json_parser.update_sync_scheduler_status import UpdateSyncSchedulerStatusParser
 from RulesetComparer.date_model.json_parser.db_ruleset_sync_scheduler import DBRulesetSyncSchedulerParser
+from RulesetComparer.date_model.json_parser.delete_sync_scheduler import DeleteSyncSchedulerParser
 from RulesetComparer.models import RulesetSyncUpScheduler
+
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from RulesetComparer.utils.logger import *
 
@@ -78,17 +81,12 @@ def add_task_to_scheduler(db_scheduler_id, parser):
     task.set_scheduled_job(job)
 
 
-def delete_scheduler(json_data):
-    task_id = json_data.get(KEY_TASK_ID)
-    RulesetSyncUpScheduler.objects.get(id=task_id).delete()
+def delete_scheduler(json_data, user):
+    parser = DeleteSyncSchedulerParser(json_data, user)
+    RulesetSyncUpScheduler.objects.get(id=parser.task_id).delete()
 
 
-def update_scheduler_status(json_data):
-    task_id = json_data.get(KEY_TASK_ID)
-    enable = json_data.get(KEY_ENABLE)
-    if enable:
-        enable = 1
-    else:
-        enable = 0
-    task = RulesetSyncUpScheduler.objects.update_task_status(task_id, enable)
+def update_scheduler_status(json_data, user):
+    parser = UpdateSyncSchedulerStatusParser(json_data, user)
+    task = RulesetSyncUpScheduler.objects.update_task_status(parser.task_id, parser.enable)
     return task
