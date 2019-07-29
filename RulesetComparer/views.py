@@ -8,7 +8,8 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
-
+from permission.utils.permission_manager import enable_environments, enable_countries
+from common.utils.utility import get_union
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
     RulesetSyncUpScheduler
@@ -26,8 +27,8 @@ from RulesetComparer.properties.message import *
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder
 from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder
-from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
+from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.status_code import *
 from common.data_object.error.PermissionDeniedError import PermissionDeniedError
@@ -45,7 +46,7 @@ def logout_view(request):
 @login_required
 def admin_console_page(request):
     result = {}
-    return render(request, "admin_console_base.html", add_user_information(request, result))
+    return render(request, "admin_console_base.html", add_navigation_information(request, result))
 
 
 # @login_required
@@ -73,7 +74,7 @@ def admin_console_server_log_page(request, log_type=None):
             key.LOG_TYPE: log_file_name,
             key.LOG_CONTENT: file_content
         }
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "server_log.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -91,7 +92,7 @@ def admin_console_report_scheduler_list_page(request):
             data_list.append(data_builder.get_data())
 
         data = {key.SCHEDULER_LIST: data_list}
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
 
         return render(request, "scheduler_list.html", data)
     except Exception:
@@ -110,7 +111,7 @@ def admin_console_scheduler_create_page(request):
         data = {key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
                 key.RULESET_MAIL_CONTENT_TYPE: mail_content_types}
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "scheduler_create.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -134,7 +135,7 @@ def admin_console_scheduler_update_page(request, scheduler_id):
             key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
             key.SCHEDULER_DATA: scheduler_data
         }
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "scheduler_update.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -152,7 +153,7 @@ def admin_console_sync_scheduler_list_page(request):
             data_list.append(data_builder.get_data())
 
         data = {key.SCHEDULER_LIST: data_list}
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_list.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -172,7 +173,7 @@ def admin_console_sync_scheduler_create_page(request):
                 key.TARGET_ENVIRONMENT: int2_environment_data,
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
                 key.ACTION_LIST: action_list}
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_create.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -198,7 +199,7 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
             key.ACTION_LIST: action_list,
             key.SCHEDULER_DATA: scheduler_data
         }
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_update.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -210,11 +211,14 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 def admin_console_recover_ruleset_filtered_page(request):
     try:
         environment_list = recover.filter_environment()
-        environment_json_list = EnvironmentSerializer(environment_list, many=True).data
+        enable_environment_list = enable_environments(request.user.id)
+        union_list = get_union(environment_list, enable_environment_list)
+
+        environment_json_list = EnvironmentSerializer(union_list, many=True).data
         data = {
             key.KEY_ENVIRONMENTS: environment_json_list
         }
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "recovery.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -230,7 +234,7 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
         data = {
             key.KEY_COUNTRIES: countries
         }
-        data = add_user_information(request, data)
+        data = add_navigation_information(request, data)
         return render(request, "select_country_dropdown.html", data)
     except Exception:
         error_log(traceback.format_exc())
@@ -243,7 +247,7 @@ def admin_console_recover_ruleset_backup_list_page(request):
     try:
         request_json = get_post_request_json(request)
         result_data = recover.filter_backup_list(request_json)
-        result_data = add_user_information(request, result_data)
+        result_data = add_navigation_information(request, result_data)
         return render(request, "backup_data_view.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
@@ -257,7 +261,7 @@ def admin_console_ruleset_log_list_page(request):
     try:
         request_json = get_post_request_json(request)
         result_data = log.get_ruleset_log_list(request_json, False)
-        result_data = add_user_information(request, result_data)
+        result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
@@ -271,7 +275,7 @@ def admin_console_ruleset_log_list_filter_page(request):
     try:
         request_json = get_post_request_json(request)
         result_data = log.get_ruleset_log_list(request_json, True)
-        result_data = add_user_information(request, result_data)
+        result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
@@ -285,7 +289,7 @@ def admin_console_ruleset_log_list_page_change(request):
     try:
         request_json = get_post_request_json(request)
         result_data = log.get_ruleset_log_list(request_json, False)
-        result_data = add_user_information(request, result_data)
+        result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
         error_log(traceback.format_exc())
@@ -297,7 +301,7 @@ def admin_console_ruleset_log_list_page_change(request):
 def admin_console_ruleset_log_detail_page(request, log_id):
     try:
         result = {KEY_LOG_DATA: log.get_ruleset_log_detail(log_id)}
-        result = add_user_information(request, result)
+        result = add_navigation_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
     except Exception:
         error_log(traceback.format_exc())
@@ -305,13 +309,9 @@ def admin_console_ruleset_log_detail_page(request, log_id):
         return JsonResponse(result)
 
 
-def add_user_information(request, result):
-    info_data = AdminConsoleInfoBuilder().get_data()
+def add_navigation_information(request, result):
+    info_data = AdminConsoleInfoBuilder(request.user).get_data()
     result[ADMIN_CONSOLE_INFO] = info_data
-
-    if request.user.is_authenticated:
-        result[KEY_USER_NAME] = request.user.username
-
     return result
 
 

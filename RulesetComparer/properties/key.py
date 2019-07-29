@@ -237,6 +237,12 @@ KEY_RULESET_LOG_LIST = "ruleset_log_list"
 KEY_LOG_DATA = "log_data"
 KEY_RULESET_DATA = "ruleset_data"
 KEY_RULESET_PATH_INFO = "ruleset_path_info"
+KEY_USER_DATA = "user_data"
+KEY_MODULE_DATA = "module_data"
+KEY_FUNCTIONS_DATA = "functions_data"
+KEY_DISPLAY_NAME = "display_name"
+KEY_VISIBLE = "visible"
+KEY_EDITABLE = "editable"
 
 # environment name
 INT2_NAME = "INT2"
