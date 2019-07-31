@@ -2,6 +2,8 @@ from django.db.models import Q
 from django.http import HttpResponseBadRequest
 
 from RulesetComparer.models import RulesetLogGroup, RulesetLog
+from permission.utils.permission_manager import *
+from common.utils.utility import get_union, to_int_list
 
 
 class GetRulesetLogListParser:
@@ -9,7 +11,7 @@ class GetRulesetLogListParser:
     DEFAULT_PAGE = 1
     DEFAULT_LIMIT = 10
 
-    def __init__(self, json_data, new_filter=True):
+    def __init__(self, user, json_data, new_filter=True):
         try:
             if json_data is HttpResponseBadRequest:
                 self.filter_user_ids = []
@@ -20,14 +22,15 @@ class GetRulesetLogListParser:
                 self.limit = self.DEFAULT_LIMIT
                 self.page = self.DEFAULT_PAGE
             else:
-                self.filter_user_ids = json_data.get("filter_user_ids")
-                self.filter_environment_ids = json_data.get("filter_environment_ids")
-                self.filter_countries_ids = json_data.get("filter_countries_ids")
+                self.filter_user_ids = to_int_list(json_data.get("filter_user_ids"))
+                self.filter_environment_ids = to_int_list(json_data.get("filter_environment_ids"))
+                self.filter_countries_ids = to_int_list(json_data.get("filter_countries_ids"))
                 self.filter_keys = json_data.get("filter_keys")
                 self.order = json_data.get("order")
                 self.page = int(json_data.get("page"))
                 self.limit = json_data.get("limit")
 
+            self.user = user
             self.new_filter = new_filter
             self.order_descend = self.is_descend_order()
             self.log_group_query = Q(log_count__gt=0)
@@ -62,23 +65,38 @@ class GetRulesetLogListParser:
         self.log_group_query.add(query, Q.AND)
 
     def parse_environment_query(self):
-        if len(self.filter_environment_ids) == 0:
-            return
-
+        enable_environment_ids = enable_environments(self.user.id)
         query = Q()
-        for environment_id in self.filter_environment_ids:
-            query.add(Q(source_environment=environment_id), Q.OR)
-            query.add(Q(target_environment=environment_id), Q.OR)
+        if len(self.filter_environment_ids) == 0:
+            query.add(Q(source_environment__in=enable_environment_ids), Q.AND)
+            query.add(Q(target_environment__in=enable_environment_ids), Q.AND)
+        else:
+            union_list = get_union(enable_environment_ids, self.filter_environment_ids)
+            if len(union_list) == 0:
+                union_list = enable_environment_ids
+
+            sub_query = Q()
+            sub_query.add(Q(source_environment__in=union_list), Q.AND)
+            sub_query.add(Q(target_environment__in=enable_environment_ids), Q.AND)
+            query.add(sub_query, Q.OR)
+            sub_query = Q()
+            sub_query.add(Q(source_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(target_environment__in=union_list), Q.AND)
+            query.add(sub_query, Q.OR)
 
         self.log_group_query.add(query, Q.AND)
 
     def parse_country_query(self):
-        if len(self.filter_countries_ids) == 0:
-            return
-
+        enable_environment_ids = enable_environments(self.user.id)
+        enable_country_ids = enable_environments_countries(self.user.id, enable_environment_ids)
         query = Q()
-        for country_id in self.filter_countries_ids:
-            query.add(Q(country=country_id), Q.OR)
+        if len(self.filter_countries_ids) == 0:
+            query.add(Q(country_id__in=enable_country_ids), Q.AND)
+        else:
+            union_list = get_union(enable_country_ids, self.filter_countries_ids)
+            if len(union_list) == 0:
+                union_list = enable_country_ids
+            query.add(Q(country_id__in=union_list), Q.AND)
 
         self.log_group_query.add(query, Q.AND)
 

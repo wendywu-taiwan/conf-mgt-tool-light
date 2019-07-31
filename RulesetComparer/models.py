@@ -1,5 +1,8 @@
 from django.db import models
+from django.db.models import Q
+
 from permission.models import Environment, Country, Module
+from permission.utils.permission_manager import *
 from django.contrib.auth.models import User
 
 
@@ -71,6 +74,22 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
+    def filter_scheduler(self, user_id, environment_ids):
+        query = Q()
+        for environment_id in environment_ids:
+            sub_query = Q()
+            country_ids = enable_countries(user_id, environment_id)
+            sub_query.add(Q(base_environment__in=environment_ids), Q.AND)
+            sub_query.add(Q(compare_environment__in=environment_ids), Q.AND)
+            sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
+            query.add(sub_query, Q.OR)
+
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct()
+        array = []
+        for id in scheduler_ids:
+            scheduler = self.get(id=id)
+            array.append(scheduler)
+        return array
 
 class ReportSchedulerInfo(models.Model):
     id = models.AutoField(primary_key=True)
@@ -159,6 +178,22 @@ class RulesetSyncUpSchedulerManager(models.Manager):
         task.job_id = job_id
         task.save()
         return task
+
+    def filter_environments_and_countries(self, user_id, environment_ids):
+        query = Q()
+        for environment_id in environment_ids:
+            sub_query = Q()
+            country_ids = enable_countries(user_id, environment_id)
+            sub_query.add(Q(target_environment=environment_id), Q.AND)
+            sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
+            query.add(sub_query, Q.OR)
+
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct()
+        array = []
+        for id in scheduler_ids:
+            scheduler = self.get(id=id)
+            array.append(scheduler)
+        return array
 
 
 class RulesetSyncUpScheduler(models.Model):

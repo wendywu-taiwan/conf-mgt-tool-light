@@ -68,3 +68,17 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
         except Exception as e:
             error_log(traceback.format_exc())
             raise e
+
+
+class ReportSchedulersBuilder(BaseBuilder):
+
+    def __init__(self, schedulers):
+        self.schedulers = schedulers
+        BaseBuilder.__init__(self)
+
+    def __generate_data__(self):
+        array = []
+        for scheduler in self.schedulers:
+            data = ReportSchedulerInfoBuilder(scheduler).get_data()
+            array.append(data)
+        self.result_dict = array

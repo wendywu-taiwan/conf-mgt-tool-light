@@ -8,8 +8,10 @@ from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonRespo
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
+
+from permission.models import Function
 from permission.utils.permission_manager import enable_environments, enable_countries
-from common.utils.utility import get_union
+from common.utils.utility import get_union, contains
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
     RulesetSyncUpScheduler
@@ -25,17 +27,24 @@ from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.properties.message import *
 
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
-from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder
-from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder
+from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder, \
+    ReportSchedulersBuilder
+from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder, \
+    RulesetSyncSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
+from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder, EnvironmentsBuilder
+from RulesetComparer.date_model.json_builder.country import CountryBuilder, CountriesBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.status_code import *
 from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from permission.utils.permission_manager import check_function_enable
 
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
+
+######################################## Admin Console ########################################
 
 @login_required
 def logout_view(request):
@@ -52,6 +61,8 @@ def admin_console_page(request):
 # @login_required
 def admin_console_server_log_page(request, log_type=None):
     try:
+        check_page_permission(request, KEY_F_SERVER_LOG)
+
         if log_type is None:
             log_type = DEFAULT_LOG_TYPE
 
@@ -76,6 +87,9 @@ def admin_console_server_log_page(request, log_type=None):
         }
         data = add_navigation_information(request, data)
         return render(request, "server_log.html", data)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -85,16 +99,18 @@ def admin_console_server_log_page(request, log_type=None):
 @login_required
 def admin_console_report_scheduler_list_page(request):
     try:
-        scheduler_info_list = ReportSchedulerInfo.objects.all()
-        data_list = list()
-        for scheduler_info in scheduler_info_list:
-            data_builder = ReportSchedulerInfoBuilder(scheduler_info)
-            data_list.append(data_builder.get_data())
+        check_page_permission(request, KEY_F_REPORT_TASK)
+        enable_environment_list = enable_environments(request.user.id)
+        scheduler_list = ReportSchedulerInfo.objects.filter_scheduler(request.user.id, enable_environment_list)
+        scheduler_data = ReportSchedulersBuilder(scheduler_list).get_data()
 
-        data = {key.SCHEDULER_LIST: data_list}
+        data = {key.SCHEDULER_LIST: scheduler_data}
         data = add_navigation_information(request, data)
 
         return render(request, "scheduler_list.html", data)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -102,14 +118,18 @@ def admin_console_report_scheduler_list_page(request):
 
 
 @login_required
-def admin_console_scheduler_create_page(request):
+def admin_console_report_scheduler_create_page(request):
     try:
-        environment_list_data = EnvironmentSerializer(Environment.objects.filter(active=1), many=True).data
-        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        check_page_permission(request, KEY_F_SERVER_LOG)
+
+        enable_environment_list = enable_environments(request.user.id)
+        environment_data = EnvironmentsBuilder(ids=enable_environment_list).get_data()
+        country_data = CountriesBuilder(countries=Country.objects.all()).get_data()
+
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
 
-        data = {key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
-                key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+        data = {key.KEY_ENVIRONMENTS: environment_data,
+                key.KEY_COUNTRIES: country_data,
                 key.RULESET_MAIL_CONTENT_TYPE: mail_content_types}
         data = add_navigation_information(request, data)
         return render(request, "scheduler_create.html", data)
@@ -120,18 +140,22 @@ def admin_console_scheduler_create_page(request):
 
 
 @login_required
-def admin_console_scheduler_update_page(request, scheduler_id):
+def admin_console_report_scheduler_update_page(request, scheduler_id):
     try:
-        environment_list_data = EnvironmentSerializer(Environment.objects.filter(active=1), many=True).data
-        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        check_page_permission(request, KEY_F_SERVER_LOG)
+
+        enable_environment_list = enable_environments(request.user.id)
+        environment_data = EnvironmentsBuilder(ids=enable_environment_list).get_data()
+        country_data = CountriesBuilder(countries=Country.objects.all()).get_data()
+
         mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
 
         scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
         scheduler_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
 
         data = {
-            key.ENVIRONMENT_SELECT_ENVIRONMENT: environment_list_data,
-            key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
+            key.KEY_ENVIRONMENTS: environment_data,
+            key.KEY_COUNTRIES: country_data,
             key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
             key.SCHEDULER_DATA: scheduler_data
         }
@@ -146,13 +170,13 @@ def admin_console_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_sync_scheduler_list_page(request):
     try:
-        schedulers = sync_scheduler.get_schedulers()
-        data_list = list()
-        for scheduler in schedulers:
-            data_builder = RulesetSyncSchedulerBuilder(scheduler)
-            data_list.append(data_builder.get_data())
+        check_page_permission(request, KEY_F_AUTO_SYNC_TASK)
+        environment_list = enable_environments(request.user.id)
 
-        data = {key.SCHEDULER_LIST: data_list}
+        schedulers = RulesetSyncUpScheduler.objects.filter_environments_and_countries(request.user.id, environment_list)
+        scheduler_data_list = RulesetSyncSchedulersBuilder(schedulers).get_data()
+
+        data = {key.SCHEDULER_LIST: scheduler_data_list}
         data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_list.html", data)
     except Exception:
@@ -164,13 +188,22 @@ def admin_console_sync_scheduler_list_page(request):
 @login_required
 def admin_console_sync_scheduler_create_page(request):
     try:
-        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
-        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
-        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        check_page_permission(request, KEY_F_AUTO_SYNC_TASK)
+        enable_environment_list = enable_environments(request.user.id)
+
+        git_environment = Environment.objects.get(name=GIT_NAME)
+        int2_environment = Environment.objects.get(name=INT2_NAME)
+
+        if not contains(enable_environment_list, int2_environment.id):
+            raise PermissionDeniedError
+
+        git_environment_data = EnvironmentBuilder(environment=git_environment).get_data()
+        int2_environment_data = EnvironmentBuilder(environment=int2_environment).get_data()
+        country_list_data = CountriesBuilder(countries=Country.objects.all()).get_data()
         action_list = config.RULESET_SYNC_UP_ACTION
 
-        data = {key.SOURCE_ENVIRONMENT: git_environment_data,
-                key.TARGET_ENVIRONMENT: int2_environment_data,
+        data = {key.SOURCE_ENVIRONMENT: [git_environment_data],
+                key.TARGET_ENVIRONMENT: [int2_environment_data],
                 key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
                 key.ACTION_LIST: action_list}
         data = add_navigation_information(request, data)
@@ -184,17 +217,26 @@ def admin_console_sync_scheduler_create_page(request):
 @login_required
 def admin_console_sync_scheduler_update_page(request, scheduler_id):
     try:
-        git_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.GIT_NAME)).data]
-        int2_environment_data = [EnvironmentSerializer(Environment.objects.get(name=key.INT2_NAME)).data]
-        country_list_data = CountrySerializer(Country.objects.all(), many=True).data
+        check_page_permission(request, KEY_F_AUTO_SYNC_TASK)
+        enable_environment_list = enable_environments(request.user.id)
+
+        git_environment = Environment.objects.get(name=GIT_NAME)
+        int2_environment = Environment.objects.get(name=INT2_NAME)
+
+        if not contains(enable_environment_list, int2_environment.id):
+            raise PermissionDeniedError
+
+        git_environment_data = EnvironmentBuilder(environment=git_environment).get_data()
+        int2_environment_data = EnvironmentBuilder(environment=int2_environment).get_data()
+        country_list_data = CountriesBuilder(countries=Country.objects.all()).get_data()
         action_list = config.RULESET_SYNC_UP_ACTION
 
         scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
         scheduler_data = RulesetSyncSchedulerBuilder(scheduler).get_data()
 
         data = {
-            key.SOURCE_ENVIRONMENT: git_environment_data,
-            key.TARGET_ENVIRONMENT: int2_environment_data,
+            key.SOURCE_ENVIRONMENT: [git_environment_data],
+            key.TARGET_ENVIRONMENT: [int2_environment_data],
             key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
             key.ACTION_LIST: action_list,
             key.SCHEDULER_DATA: scheduler_data
@@ -210,13 +252,18 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_recover_ruleset_filtered_page(request):
     try:
+        check_page_permission(request, KEY_F_RECOVERY)
+
         environment_list = recover.filter_environment()
         enable_environment_list = enable_environments(request.user.id)
         union_list = get_union(environment_list, enable_environment_list)
 
-        environment_json_list = EnvironmentSerializer(union_list, many=True).data
+        array = []
+        for environment_id in union_list:
+            array.append(EnvironmentBuilder(id=environment_id).get_data())
+
         data = {
-            key.KEY_ENVIRONMENTS: environment_json_list
+            key.KEY_ENVIRONMENTS: array
         }
         data = add_navigation_information(request, data)
         return render(request, "recovery.html", data)
@@ -229,10 +276,21 @@ def admin_console_recover_ruleset_filtered_page(request):
 @login_required
 def admin_console_recover_ruleset_filtered_environment_page(request):
     try:
+        check_page_permission(request, KEY_F_RECOVERY)
+
         request_json = get_post_request_json(request)
-        countries = recover.filter_country(request_json.get(key.RULE_KEY_ENVIRONMENT_ID))
+        environment_id = request_json.get(key.RULE_KEY_ENVIRONMENT_ID)
+        countries = recover.filter_country(environment_id)
+        enable_country_list = enable_countries(request.user.id, environment_id)
+        union_list = get_union(countries, enable_country_list)
+
+        array = []
+        for country_id in union_list:
+            country = Country.objects.get(id=country_id)
+            array.append(CountryBuilder(country).get_data())
+
         data = {
-            key.KEY_COUNTRIES: countries
+            key.KEY_COUNTRIES: array
         }
         data = add_navigation_information(request, data)
         return render(request, "select_country_dropdown.html", data)
@@ -245,6 +303,8 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 @login_required
 def admin_console_recover_ruleset_backup_list_page(request):
     try:
+        check_page_permission(request, KEY_F_RECOVERY)
+
         request_json = get_post_request_json(request)
         result_data = recover.filter_backup_list(request_json)
         result_data = add_navigation_information(request, result_data)
@@ -259,8 +319,10 @@ def admin_console_recover_ruleset_backup_list_page(request):
 @login_required
 def admin_console_ruleset_log_list_page(request):
     try:
+        check_page_permission(request, KEY_F_RULESET_LOG)
+
         request_json = get_post_request_json(request)
-        result_data = log.get_ruleset_log_list(request_json, False)
+        result_data = log.get_ruleset_log_list(request.user, request_json, False)
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log.html", result_data)
     except Exception:
@@ -273,8 +335,10 @@ def admin_console_ruleset_log_list_page(request):
 @login_required
 def admin_console_ruleset_log_list_filter_page(request):
     try:
+        check_page_permission(request, KEY_F_RULESET_LOG)
+
         request_json = get_post_request_json(request)
-        result_data = log.get_ruleset_log_list(request_json, True)
+        result_data = log.get_ruleset_log_list(request.user, request_json, True)
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
@@ -287,8 +351,10 @@ def admin_console_ruleset_log_list_filter_page(request):
 @login_required
 def admin_console_ruleset_log_list_page_change(request):
     try:
+        check_page_permission(request, KEY_F_RULESET_LOG)
+
         request_json = get_post_request_json(request)
-        result_data = log.get_ruleset_log_list(request_json, False)
+        result_data = log.get_ruleset_log_list(request.user, request_json, False)
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except Exception:
@@ -300,6 +366,8 @@ def admin_console_ruleset_log_list_page_change(request):
 @login_required
 def admin_console_ruleset_log_detail_page(request, log_id):
     try:
+        check_page_permission(request, KEY_F_RULESET_LOG)
+
         result = {KEY_LOG_DATA: log.get_ruleset_log_detail(log_id)}
         result = add_navigation_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
@@ -309,11 +377,19 @@ def admin_console_ruleset_log_detail_page(request, log_id):
         return JsonResponse(result)
 
 
+def check_page_permission(request, function_key):
+    function = Function.objects.get(name=function_key)
+    if not check_function_enable(request.user.id, function.id):
+        raise PermissionDeniedError
+
+
 def add_navigation_information(request, result):
     info_data = AdminConsoleInfoBuilder(request.user).get_data()
     result[ADMIN_CONSOLE_INFO] = info_data
     return result
 
+
+######################################## Frontend ########################################
 
 # ruleset page
 def rule_download_page(request):
