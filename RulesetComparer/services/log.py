@@ -12,7 +12,7 @@ def get_ruleset_log_list(user, json_data, new_filter):
     print("logs query:" + str(log_query))
     logs_list = []
     for log in logs:
-        log_obj = RulesetLogBuilder(log).get_data()
+        log_obj = RulesetLogBuilder(user, log).get_data()
         logs_list.append(log_obj)
 
     data = RulesetLogListResultBuilder(user, parser, logs_list).get_data()
@@ -20,9 +20,9 @@ def get_ruleset_log_list(user, json_data, new_filter):
     return data
 
 
-def get_ruleset_log_detail(detail_id):
+def get_ruleset_log_detail(user, detail_id):
     log = RulesetLog.objects.get_ruleset_log(detail_id)
-    data = RulesetLogBuilder(log).get_data()
+    data = RulesetLogBuilder(user, log).get_data()
     return data
 
 

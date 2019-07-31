@@ -6,13 +6,17 @@ from RulesetComparer.models import RulesetLogGroup, RulesetAction
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
 from RulesetComparer.date_model.json_builder.ruleset_action import RulesetActionBuilder
 from RulesetComparer.properties.key import *
-
+from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
+from permission.utils.permission_manager import *
+from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from permission.models import Function
 
 class RulesetLogBuilder(BaseBuilder):
     AUTHOR_TASK_MANAGER = "Task Manager"
 
-    def __init__(self, data):
+    def __init__(self, user, data):
         try:
+            self.user = user
             self.data = data
             self.ruleset_log_group_id = data.get(KEY_RULESET_LOG_GROUP_ID)
             self.ruleset_log_group = RulesetLogGroup.objects.filter(id=self.ruleset_log_group_id).values()[0]
@@ -24,6 +28,7 @@ class RulesetLogBuilder(BaseBuilder):
             self.exception = data.get(KEY_EXCEPTION)
             self.update_time = get_frontend_format_time(self.data.get(KEY_UPDATE_TIME))
             self.backup_key = self.data.get(KEY_BACKUP_KEY)
+            self.check_permission()
             BaseBuilder.__init__(self)
         except Exception as e:
             raise e
@@ -51,3 +56,12 @@ class RulesetLogBuilder(BaseBuilder):
             return STATUS_SUCCESS
         else:
             return STATUS_FAILED
+
+    def check_permission(self):
+        ruleset_log_group = RulesetLogGroup.objects.get(id=self.ruleset_log_group_id)
+        function_ruleset_log = Function.objects.get(name=KEY_F_RULESET_LOG)
+        if not is_visible(self.user.id,
+                          ruleset_log_group.target_environment.id,
+                          ruleset_log_group.country.id,
+                          function_ruleset_log.id):
+            raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)

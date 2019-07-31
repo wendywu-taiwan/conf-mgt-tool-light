@@ -368,9 +368,12 @@ def admin_console_ruleset_log_detail_page(request, log_id):
     try:
         check_page_permission(request, KEY_F_RULESET_LOG)
 
-        result = {KEY_LOG_DATA: log.get_ruleset_log_detail(log_id)}
+        result = {KEY_LOG_DATA: log.get_ruleset_log_detail(request.user, log_id)}
         result = add_navigation_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
+    except PermissionDeniedError:
+        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
