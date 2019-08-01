@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
           integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
@@ -1067,41 +1068,41 @@
                         <div class="summary_content_column_two">{{ list_data.normal_list|length }}</div>
                     </div>
                     <div class="custom-row info_row_no_margin">
-                        <div class="summary_title">Rulesets Only In </div>
+                        <div class="summary_title">Rulesets Only In</div>
                         {% if list_data.remove_file_count == list_data.add_file_count %}
-                        <div class="summary_content_column_two">{{ list_data.add_file_count }}</div>
+                            <div class="summary_content_column_two">{{ list_data.add_file_count }}</div>
                         {% else %}
-                        <div class="summary_content summary_content_highlight">{{ list_data.remove_file_count }}</div>
-                        <div class="summary_content summary_content_highlight">{{ list_data.add_file_count }}</div>
+                            <div class="summary_content summary_content_highlight">{{ list_data.remove_file_count }}</div>
+                            <div class="summary_content summary_content_highlight">{{ list_data.add_file_count }}</div>
                         {% endif %}
                     </div>
                     <div class="custom-row info_row_no_margin">
                         <div class="summary_title">Rules Only In</div>
                         {% if list_data.remove_rule_count == list_data.add_rule_count %}
-                        <div class="summary_content_column_two">{{ list_data.add_rule_count }}</div>
+                            <div class="summary_content_column_two">{{ list_data.add_rule_count }}</div>
                         {% else %}
-                        <div class="summary_content summary_content_highlight">{{ list_data.remove_rule_count }}</div>
-                        <div class="summary_content summary_content_highlight">{{ list_data.add_rule_count }}</div>
+                            <div class="summary_content summary_content_highlight">{{ list_data.remove_rule_count }}</div>
+                            <div class="summary_content summary_content_highlight">{{ list_data.add_rule_count }}</div>
                         {% endif %}
                     </div>
                     <div class="custom-row info_row_no_margin">
                         <div class="summary_title">Different Rulesets</div>
                         {% if list_data.modify_file_count == 0 %}
-                        <div class="summary_content_column_two">{{ list_data.modify_file_count }}</div>
+                            <div class="summary_content_column_two">{{ list_data.modify_file_count }}</div>
                         {% else %}
-                        <div class="summary_content_column_two summary_content_highlight">{{ list_data.modify_file_count }}
-                        </div>
+                            <div class="summary_content_column_two summary_content_highlight">{{ list_data.modify_file_count }}
+                            </div>
                         {% endif %}
                     </div>
                     <div class="custom-row info_row_no_margin">
                         <div class="summary_title summary_title_last">Different Rules</div>
                         {% if list_data.modify_rule_count == 0 %}
-                        <div class="summary_content_column_two summary_content_last">{{ list_data.modify_rule_count }}
-                        </div>
+                            <div class="summary_content_column_two summary_content_last">{{ list_data.modify_rule_count }}
+                            </div>
                         {% else %}
-                        <div class="summary_content_column_two summary_content_last summary_content_highlight">
-                            {{ list_data.modify_rule_count }}
-                        </div>
+                            <div class="summary_content_column_two summary_content_last summary_content_highlight">
+                                {{ list_data.modify_rule_count }}
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -1117,9 +1118,9 @@
             </div>
         </div>
         {% for data in list_data.add_list %}
-        <div class="add_data data row ruleset_name_line">
-            {% include 'report_list_count.html' %}
-        </div>
+            <div class="add_data data row ruleset_name_line">
+                {% include 'report_list_count.html' %}
+            </div>
         {% endfor %}
     </div>
     <div class="minus_list">
@@ -1128,9 +1129,9 @@
             </div>
         </div>
         {% for data in list_data.remove_list %}
-        <div class="minus_data data row ruleset_name_line">
-            {% include 'report_list_count.html' %}
-        </div>
+            <div class="minus_data data row ruleset_name_line">
+                {% include 'report_list_count.html' %}
+            </div>
         {% endfor %}
     </div>
     <div class="modify_list">
@@ -1139,475 +1140,475 @@
             </div>
         </div>
         {% for data in list_data.modify_list %}
-        <div class=" modify_data data row ruleset_name_line">
-            {% include 'report_list_count.html' %}
-        </div>
+            <div class=" modify_data data row ruleset_name_line">
+                {% include 'report_list_count.html' %}
+            </div>
         {% endfor %}
     </div>
     <div class="vertical_distance"></div>
 
     <!-- list each rule in add files -->
     {% for data in list_data.add_list %}
-    <div class="add_list">
-        <div class="nav" data-target=".add_data">
-            <div>
-                <i class="file_icon fas fa-plus"></i>
-            </div>
-            <div class="nav_title file_title"> {{ data.name }}
-            </div>
-        </div>
-        <div class="add_rules">
-            {% for data in detail_data|get_item:data.name %}
-            <div id="process_line" class="row rule_data_line">
-                <div class="rule_data_title">Process</div>
-                <div class="col-9 rule_data_value">{{ data.process }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="process_step_line" class="row rule_data_line">
-                <div class="rule_data_title">Process Step</div>
-                <div class="col-9 rule_data_value">{{ data.process_step }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="org_id_line" class="row rule_data_line">
-                <div class="rule_data_title">Organization ID</div>
-                <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="owner_role_line" class="row rule_data_line">
-                <div class="rule_data_title">Owner Role</div>
-                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="rule_type_line" class="row rule_data_line">
-                <div class="rule_data_title">Rule Type</div>
-                <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="rule_key_line" class="row rule_data_line">
-                <div class="rule_data_title">Rule Key</div>
-                <div class="col-9 rule_data_value">{{ data.key }}</div>
-            </div>
-            <div class="add_line_divider"></div>
-            <div id="rule_value_line" class="row rule_data_line">
-                <div class="rule_data_title">Rule Value</div>
-                <div class="col-9 rule_data_value">
-                {% for value in data.value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
+        <div class="add_list">
+            <div class="nav" data-target=".add_data">
+                <div>
+                    <i class="file_icon fas fa-plus"></i>
+                </div>
+                <div class="nav_title file_title"> {{ data.name }}
                 </div>
             </div>
-            <div class="add_line_divider"></div>
-            <div id="rule_expression_line" class="row rule_data_line">
-                <div class="rule_data_title">Rule Expression</div>
-                <div class="col-9 rule_data_value">
-                {% for expression in data.expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
+            <div class="add_rules">
+                {% for data in detail_data|get_item:data.name %}
+                    <div id="process_line" class="row rule_data_line">
+                        <div class="rule_data_title">Process</div>
+                        <div class="col-9 rule_data_value">{{ data.process }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="process_step_line" class="row rule_data_line">
+                        <div class="rule_data_title">Process Step</div>
+                        <div class="col-9 rule_data_value">{{ data.process_step }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="org_id_line" class="row rule_data_line">
+                        <div class="rule_data_title">Organization ID</div>
+                        <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="owner_role_line" class="row rule_data_line">
+                        <div class="rule_data_title">Owner Role</div>
+                        <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="rule_type_line" class="row rule_data_line">
+                        <div class="rule_data_title">Rule Type</div>
+                        <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="rule_key_line" class="row rule_data_line">
+                        <div class="rule_data_title">Rule Key</div>
+                        <div class="col-9 rule_data_value">{{ data.key }}</div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="rule_value_line" class="row rule_data_line">
+                        <div class="rule_data_title">Rule Value</div>
+                        <div class="col-9 rule_data_value">
+                            {% for value in data.value %}
+                                {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="add_line_divider"></div>
+                    <div id="rule_expression_line" class="row rule_data_line">
+                        <div class="rule_data_title">Rule Expression</div>
+                        <div class="col-9 rule_data_value">
+                            {% for expression in data.expression %}
+                                {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="add_end_divider"></div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            {% if not forloop.last %}
-            <div class="add_end_divider"></div>
-            {% endif %}
-            {% endfor %}
         </div>
-    </div>
-    <div class="vertical_distance"></div>
+        <div class="vertical_distance"></div>
     {% endfor %}
 
     <div class="vertical_distance"></div>
 
     <!-- list each rule in remove files -->
     {% for data in list_data.remove_list %}
-    <div class="minus_list">
-        <div class="nav" data-target=".minus_data">
-            <div>
-                <i class="file_icon fas fa-times"></i>
-            </div>
-            <div class="nav_title file_title"> {{ data.name }}
-            </div>
-        </div>
-        <div class="removed_rules">
-            {% for data in detail_data|get_item:data.name %}
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process</div>
-                <div class="col-9 rule_data_value">{{ data.process }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process Step</div>
-                <div class="col-9 rule_data_value">{{ data.process_step }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Organization ID</div>
-                <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Owner Role</div>
-                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Type</div>
-                <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Key</div>
-                <div class="col-9 rule_data_value">{{ data.key }}</div>
-            </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Value</div>
-                <div class="col-9 rule_data_value">
-                {% for value in data.value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
+        <div class="minus_list">
+            <div class="nav" data-target=".minus_data">
+                <div>
+                    <i class="file_icon fas fa-times"></i>
+                </div>
+                <div class="nav_title file_title"> {{ data.name }}
                 </div>
             </div>
-            <div class="remove_line_divider"></div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Expression</div>
-                <div class="col-9 rule_data_value">
-                    {% for expression in data.expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
+            <div class="removed_rules">
+                {% for data in detail_data|get_item:data.name %}
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process</div>
+                        <div class="col-9 rule_data_value">{{ data.process }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process Step</div>
+                        <div class="col-9 rule_data_value">{{ data.process_step }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Organization ID</div>
+                        <div class="col-9 rule_data_value">{{ data.organization_id }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Owner Role</div>
+                        <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Type</div>
+                        <div class="col-9 rule_data_value">{{ data.rule_type }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Key</div>
+                        <div class="col-9 rule_data_value">{{ data.key }}</div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Value</div>
+                        <div class="col-9 rule_data_value">
+                            {% for value in data.value %}
+                                {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="remove_line_divider"></div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Expression</div>
+                        <div class="col-9 rule_data_value">
+                            {% for expression in data.expression %}
+                                {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="remove_end_divider"></div>
+                    {% endif %}
+                {% endfor %}
             </div>
-            {% if not forloop.last %}
-            <div class="remove_end_divider"></div>
-            {% endif %}
-            {% endfor %}
         </div>
-    </div>
-    <div class="vertical_distance"></div>
+        <div class="vertical_distance"></div>
     {% endfor %}
 
     <div class="vertical_distance"></div>
 
     <!-- list each rule in modify files -->
     {% for data in list_data.modify_list %}
-    <div class="modify_rule_list">
-        <div class="nav" data-target=".modify_data">
-            <div>
-                <i class="file_icon fas fa-align-justify"></i>
+        <div class="modify_rule_list">
+            <div class="nav" data-target=".modify_data">
+                <div>
+                    <i class="file_icon fas fa-align-justify"></i>
+                </div>
+                <div class="nav_title file_title"> {{ data.name }}
+                </div>
             </div>
-            <div class="nav_title file_title"> {{ data.name }}
+            <div class="modified_rules">
+                {% for data in diff_data|get_map_add_array:data.name %}
+                    <!-- parse rule in modify add list -->
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title"></div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ base_env.name }}
+                            </div>
+                        </div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ compare_env.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">{{ data.process }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process Step</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">{{ data.process_step }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Organization ID</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">{{ data.organization_id }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Owner Role</div>
+                        <div class="col-9 rule_data_value"></div>
+                        <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Type</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">{{ data.rule_type }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Key</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">{{ data.key }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Value</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">
+                            {% for value in data.value %}
+                                {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="normal_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Expression</div>
+                        <div class="rule_data_value"></div>
+                        <div class="rule_data_value">
+                            {% for expression in data.expression %}
+                                {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="modify_end_divider"></div>
+                {% endfor %}
+
+                <!-- parse rule in modify remove list -->
+                {% for data in diff_data|get_map_remove_array:data.name %}
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title"></div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ base_env.name }}
+                            </div>
+                        </div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ compare_env.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process</div>
+                        <div class="rule_data_value">{{ data.process }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process Step</div>
+                        <div class="rule_data_value">{{ data.process_step }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Organization ID</div>
+                        <div class="rule_data_value">{{ data.organization_id }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Owner Role</div>
+                        <div class="rule_data_value">{{ data.owner_role }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Type</div>
+                        <div class="rule_data_value">{{ data.rule_type }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Key</div>
+                        <div class="rule_data_value">{{ data.key }}</div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Value</div>
+                        <div class="rule_data_value">
+                            {% for value in data.value %}
+                                {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="normal_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Expression</div>
+                        <div class="rule_data_value">
+                            {% for expression in data.expression %}
+                                {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="rule_data_value"></div>
+                    </div>
+                    <div class="modify_end_divider"></div>
+                {% endfor %}
+
+                <!-- parse rule in modify modify list -->
+                {% for data in diff_data|get_map_modify_array:data.name %}
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">
+                        </div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ base_env.name }}
+                            </div>
+                        </div>
+                        <div class="rule_data_value">
+                            <div class="rule_env_text">
+                                {{ compare_env.name }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process</div>
+                        <div class="rule_data_value">{{ data.process }}</div>
+                        <div class="rule_data_value">{{ data.process }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Process Step</div>
+                        <div class="rule_data_value">{{ data.process_step }}</div>
+                        <div class="rule_data_value">{{ data.process_step }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Organization ID</div>
+                        <div class="rule_data_value">{{ data.organization_id }}</div>
+                        <div class="rule_data_value">{{ data.organization_id }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Owner Role</div>
+                        <div class="rule_data_value">{{ data.owner_role }}</div>
+                        <div class="rule_data_value">{{ data.owner_role }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Type</div>
+                        <div class="rule_data_value">{{ data.rule_type }}</div>
+                        <div class="rule_data_value">{{ data.rule_type }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Key</div>
+                        <div class="rule_data_value">{{ data.key }}</div>
+                        <div class="rule_data_value">{{ data.key }}</div>
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Value</div>
+                        {% if data.base_value %}
+                            <div class="highlight_data_value">
+                                {% for value in data.base_value %}
+                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="rule_data_value"></div>
+                        {% endif %}
+                        {% if data.compare_value %}
+                            <div class="highlight_data_value">
+                                {% for value in data.compare_value %}
+                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="rule_data_value"></div>
+                        {% endif %}
+                    </div>
+                    <div class="row divider_line">
+                        <div class="modify_line_divider"></div>
+                        <div class="modify_line_divider"></div>
+                    </div>
+                    <div class="row rule_data_line">
+                        <div class="rule_data_title">Rule Expression</div>
+                        {% if data.base_expression %}
+                            <div class="highlight_data_value">
+                                {% for expression in data.base_expression %}
+                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="rule_data_value"></div>
+                        {% endif %}
+                        {% if data.compare_expression %}
+                            <div class="highlight_data_value">
+                                {% for expression in data.compare_expression %}
+                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="rule_data_value"></div>
+                        {% endif %}
+                    </div>
+                    {% if not forloop.last %}
+                        <div class="modify_end_divider"></div>
+                    {% endif %}
+                {% endfor %}
             </div>
         </div>
-        <div class="modified_rules">
-            {% for data in diff_data|get_map_add_array:data.name %}
-            <!-- parse rule in modify add list -->
-            <div class="row rule_data_line">
-                <div class="rule_data_title"></div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ base_env.name }}
-                    </div>
-                </div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ compare_env.name }}
-                    </div>
-                </div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">{{ data.process }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process Step</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">{{ data.process_step }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Organization ID</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">{{ data.organization_id }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Owner Role</div>
-                <div class="col-9 rule_data_value"></div>
-                <div class="col-9 rule_data_value">{{ data.owner_role }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Type</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">{{ data.rule_type }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Key</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">{{ data.key }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Value</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">
-                    {% for value in data.value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="row divider_line">
-                <div class="normal_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Expression</div>
-                <div class="rule_data_value"></div>
-                <div class="rule_data_value">
-                    {% for expression in data.expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="modify_end_divider"></div>
-            {% endfor %}
-
-            <!-- parse rule in modify remove list -->
-            {% for data in diff_data|get_map_remove_array:data.name %}
-            <div class="row rule_data_line">
-                <div class="rule_data_title"></div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ base_env.name }}
-                    </div>
-                </div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ compare_env.name }}
-                    </div>
-                </div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process</div>
-                <div class="rule_data_value">{{ data.process }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process Step</div>
-                <div class="rule_data_value">{{ data.process_step }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Organization ID</div>
-                <div class="rule_data_value">{{ data.organization_id }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Owner Role</div>
-                <div class="rule_data_value">{{ data.owner_role }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Type</div>
-                <div class="rule_data_value">{{ data.rule_type }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Key</div>
-                <div class="rule_data_value">{{ data.key }}</div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Value</div>
-                <div class="rule_data_value">
-                    {% for value in data.value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="normal_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Expression</div>
-                <div class="rule_data_value">
-                    {% for expression in data.expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                <div class="rule_data_value"></div>
-            </div>
-            <div class="modify_end_divider"></div>
-            {% endfor %}
-
-            <!-- parse rule in modify modify list -->
-            {% for data in diff_data|get_map_modify_array:data.name %}
-            <div class="row rule_data_line">
-                <div class="rule_data_title">
-                </div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ base_env.name }}
-                    </div>
-                </div>
-                <div class="rule_data_value">
-                    <div class="rule_env_text">
-                        {{ compare_env.name }}
-                    </div>
-                </div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process</div>
-                <div class="rule_data_value">{{ data.process }}</div>
-                <div class="rule_data_value">{{ data.process }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Process Step</div>
-                <div class="rule_data_value">{{ data.process_step }}</div>
-                <div class="rule_data_value">{{ data.process_step }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Organization ID</div>
-                <div class="rule_data_value">{{ data.organization_id }}</div>
-                <div class="rule_data_value">{{ data.organization_id }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Owner Role</div>
-                <div class="rule_data_value">{{ data.owner_role }}</div>
-                <div class="rule_data_value">{{ data.owner_role }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Type</div>
-                <div class="rule_data_value">{{ data.rule_type }}</div>
-                <div class="rule_data_value">{{ data.rule_type }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Key</div>
-                <div class="rule_data_value">{{ data.key }}</div>
-                <div class="rule_data_value">{{ data.key }}</div>
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Value</div>
-                {% if data.base_value %}
-                <div class="highlight_data_value">
-                    {% for value in data.base_value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="rule_data_value"></div>
-                {% endif %}
-                {% if data.compare_value %}
-                <div class="highlight_data_value">
-                    {% for value in data.compare_value %}
-                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="rule_data_value"></div>
-                {% endif %}
-            </div>
-            <div class="row divider_line">
-                <div class="modify_line_divider"></div>
-                <div class="modify_line_divider"></div>
-            </div>
-            <div class="row rule_data_line">
-                <div class="rule_data_title">Rule Expression</div>
-                {% if data.base_expression %}
-                <div class="highlight_data_value">
-                    {% for expression in data.base_expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="rule_data_value"></div>
-                {% endif %}
-                {% if data.compare_expression %}
-                <div class="highlight_data_value">
-                    {% for expression in data.compare_expression %}
-                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                    {% endfor %}
-                </div>
-                {% else %}
-                <div class="rule_data_value"></div>
-                {% endif %}
-            </div>
-            {% if not forloop.last %}
-            <div class="modify_end_divider"></div>
-            {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-    <div class="vertical_distance"></div>
+        <div class="vertical_distance"></div>
     {% endfor %}
 </div>
 </body>
