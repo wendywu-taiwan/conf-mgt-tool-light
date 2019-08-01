@@ -16,11 +16,11 @@ class DiffRulesetPageBuilder(BaseBuilder):
             raise e
 
     def __generate_data__(self):
-        add_list = self.parse_list_data(self.data[RULE_LIST_ITEM_TABLE_TYPE_ADD])
-        remove_list = self.parse_list_data(self.data[RULE_LIST_ITEM_TABLE_TYPE_REMOVE])
-        modify_list = ModifiedRuleValueSerializer(self.data[RULE_LIST_ITEM_TABLE_TYPE_MODIFY], many=True).data
-        normal_list = self.parse_list_data(self.data[RULE_LIST_ITEM_TABLE_TYPE_NORMAL])
-
+        add_list = self.data[RULE_LIST_ITEM_TABLE_TYPE_ADD]
+        remove_list = self.data[RULE_LIST_ITEM_TABLE_TYPE_REMOVE]
+        modify_list = self.data[RULE_LIST_ITEM_TABLE_TYPE_MODIFY]
+        normal_list = self.data[RULE_LIST_ITEM_TABLE_TYPE_NORMAL]
+        
         self.result_dict[RULE_KEY_RULE_NAME] = self.ruleset_name
         self.result_dict[RULE_DIFF_KEY_BASE_ENV_NAME] = self.source_env_name
         self.result_dict[RULE_DIFF_KEY_COMPARED_ENV_NAME] = self.target_env_name
