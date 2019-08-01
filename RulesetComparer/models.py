@@ -74,13 +74,14 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
-    def filter_scheduler(self, user_id, environment_ids):
+    def get_visible_schedulers(self, user_id):
+        enable_environment_ids = enable_environments(user_id)
         query = Q()
-        for environment_id in environment_ids:
+        for environment_id in enable_environment_ids:
             sub_query = Q()
             country_ids = enable_countries(user_id, environment_id)
-            sub_query.add(Q(base_environment__in=environment_ids), Q.AND)
-            sub_query.add(Q(compare_environment__in=environment_ids), Q.AND)
+            sub_query.add(Q(base_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(compare_environment__in=enable_environment_ids), Q.AND)
             sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
             query.add(sub_query, Q.OR)
 
@@ -90,6 +91,7 @@ class ReportSchedulerInfoManager(models.Manager):
             scheduler = self.get(id=id)
             array.append(scheduler)
         return array
+
 
 class ReportSchedulerInfo(models.Model):
     id = models.AutoField(primary_key=True)

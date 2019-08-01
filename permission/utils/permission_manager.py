@@ -1,16 +1,34 @@
-from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission
+from RulesetComparer.date_model.json_builder.environment import EnvironmentsBuilder
+from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission, Function
 from django.contrib.auth.models import User
+from RulesetComparer.properties.key import *
 
 VISIBLE = "visible"
 EDITABLE = "editable"
 LOG_CLASS = "permission_manager"
 
+FUNCTIONS = [KEY_F_SERVER_LOG, KEY_F_RULESET_LOG, KEY_F_REPORT_TASK, KEY_F_AUTO_SYNC_TASK, KEY_F_RECOVERY]
+
+
+def check_function_visibility(request, function_key):
+    function = Function.objects.get(name=function_key)
+    if not check_function_enable(request.user.id, function.id):
+        raise PermissionDeniedError
+
 
 def enable_environments(user_id):
     user = User.objects.get(id=user_id)
     role_permission_list = UserRolePermission.objects.filter(user=user).values_list("role_permission_id", flat=True)
-    enable_environments_ids = RolePermission.objects.filter(id__in=role_permission_list).values_list("environment_id", flat=True).distinct()
+    enable_environments_ids = RolePermission.objects.filter(id__in=role_permission_list).values_list("environment_id",
+                                                                                                     flat=True).distinct()
     return enable_environments_ids
+
+
+def enable_environments_data(user_id):
+    enable_environment_ids = enable_environments(user_id)
+    environment_data = EnvironmentsBuilder(ids=enable_environment_ids).get_data()
+    return environment_data
 
 
 def enable_countries(user_id, environment_id):
