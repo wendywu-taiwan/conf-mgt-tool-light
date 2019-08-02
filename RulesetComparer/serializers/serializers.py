@@ -78,6 +78,7 @@ class RuleSerializer(serializers.Serializer):
 
 
 class ModifiedRuleValueSerializer(serializers.Serializer):
+    combined_key = serializers.CharField(max_length=200)
     process = serializers.CharField(max_length=200)
     process_step = serializers.CharField(max_length=200)
     organization_id = serializers.CharField(max_length=200)

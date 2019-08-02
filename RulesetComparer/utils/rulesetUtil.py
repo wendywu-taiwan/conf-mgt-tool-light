@@ -62,7 +62,6 @@ def build_ruleset_xml(rule_model_list):
         ruleset_file_xml.append(rule.to_xml())
 
     xml_string = xml_to_string(ruleset_file_xml)
-    print("build_ruleset_xml:" + xml_string)
 
     return xml_string
 
