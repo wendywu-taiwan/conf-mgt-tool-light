@@ -795,7 +795,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -825,7 +825,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -855,7 +855,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -885,7 +885,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -952,7 +952,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -982,7 +982,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1012,7 +1012,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1042,7 +1042,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1109,7 +1109,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1139,7 +1139,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1169,7 +1169,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
@@ -1199,7 +1199,7 @@
           "function_permission": [
             {
               "function_name": "server_log",
-              "visible": "true",
+              "visible": "false",
               "editable": "false"
             },
             {
