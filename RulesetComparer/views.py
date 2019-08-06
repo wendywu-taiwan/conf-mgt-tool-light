@@ -90,8 +90,8 @@ def admin_console_server_log_page(request, log_type=None):
         data = add_navigation_information(request, data)
         return render(request, "server_log.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -111,8 +111,8 @@ def admin_console_report_scheduler_list_page(request):
 
         return render(request, "scheduler_list.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -122,7 +122,7 @@ def admin_console_report_scheduler_list_page(request):
 @login_required
 def admin_console_report_scheduler_create_page(request):
     try:
-        check_function_visibility(request, KEY_F_SERVER_LOG)
+        check_function_visibility(request, KEY_F_REPORT_TASK)
         # check data visibility
         environment_data = enable_environments_data(request.user.id)
         country_data = CountriesBuilder(countries=Country.objects.all()).get_data()
@@ -135,8 +135,8 @@ def admin_console_report_scheduler_create_page(request):
         data = add_navigation_information(request, data)
         return render(request, "scheduler_create.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -146,7 +146,7 @@ def admin_console_report_scheduler_create_page(request):
 @login_required
 def admin_console_report_scheduler_update_page(request, scheduler_id):
     try:
-        check_function_visibility(request, KEY_F_SERVER_LOG)
+        check_function_visibility(request, KEY_F_REPORT_TASK)
         # check page visibility
         scheduler = ReportSchedulerInfo.objects.get(id=scheduler_id)
         check_scheduler_detail_visibility(request.user.id,
@@ -172,8 +172,8 @@ def admin_console_report_scheduler_update_page(request, scheduler_id):
         data = add_navigation_information(request, data)
         return render(request, "scheduler_update.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -193,8 +193,8 @@ def admin_console_sync_scheduler_list_page(request):
         data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_list.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -210,7 +210,8 @@ def admin_console_sync_scheduler_create_page(request):
         git_environment = Environment.objects.get(name=GIT_NAME)
         int2_environment = Environment.objects.get(name=INT2_NAME)
         # check data visibility
-        if not contains(enable_environment_list, int2_environment.id) or not contains(enable_environment_list, git_environment.id):
+        if not contains(enable_environment_list, int2_environment.id) or not contains(enable_environment_list,
+                                                                                      git_environment.id):
             raise PermissionDeniedError
 
         git_environment_data = EnvironmentBuilder(environment=git_environment).get_data()
@@ -225,8 +226,8 @@ def admin_console_sync_scheduler_create_page(request):
         data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_create.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -263,8 +264,8 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
         data = add_navigation_information(request, data)
         return render(request, "sync_scheduler_update.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -290,8 +291,8 @@ def admin_console_recover_ruleset_filtered_page(request):
         data = add_navigation_information(request, data)
         return render(request, "recovery.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -321,8 +322,8 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
         data = add_navigation_information(request, data)
         return render(request, "select_country_dropdown.html", data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -339,8 +340,8 @@ def admin_console_recover_ruleset_backup_list_page(request):
         result_data = add_navigation_information(request, result_data)
         return render(request, "backup_data_view.html", result_data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -358,8 +359,8 @@ def admin_console_ruleset_log_list_page(request):
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log.html", result_data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -377,8 +378,8 @@ def admin_console_ruleset_log_list_filter_page(request):
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -396,8 +397,8 @@ def admin_console_ruleset_log_list_page_change(request):
         result_data = add_navigation_information(request, result_data)
         return render(request, "ruleset_log_list.html", result_data)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -414,8 +415,8 @@ def admin_console_ruleset_log_detail_page(request, log_id):
         result = add_navigation_information(request, result)
         return render(request, "ruleset_log_detail.html", result)
     except PermissionDeniedError:
-        result = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return JsonResponse(result)
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

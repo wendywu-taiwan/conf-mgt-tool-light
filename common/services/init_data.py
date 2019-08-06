@@ -155,23 +155,24 @@ def init_role_function_permission(data):
         environment_name = role_function_permission_obj.get("environment_name")
         print("role_function_permission_obj, environment:" + environment_name)
         country_name = role_function_permission_obj.get("country_name")
-        module_name = role_function_permission_obj.get("module_name")
-        role_function_array = role_function_permission_obj.get("role_function_permission")
 
-        for role_function in role_function_array:
-            role_type_name = role_function.get("role_type")
-            function_permission_array = role_function.get("function_permission")
+        for rule_module_permission in role_function_permission_obj.get("role_module_permission"):
+            module_name = rule_module_permission.get("module_name")
+            permissions = rule_module_permission.get("permissions")
+            for role_function_permission in permissions:
+                role_type_name = role_function_permission.get("role_type")
+                function_permission_array = role_function_permission.get("function_permission")
 
-            if country_name == "all":
-                countries = Country.objects.all()
-                for country in countries:
+                if country_name == "all":
+                    countries = Country.objects.all()
+                    for country in countries:
+                        role_permission = RolePermission.objects.get_role_permission(role_type_name, environment_name,
+                                                                                     country.name)
+                        create_or_update_role_permission(role_permission, function_permission_array, module_name)
+                else:
                     role_permission = RolePermission.objects.get_role_permission(role_type_name, environment_name,
-                                                                                 country.name)
+                                                                                 country_name)
                     create_or_update_role_permission(role_permission, function_permission_array, module_name)
-            else:
-                role_permission = RolePermission.objects.get_role_permission(role_type_name, environment_name,
-                                                                             country_name)
-                create_or_update_role_permission(role_permission, function_permission_array, module_name)
     return True
 
 

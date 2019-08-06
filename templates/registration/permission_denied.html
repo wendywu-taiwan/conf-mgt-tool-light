@@ -1,0 +1,19 @@
+{% extends "account_base.html" %}
+{% load staticfiles %}
+{% block resource %}
+    <link href="{% static '/css/permission_denied.css' %}" rel="stylesheet">
+    <link href="{% static '/css/main.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+    <div id="component_div" class="white_block_div">
+        <div id="title_div">
+            Permission Denied
+        </div>
+        <div id="message_div">
+            you may not have the appropriate permissions, please contact to the system administrator.
+        </div>
+    </div>
+
+{% endblock %}

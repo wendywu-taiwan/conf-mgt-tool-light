@@ -243,6 +243,7 @@ KEY_FUNCTIONS_DATA = "functions_data"
 KEY_DISPLAY_NAME = "display_name"
 KEY_VISIBLE = "visible"
 KEY_EDITABLE = "editable"
+KEY_NAVIGATION_INFO = "navigation_info"
 
 # environment name
 INT2_NAME = "INT2"
@@ -250,9 +251,15 @@ INT1_NAME = "INT1"
 PROD_NAME = "PROD"
 GIT_NAME = "GIT"
 
+# module_key
+KEY_M_RULESET = "ruleset"
+KEY_M_SETTING = "setting"
+
 # function key
 KEY_F_RECOVERY = "recovery"
 KEY_F_AUTO_SYNC_TASK = "auto_sync_task"
 KEY_F_REPORT_TASK = "report_task"
 KEY_F_RULESET_LOG = "ruleset_log"
 KEY_F_SERVER_LOG = "server_log"
+KEY_F_USER_ROLE = "user_role"
+KEY_F_ROLE_PERMISSION = "role_permission"

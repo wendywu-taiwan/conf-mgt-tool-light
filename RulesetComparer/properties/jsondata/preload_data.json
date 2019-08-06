@@ -238,6 +238,18 @@
       }
     ],
     "function": [
+       {
+        "name": "user_role",
+        "display_name": "User Role",
+        "icon_file_name": "server_log_white.png",
+        "module_name": "setting"
+      },
+      {
+        "name": "role_permission",
+        "display_name": "Role Permission",
+        "icon_file_name": "server_log_white.png",
+        "module_name": "setting"
+      },
       {
         "name": "server_log",
         "display_name": "Server Log",
@@ -273,6 +285,10 @@
       {
         "name": "ruleset",
         "display_name": "Ruleset"
+      },
+      {
+        "name": "setting",
+        "display_name": "Setting"
       }
     ],
     "role_type": [
@@ -477,10 +493,10 @@
         "update_time": "2019-7-12 17:50:00"
       },
       "function": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-7-18 17:50:00"
       },
       "module": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-7-18 17:50:00"
       },
       "role_type": {
         "update_time": "2019-7-12 17:50:00"
