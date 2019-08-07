@@ -244,6 +244,8 @@ KEY_DISPLAY_NAME = "display_name"
 KEY_VISIBLE = "visible"
 KEY_EDITABLE = "editable"
 KEY_NAVIGATION_INFO = "navigation_info"
+KEY_CHECKED = "checked"
+KEY_ROLE_TYPE = "role_type"
 
 # environment name
 INT2_NAME = "INT2"

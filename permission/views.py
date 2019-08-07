@@ -10,7 +10,7 @@ from RulesetComparer.properties.status_code import PERMISSION_DENIED
 from RulesetComparer.utils.logger import error_log
 from common.data_object.error.PermissionDeniedError import PermissionDeniedError
 from permission.utils.permission_manager import check_function_visibility
-from permission.services.user_role import get_user_role_list
+from permission.services.user_role import get_user_role_list, get_user_role_edit
 from permission.data_object.json_builder.setting_info import SettingInfoBuilder
 
 
@@ -42,5 +42,15 @@ def setting_user_role_list_page(request):
         check_function_visibility(request, KEY_F_USER_ROLE)
         data = get_user_role_list(request.user)
         return render(request, "user_role_list.html", data)
+
+    return permission_check(request, after_check)
+
+
+@login_required
+def setting_user_role_edit_page(request):
+    def after_check():
+        check_function_visibility(request, KEY_F_USER_ROLE)
+        data = get_user_role_edit(request.user)
+        return render(request, "user_role_edit.html", data)
 
     return permission_check(request, after_check)

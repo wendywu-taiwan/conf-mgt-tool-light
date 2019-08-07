@@ -1,0 +1,91 @@
+{% extends "setting_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/user_role_edit.css' %}" rel="stylesheet">
+
+{% endblock %}
+{% block content %}
+    <div id="user_role_edit_container" class="white_block_div custom_container row no-row-margin">
+        <div id="title_row_div" class="row no-row-margin">
+            <div id="user_name_div" class="vertical_align_middle">{{ navigation_info.user_data.name }}</div>
+            <div id="save_button_div">
+                <button class="btn btn-default btn-primary btn-wide">
+                    Save
+                </button>
+            </div>
+        </div>
+        <div class="divider"></div>
+        {% for data in data %}
+            <div class="environment_roles_div">
+            <div class="environment_title_div">{{ data.environment.name }}</div>
+            <div class="checkbox_group_div row no-row-margin">
+                {% for checkbox_data in data.role_type %}
+                    <div class="checkbox_outer_div">
+                    {% if checkbox_data.checked %}
+                        <div id="checkbox_div_{{ data.environment.id }}_{{ checkbox_data.id }}"
+                             class="checkbox_div_checked">
+                        <label class="checkbox" for="checkbox_{{ data.environment.id }}_{{ checkbox_data.id }}">
+                        <input type="checkbox" value=""
+                               id="checkbox_{{ data.environment.id }}_{{ checkbox_data.id }}"
+                               data-toggle="checkbox"
+                               checked="checked"
+                               class="custom-checkbox">
+                        <span class="icons"><span class="icon-unchecked"></span><span
+                                class="icon-checked"></span></span>
+                    {% else %}
+                        <div id="checkbox_div_{{ data.environment.id }}_{{ checkbox_data.id }}"
+                             class="checkbox_div">
+                        <label class="checkbox" for="checkbox_{{ data.environment.id }}_{{ checkbox_data.id }}">
+                        <input type="checkbox" value=""
+                               id="checkbox_{{ data.environment.id }}_{{ checkbox_data.id }}"
+                               data-toggle="checkbox"
+                               class="custom-checkbox">
+                        <span class="icons"><span class="icon-unchecked"></span><span
+                                class="icon-checked"></span></span>
+                    {% endif %}
+                {{ checkbox_data.display_name }}
+                </label>
+                </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+                <div class="environment_divider"></div>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <script>
+            hideExpandDiv = function (item) {
+                console.log("hideExpandButton, id:" + item.id);
+                let itemId = item.id;
+                let tagId = getTagId(itemId);
+                let expandButtonDiv = document.getElementById("expand_button_div_" + tagId);
+                let hideButtonDiv = document.getElementById("hide_button_div_" + tagId);
+                let collapseDiv = document.getElementById("collapse_div_" + tagId);
+                hide(expandButtonDiv);
+                showFlex(hideButtonDiv);
+                showBlock(collapseDiv);
+            };
+
+            showExpandDiv = function (item) {
+                let itemId = item.id;
+                let tagId = getTagId(itemId);
+                let expandButtonDiv = document.getElementById("expand_button_div_" + tagId);
+                let hideButtonDiv = document.getElementById("hide_button_div_" + tagId);
+                let collapseDiv = document.getElementById("collapse_div_" + tagId);
+                hide(collapseDiv);
+                hide(hideButtonDiv);
+                showFlex(expandButtonDiv);
+            };
+
+            function getTagId(divId) {
+                let tagSplitArray = (divId).split("_");
+                return tagSplitArray[2];
+            }
+
+        </script>
+
+{% endblock %}
