@@ -106,16 +106,21 @@ function arrayContains(string, array) {
     return (array.indexOf(string) > -1);
 }
 
-function hide(item){
+function hide(item) {
     item.style.display = "none";
 }
 
-function showFlex(item){
+function showFlex(item) {
     item.style.display = "flex";
 }
 
-function showBlock(item){
+function showBlock(item) {
     item.style.display = "block";
+}
+
+function split_str(name, index) {
+    let tagSplitArray = (name).split("_");
+    return tagSplitArray[index];
 }
 
 function openNewPageWithHTML(url, html) {

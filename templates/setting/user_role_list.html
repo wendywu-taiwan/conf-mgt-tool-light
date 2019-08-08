@@ -3,7 +3,7 @@
 
 {% block resource %}
     <link href="{% static '/css/user_role_list.css' %}" rel="stylesheet">
-
+    <script src="{% static '/js/setting/user-role-list.js' %}"></script>
 {% endblock %}
 {% block content %}
     <div id="user_role_container" class="custom_container row no-row-margin">
@@ -12,8 +12,9 @@
                 <div class="user_role_block_width">
                     <div class="user_role_block_div admin_console_block_background">
                         <div class="row no-row-margin">
-                            <div class="title_text vertical_align_middle">{{ data.user_name }}</div>
+                            <div class="title_text vertical_align_middle">{{ data.user.name }}</div>
                             <div class="edit_icon_div"><img class="edit_icon"
+                                                            onclick="openEditUserRolePage('{% url 'permission:user-role-edit-page' data.user.id %}')"
                                                             src="{% static '/icons/edit_user_role.png' %}"></div>
                         </div>
                         <div class="user_role_title_divider"></div>
@@ -96,7 +97,6 @@
             let tagSplitArray = (divId).split("_");
             return tagSplitArray[2];
         }
-
     </script>
 
 {% endblock %}

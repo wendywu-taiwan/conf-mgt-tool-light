@@ -1,16 +1,19 @@
+from django.contrib.auth.models import User
+
 from permission.data_object.json_builder.base import SettingBaseBuilder
 from permission.models import RolePermission, Environment, RoleType, UserRolePermission
 from permission.data_object.json_builder.role_type import RoleTypeBuilder
 from RulesetComparer.properties.key import *
 from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
+from RulesetComparer.date_model.json_builder.user import UserBuilder
 
 
 class UserRoleEditBuilder(SettingBaseBuilder):
 
-    def __init__(self, user):
+    def __init__(self, login_user, edit_user_id):
         try:
-            self.user = user
-            SettingBaseBuilder.__init__(self, user)
+            self.edit_user = User.objects.get(id=edit_user_id)
+            SettingBaseBuilder.__init__(self, login_user)
         except Exception as e:
             raise e
 
@@ -23,15 +26,19 @@ class UserRoleEditBuilder(SettingBaseBuilder):
         for environment in environments:
             data_object = {KEY_ENVIRONMENT: EnvironmentBuilder(environment=environment).get_data(),
                            KEY_ROLE_TYPE: self.parse_role_type_array(environment.id)}
-                
+
             data_array.append(data_object)
-        return data_array
+        data = {
+            KEY_USER_DATA: UserBuilder(self.edit_user).get_data(),
+            KEY_ENVIRONMENT_ROLE: data_array
+        }
+        return data
 
     def parse_role_type_array(self, environment_id):
         array = []
         for role_type in RoleType.objects.all():
             role_type_data = RoleTypeBuilder(role_type).get_data()
-            user_role_count = UserRolePermission.objects.filter(user_id=self.user.id,
+            user_role_count = UserRolePermission.objects.filter(user_id=self.edit_user.id,
                                                                 role_permission__environment__id=environment_id,
                                                                 role_permission__role_type__id=role_type.id).count()
             if user_role_count == 0:

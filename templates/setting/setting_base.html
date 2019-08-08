@@ -48,14 +48,14 @@
                 <div id="log_manager_list_div" class="manager_list_div collapse multi-collapse">
                     {% if navigation_info.functions_data.user_role.visible %}
                         <div id="server_log_div">
-                            <a href="{% url 'permission:user-role-list' %}">
+                            <a href="{% url 'permission:user-role-list-page' %}">
                                 <div class="sub_function_text vertical_align_middle">User Role</div>
                             </a>
                         </div>
                     {% endif %}
                     {% if navigation_info.functions_data.role_permission.visible %}
                         <div id="ruleset_log_div">
-                            <a href="{% url 'permission:user-role-list' %}">
+                            <a href="{% url 'permission:user-role-list-page' %}">
                                 <div class="sub_function_text vertical_align_middle">Role Permission</div>
                             </a>
                         </div>
@@ -78,7 +78,7 @@
                             Password</a>
                     </li>
                     <li>
-                        <a href="{% url 'permission:user-role-list' %}" id="reset_password_link" class="dropdown-item">Reset
+                        <a href="{% url 'permission:permission-index' %}" id="reset_password_link" class="dropdown-item">
                             Settings</a>
                     </li>
                     <li>

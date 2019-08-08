@@ -1,13 +1,14 @@
 from django.contrib.auth.models import User
 from permission.data_object.json_builder.base import SettingBaseBuilder
 from permission.models import RolePermission, Environment, RoleType
+from RulesetComparer.date_model.json_builder.user import UserBuilder
 
 
 class UserRoleListBuilder(SettingBaseBuilder):
 
-    def __init__(self, user, environment_ids):
+    def __init__(self, user):
         try:
-            self.environment_ids = environment_ids
+            self.environment_ids = Environment.objects.all().values_list("id",flat=True)
             SettingBaseBuilder.__init__(self, user)
         except Exception as e:
             raise e
@@ -19,7 +20,7 @@ class UserRoleListBuilder(SettingBaseBuilder):
         array = []
         for user in User.objects.all():
             data = {
-                "user_name": user.username,
+                "user": UserBuilder(user).get_data(),
                 "environment_role": self.parse_environment_role(user)
             }
             array.append(data)

@@ -68,3 +68,7 @@
     width: 75%;
     color: #1abc9b;
 }
+
+#update_user_role_button{
+    cursor: pointer;
+}

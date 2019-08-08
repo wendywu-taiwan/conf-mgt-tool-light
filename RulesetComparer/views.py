@@ -42,9 +42,6 @@ from common.data_object.error.PermissionDeniedError import PermissionDeniedError
 from permission.utils.permission_manager import check_function_visibility, enable_environments_data
 from permission.models import RoleFunctionPermission, RolePermission, UserRolePermission
 
-REQUEST_GET = 'GET'
-REQUEST_POST = 'POST'
-
 
 ######################################## Admin Console ########################################
 

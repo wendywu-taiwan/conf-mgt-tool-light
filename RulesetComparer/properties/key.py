@@ -246,6 +246,10 @@ KEY_EDITABLE = "editable"
 KEY_NAVIGATION_INFO = "navigation_info"
 KEY_CHECKED = "checked"
 KEY_ROLE_TYPE = "role_type"
+KEY_ENVIRONMENT_ROLE ="environment_role"
+REQUEST_GET = 'GET'
+REQUEST_POST = 'POST'
+
 
 # environment name
 INT2_NAME = "INT2"
