@@ -82,3 +82,24 @@
 .check_icon {
     color: #1aba9a;
 }
+
+.expand_button_div{
+    margin-top: 10px;
+}
+
+.expand_button_icon{
+    color: #1e3a84;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.hide_button_div{
+    margin-top: 10px;
+    display: none;
+}
+
+.hide_button_icon{
+    color: #1e3a84;
+    margin-right: auto;
+    margin-left: auto;
+}
