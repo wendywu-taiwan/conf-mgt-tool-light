@@ -1,0 +1,80 @@
+{% extends "setting_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/role_permission_edit.css' %}" rel="stylesheet">
+    <script src="{% static '/js/setting/role-permission-edit.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="role_permission_container" class="custom_container row no-row-margin">
+        <div class="environment_role_permission_div white_block_div">
+            <div class="title_div row no-row-margin">
+                <div class="environment_name_div vertical_align_middle">{{ data.environment.name }}</div>
+                <div class="edit_icon_div">
+                    <button class="btn btn-info btn-wide">
+                        Save
+                    </button>
+                </div>
+            </div>
+            <div class="function_role_permission_div">
+                {% for function_role_permission in data.function_role_permission %}
+                    <div class="divider vertical_align_middle"></div>
+                    <div class="role_permission_div row no-row-margin">
+                        <div class="role_permission_title_div">
+                            <div class="function_name_div">{{ function_role_permission.function.name }}</div>
+                            <div class="visible_text role_type_enable_text_div vertical_align_middle">Visible</div>
+                            <div class="role_type_enable_text_div vertical_align_middle">Editable</div>
+                        </div>
+                        {% for role_permission in function_role_permission.role_permission %}
+                            <div class="role_type_div">
+                                <div class="role_type_title">{{ role_permission.role_type.display_name }}</div>
+                                {% if  role_permission.visible == 0 %}
+                                    <div class="check_box_div">
+                                        <label class="checkbox" for="visible_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}">
+                                            <input type="checkbox" value="" id="visible_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}"
+                                                   data-toggle="checkbox" class="custom-checkbox"><span
+                                                class="icons"><span
+                                                class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                        </label>
+                                    </div>
+                                {% else %}
+                                    <div class="check_box_div">
+                                        <label class="checkbox" for="visible_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}">
+                                            <input type="checkbox" checked="checked" value="" id="visible_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}"
+                                                   data-toggle="checkbox" class="custom-checkbox"><span
+                                                class="icons"><span
+                                                class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                        </label>
+                                    </div>
+                                {% endif %}
+                                {% if  role_permission.editable == 0 %}
+                                    <div class="check_box_div">
+                                        <label class="checkbox" for="editable_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}">
+                                            <input type="checkbox" value="" id="editable_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}"
+                                                   data-toggle="checkbox" class="custom-checkbox"><span
+                                                class="icons"><span
+                                                class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                        </label>
+                                    </div>
+                                {% else %}
+                                    <div class="check_box_div">
+                                        <label class="checkbox" for="editable_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}">
+                                            <input type="checkbox" checked="checked" value="" id="editable_checkbox_{{ function_role_permission.function.id }}_{{ role_permission.role_type.id }}"
+                                                   data-toggle="checkbox" class="custom-checkbox"><span
+                                                class="icons"><span
+                                                class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                        </label>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+    </script>
+
+{% endblock %}

@@ -14,6 +14,7 @@ from permission.services.user_role import get_user_role_list, get_user_role_edit
 from permission.data_object.json_builder.setting_info import SettingInfoBuilder
 from permission.services.role_permission import *
 
+
 def permission_check(request, executor):
     try:
         return executor()
@@ -74,6 +75,16 @@ def setting_role_permission_list_page(request):
         check_function_visibility(request, KEY_F_ROLE_PERMISSION)
         data = get_role_permission_list(request.user)
         return render(request, "role_permission_list.html", data)
+
+    return permission_check(request, after_check)
+
+
+@login_required
+def setting_role_permission_edit_page(request, environment_id):
+    def after_check():
+        check_function_visibility(request, KEY_F_ROLE_PERMISSION)
+        data = get_role_permission_edit(request.user, environment_id)
+        return render(request, "role_permission_edit.html", data)
 
     return permission_check(request, after_check)
 
