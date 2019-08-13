@@ -16,7 +16,12 @@ user_role_pattern = [
     path('user_role/edit/<str:user_id>', views.setting_user_role_edit_page, name="user-role-edit-page"),
 ]
 
+role_permission_pattern = [
+    path('role', views.setting_role_permission_list_page, name="role-permission-list-page"),
+]
+
 urlpatterns = [
-    path('admin_console/permission/', include(user_role_pattern)),
     path('admin_console/permission/', include(permission_pattern)),
+    path('admin_console/permission/', include(role_permission_pattern)),
+    path('admin_console/permission/', include(user_role_pattern)),
 ]

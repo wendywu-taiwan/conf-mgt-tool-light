@@ -184,6 +184,9 @@ class RolePermissionManager(models.Manager):
         else:
             return None
 
+    def filter_by_environment_role_type(self, environment_id, role_type_id):
+        return self.filter(environment_id=environment_id, role_type_id=role_type_id).values_list("id", flat=True)
+
 
 class RolePermission(models.Model):
     id = models.AutoField(primary_key=True)

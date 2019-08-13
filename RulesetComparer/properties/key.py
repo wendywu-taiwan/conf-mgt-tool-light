@@ -240,6 +240,7 @@ KEY_RULESET_PATH_INFO = "ruleset_path_info"
 KEY_USER_DATA = "user_data"
 KEY_MODULE_DATA = "module_data"
 KEY_FUNCTIONS_DATA = "functions_data"
+KEY_FUNCTION = "function"
 KEY_DISPLAY_NAME = "display_name"
 KEY_VISIBLE = "visible"
 KEY_EDITABLE = "editable"
@@ -247,6 +248,8 @@ KEY_NAVIGATION_INFO = "navigation_info"
 KEY_CHECKED = "checked"
 KEY_ROLE_TYPE = "role_type"
 KEY_ENVIRONMENT_ROLE ="environment_role"
+KEY_ROLE_PERMISSION = "role_permission"
+KEY_FUNCTION_ROLE_PERMISSION = "function_role_permission"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 

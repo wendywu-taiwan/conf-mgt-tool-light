@@ -1,5 +1,3 @@
-from permission.models import RolePermission, Function, UserRolePermission, Environment, RoleType
-from RulesetComparer.properties.key import *
 from permission.data_object.json_builder.user_role_list import UserRoleListBuilder
 from permission.data_object.json_builder.user_role_edit import UserRoleEditBuilder
 from permission.data_object.json_parser.edit_user_role import EditUserRoleParser
