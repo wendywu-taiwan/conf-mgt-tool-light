@@ -55,7 +55,7 @@
                     {% endif %}
                     {% if navigation_info.functions_data.role_permission.visible %}
                         <div id="ruleset_log_div">
-                            <a href="{% url 'permission:user-role-list-page' %}">
+                            <a href="{% url 'permission:role-permission-list-page' %}">
                                 <div class="sub_function_text vertical_align_middle">Role Permission</div>
                             </a>
                         </div>
@@ -78,10 +78,6 @@
                             Password</a>
                     </li>
                     <li>
-                        <a href="{% url 'permission:permission-index' %}" id="reset_password_link" class="dropdown-item">
-                            Settings</a>
-                    </li>
-                    <li>
                         <a href="{% url 'logout' %}" id="logout_link" class="dropdown-item">Log Out</a>
                     </li>
                 </div>
@@ -95,4 +91,9 @@
     {% csrf_token %}
 </div>
 </body>
+<script>
+    $('#user_action_dropdown_div a').on('click', function () {
+        self.location = $(this).attr('href');
+    });
+</script>
 </html>

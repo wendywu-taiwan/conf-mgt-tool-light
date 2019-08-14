@@ -1,5 +1,3 @@
-from django.contrib.auth.models import User
-
 from permission.data_object.json_builder.role_permission_list import RolePermissionBuilder
 from permission.data_object.json_builder.role_permission_edit import RolePermissionEditBuilder
 from permission.data_object.json_parser.edit_role_permission import EditRolePermissionParser

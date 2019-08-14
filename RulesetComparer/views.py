@@ -9,7 +9,6 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
 
-from permission.models import Function
 from permission.utils.page_visibility import *
 from permission.utils.permission_manager import enable_environments, enable_countries
 from common.utils.utility import get_union, contains

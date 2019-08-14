@@ -119,6 +119,13 @@
                         <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
                             Password</a>
                     </li>
+                    {% if admin_console_info.functions_data.user_role.visible or admin_console_info.functions_data.role_permission.visible %}
+                        <li>
+                            <a href="{% url 'permission:permission-index' %}" id="reset_password_link"
+                               class="dropdown-item">
+                                Settings</a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="{% url 'logout' %}" id="logout_link" class="dropdown-item">Log Out</a>
                     </li>
