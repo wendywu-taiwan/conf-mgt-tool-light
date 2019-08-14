@@ -19,6 +19,7 @@ user_role_pattern = [
 role_permission_pattern = [
     path('role', views.setting_role_permission_list_page, name="role-permission-list-page"),
     path('role/edit/<str:environment_id>', views.setting_role_permission_edit_page, name="role-permission-edit-page"),
+    path('role/edit', views.edit_role_permission, name="role-permission-edit"),
 ]
 
 urlpatterns = [

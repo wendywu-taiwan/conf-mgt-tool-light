@@ -5,7 +5,6 @@ class EditUserRoleParser:
     def __init__(self, json_data):
         self.user_id = json_data.get("user_id")
         self.checked_list = json_data.get("checked_list")
-        pass
 
     def parse_data(self):
         # remove exist user role permission

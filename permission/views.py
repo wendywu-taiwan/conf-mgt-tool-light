@@ -89,6 +89,18 @@ def setting_role_permission_edit_page(request, environment_id):
     return permission_check(request, after_check)
 
 
+@login_required
+def edit_role_permission(request):
+    def after_check():
+        check_function_visibility(request, KEY_F_ROLE_PERMISSION)
+        json_data = get_post_request_json(request)
+        edit_role_permission_data(json_data)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+
+    return permission_check(request, after_check)
+
+
 def get_post_request_json(request):
     if request.method != REQUEST_POST:
         return HttpResponseBadRequest

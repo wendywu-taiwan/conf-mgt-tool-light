@@ -12,7 +12,7 @@
                 <div class="title_div row no-row-margin">
                     <div class="environment_name_div vertical_align_middle">{{ data.environment.name }}</div>
                     <div class="edit_icon_div">
-                        <button class="btn btn-info btn-wide">
+                        <button class="btn btn-info btn-wide" onclick="openEditRolePermissionPage('{% url 'permission:role-permission-edit-page' data.environment.id %}')">
                             Edit
                         </button>
                     </div>
