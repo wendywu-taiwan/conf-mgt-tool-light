@@ -49,7 +49,7 @@ ruleset_comparer_pattern = [
 ]
 
 admin_console_ruleset_pattern = [
-    path('', views.admin_console_page),
+    path('', views.admin_console_page, name="ruleset-admin-console-index"),
     path('server_log', views.admin_console_server_log_page, name="server-log"),
     path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
     path('scheduler/list', views.admin_console_report_scheduler_list_page, name="report-scheduler-list"),

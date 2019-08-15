@@ -29,7 +29,7 @@
         <div id="info">
             <div id="module_info" class="info_block">
                 <div class="info_title">MODULE</div>
-                <div class="info_content">{{ navigation_info.module_data.display_name }}</div>
+                <div class="info_content">{{ navigation_info.module_data.current_module.display_name }}</div>
             </div>
         </div>
         <div id="function_list">
@@ -77,6 +77,13 @@
                         <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
                             Password</a>
                     </li>
+                    {% if navigation_info.module_data.ruleset.visible == 1 %}
+                        <li>
+                            <a href="{% url 'RulesetComparer:ruleset-admin-console-index' %}" id="reset_password_link"
+                               class="dropdown-item">{{ navigation_info.module_data.ruleset.display_name }}</a>
+                        </li>
+                    {% endif %}
+
                     <li>
                         <a href="{% url 'logout' %}" id="logout_link" class="dropdown-item">Log Out</a>
                     </li>
