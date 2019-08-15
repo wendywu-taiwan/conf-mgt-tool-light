@@ -29,11 +29,11 @@
         <div id="info">
             <div id="module_info" class="info_block">
                 <div class="info_title">MODULE</div>
-                <div class="info_content">{{ admin_console_info.module_data.display_name }}</div>
+                <div class="info_content">{{ navigation_info.module_data.current_module.display_name }}</div>
             </div>
         </div>
         <div id="function_list">
-            {% if admin_console_info.functions_data.server_log.visible or admin_console_info.functions_data.ruleset_log.visible %}
+            {% if navigation_info.functions_data.server_log.visible or navigation_info.functions_data.ruleset_log.visible %}
                 <div id="log_manager_div" class="function_div">
                     <a data-toggle="collapse" href="#log_manager_list_div" role="button" aria-expanded="false"
                        aria-controls="log_manager_list_div">
@@ -46,14 +46,14 @@
                     </a>
                 </div>
                 <div id="log_manager_list_div" class="manager_list_div collapse multi-collapse">
-                    {% if admin_console_info.functions_data.server_log.visible %}
+                    {% if navigation_info.functions_data.server_log.visible %}
                         <div id="server_log_div">
                             <a href="{% url 'RulesetComparer:server-log' %}">
                                 <div class="sub_function_text vertical_align_middle">Server Log</div>
                             </a>
                         </div>
                     {% endif %}
-                    {% if admin_console_info.functions_data.ruleset_log.visible %}
+                    {% if navigation_info.functions_data.ruleset_log.visible %}
                         <div id="ruleset_log_div">
                             <a href="{% url 'RulesetComparer:ruleset-log-list' %}">
                                 <div class="sub_function_text vertical_align_middle">Ruleset Log</div>
@@ -62,7 +62,7 @@
                     {% endif %}
                 </div>
             {% endif %}
-            {% if admin_console_info.functions_data.report_task.visible or admin_console_info.functions_data.auto_sync_task.visible %}
+            {% if navigation_info.functions_data.report_task.visible or navigation_info.functions_data.auto_sync_task.visible %}
                 <div id="task_manager_div" class="function_div">
                     <a data-toggle="collapse" href="#task_manager_list_div" role="button" aria-expanded="false"
                        aria-controls="task_manager_list_div">
@@ -75,14 +75,14 @@
                     </a>
                 </div>
                 <div id="task_manager_list_div" class="manager_list_div collapse multi-collapse">
-                    {% if admin_console_info.functions_data.report_task.visible %}
+                    {% if navigation_info.functions_data.report_task.visible %}
                         <div id="report_task_div">
                             <a href="{% url 'RulesetComparer:report-scheduler-list' %}">
                                 <div class="sub_function_text vertical_align_middle">ReportTask</div>
                             </a>
                         </div>
                     {% endif %}
-                    {% if admin_console_info.functions_data.auto_sync_task.visible %}
+                    {% if navigation_info.functions_data.auto_sync_task.visible %}
                         <div id="auto_sync_task_div">
                             <a href="{% url 'RulesetComparer:sync-scheduler-list' %}">
                                 <div class="sub_function_text vertical_align_middle">AutoSyncTask</div>
@@ -91,7 +91,7 @@
                     {% endif %}
                 </div>
             {% endif %}
-            {% if admin_console_info.functions_data.recovery.visible %}
+            {% if navigation_info.functions_data.recovery.visible %}
                 <div id="recover_function_div" class="function_div">
                     <a href="{% url 'RulesetComparer:recover-filter-page' %}">
                         <div class="row no-row-margin">
@@ -110,7 +110,7 @@
         <div id="nav_bar_top_div" class="row no-row-margin">
             <div id="login_info_div" class="row no-row-margin" data-toggle="dropdown">
 
-                <div id="login_account_div" class="vertical_align_middle">{{ admin_console_info.user_data.name }}</div>
+                <div id="login_account_div" class="vertical_align_middle">{{ navigation_info.user_data.name }}</div>
                 <div id="dropdown_option_div" class="vertical_align_middle">
                     <span id="dropdown_icon_span" class="fui-triangle-down"></span>
                 </div>
@@ -119,7 +119,7 @@
                         <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
                             Password</a>
                     </li>
-                    {% if admin_console_info.functions_data.user_role.visible or admin_console_info.functions_data.role_permission.visible %}
+                    {% if navigation_info.module_data.setting.visible == 1 %}
                         <li>
                             <a href="{% url 'permission:permission-index' %}" id="reset_password_link"
                                class="dropdown-item">

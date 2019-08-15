@@ -250,6 +250,8 @@ KEY_ROLE_TYPE = "role_type"
 KEY_ENVIRONMENT_ROLE ="environment_role"
 KEY_ROLE_PERMISSION = "role_permission"
 KEY_FUNCTION_ROLE_PERMISSION = "function_role_permission"
+KEY_TITLE = "title"
+KEY_DATA = "data"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 

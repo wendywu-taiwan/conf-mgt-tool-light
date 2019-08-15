@@ -132,22 +132,10 @@
                 </div>
             </div>
         </div>
-        <div id="backup_div">
-            <div class="block_title_div">Backup Rulesets :</div>
-
-            <div id="backup_checkbox_div" class="country_check_box_div row no_row_margin">
-                <div class="checkbox_input_div form-check form-check-inline">
-                    <input onclick="backupOnChecked(this)" class="form-check-input checkbox_input"
-                           type="checkbox"
-                           id="backup_yes_input" value="true">
-                    <label class="option_font_size form-check-label" for="backup_yes_input"> Yes </label>
-                </div>
-            </div>
-        </div>
     </div>
 
     <script>
-        init("{{ admin_console_info.module.id }}",
+        init("{{ navigation_info.module_data.current_module.id }}",
             "{% url 'RulesetComparer:create-rulesets-sync-job' %}",
             "{% url 'RulesetComparer:sync-scheduler-list' %}");
 

@@ -1,28 +1,21 @@
-import RulesetComparer.properties.key as key
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from permission.models import Module, Function
-from RulesetComparer.date_model.json_builder.user import UserBuilder
-from RulesetComparer.date_model.json_builder.module import ModuleBuilder
-from RulesetComparer.date_model.json_builder.function_enable import FunctionEnableBuilder
 from RulesetComparer.properties.key import *
+from common.data_object.json_builder.navigation_info import NavigationInfoBuilder
 
 
-class AdminConsoleInfoBuilder(BaseBuilder):
-    DEFAULT_MODULE = "ruleset"
+class AdminConsoleInfoBuilder(NavigationInfoBuilder):
 
     def __init__(self, user):
         self.user = user
-        self.module = Module.objects.get(name=self.DEFAULT_MODULE)
-        self.functions = Function.objects.all()
-        BaseBuilder.__init__(self)
+        if user is None:
+            return
+
+        NavigationInfoBuilder.__init__(self, user, KEY_M_RULESET)
 
     def __generate_data__(self):
-        self.result_dict[KEY_USER_DATA] = UserBuilder(self.user).get_data()
-        self.result_dict[KEY_MODULE_DATA] = ModuleBuilder(self.module).get_data()
-        self.result_dict[KEY_FUNCTIONS_DATA] = self.parse_functions()
+        super().__generate_data__()
+
+    def parse_modules(self):
+        return super().parse_modules()
 
     def parse_functions(self):
-        dict = {}
-        for function in self.functions:
-            dict[function.name] = FunctionEnableBuilder(self.user.id, function).get_data()
-        return dict
+        return super().parse_functions()

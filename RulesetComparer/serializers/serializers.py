@@ -106,9 +106,3 @@ class ModifiedRuleValueSerializer(serializers.Serializer):
 
     def update(self, instance, validated_data):
         pass
-
-
-class MailContentTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MailContentType
-        fields = ('id', 'name', 'title')

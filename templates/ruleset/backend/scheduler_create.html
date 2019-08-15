@@ -123,7 +123,7 @@
     </div>
 
     <script>
-        init("{{ admin_console_info.module.id }}",
+        init("{{ navigation_info.module_data.current_module.id }}",
             "{% url 'RulesetComparer:create-scheduler' %}",
             "{% url 'RulesetComparer:report-scheduler-list' %}");
         createBtnOnClick = function () {

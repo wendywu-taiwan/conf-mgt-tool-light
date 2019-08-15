@@ -85,7 +85,7 @@ class ReportSchedulerInfoManager(models.Manager):
             sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
             query.add(sub_query, Q.OR)
 
-        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct()
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
         array = []
         for id in scheduler_ids:
             scheduler = self.get(id=id)
@@ -190,7 +190,7 @@ class RulesetSyncUpSchedulerManager(models.Manager):
             sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
             query.add(sub_query, Q.OR)
 
-        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct()
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
         array = []
         for id in scheduler_ids:
             scheduler = self.get(id=id)

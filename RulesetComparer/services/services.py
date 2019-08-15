@@ -28,7 +28,12 @@ from RulesetComparer.services import sync_scheduler, report_scheduler
 from django.template.loader import get_template
 
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils.rulesetUtil import load_server_ruleset_with_name
+from RulesetComparer.date_model.json_builder.server_log_page import ServerLogPageBuilder
+
+
+def server_log_page(user, log_type):
+    data = ServerLogPageBuilder(user, log_type).get_data()
+    return data
 
 
 def get_rule_list_from_b2b(environment, country):

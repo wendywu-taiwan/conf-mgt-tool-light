@@ -1,29 +1,31 @@
 import traceback
 import ast
-import RulesetComparer.properties.key as key
 from RulesetComparer.properties import config
-from RulesetComparer.utils import timeUtil
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, MailContentTypeSerializer
 from RulesetComparer.utils.logger import *
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.mail_content_type import MailContentTypesBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.country import CountriesBuilder
 
 
-class ReportSchedulerInfoBuilder(BaseBuilder):
+class ReportSchedulerInfoBuilder(AdminConsoleBaseBuilder):
 
-    def __init__(self, scheduler):
+    def __init__(self, user, scheduler):
         self.scheduler = scheduler
-        BaseBuilder.__init__(self)
+        self.countries = self.scheduler.country_list.all()
+        self.mail_content_types = self.scheduler.mail_content_type_list.all()
+        AdminConsoleBaseBuilder.__init__(self, user)
 
     def __generate_data__(self):
         try:
             self.result_dict[KEY_TASK_ID] = self.scheduler.id
-            self.result_dict["base_environment"] = EnvironmentSerializer(self.scheduler.base_environment).data
-            self.result_dict["compare_environment"] = EnvironmentSerializer(
-                self.scheduler.compare_environment).data
+            self.result_dict["base_environment"] = EnvironmentBuilder(
+                environment=self.scheduler.base_environment).get_data()
+            self.result_dict["compare_environment"] = EnvironmentBuilder(
+                environment=self.scheduler.compare_environment).get_data()
             self.result_dict["module"] = self.get_module_data()
-            self.result_dict[KEY_COUNTRY_LIST] = CountrySerializer(self.scheduler.country_list, many=True).data
-            self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypeSerializer(
-                self.scheduler.mail_content_type_list, many=True).data
+            self.result_dict[KEY_COUNTRY_LIST] = CountriesBuilder(countries=self.countries).get_data()
+            self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypesBuilder(self.mail_content_types).get_data()
             self.result_dict["mail_list"] = self.get_mail_list()
             self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
             self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
@@ -70,15 +72,15 @@ class ReportSchedulerInfoBuilder(BaseBuilder):
             raise e
 
 
-class ReportSchedulersBuilder(BaseBuilder):
+class ReportSchedulersBuilder(AdminConsoleBaseBuilder):
 
-    def __init__(self, schedulers):
+    def __init__(self, user, schedulers):
         self.schedulers = schedulers
-        BaseBuilder.__init__(self)
+        AdminConsoleBaseBuilder.__init__(self, user)
 
     def __generate_data__(self):
         array = []
         for scheduler in self.schedulers:
-            data = ReportSchedulerInfoBuilder(scheduler).get_data()
+            data = ReportSchedulerInfoBuilder(None, scheduler).get_data()
             array.append(data)
-        self.result_dict = array
+        self.result_dict[KEY_DATA] = array

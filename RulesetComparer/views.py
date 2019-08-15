@@ -9,141 +9,109 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 from rest_framework.utils import json
 
+from RulesetComparer.date_model.json_builder.sync_scheduler_create_page import SyncSchedulerCreatePageBuilder
+from RulesetComparer.date_model.json_builder.sync_scheduler_update_page import SyncSchedulerUpdatePageBuilder
 from permission.utils.page_visibility import *
 from permission.utils.permission_manager import enable_environments, enable_countries
 from common.utils.utility import get_union, contains
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
-from RulesetComparer.models import Country, Environment, Module, ReportSchedulerInfo, MailContentType, \
-    RulesetSyncUpScheduler
+from RulesetComparer.models import Country, Module, RulesetSyncUpScheduler
 from RulesetComparer.utils.threadManager import *
 from RulesetComparer.properties import config
 from RulesetComparer.properties import key as key
-from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, RuleSerializer, \
-    ModifiedRuleValueSerializer, ModuleSerializer, MailContentTypeSerializer
-from RulesetComparer.services import services, sync, recover, sync_scheduler, \
-    report_scheduler, log
-from RulesetComparer.utils import fileManager, timeUtil
+from RulesetComparer.serializers.serializers import CountrySerializer, EnvironmentSerializer, \
+    ModuleSerializer
+from RulesetComparer.services import services, sync, recover, log
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.properties.message import *
 
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
-from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder, \
-    ReportSchedulersBuilder
+from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder
 from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder, \
     RulesetSyncSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder, EnvironmentsBuilder
+from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
 from RulesetComparer.date_model.json_builder.country import CountryBuilder, CountriesBuilder
-from RulesetComparer.utils.logger import *
 from RulesetComparer.properties.status_code import *
 from common.data_object.error.PermissionDeniedError import PermissionDeniedError
 from permission.utils.permission_manager import check_function_visibility, enable_environments_data
-from permission.models import RoleFunctionPermission, RolePermission, UserRolePermission
+from RulesetComparer.services.services import *
+from RulesetComparer.services.report_scheduler import *
 
 
 ######################################## Admin Console ########################################
-
-@login_required
-def logout_view(request):
-    logout(request)
+def permission_check(request, check_visibility, get_visible_data, executor):
+    try:
+        check_visibility()
+        return executor(get_visible_data())
+    except PermissionDeniedError:
+        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
+        return render(request, "permission_denied.html", data)
+    except Exception:
+        error_log(traceback.format_exc())
+        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
+        return JsonResponse(result)
 
 
 # admin console page
 @login_required
 def admin_console_page(request):
-    result = {}
-    return render(request, "admin_console_base.html", add_navigation_information(request, result))
+    data = {KEY_NAVIGATION_INFO: AdminConsoleInfoBuilder(request.user).get_data()}
+    return render(request, "admin_console_base.html", data)
 
 
 @login_required
 def admin_console_server_log_page(request, log_type=None):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_SERVER_LOG)
 
-        if log_type is None:
-            log_type = DEFAULT_LOG_TYPE
+    def get_visible_data():
+        pass
 
-        log_dir = settings.BASE_DIR + get_file_path("server_log")
-        log_file_name = LOG_TYPE_FILE[log_type]
-        full_name = log_dir + "/" + log_file_name
-
-        if fileManager.is_file_exist(full_name) is False:
-            info_log("views.admin_console_server_log_page", "init info message")
-            warning_log("views.admin_console_server_log_page", "init warning message")
-            error_log("init error message")
-
-        file = fileManager.load_file(full_name)
-        file_secure = re.sub("password</ns0:name><ns0:value>[^<]+</ns0:value>",
-                             "password</ns0:name><ns0:value>****</ns0:value>", file)
-        file_content = file_secure.split("\n")
-
-        data = {
-            key.LOG_TYPE_KEY: log_type,
-            key.LOG_TYPE: log_file_name,
-            key.LOG_CONTENT: file_content
-        }
-        data = add_navigation_information(request, data)
+    def after_check(visible_data):
+        check_function_visibility(request, KEY_F_SERVER_LOG)
+        data = server_log_page(request.user, log_type)
         return render(request, "server_log.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_report_scheduler_list_page(request):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_REPORT_TASK)
-        # check data visibility
-        scheduler_list = ReportSchedulerInfo.objects.get_visible_schedulers(request.user.id)
-        scheduler_data = ReportSchedulersBuilder(scheduler_list).get_data()
 
-        data = {key.SCHEDULER_LIST: scheduler_data}
-        data = add_navigation_information(request, data)
+    def get_visible_data():
+        return ReportSchedulerInfo.objects.get_visible_schedulers(request.user.id)
 
+    def after_check(visible_data):
+        data = ReportSchedulersBuilder(request.user, visible_data).get_data()
         return render(request, "scheduler_list.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_report_scheduler_create_page(request):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_REPORT_TASK)
-        # check data visibility
-        environment_data = enable_environments_data(request.user.id)
-        country_data = CountriesBuilder(countries=Country.objects.all()).get_data()
 
-        mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
+    def get_visible_data():
+        environments = enable_environments_data(request.user.id)
+        return environments
 
-        data = {key.KEY_ENVIRONMENTS: environment_data,
-                key.KEY_COUNTRIES: country_data,
-                key.RULESET_MAIL_CONTENT_TYPE: mail_content_types}
-        data = add_navigation_information(request, data)
+    def after_check(visible_data):
+        data = ReportSchedulerCreatePageBuilder(request.user, visible_data).get_data()
         return render(request, "scheduler_create.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_report_scheduler_update_page(request, scheduler_id):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_REPORT_TASK)
-        # check page visibility
         scheduler = ReportSchedulerInfo.objects.get(id=scheduler_id)
         check_scheduler_detail_visibility(request.user.id,
                                           scheduler.base_environment.id,
@@ -151,121 +119,74 @@ def admin_console_report_scheduler_update_page(request, scheduler_id):
                                           scheduler.country_list.all(),
                                           KEY_F_REPORT_TASK)
 
-        # check data visibility
-        environment_data = enable_environments_data(request.user.id)
-        country_data = CountriesBuilder(countries=Country.objects.all()).get_data()
+    def get_visible_data():
+        environments = enable_environments_data(request.user.id)
+        return environments
 
-        mail_content_types = MailContentTypeSerializer(MailContentType.objects.all(), many=True).data
+    def after_check(visible_data):
+        data = ReportSchedulerUpdatePageBuilder(request.user, visible_data, scheduler_id).get_data()
+        return render(request, "report_scheduler_update.html", data)
 
-        scheduler_data = ReportSchedulerInfoBuilder(scheduler).get_data()
-
-        data = {
-            key.KEY_ENVIRONMENTS: environment_data,
-            key.KEY_COUNTRIES: country_data,
-            key.RULESET_MAIL_CONTENT_TYPE: mail_content_types,
-            key.SCHEDULER_DATA: scheduler_data
-        }
-        data = add_navigation_information(request, data)
-        return render(request, "scheduler_update.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_sync_scheduler_list_page(request):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
 
+    def get_visible_data():
         environment_list = enable_environments(request.user.id)
-        schedulers = RulesetSyncUpScheduler.objects.filter_environments_and_countries(request.user.id, environment_list)
-        scheduler_data_list = RulesetSyncSchedulersBuilder(schedulers).get_data()
+        return RulesetSyncUpScheduler.objects.filter_environments_and_countries(request.user.id, environment_list)
 
-        data = {key.SCHEDULER_LIST: scheduler_data_list}
-        data = add_navigation_information(request, data)
+    def after_check(visible_data):
+        data = RulesetSyncSchedulersBuilder(request.user, visible_data).get_data()
         return render(request, "sync_scheduler_list.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_sync_scheduler_create_page(request):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
-
         enable_environment_list = enable_environments(request.user.id)
         git_environment = Environment.objects.get(name=GIT_NAME)
         int2_environment = Environment.objects.get(name=INT2_NAME)
         # check data visibility
-        if not contains(enable_environment_list, int2_environment.id) or not contains(enable_environment_list,
-                                                                                      git_environment.id):
+        if not contains(enable_environment_list, int2_environment.id) or \
+                not contains(enable_environment_list, git_environment.id):
             raise PermissionDeniedError
 
-        git_environment_data = EnvironmentBuilder(environment=git_environment).get_data()
-        int2_environment_data = EnvironmentBuilder(environment=int2_environment).get_data()
-        country_list_data = CountriesBuilder(countries=Country.objects.all()).get_data()
-        action_list = config.RULESET_SYNC_UP_ACTION
+    def get_visible_data():
+        pass
 
-        data = {key.SOURCE_ENVIRONMENT: [git_environment_data],
-                key.TARGET_ENVIRONMENT: [int2_environment_data],
-                key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
-                key.ACTION_LIST: action_list}
-        data = add_navigation_information(request, data)
+    def after_check(visible_data):
+        data = SyncSchedulerCreatePageBuilder(request.user).get_data()
         return render(request, "sync_scheduler_create.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
 def admin_console_sync_scheduler_update_page(request, scheduler_id):
-    try:
+    def check_visibility():
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
-
-        # check page visibility
         scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
-        scheduler_data = RulesetSyncSchedulerBuilder(scheduler).get_data()
         check_scheduler_detail_visibility(request.user.id,
                                           scheduler.source_environment.id,
                                           scheduler.target_environment.id,
                                           scheduler.country_list.all(),
                                           KEY_F_AUTO_SYNC_TASK)
 
-        git_environment_data = EnvironmentBuilder(environment=Environment.objects.get(name=GIT_NAME)).get_data()
-        int2_environment_data = EnvironmentBuilder(environment=Environment.objects.get(name=INT2_NAME)).get_data()
-        country_list_data = CountriesBuilder(countries=Country.objects.all()).get_data()
+    def get_visible_data():
+        pass
 
-        action_list = config.RULESET_SYNC_UP_ACTION
-
-        data = {
-            key.SOURCE_ENVIRONMENT: [git_environment_data],
-            key.TARGET_ENVIRONMENT: [int2_environment_data],
-            key.ENVIRONMENT_SELECT_COUNTRY: country_list_data,
-            key.ACTION_LIST: action_list,
-            key.SCHEDULER_DATA: scheduler_data
-        }
-        data = add_navigation_information(request, data)
+    def after_check(visible_data):
+        data = SyncSchedulerUpdatePageBuilder(request.user, scheduler_id).get_data()
         return render(request, "sync_scheduler_update.html", data)
-    except PermissionDeniedError:
-        data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
-    except Exception:
-        error_log(traceback.format_exc())
-        result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
-        return JsonResponse(result)
+
+    return permission_check(request, check_visibility, get_visible_data, after_check)
 
 
 @login_required
@@ -703,7 +624,7 @@ def create_ruleset_report_job(request):
         request_json = get_post_request_json(request)
         info_log("API", "create_scheduler, request json =" + str(request_json))
         scheduler_info = report_scheduler.create_scheduler(request_json, request.user)
-        info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+        info_data = ReportSchedulerInfoBuilder(request.user, scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
     except PermissionDeniedError:
@@ -720,7 +641,7 @@ def update_ruleset_report_job(request):
         request_json = get_post_request_json(request)
         info_log("API", "update_scheduler, request json =" + str(request_json))
         scheduler_info = report_scheduler.update_report_scheduler(request_json, request.user)
-        info_data = ReportSchedulerInfoBuilder(scheduler_info).get_data()
+        info_data = ReportSchedulerInfoBuilder(request.user, scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
     except PermissionDeniedError:
@@ -736,7 +657,7 @@ def update_rulesets_report_status(request):
     try:
         request_json = get_post_request_json(request)
         scheduler = report_scheduler.update_scheduler_status(request_json, request.user)
-        data = ReportSchedulerInfoBuilder(scheduler).get_data()
+        data = ReportSchedulerInfoBuilder(request.user, scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
     except PermissionDeniedError:
@@ -801,7 +722,7 @@ def create_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
         scheduler = sync_scheduler.create_scheduler(request_json, request.user)
-        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        data = RulesetSyncSchedulerBuilder(request.user, scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
     except PermissionDeniedError:
@@ -817,7 +738,7 @@ def update_rulesets_sync_job(request):
     try:
         request_json = get_post_request_json(request)
         scheduler = sync_scheduler.update_scheduler(request_json, request.user)
-        data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+        data = RulesetSyncSchedulerBuilder(request.user, scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
     except PermissionDeniedError:

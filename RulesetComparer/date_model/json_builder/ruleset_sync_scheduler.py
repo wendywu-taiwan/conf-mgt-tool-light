@@ -1,18 +1,18 @@
 import traceback
 import ast
 from RulesetComparer.properties import config
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
 from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
 from RulesetComparer.date_model.json_builder.country import CountryBuilder
 from RulesetComparer.date_model.json_builder.user import UserBuilder
 from RulesetComparer.utils.logger import *
 
 
-class RulesetSyncSchedulerBuilder(BaseBuilder):
+class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):
 
-    def __init__(self, scheduler):
+    def __init__(self, user, scheduler):
         self.scheduler = scheduler
-        BaseBuilder.__init__(self)
+        AdminConsoleBaseBuilder.__init__(self, user)
 
     def __generate_data__(self):
         try:
@@ -75,15 +75,15 @@ class RulesetSyncSchedulerBuilder(BaseBuilder):
             raise e
 
 
-class RulesetSyncSchedulersBuilder(BaseBuilder):
+class RulesetSyncSchedulersBuilder(AdminConsoleBaseBuilder):
 
-    def __init__(self, schedulers):
+    def __init__(self, user, schedulers):
         self.schedulers = schedulers
-        BaseBuilder.__init__(self)
+        AdminConsoleBaseBuilder.__init__(self, user)
 
     def __generate_data__(self):
         array = []
         for scheduler in self.schedulers:
-            data = RulesetSyncSchedulerBuilder(scheduler).get_data()
+            data = RulesetSyncSchedulerBuilder(None, scheduler).get_data()
             array.append(data)
-        self.result_dict = array
+        self.result_dict[KEY_DATA] = array

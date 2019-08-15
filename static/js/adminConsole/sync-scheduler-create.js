@@ -17,7 +17,6 @@ $(function () {
 
 
 let sourceEnvId, targetEnvId, intervalHour, startDateTime;
-let backup = false;
 let countryList = [];
 let mailList = [];
 let actionList = [];
@@ -44,7 +43,6 @@ runTask = function (postUrl) {
         "receiver_list": mailList,
         "interval_hour": 0,
         "next_proceed_time": getCurrentDataTime(),
-        "backup": backup
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -205,14 +203,6 @@ actionCheckboxOnChanged = function (checkboxItem) {
         actionList = actionList.filter(function (item) {
             return item !== action;
         })
-    }
-};
-
-backupOnChecked = function (checkboxItem) {
-    if (checkboxItem.checked) {
-        backup = true;
-    } else {
-        backup = false;
     }
 };
 
