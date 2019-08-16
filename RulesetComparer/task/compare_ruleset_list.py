@@ -186,9 +186,9 @@ class CompareRuleListTask:
         }
 
         compare_result_data = {
-            key.COMPARE_RULE_LIST_COUNTRY: country_data,
-            key.COMPARE_RULE_BASE_ENV: base_env_data,
-            key.COMPARE_RULE_COMPARE_ENV: compare_env_data,
+            key.KEY_COUNTRY: country_data,
+            key.KEY_BASE_ENV: base_env_data,
+            key.KEY_COMPARE_ENV: compare_env_data,
             key.COMPARE_RESULT_LIST_DATA: compare_list_data,
             key.COMPARE_RESULT_DETAIL_DATA: self.ruleset_detail_map,
             key.COMPARE_RESULT_DIFF_DATA: self.ruleset_diff_map

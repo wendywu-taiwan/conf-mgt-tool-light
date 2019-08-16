@@ -16,7 +16,7 @@ class RulesetSyncResultDataBuilder(BaseBuilder):
             raise e
 
     def __generate_data__(self):
-        self.result_dict["country"] = self.json_data[key.COMPARE_RULE_LIST_COUNTRY]
+        self.result_dict["country"] = self.json_data[key.KEY_COUNTRY]
         self.result_dict["source_environment"] = self.json_data["source_environment"]
         self.result_dict["target_environment"] = self.json_data["target_environment"]
         self.result_dict["update_time"] = self.get_current_time()

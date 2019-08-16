@@ -1,3 +1,4 @@
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
 from RulesetComparer.date_model.json_builder.base import BaseBuilder
 from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
 from RulesetComparer.date_model.json_builder.user import UserBuilder
@@ -8,13 +9,13 @@ from django.contrib.auth.models import User
 from permission.utils.permission_manager import *
 
 
-class RulesetLogListResultBuilder(BaseBuilder):
+class RulesetLogListResultBuilder(AdminConsoleBaseBuilder):
     def __init__(self, user, parser, ruleset_log_list):
         try:
             self.user = user
             self.parser = parser
             self.ruleset_log_list = ruleset_log_list
-            BaseBuilder.__init__(self)
+            AdminConsoleBaseBuilder.__init__(self, user)
         except Exception as e:
             raise e
 
@@ -50,9 +51,11 @@ class RulesetLogListResultBuilder(BaseBuilder):
         env_data_list = []
         enable_environment_ids = enable_environments(self.user.id)
         source_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0,
-                                                                source_environment_id__in=enable_environment_ids).values_list("source_environment").distinct()
+                                                                source_environment_id__in=enable_environment_ids).values_list(
+            "source_environment").distinct()
         target_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0,
-                                                                target_environment__in=enable_environment_ids).values_list("target_environment").distinct()
+                                                                target_environment__in=enable_environment_ids).values_list(
+            "target_environment").distinct()
         env_id_list = self.get_distinct_environment_id(env_id_list, source_environment_ids)
         env_id_list = self.get_distinct_environment_id(env_id_list, target_environment_ids)
 
@@ -66,7 +69,8 @@ class RulesetLogListResultBuilder(BaseBuilder):
         country_data_list = []
         enable_environment_ids = enable_environments(self.user.id)
         enable_country_ids = enable_environments_countries(self.user.id, enable_environment_ids)
-        countries = RulesetLogGroup.objects.filter(log_count__gt=0, country_id__in=enable_country_ids).values_list("country").distinct()
+        countries = RulesetLogGroup.objects.filter(log_count__gt=0, country_id__in=enable_country_ids).values_list(
+            "country").distinct()
         for country_obj in countries:
             country = Country.objects.get(id=country_obj[0])
             country_data = CountryBuilder(country).get_data()

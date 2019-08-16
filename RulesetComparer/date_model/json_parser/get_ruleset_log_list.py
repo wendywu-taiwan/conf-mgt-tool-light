@@ -125,7 +125,6 @@ class GetRulesetLogListParser:
         log_groups = RulesetLogGroup.objects.filter(self.log_group_query).values('id').order_by('-update_time')
         self.add_log_group_ids_query(log_groups)
         log_groups_query = log_groups.query
-        print("log_groups_query:" + str(log_groups_query))
 
     def parse_log_filter(self):
         if self.order_descend:

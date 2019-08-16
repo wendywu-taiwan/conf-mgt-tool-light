@@ -10,20 +10,20 @@
         <div id="ruleset_detail_top_div" class="row no-row-margin">
             <div id="log_detail_div" class="admin_console_block_background custom_container">
                 <div class="header_div row no-row-margin">
-                    {% if log_data.action.name == 'create' %}
+                    {% if action.name == 'create' %}
                         <div id="action_div" class="vertical_align_middle"> {% include 'create_action_tag.html' %}</div>
-                    {% elif log_data.action.name == 'update' %}
+                    {% elif action.name == 'update' %}
                         <div id="action_div" class="vertical_align_middle"> {% include 'update_action_tag.html' %}</div>
                     {% else %}
                         <div id="action_div" class="vertical_align_middle"> {% include 'delete_action_tag.html' %}</div>
                     {% endif %}
-                    <div class="component_title vertical_align_middle">{{ log_data.ruleset_name }}</div>
+                    <div class="component_title vertical_align_middle">{{ ruleset_name }}</div>
                 </div>
                 <div id="information_div">
                     <div class="row no-row-margin information_row">
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Log ID</div>
-                            <div class="vertical_align_middle row_content_div">{{ log_data.log_id }}</div>
+                            <div class="vertical_align_middle row_content_div">{{ log_id }}</div>
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Task ID</div>
@@ -31,53 +31,53 @@
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Update Time</div>
-                            <div class="vertical_align_middle row_content_div">{{ log_data.update_time }}</div>
+                            <div class="vertical_align_middle row_content_div">{{ update_time }}</div>
                         </div>
                     </div>
                     <div class="row no-row-margin information_row">
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Author</div>
-                            <div class="row_content_div vertical_align_middle">{{ log_data.user_name }}</div>
+                            <div class="row_content_div vertical_align_middle">{{ user_name }}</div>
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Country</div>
                             <div class="row_content_div vertical_align_middle">
-                                {{ log_data.country.full_name }}
+                                {{ country.full_name }}
                             </div>
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Commit SHA</div>
                             <div class="row_content_div vertical_align_middle">
-                                {{ log_data.commit_sha }}
+                                {{ commit_sha }}
                             </div>
                         </div>
                     </div>
                     <div class="row no-row-margin information_row">
                         <div class="col ">
                             <div class="row_title_div vertical_align_middle">From</div>
-                            <div class="row_content_div vertical_align_middle">{{ log_data.source_environment.name }}</div>
+                            <div class="row_content_div vertical_align_middle">{{ source_environment.name }}</div>
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">To</div>
-                            <div class="row_content_div vertical_align_middle">{{ log_data.target_environment.name }}</div>
+                            <div class="row_content_div vertical_align_middle">{{ target_environment.name }}</div>
                         </div>
                         <div class="col">
                             <div class="row_title_div vertical_align_middle">Result</div>
-                            <div class="vertical_align_middle row_content_div">{{ log_data.status }}</div>
+                            <div class="vertical_align_middle row_content_div">{{ status }}</div>
                         </div>
                     </div>
-                    {% if log_data.exception %}
+                    {% if exception %}
                         <div class="row no-row-margin information_row">
                             <div class="col">
                                 <div class="row_title_div vertical_align_middle">Exception</div>
-                                <div id="exception_content" class="vertical_align_middle">{{ log_data.exception }}</div>
+                                <div id="exception_content" class="vertical_align_middle">{{ exception }}</div>
                             </div>
                         </div>
                     {% endif %}
                     <div id="show_ruleset_div" class="row no-row-margin information_row">
                         <div class="row_title_div vertical_align_middle show_ruleset_div_width">Show Ruleset</div>
                         <div class="show_ruleset_div_width">
-                            {% if log_data.action.name == "delete" %}
+                            {% if action.name == "delete" %}
                                 <button type="button"
                                         class="disabled btn custom_button btn-sm show_ruleset_button_width">Backup
                                     Applied Version
@@ -90,7 +90,7 @@
                             {% endif %}
                         </div>
                         <div class="show_ruleset_div_width">
-                            {% if log_data.action.name == "create" %}
+                            {% if action.name == "create" %}
                                 <button type="button"
                                         class="disabled btn custom_button btn-sm show_ruleset_button_width"
                                 >Backup Server Version
@@ -118,7 +118,7 @@
                     <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerSourceEnv()">Compare With Server
                     </button>
-                    {% if log_data.action.name == "update" %}
+                    {% if action.name == "update" %}
                         <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
                             Compare Backup Rulesets
                         </button>
@@ -139,7 +139,7 @@
                     <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerTargetEnv()">Compare With Server
                     </button>
-                    {% if log_data.action.name == "update" %}
+                    {% if action.name == "update" %}
                         <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
                             Compare Backup Rulesets
                         </button>
@@ -152,29 +152,29 @@
     </div>
     <script>
         $(function () {
-            initData('{{ log_data.ruleset_name }}', '{{ log_data.backup_key }}', '{{ log_data.source_environment.id }}', '{{ log_data.target_environment.id }}', '{{ log_data.country.id }}');
+            initData('{{ ruleset_name }}', '{{ backup_key }}', '{{ source_environment.id }}', '{{ target_environment.id }}', '{{ country.id }}');
             initUrl("{% url 'RulesetComparer:ruleset-log-detail-ruleset' %}", "{% url 'RulesetComparer:packed-ruleset-download' %}", "{% url 'RulesetComparer:ruleset-apply-to-server' %}");
         });
 
         function onClickPrettySourceEnv() {
-            openNewPage('{% url 'RulesetComparer:rule-detail-backup' log_data.backup_key "source" log_data.ruleset_name %}');
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' backup_key "source" ruleset_name %}');
         }
 
         function onClickPrettyTargetEnv() {
-            openNewPage('{% url 'RulesetComparer:rule-detail-backup' log_data.backup_key "target" log_data.ruleset_name %}');
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' backup_key "target" ruleset_name %}');
         }
 
 
         function onClickDiffBackup() {
-            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup' log_data.backup_key log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup' backup_key ruleset_name %}');
         }
 
         function onClickDiffServerSourceEnv() {
-            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' log_data.backup_key "source" log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' backup_key "source" ruleset_name %}');
         }
 
         function onClickDiffServerTargetEnv() {
-            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' log_data.backup_key "target" log_data.ruleset_name %}');
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' backup_key "target" ruleset_name %}');
         }
     </script>
 

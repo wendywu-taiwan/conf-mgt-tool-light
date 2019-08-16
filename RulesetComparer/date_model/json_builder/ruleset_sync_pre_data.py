@@ -17,8 +17,8 @@ class RulesetSyncPreDataBuilder(BaseBuilder):
             raise e
 
     def parsing_environment(self):
-        base_environment = self.json_data[COMPARE_RULE_BASE_ENV]
-        compare_environment = self.json_data[COMPARE_RULE_COMPARE_ENV]
+        base_environment = self.json_data[KEY_BASE_ENV]
+        compare_environment = self.json_data[KEY_COMPARE_ENV]
 
         self.source_environment = base_environment
         self.target_environment = compare_environment

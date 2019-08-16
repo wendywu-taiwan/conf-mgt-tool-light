@@ -51,9 +51,6 @@ COUNTRY_KEY_ID = 'id'
 COUNTRY_KEY_NAME = 'name'
 
 # view.compare_rule_list_item_data
-COMPARE_RULE_LIST_COUNTRY = 'country'
-COMPARE_RULE_BASE_ENV = 'base_env'
-COMPARE_RULE_COMPARE_ENV = 'compare_env'
 COMPARE_RULE_COMPARE_HASH_KEY = 'compare_hash_key'
 COMPARE_RESULT_DATE_TIME = 'current_time'
 COMPARE_RESULT_ADD_LIST = 'add_list'
@@ -218,6 +215,8 @@ KEY_EMAIL = "email"
 KEY_STATUS = "status"
 KEY_BACKUP_DATES = "backup_dates"
 KEY_UPDATE_TIME = "update_time"
+KEY_BASE_ENV = 'base_env'
+KEY_COMPARE_ENV = 'compare_env'
 KEY_SOURCE_ENV = "source_environment"
 KEY_SOURCE_ENV_ID = "source_environment_id"
 KEY_TARGET_ENV = "target_environment"

@@ -9,15 +9,12 @@ def get_ruleset_log_list(user, json_data, new_filter):
     # check data visibility
     parser = GetRulesetLogListParser(user, json_data, new_filter)
     logs = parser.get_logs_query_result()
-    log_query = logs.query
-    print("logs query:" + str(log_query))
     logs_list = []
     for log in logs:
         log_obj = RulesetLogBuilder(user, log).get_data()
         logs_list.append(log_obj)
 
     data = RulesetLogListResultBuilder(user, parser, logs_list).get_data()
-    print("result_data:" + str(data))
     return data
 
 

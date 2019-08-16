@@ -1,5 +1,6 @@
 import traceback
 
+from RulesetComparer.date_model.json_builder.compare_ruleset_list_page import CompareRulesetListPageBuilder
 from RulesetComparer.task.download_ruleset import DownloadRulesetTask
 from RulesetComparer.date_model.json_builder.diff_ruleset_page import DiffRulesetPageBuilder
 from RulesetComparer.date_model.json_builder.ruleset_detail_page import RulesetDetailBuilder
@@ -43,8 +44,10 @@ def get_rule_list_from_b2b(environment, country):
 
 def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
     task = CompareRuleListTask(base_env_id, compare_env_id, country_id)
-    return task
+    result_data = fileManager.load_compare_result_file(task.compare_hash_key)
+    data = CompareRulesetListPageBuilder(result_data).get_data()
 
+    return data
 
 def compare_ruleset_test():
     try:

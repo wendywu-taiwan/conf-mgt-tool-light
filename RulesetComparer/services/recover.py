@@ -1,6 +1,7 @@
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
 from RulesetComparer.date_model.json_parser.get_filter_ruleset import GetFilteredRulesetParser
-from RulesetComparer.date_model.json_builder.recover_filter_backup import RecoverFilterBackupObjBuilder
+from RulesetComparer.date_model.json_builder.recover_filter_backup import RecoverFilterBackupObjBuilder, \
+    RecoverFilterBackupResultBuilder
 from RulesetComparer.models import Environment, Country, RulesetLogGroup, RulesetLog
 from RulesetComparer.utils.fileManager import *
 
@@ -20,7 +21,7 @@ def filter_country(environment_id):
     return list(country_ids)
 
 
-def filter_backup_list(json_data):
+def filter_backup_list(user, json_data):
     parser = GetFilteredRulesetParser(json_data)
     log_list = []
     log_group_list = []
@@ -38,10 +39,7 @@ def filter_backup_list(json_data):
         log_list.append(log_result_obj.get_data())
         log_group_list.append(log_group_obj.get_data())
 
-    result_data = {KEY_RULESET_LOG_GROUPS: log_group_list,
-                   KEY_RULESET_LOGS: log_list}
-
-    return result_data
+    return RecoverFilterBackupResultBuilder(user, log_group_list, log_list).get_data()
 
 
 def has_recovery_rulesets(env_name, country_name, date_name):

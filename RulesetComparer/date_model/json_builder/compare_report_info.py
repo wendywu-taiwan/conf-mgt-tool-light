@@ -21,8 +21,8 @@ class CompareReportInfoBuilder(BaseBuilder):
             raise e
 
     def parsing_environment(self):
-        base_environment = self.json_data[key.COMPARE_RULE_BASE_ENV]
-        compare_environment = self.json_data[key.COMPARE_RULE_COMPARE_ENV]
+        base_environment = self.json_data[key.KEY_BASE_ENV]
+        compare_environment = self.json_data[key.KEY_COMPARE_ENV]
 
         if base_environment["name"] == config.GIT.get("environment_name") \
                 or compare_environment["name"] == "PROD":
@@ -50,7 +50,7 @@ class CompareReportInfoBuilder(BaseBuilder):
         self.result_dict.clear()
 
     def __generate_data__(self):
-        self.result_dict["country"] = self.json_data[key.COMPARE_RULE_LIST_COUNTRY]
+        self.result_dict["country"] = self.json_data[key.KEY_COUNTRY]
         self.result_dict["normal_environment"] = self.normal_environment
         self.result_dict["developer_environment"] = self.developer_environment
         self.result_dict["compare_time"] = self.ruleset_list_json[key.COMPARE_RESULT_DATE_TIME]

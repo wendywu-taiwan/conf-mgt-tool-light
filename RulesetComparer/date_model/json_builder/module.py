@@ -17,6 +17,25 @@ class ModuleBuilder(BaseBuilder):
         self.result_dict[KEY_DISPLAY_NAME] = self.module.display_name
 
 
+class ModulesBuilder(BaseBuilder):
+    def __init__(self, modules):
+        try:
+            self.modules = modules
+            BaseBuilder.__init__(self)
+        except Exception as e:
+            raise e
+
+    def __generate_data__(self):
+        self.result_dict = self.parse_module_data()
+
+    def parse_module_data(self):
+        array = []
+        for module in self.modules:
+            data = ModuleBuilder(module).get_data()
+            array.append(data)
+        return array
+
+
 class ModuleVisibleBuilder(ModuleBuilder):
     def __init__(self, module, user):
         try:

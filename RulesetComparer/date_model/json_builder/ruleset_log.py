@@ -1,18 +1,12 @@
-import traceback
-
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
 from RulesetComparer.utils.timeUtil import get_frontend_format_time
 from RulesetComparer.models import RulesetLogGroup, RulesetAction
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
 from RulesetComparer.date_model.json_builder.ruleset_action import RulesetActionBuilder
-from RulesetComparer.properties.key import *
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
 from permission.utils.permission_manager import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
-from permission.models import Function
 
 
-class RulesetLogBuilder(BaseBuilder):
+class RulesetLogBuilder(AdminConsoleBaseBuilder):
     AUTHOR_TASK_MANAGER = "Task Manager"
 
     def __init__(self, user, data):
@@ -29,7 +23,7 @@ class RulesetLogBuilder(BaseBuilder):
             self.exception = data.get(KEY_EXCEPTION)
             self.update_time = get_frontend_format_time(self.data.get(KEY_UPDATE_TIME))
             self.backup_key = self.data.get(KEY_BACKUP_KEY)
-            BaseBuilder.__init__(self)
+            AdminConsoleBaseBuilder.__init__(self, user)
         except Exception as e:
             raise e
 
