@@ -1,11 +1,11 @@
 from django.contrib.auth.models import User
 
 from permission.data_object.json_builder.base import SettingBaseBuilder
-from permission.models import RolePermission, Environment, RoleType, UserRolePermission
+from permission.models import Environment, RoleType, UserRolePermission
 from permission.data_object.json_builder.role_type import RoleTypeBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.user import UserBuilder
 from RulesetComparer.properties.key import *
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
-from RulesetComparer.date_model.json_builder.user import UserBuilder
 
 
 class UserRoleEditBuilder(SettingBaseBuilder):

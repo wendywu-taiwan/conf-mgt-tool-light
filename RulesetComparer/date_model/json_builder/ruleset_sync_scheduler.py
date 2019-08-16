@@ -2,10 +2,10 @@ import traceback
 import ast
 from RulesetComparer.properties import config
 from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
-from RulesetComparer.date_model.json_builder.country import CountryBuilder
-from RulesetComparer.date_model.json_builder.user import UserBuilder
 from RulesetComparer.utils.logger import *
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.country import CountryBuilder
+from common.data_object.json_builder.user import UserBuilder
 
 
 class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):

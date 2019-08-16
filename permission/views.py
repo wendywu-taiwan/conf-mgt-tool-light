@@ -3,9 +3,9 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.utils import json
-from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.properties.key import *
 from RulesetComparer.utils.logger import error_log
+from common.data_object.json_builder.response import ResponseBuilder
 from common.data_object.error.error import PermissionDeniedError
 from common.data_object.error.message import PERMISSION_DENIED_MESSAGE
 from common.data_object.error.status import PERMISSION_DENIED

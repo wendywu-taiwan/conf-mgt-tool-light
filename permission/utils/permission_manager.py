@@ -1,6 +1,5 @@
-from RulesetComparer.date_model.json_builder.environment import EnvironmentsBuilder
+from common.data_object.json_builder.environment import EnvironmentsBuilder
 from common.data_object.error.error import PermissionDeniedError
-from common.data_object.error.message import PERMISSION_DENIED_MESSAGE
 from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission, Function
 from django.contrib.auth.models import User
 from RulesetComparer.properties.key import *

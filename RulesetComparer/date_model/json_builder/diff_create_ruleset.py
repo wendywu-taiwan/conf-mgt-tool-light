@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.key import *
 
 

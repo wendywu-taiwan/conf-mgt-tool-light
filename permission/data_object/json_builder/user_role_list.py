@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from permission.data_object.json_builder.base import SettingBaseBuilder
 from permission.models import RolePermission, Environment, RoleType
-from RulesetComparer.date_model.json_builder.user import UserBuilder
+from common.data_object.json_builder.user import UserBuilder
 
 
 class UserRoleListBuilder(SettingBaseBuilder):

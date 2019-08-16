@@ -1,7 +1,7 @@
 from django.urls import path
 
 from permission import views
-from django.conf.urls import url, include
+from django.conf.urls import include
 
 app_name = 'permission'
 

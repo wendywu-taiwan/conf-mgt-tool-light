@@ -4,10 +4,11 @@ from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 
-from RulesetComparer.date_model.json_builder.module import ModulesBuilder
 from common.views import page_permission_check, page_error_check, action_permission_check, action_error_check
 from common.data_object.json_builder.country import CountriesBuilder
 from common.data_object.json_builder.environment import EnvironmentsBuilder
+from common.data_object.json_builder.module import ModulesBuilder
+from common.data_object.json_builder.response import ResponseBuilder
 
 from RulesetComparer.date_model.json_builder.recovery_page import RecoveryPageFilterEnvironmentsBuilder, \
     RecoveryPageFilterCountriesBuilder
@@ -28,8 +29,6 @@ from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import ModuleSerializer
 from RulesetComparer.services import services, sync, recover, log
 from RulesetComparer.utils.mailSender import MailSender
-
-from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder, \
     ReportSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder, \

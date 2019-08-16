@@ -1,5 +1,5 @@
 from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.config import *
 from RulesetComparer.utils.stringFilter import *
 

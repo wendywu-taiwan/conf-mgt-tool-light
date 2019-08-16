@@ -1,6 +1,6 @@
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from common.data_object.json_builder.base import BaseBuilder
+from permission.models import Environment
 from RulesetComparer.properties.config import *
-from RulesetComparer.models import Environment
 
 
 class EnvironmentBuilder(BaseBuilder):

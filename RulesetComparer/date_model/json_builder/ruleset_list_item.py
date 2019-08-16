@@ -1,5 +1,5 @@
 import RulesetComparer.properties.key as key
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from common.data_object.json_builder.base import BaseBuilder
 
 
 class RuleListItemBuilder(BaseBuilder):

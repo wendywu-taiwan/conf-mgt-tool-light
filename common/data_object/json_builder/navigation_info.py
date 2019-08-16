@@ -1,8 +1,8 @@
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
+from common.data_object.json_builder.base import BaseBuilder
+from common.data_object.json_builder.function import FunctionEnableBuilder
+from common.data_object.json_builder.user import UserBuilder
+from common.data_object.json_builder.module import ModuleBuilder, ModuleVisibleBuilder
 from permission.models import Module, Function
-from RulesetComparer.date_model.json_builder.user import UserBuilder
-from RulesetComparer.date_model.json_builder.module import ModuleBuilder, ModuleVisibleBuilder
-from RulesetComparer.date_model.json_builder.function_enable import FunctionEnableBuilder
 from RulesetComparer.properties.key import *
 
 

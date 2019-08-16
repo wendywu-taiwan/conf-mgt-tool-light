@@ -1,11 +1,9 @@
 from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
-from RulesetComparer.date_model.json_builder.user import UserBuilder
-from RulesetComparer.date_model.json_builder.country import CountryBuilder
-from RulesetComparer.properties.config import *
-from RulesetComparer.models import RulesetLogGroup, Country
-from django.contrib.auth.models import User
+from RulesetComparer.models import RulesetLogGroup
+from common.data_object.json_builder.user import UserBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.country import CountryBuilder
+from permission.models import Country
 from permission.utils.permission_manager import *
 
 

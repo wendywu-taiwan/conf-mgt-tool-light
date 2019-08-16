@@ -2,11 +2,11 @@ import traceback
 
 from django.shortcuts import render
 from django.http import JsonResponse
-from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.utils.logger import error_log
 from common.data_object.error.error import PermissionDeniedError, B2BRulesetNotFoundError
 from common.data_object.error.message import PERMISSION_DENIED_MESSAGE, RULESET_NOT_FOUND_MESSAGE
 from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED
+from common.data_object.json_builder.response import ResponseBuilder
 
 
 def page_permission_check(request, check_visibility, get_visible_data, executor):

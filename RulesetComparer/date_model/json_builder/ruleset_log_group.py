@@ -1,12 +1,12 @@
 import traceback
 
-from RulesetComparer.date_model.json_builder.base import BaseBuilder
 from RulesetComparer.properties.config import *
 from RulesetComparer.utils.logger import error_log
 from RulesetComparer.utils.timeUtil import *
-from RulesetComparer.models import Environment, Country
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
-from RulesetComparer.date_model.json_builder.country import CountryBuilder
+from permission.models import Country
+from common.data_object.json_builder.base import BaseBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.country import CountryBuilder
 from django.contrib.auth.models import User
 
 

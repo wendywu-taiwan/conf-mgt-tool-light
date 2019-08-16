@@ -1,11 +1,11 @@
 import traceback
-from RulesetComparer.utils.logger import error_log
 from permission.data_object.json_builder.base import SettingBaseBuilder
 from permission.models import RolePermission, Environment, RoleType, Function, RoleFunctionPermission
 from permission.data_object.json_builder.role_type import RoleTypeBuilder
-from RulesetComparer.date_model.json_builder.environment import EnvironmentBuilder
-from RulesetComparer.date_model.json_builder.function import FunctionBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
+from common.data_object.json_builder.function import FunctionBuilder
 from RulesetComparer.properties.key import *
+from RulesetComparer.utils.logger import error_log
 
 
 class RolePermissionBuilder(SettingBaseBuilder):
