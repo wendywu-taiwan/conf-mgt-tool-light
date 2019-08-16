@@ -1,9 +1,9 @@
 from RulesetComparer.date_model.json_builder.environment import EnvironmentsBuilder
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError
+from common.data_object.error.message import PERMISSION_DENIED_MESSAGE
 from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission, Function
 from django.contrib.auth.models import User
 from RulesetComparer.properties.key import *
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
 
 VISIBLE = "visible"
 EDITABLE = "editable"
@@ -15,7 +15,7 @@ FUNCTIONS = [KEY_F_SERVER_LOG, KEY_F_RULESET_LOG, KEY_F_REPORT_TASK, KEY_F_AUTO_
 def check_function_visibility(request, function_key):
     function = Function.objects.get(name=function_key)
     if not check_function_enable(request.user.id, function.id):
-        raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+        raise PermissionDeniedError()
 
 
 def enable_environments(user_id):

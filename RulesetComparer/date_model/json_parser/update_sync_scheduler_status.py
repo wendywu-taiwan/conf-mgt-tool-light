@@ -1,10 +1,7 @@
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
-from RulesetComparer.properties.key import *
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
 from RulesetComparer.models import RulesetSyncUpScheduler
-from permission.models import Function
 from permission.utils.permission_manager import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError
 
 
 class UpdateSyncSchedulerStatusParser(PermissionParser):
@@ -32,4 +29,4 @@ class UpdateSyncSchedulerStatusParser(PermissionParser):
             is_target_editable = is_editable(self.user.id, self.task.target_environment.id, country_id, function_id)
 
             if is_source_editable is False or is_target_editable is False:
-                raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+                raise PermissionDeniedError()

@@ -18,6 +18,8 @@ from RulesetComparer.date_model.json_builder.sync_scheduler_update_page import S
 from permission.utils.page_visibility import *
 from permission.utils.permission_manager import enable_environments, enable_countries
 from common.utils.utility import get_union, contains
+from common.data_object.error.error import PermissionDeniedError
+from common.data_object.error.status import *
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Module, RulesetSyncUpScheduler
 from RulesetComparer.utils.threadManager import *
@@ -34,11 +36,11 @@ from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import Rules
     RulesetSyncSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
-from RulesetComparer.properties.status_code import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+
 from permission.utils.permission_manager import check_function_visibility, enable_environments_data
 from RulesetComparer.services.services import *
 from RulesetComparer.services.report_scheduler import *
+
 
 
 ######################################## Admin Console ########################################

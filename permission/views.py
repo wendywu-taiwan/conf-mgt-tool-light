@@ -1,14 +1,14 @@
 import traceback
-from django.http import HttpResponse, Http404, HttpResponseBadRequest, JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.utils import json
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
 from RulesetComparer.properties.key import *
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
-from RulesetComparer.properties.status_code import PERMISSION_DENIED
 from RulesetComparer.utils.logger import error_log
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError
+from common.data_object.error.message import PERMISSION_DENIED_MESSAGE
+from common.data_object.error.status import PERMISSION_DENIED
 from permission.utils.permission_manager import check_function_visibility
 from permission.services.user_role import get_user_role_list, get_user_role_edit, edit_user_role_data
 from permission.data_object.json_builder.setting_info import SettingInfoBuilder

@@ -3,13 +3,11 @@ import traceback
 from django.shortcuts import render
 from django.http import JsonResponse
 from RulesetComparer.date_model.json_builder.response import ResponseBuilder
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
-from RulesetComparer.properties.status_code import PERMISSION_DENIED
 from RulesetComparer.utils.logger import error_log
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError, B2BRulesetNotFoundError
+from common.data_object.error.message import PERMISSION_DENIED_MESSAGE, RULESET_NOT_FOUND_MESSAGE
+from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED
 
-
-# Create your views here.
 
 def page_permission_check(request, check_visibility, get_visible_data, executor):
     try:
@@ -27,6 +25,9 @@ def page_permission_check(request, check_visibility, get_visible_data, executor)
 def page_error_check(executor):
     try:
         return executor()
+    except B2BRulesetNotFoundError:
+        result = ResponseBuilder(status_code=RULESET_NOT_FOUND, message=RULESET_NOT_FOUND_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()
@@ -48,6 +49,9 @@ def action_permission_check(request, executor):
 def action_error_check(executor):
     try:
         return executor()
+    except B2BRulesetNotFoundError:
+        result = ResponseBuilder(status_code=RULESET_NOT_FOUND, message=RULESET_NOT_FOUND_MESSAGE).get_data()
+        return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

@@ -1,7 +1,5 @@
-from permission.models import Function
 from permission.utils.permission_manager import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
-from RulesetComparer.properties.message import *
+from common.data_object.error.error import PermissionDeniedError
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.date_model.json_parser.base_apply_ruleset import BaseApplyRulesetParser
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
@@ -32,4 +30,4 @@ class RecoverRulesetsParser(BaseApplyRulesetParser, PermissionParser):
 
         self.is_editable = is_editable(self.user.id, target_env_id, country_id, function_id)
         if not self.is_editable:
-            raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+            raise PermissionDeniedError()

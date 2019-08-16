@@ -1,12 +1,11 @@
 from django.db.models import Q
 
 from RulesetComparer.models import RulesetLog, RulesetLogGroup
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
 from RulesetComparer.properties.key import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError
 from common.utils.utility import *
 
-from permission.models import UserRolePermission, RoleFunctionPermission, RolePermission, Function
+from permission.models import UserRolePermission, RoleFunctionPermission, Function
 
 
 def check_scheduler_detail_visibility(user_id, env_a_id, env_b_id, country_ids, function_key):
@@ -28,7 +27,7 @@ def check_scheduler_detail_visibility(user_id, env_a_id, env_b_id, country_ids, 
     b_visible_roles = RoleFunctionPermission.objects.filter(query).values_list("role_permission_id", flat=True)
 
     if len(get_union(user_roles, a_visible_roles)) == 0 or len(get_union(user_roles, b_visible_roles)) == 0:
-        raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+        raise PermissionDeniedError()
 
 
 def check_ruleset_log_detail_visibility(user_id, log_id):
@@ -52,6 +51,6 @@ def check_ruleset_log_detail_visibility(user_id, log_id):
     b_visible_roles = RoleFunctionPermission.objects.filter(query).values_list("role_permission_id", flat=True)
 
     if len(get_union(user_roles, a_visible_roles)) == 0 or len(get_union(user_roles, b_visible_roles)) == 0:
-        raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+        raise PermissionDeniedError()
 
 

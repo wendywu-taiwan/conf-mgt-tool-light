@@ -4,8 +4,7 @@ from RulesetComparer.date_model.json_parser.permission import PermissionParser
 from permission.utils.permission_manager import *
 from permission.models import Function
 from RulesetComparer.properties.key import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
-from RulesetComparer.properties.message import *
+from common.data_object.error.error import PermissionDeniedError
 
 
 class ApplyRulesetToServerParser(BaseApplyRulesetParser, PermissionParser):
@@ -42,4 +41,4 @@ class ApplyRulesetToServerParser(BaseApplyRulesetParser, PermissionParser):
 
         self.is_editable = is_editable(self.user.id, target_env_id, country_id, function_id)
         if not self.is_editable:
-            raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+            raise PermissionDeniedError()

@@ -1,6 +1,7 @@
 from RulesetComparer.task.download_ruleset import DownloadRulesetTask
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.models import RulesetLogGroup
+from common.data_object.error.error import B2BRulesetNotFoundError
 
 
 class RulesetDiffBackupWithServerParser:
@@ -28,3 +29,5 @@ class RulesetDiffBackupWithServerParser:
         download_task = DownloadRulesetTask(self.environment.id, self.country.id, self.ruleset_name, compare_hash_key=None)
         if download_task.success:
             self.server_ruleset_xml = download_task.get_ruleset_xml()
+        elif not download_task.ruleset_exist:
+            raise B2BRulesetNotFoundError

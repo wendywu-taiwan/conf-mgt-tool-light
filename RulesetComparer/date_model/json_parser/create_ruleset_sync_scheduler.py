@@ -2,11 +2,9 @@ from RulesetComparer.date_model.data_object.sync_action import SyncUpAction
 from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 from RulesetComparer.models import Environment
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
-from RulesetComparer.properties.key import *
-from RulesetComparer.properties.message import PERMISSION_DENIED_MESSAGE
 from permission.models import Module, Function
 from permission.utils.permission_manager import *
-from common.data_object.error.PermissionDeniedError import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError
 
 
 class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionParser):
@@ -73,4 +71,4 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionPars
             is_target_editable = is_editable(self.user.id, self.target_environment, country_id, function_id)
 
             if is_base_editable is False or is_target_editable is False:
-                raise PermissionDeniedError(PERMISSION_DENIED_MESSAGE)
+                raise PermissionDeniedError()

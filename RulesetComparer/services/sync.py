@@ -132,6 +132,10 @@ def sync_backup_rulesets(parser, user):
 
     # backup deleted last time but created now ruleset
     for ruleset_name in parser.rulesets:
+
+        # backup applied backup ruleset from backup folder to new backup folder
+        copy_ruleset(get_file_name("_xml", ruleset_name), applied_rs_path, applied_rs_backup_path)
+
         # download ruleset server version
         ruleset_exist = DownloadRulesetTask(target_environment.id, country.id, ruleset_name, compare_key).ruleset_exist
 
@@ -140,9 +144,6 @@ def sync_backup_rulesets(parser, user):
             create_ruleset_data = DiffCreateRulesetBuilder(ruleset_name).get_data()
             create_ruleset_list.append(create_ruleset_data)
             continue
-
-        # backup applied backup ruleset from backup folder to new backup folder
-        copy_ruleset(get_file_name("_xml", ruleset_name), applied_rs_path, applied_rs_backup_path)
 
         # backup server version ruleset from ruleset folder to backup folder
         copy_ruleset(get_file_name("_xml", ruleset_name), server_rs_path, server_rs_backup_path)
