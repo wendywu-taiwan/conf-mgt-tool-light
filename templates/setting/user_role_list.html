@@ -1,0 +1,102 @@
+{% extends "setting_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/user_role_list.css' %}" rel="stylesheet">
+    <script src="{% static '/js/setting/user-role-list.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="user_role_container" class="custom_container row no-row-margin">
+        {% for data in data %}
+            <div class="user_block_out_div">
+                <div class="user_role_block_width">
+                    <div class="user_role_block_div admin_console_block_background">
+                        <div class="row no-row-margin">
+                            <div class="title_text vertical_align_middle">{{ data.user.name }}</div>
+                            <div class="edit_icon_div"><img class="edit_icon"
+                                                            onclick="openEditUserRolePage('{% url 'permission:user-role-edit-page' data.user.id %}')"
+                                                            src="{% static '/icons/edit_user_role.png' %}"></div>
+                        </div>
+                        <div class="user_role_title_divider"></div>
+                        <div class="role_info_table">
+                            {% for role_data in data.environment_role %}
+                                {% if forloop.counter0 == 3 %}
+                                    <div id="collapse_div_{{ forloop.parentloop.counter0 }}"
+                                         class="collapse_row collapse">
+                                {% endif %}
+                            <div class="role_row row no-row-margin vertical_align_middle">
+                                <div class="environment_width content">{{ role_data.environment }}</div>
+                                <div class="country_width content">{{ role_data.country }} Country</div>
+                                <div class="role_width content">{{ role_data.role_type }}</div>
+                            </div>
+                            <div class="user_role_divider"></div>
+                            {% if data.environment_role|length > 3 and forloop.counter0 == 2 %}
+                                <div id="expand_button_div_{{ forloop.parentloop.counter0 }}"
+                                     class="role_row  row no-row-margin">
+                                    <div class="environment_width content"></div>
+                                    <a id="expand_button_{{ forloop.parentloop.counter0 }}"
+                                       class="country_width title_text"
+                                       onclick="hideExpandDiv(this)"
+                                       data-toggle="collapse"
+                                       href="#collapse_div_{{ forloop.parentloop.counter0 }}" role="button"
+                                       aria-expanded="false"
+                                       aria-controls="collapse_div_{{ forloop.parentloop.counter0 }}"><span
+                                            class="fui-triangle-down"></span></a>
+                                    <div class="role_width content"></div>
+                                </div>
+                            {% endif %}
+                            {% if forloop.last %}
+                                </div>
+                                <div id="hide_button_div_{{ forloop.parentloop.counter0 }}"
+                                     class="hide_button_div role_row  row no-row-margin">
+                                    <div class="environment_width content"></div>
+                                    <a id="hide_button_{{ forloop.parentloop.counter0 }}"
+                                       class="country_width title_text"
+                                       onclick="showExpandDiv(this)"
+                                       data-toggle="collapse"
+                                       href="#collapse_div_{{ forloop.parentloop.counter0 }}" role="button"
+                                       aria-expanded="true"
+                                       aria-controls="collapse_div_{{ forloop.parentloop.counter0 }}"><span
+                                            class="fui-triangle-up"></span></a>
+                                    <div class="role_width content"></div>
+                                </div>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        hideExpandDiv = function (item) {
+            console.log("hideExpandButton, id:" + item.id);
+            let itemId = item.id;
+            let tagId = getTagId(itemId);
+            let expandButtonDiv = document.getElementById("expand_button_div_" + tagId);
+            let hideButtonDiv = document.getElementById("hide_button_div_" + tagId);
+            let collapseDiv = document.getElementById("collapse_div_" + tagId);
+            hide(expandButtonDiv);
+            showFlex(hideButtonDiv);
+            showBlock(collapseDiv);
+        };
+
+        showExpandDiv = function (item) {
+            let itemId = item.id;
+            let tagId = getTagId(itemId);
+            let expandButtonDiv = document.getElementById("expand_button_div_" + tagId);
+            let hideButtonDiv = document.getElementById("hide_button_div_" + tagId);
+            let collapseDiv = document.getElementById("collapse_div_" + tagId);
+            hide(collapseDiv);
+            hide(hideButtonDiv);
+            showFlex(expandButtonDiv);
+        };
+
+        function getTagId(divId) {
+            let tagSplitArray = (divId).split("_");
+            return tagSplitArray[2];
+        }
+    </script>
+
+{% endblock %}

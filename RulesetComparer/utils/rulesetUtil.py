@@ -6,7 +6,7 @@ from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils.fileManager import load_file, create_folder
 from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_git_path, get_rule_set_full_file_name
 from RulesetComparer.properties import config
-from RulesetComparer.dataModel.xml.ruleSetObject import RulesetObject
+from RulesetComparer.date_model.xml.ruleset import RulesetObject
 
 
 def load_rule_file_with_path(path, ruleset_name):

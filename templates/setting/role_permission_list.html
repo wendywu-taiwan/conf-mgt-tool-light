@@ -1,0 +1,118 @@
+{% extends "setting_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/role_permission_list.css' %}" rel="stylesheet">
+    <script src="{% static '/js/setting/role-permission-list.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="role_permission_container" class="custom_container row no-row-margin">
+        {% for data in data %}
+            <div class="environment_role_permission_div white_block_div">
+                <div class="title_div row no-row-margin">
+                    <div class="environment_name_div vertical_align_middle">{{ data.environment.name }}</div>
+                    <div class="edit_icon_div">
+                        <button class="btn btn-info btn-wide" onclick="openEditRolePermissionPage('{% url 'permission:role-permission-edit-page' data.environment.id %}')">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+                <div class="function_role_permission_div">
+                    {% for function_role_permission in data.function_role_permission %}
+                        {% if forloop.counter0 == 1 %}
+                            <div class="collapse"
+                                 id="collapse_div_{{ data.environment.id }}">
+                        {% endif %}
+                    <div class="divider vertical_align_middle"></div>
+                    <div class="role_permission_div row no-row-margin">
+                        <div class="role_permission_title_div">
+                            <div class="function_name_div">{{ function_role_permission.function.name }}</div>
+                            <div class="role_type_enable_text_div vertical_align_middle">Visible</div>
+                            <div class="role_type_enable_text_div vertical_align_middle">Editable</div>
+                        </div>
+                        {% for role_permission in function_role_permission.role_permission %}
+                            <div class="role_type_div">
+                                <div class="role_type_title">{{ role_permission.role_type.display_name }}</div>
+                                {% if  role_permission.visible == 0 %}
+                                    <div class="role_type_visible_div role_type_enable_div vertical_align_middle">
+                                        <span class="cross_icon fui-cross"></span></div>
+                                {% else %}
+                                    <div class="role_type_visible_div role_type_enable_div vertical_align_middle">
+                                        <span class="check_icon fui-check"></span></div>
+                                {% endif %}
+                                {% if  role_permission.editable == 0 %}
+                                    <div class="role_type_editable_div role_type_enable_div vertical_align_middle">
+                                        <span class="cross_icon fui-cross"></span></div>
+                                {% else %}
+                                    <div class="role_type_editable_div role_type_enable_div vertical_align_middle">
+                                        <span class="check_icon fui-check"></span></div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if forloop.counter0 == 0 %}
+                        <div id="expand_button_div_{{ data.environment.id }}"
+                             class="expand_button_div role_row  row no-row-margin">
+                            <a id="expand_button_{{ data.environment.id }}"
+                               class="expand_button_icon"
+                               data-toggle="collapse"
+                               onclick="hideExpandDiv(this)"
+                               href="#collapse_div_{{ data.environment.id }}"
+                               role="button"
+                               aria-expanded="false"
+                               aria-controls="collapse_div_{{ data.environment.id }}"><span
+                                    class="fui-triangle-down"></span></a>
+                        </div>
+                    {% endif %}
+                    {% if forloop.last %}
+                        </div>
+                        <div id="hide_button_div_{{ data.environment.id }}"
+                             class="hide_button_div role_row  row no-row-margin">
+                            <a id="hide_button_{{ data.environment.id }}"
+                               class="hide_button_icon"
+                               data-toggle="collapse"
+                               onclick="showExpandDiv(this)"
+                               href="#collapse_div_{{ data.environment.id }}"
+                               role="button"
+                               aria-expanded="true"
+                               aria-controls="collapse_div_{{ data.environment.id }}"><span
+                                    class="fui-triangle-up"></span></a>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        hideExpandDiv = function (item) {
+            console.log("hideExpandButton, id:" + item.id);
+            let itemId = item.id;
+            let environmentId = getTagId(itemId, 2);
+            let expandButtonDiv = document.getElementById("expand_button_div_" + environmentId );
+            let hideButtonDiv = document.getElementById("hide_button_div_" + environmentId);
+            let collapseDiv = document.getElementById("collapse_div_" + environmentId);
+            hide(expandButtonDiv);
+            showFlex(hideButtonDiv);
+            showBlock(collapseDiv);
+        };
+
+        showExpandDiv = function (item) {
+            let itemId = item.id;
+            let environmentId = getTagId(itemId, 2);
+            let expandButtonDiv = document.getElementById("expand_button_div_" + environmentId);
+            let hideButtonDiv = document.getElementById("hide_button_div_" + environmentId);
+            let collapseDiv = document.getElementById("collapse_div_" + environmentId);
+            hide(collapseDiv);
+            hide(hideButtonDiv);
+            showFlex(expandButtonDiv);
+        };
+
+        function getTagId(divId, index) {
+            let tagSplitArray = (divId).split("_");
+            return tagSplitArray[index];
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,91 @@
+{% extends "setting_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/user_role_edit.css' %}" rel="stylesheet">
+    <script src="{% static '/js/setting/user-role-edit.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+    <div id="user_role_edit_container" class="white_block_div custom_container row no-row-margin">
+        <div id="title_row_div" class="row no-row-margin">
+            <div id="user_name_div" class="vertical_align_middle">{{ data.user_data.name }}</div>
+            <div id="save_button_div">
+                <button id="update_user_role_button" class="btn btn-default btn-primary btn-wide" onclick="updateUserRole({{ data.user_data.id }})">
+                    Save
+                </button>
+            </div>
+        </div>
+        <div class="divider"></div>
+        {% for role_data in data.environment_role %}
+            <div class="environment_roles_div">
+            <div class="environment_title_div">{{ role_data.environment.name }}</div>
+            <div class="checkbox_group_div row no-row-margin">
+                {% for checkbox_data in role_data.role_type %}
+                    <div class="user_role_option checkbox_outer_div">
+                    {% if checkbox_data.checked %}
+                        <div id="checkbox_div_{{ role_data.environment.id }}_{{ checkbox_data.id }}"
+                             class="checkbox_div_checked">
+                        <label class="radio" for="radio_{{ role_data.environment.id }}_{{ checkbox_data.id }}">
+                            <input type="radio" name="radio_group_{{ role_data.environment.name }}" value=""
+                                   id="radio_{{ role_data.environment.id }}_{{ checkbox_data.id }}" data-toggle="radio"
+                                   class="custom-radio" checked="checked"><span
+                                class="icons"><span
+                                class="icon-unchecked"></span><span
+                                class="icon-checked"></span></span>
+                            {{ checkbox_data.display_name }}
+                        </label>
+                    {% else %}
+                        <div id="checkbox_div_{{ role_data.environment.id }}_{{ checkbox_data.id }}"
+                             class="user_role_option checkbox_div">
+                        <label class="radio" for="radio_{{ role_data.environment.id }}_{{ checkbox_data.id }}">
+                            <input type="radio" name="radio_group_{{ role_data.environment.name }}" value=""
+                                   id="radio_{{ role_data.environment.id }}_{{ checkbox_data.id }}" data-toggle="radio"
+                                   class="custom-radio"><span class="icons"><span
+                                class="icon-unchecked"></span><span
+                                class="icon-checked"></span></span>
+                            {{ checkbox_data.display_name }}
+                        </label>
+                    {% endif %}
+                </label>
+                </div>
+                </div>
+                {% endfor %}
+                </div>
+            </div>
+            {% if not forloop.last %}
+                <div class="environment_divider"></div>
+            {% endif %}
+        {% endfor %}
+        </div>
+
+        <script>
+            $(function () {
+                init("{% url 'permission:user-role-edit'%}", "{% url 'permission:user-role-list-page'%}");
+
+                $('input[type="radio"]').on('change', function () {
+                    let name = this.name;
+                    let elements = document.getElementsByName(name);
+                    let i;
+                    for (i = 0; i < elements.length; i++) {
+                        console.log("remove checkbox_div_checked");
+                        let element = elements[i];
+                        let id = element.id;
+                        let environmentId = split_str(id, 1);
+                        let roleTypeId = split_str(id, 2);
+                        let removed_div = document.getElementById("checkbox_div_" + environmentId + "_" + roleTypeId);
+
+                        if (element.checked) {
+                            removed_div.classList.remove("checkbox_div");
+                            removed_div.classList.add("checkbox_div_checked");
+                        } else {
+                            removed_div.classList.remove("checkbox_div_checked");
+                            removed_div.classList.add("checkbox_div");
+                        }
+                    }
+                });
+            });
+
+        </script>
+
+{% endblock %}

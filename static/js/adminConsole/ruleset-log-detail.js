@@ -99,10 +99,10 @@ function applyToServer() {
                 return;
             }
 
-            successDialog("Update Success");
+            successDialog("Apply to server Success");
         }, function (response) {
             console.log("response:" + String(response));
-            showErrorDialog("Update Fail")
+            showErrorDialog("Apply to server Fail")
         }
     );
 }
@@ -115,8 +115,7 @@ openNewPage = function (url) {
             stopDialog();
             window.open(url);
         } else {
-            if (statusCode == 500)
-                showErrorDialog(response["message"])
+            showErrorDialog(response["message"])
         }
     }, function (response) {
         showErrorDialog(response);
@@ -133,7 +132,7 @@ openDiffResultPage = function (url) {
         } else {
             if (statusCode == 233)
                 showSuccessDialog("Ruleset is no difference.");
-            if (statusCode == 500)
+            else
                 showErrorDialog(response["message"])
         }
     }, function (response) {

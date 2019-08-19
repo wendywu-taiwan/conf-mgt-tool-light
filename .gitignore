@@ -12,3 +12,5 @@ auth_data.json
 RulesetComparer/migrations
 RulesetComparer/rulesets/backup
 RulesetComparer/rulesets/zip/*.zip
+permission/migrations
+common/migrations

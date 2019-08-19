@@ -1,0 +1,209 @@
+{% extends "admin_console_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/ruleset_log.css' %}" rel="stylesheet">
+    <script src="{% static '/js/adminConsole/ruleset-log.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="ruleset_log_container" class="admin_console_block_background custom_container">
+        <div class="header_div row no-row-margin">
+            <div class="component_title">Filter</div>
+        </div>
+        <div id="filter_column_div">
+            <div class="row no-row-margin">
+                <div id="author_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Author</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="user_tag_all" class="user_tag filter_tag_div" onclick="selectAll(this,'user_tag')">All
+                        </div>
+                        {% for data in users %}
+                            <div id="user_tag_{{ data.id }}" class="user_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'user_tag')">{{ data.name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="environment_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Environment</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="environment_tag_all" class="environment_tag filter_tag_div"
+                             onclick="selectAll(this,'environment_tag')">All
+                        </div>
+                        {% for data in environments %}
+                            <div id="environment_tag_{{ data.id }}" class="environment_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'environment_tag')">{{ data.name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row no-row-margin">
+                <div id="country_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Country</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="country_tag_all" class="country_tag filter_tag_div"
+                             onclick="selectAll(this,'country_tag')">
+                            All
+                        </div>
+                        {% for data in countries %}
+                            <div id="country_tag_{{ data.id }}" class="country_tag filter_tag_div"
+                                 onclick="selectFilterTag(this,'country_tag')">{{ data.full_name }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div id="order_select_div" class="filter_row col">
+                    <div class="filter_title_div vertical_align_middle">Choose Order</div>
+                    <div class="filter_tags_div row no-row-margin">
+                        <div id="ascend" class="order_tag filter_tag_div" onclick="selectOrder(this)">Ascend</div>
+                        <div id="descend" class="order_tag filter_tag_div clicked" onclick="selectOrder(this)">Descend
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="filter_text_div" class="filter_row">
+                <div class="filter_title_div vertical_align_middle">Ruleset Filter</div>
+                <div class="row no-row-margin">
+                    <div id="filter_div">
+                        <div id="filter_input_div" class="tagsinput-primary">
+                            <input id="filter_tags_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
+                                   placeholder="ex.RS_ROOT"
+                                   style="display: none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ruleset_log_list_div">
+            {% include 'ruleset_log_list.html' %}
+        </div>
+    </div>
+    <script>
+        let TAG_CLICKED = "clicked";
+        let ALL_TAG = "all";
+        let USER_TAG = "user_tag";
+        let ENVIRONMENT_TAG = "environment_tag";
+        let COUNTRY_TAG = "country_tag";
+        let ORDER_TAG = "order_tag";
+
+        $(function () {
+            initFilterUrl("{% url 'RulesetComparer:ruleset-log-list-filter' %}", "{% url 'RulesetComparer:ruleset-log-list-page' %}")
+        });
+
+        function selectFilterTag(div, tagName) {
+            let select = (!div.classList.contains(TAG_CLICKED));
+            if (select) {
+                addDivClicked(div);
+                addFilterTagToList(div, tagName);
+            } else {
+                removeDivClicked(div);
+                removeFilterTagFromList(div, tagName);
+            }
+
+            filterLogList();
+
+            let selectAll = true;
+            let selectAllDiv = null;
+            var tagElements = document.getElementsByClassName(tagName);
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+
+                // save the select all div
+                if (tagElement.id.includes(ALL_TAG)) {
+                    selectAllDiv = tagElement;
+                    continue;
+                }
+                // check if every tag been selected
+                if (!tagElement.classList.contains(TAG_CLICKED)) {
+                    selectAll = false;
+                    break;
+                }
+            }
+            // update the select all div status
+            if (selectAll)
+                addDivClicked(selectAllDiv);
+            else
+                removeDivClicked(selectAllDiv);
+        }
+
+        function selectAll(selectAllDiv, tagName) {
+            var tagElements = document.getElementsByClassName(tagName);
+            let selectAll = (!selectAllDiv.classList.contains(TAG_CLICKED));
+
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+
+                if (selectAll) {
+                    addDivClicked(tagElement);
+                    addFilterTagToList(tagElement, tagName);
+                }
+                else {
+                    removeDivClicked(tagElement);
+                    removeFilterTagFromList(tagElement, tagName);
+                }
+            }
+            filterLogList();
+        }
+
+        function addDivClicked(div) {
+            if (div != null && !div.classList.contains(TAG_CLICKED))
+                div.classList.add(TAG_CLICKED);
+        }
+
+        function removeDivClicked(div) {
+            if (div != null && div.classList.contains(TAG_CLICKED))
+                div.classList.remove(TAG_CLICKED);
+        }
+
+        function addFilterTagToList(div, tagName) {
+            if (div.id.includes(ALL_TAG))
+                return;
+
+            let tagId = getTagId(div.id);
+            console.log("clickFilterTag, tagName =" + tagName + ", tagId =" + tagId);
+            if (tagName == USER_TAG) {
+                addFilterUserId(tagId);
+            } else if (tagName == ENVIRONMENT_TAG) {
+                addFilterEnvironmentsId(tagId);
+            } else if (tagName == COUNTRY_TAG) {
+                addFilterCountriesId(tagId);
+            }
+        }
+
+        function removeFilterTagFromList(div, tagName) {
+            if (div.id.includes(ALL_TAG))
+                return;
+
+            let tagId = getTagId(div.id);
+            if (tagName == USER_TAG) {
+                removeFilterUserId(tagId);
+            } else if (tagName == ENVIRONMENT_TAG) {
+                removeFilterEnvironmentsId(tagId);
+            } else if (tagName == COUNTRY_TAG) {
+                removeFilterCountriesId(tagId);
+            }
+        }
+
+        function getTagId(divId) {
+            let tagSplitArray = (divId).split("_");
+            return tagSplitArray[2];
+        }
+
+        function selectOrder(selectOrderDiv) {
+            if (selectOrderDiv.classList.contains(TAG_CLICKED)) {
+                removeDivClicked(selectOrderDiv);
+                return;
+            }
+
+            setOrder(selectOrderDiv.id);
+            selectOrderDiv.classList.toggle(TAG_CLICKED);
+
+            // order is single select option so remove another
+            var tagElements = document.getElementsByClassName(ORDER_TAG);
+            for (let i = 0; i < tagElements.length; i++) {
+                let tagElement = tagElements[i];
+                if (tagElement != selectOrderDiv)
+                    removeDivClicked(tagElement)
+            }
+        }
+    </script>
+
+{% endblock %}

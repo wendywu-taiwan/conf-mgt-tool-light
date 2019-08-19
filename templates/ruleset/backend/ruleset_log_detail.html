@@ -1,0 +1,181 @@
+{% extends "admin_console_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/ruleset_log_detail.css' %}" rel="stylesheet">
+    <script src="{% static '/js/adminConsole/ruleset-log-detail.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="ruleset_log_detail_container" class="row no-row-margin">
+        <div id="ruleset_detail_top_div" class="row no-row-margin">
+            <div id="log_detail_div" class="admin_console_block_background custom_container">
+                <div class="header_div row no-row-margin">
+                    {% if action.name == 'create' %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'create_action_tag.html' %}</div>
+                    {% elif action.name == 'update' %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'update_action_tag.html' %}</div>
+                    {% else %}
+                        <div id="action_div" class="vertical_align_middle"> {% include 'delete_action_tag.html' %}</div>
+                    {% endif %}
+                    <div class="component_title vertical_align_middle">{{ ruleset_name }}</div>
+                </div>
+                <div id="information_div">
+                    <div class="row no-row-margin information_row">
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Log ID</div>
+                            <div class="vertical_align_middle row_content_div">{{ log_id }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Task ID</div>
+                            <div class="vertical_align_middle row_content_div">1</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Update Time</div>
+                            <div class="vertical_align_middle row_content_div">{{ update_time }}</div>
+                        </div>
+                    </div>
+                    <div class="row no-row-margin information_row">
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Author</div>
+                            <div class="row_content_div vertical_align_middle">{{ user_name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Country</div>
+                            <div class="row_content_div vertical_align_middle">
+                                {{ country.full_name }}
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Commit SHA</div>
+                            <div class="row_content_div vertical_align_middle">
+                                {{ commit_sha }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row no-row-margin information_row">
+                        <div class="col ">
+                            <div class="row_title_div vertical_align_middle">From</div>
+                            <div class="row_content_div vertical_align_middle">{{ source_environment.name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">To</div>
+                            <div class="row_content_div vertical_align_middle">{{ target_environment.name }}</div>
+                        </div>
+                        <div class="col">
+                            <div class="row_title_div vertical_align_middle">Result</div>
+                            <div class="vertical_align_middle row_content_div">{{ status }}</div>
+                        </div>
+                    </div>
+                    {% if exception %}
+                        <div class="row no-row-margin information_row">
+                            <div class="col">
+                                <div class="row_title_div vertical_align_middle">Exception</div>
+                                <div id="exception_content" class="vertical_align_middle">{{ exception }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div id="show_ruleset_div" class="row no-row-margin information_row">
+                        <div class="row_title_div vertical_align_middle show_ruleset_div_width">Show Ruleset</div>
+                        <div class="show_ruleset_div_width">
+                            {% if action.name == "delete" %}
+                                <button type="button"
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width">Backup
+                                    Applied Version
+                                </button>
+                            {% else %}
+                                <button type="button"
+                                        class="btn custom_button btn-sm show_ruleset_button_width"
+                                        onclick="getRuleset('source')">Backup Applied Version
+                                </button>
+                            {% endif %}
+                        </div>
+                        <div class="show_ruleset_div_width">
+                            {% if action.name == "create" %}
+                                <button type="button"
+                                        class="disabled btn custom_button btn-sm show_ruleset_button_width"
+                                >Backup Server Version
+                                </button>
+                            {% else %}
+                                <button type="button"
+                                        class="btn custom_button btn-sm show_ruleset_button_width"
+                                        onclick="getRuleset('target')"
+                                >Backup Server Version
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ruleset_detail_div_source" class="ruleset_detail_div admin_console_block_background custom_container">
+            <div class="header_div row no-row-margin">
+                <div class="component_title vertical_align_middle">Ruleset Information</div>
+                <div class="button_div">
+                    <button type="button" class="btn btn-primary btn-sm"
+                            onclick="onClickPrettySourceEnv()">
+                        Pretty
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerSourceEnv()">Compare With Server
+                    </button>
+                    {% if action.name == "update" %}
+                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
+                            Compare Backup Rulesets
+                        </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary btn-sm" onclick="applyToServer()">Apply</button>
+                </div>
+            </div>
+            <div id="ruleset_content_div_source" class="ruleset_content_div"></div>
+        </div>
+        <div id="ruleset_detail_div_target" class="ruleset_detail_div admin_console_block_background custom_container">
+            <div class="header_div row no-row-margin">
+                <div class="component_title vertical_align_middle">Ruleset Information</div>
+                <div class="button_div">
+                    <button type="button" class="btn btn-primary btn-sm"
+                            onclick="onClickPrettyTargetEnv()">
+                        Pretty
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="downloadRuleset()">Download</button>
+                    <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffServerTargetEnv()">Compare With Server
+                    </button>
+                    {% if action.name == "update" %}
+                        <button type="button" class="btn btn-primary btn-sm" onclick="onClickDiffBackup()">
+                            Compare Backup Rulesets
+                        </button>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary btn-sm" onclick="applyToServer()">Apply</button>
+                </div>
+            </div>
+            <div id="ruleset_content_div_target" class="ruleset_content_div"></div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            initData('{{ ruleset_name }}', '{{ backup_key }}', '{{ source_environment.id }}', '{{ target_environment.id }}', '{{ country.id }}');
+            initUrl("{% url 'RulesetComparer:ruleset-log-detail-ruleset' %}", "{% url 'RulesetComparer:packed-ruleset-download' %}", "{% url 'RulesetComparer:ruleset-apply-to-server' %}");
+        });
+
+        function onClickPrettySourceEnv() {
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' backup_key "source" ruleset_name %}');
+        }
+
+        function onClickPrettyTargetEnv() {
+            openNewPage('{% url 'RulesetComparer:rule-detail-backup' backup_key "target" ruleset_name %}');
+        }
+
+
+        function onClickDiffBackup() {
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup' backup_key ruleset_name %}');
+        }
+
+        function onClickDiffServerSourceEnv() {
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' backup_key "source" ruleset_name %}');
+        }
+
+        function onClickDiffServerTargetEnv() {
+            openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-backup-with-server' backup_key "target" ruleset_name %}');
+        }
+    </script>
+
+{% endblock %}

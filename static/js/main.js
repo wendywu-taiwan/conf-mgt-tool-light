@@ -106,6 +106,23 @@ function arrayContains(string, array) {
     return (array.indexOf(string) > -1);
 }
 
+function hide(item) {
+    item.style.display = "none";
+}
+
+function showFlex(item) {
+    item.style.display = "flex";
+}
+
+function showBlock(item) {
+    item.style.display = "block";
+}
+
+function split_str(name, index) {
+    let tagSplitArray = (name).split("_");
+    return tagSplitArray[index];
+}
+
 function openNewPageWithHTML(url, html) {
     var newWindows = window.open(url);
     newWindows.document.write(html);

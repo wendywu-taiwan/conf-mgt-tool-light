@@ -1,34 +1,40 @@
 import traceback
 
-from RulesetComparer.b2bRequestTask.downloadRulesetTask import DownloadRulesetTask
-from RulesetComparer.dataModel.dataBuilder.diffRulesetPageBuilder import DiffRulesetPageBuilder
-from RulesetComparer.dataModel.dataBuilder.rulesetDetailBuilder import RulesetDetailBuilder
-from RulesetComparer.dataModel.dataBuilder.filterRulesetDownloadPageBuilder import FilterRulesetDownloadPageBuilder
-from RulesetComparer.dataModel.rulesetLoader.gitRulesetLoader import GitRulesetLoader
-from RulesetComparer.dataModel.rulesetLoader.serverRulesetLoader import ServerRulesetLoader
-from RulesetComparer.dataModel.rulesetLoader.backupRulesetLoader import BackupRulesetLoader
+from RulesetComparer.date_model.json_builder.compare_ruleset_list_page import CompareRulesetListPageBuilder
+from RulesetComparer.task.download_ruleset import DownloadRulesetTask
+from RulesetComparer.date_model.json_builder.diff_ruleset_page import DiffRulesetPageBuilder
+from RulesetComparer.date_model.json_builder.ruleset_detail_page import RulesetDetailBuilder
+from RulesetComparer.date_model.json_builder.filter_ruleset_download_page import FilterRulesetDownloadPageBuilder
+from RulesetComparer.date_model.ruleset_loader.git import GitRulesetLoader
+from RulesetComparer.date_model.ruleset_loader.server import ServerRulesetLoader
+from RulesetComparer.date_model.ruleset_loader.backup import BackupRulesetLoader
 from RulesetComparer.models import Environment
 from RulesetComparer.utils.logger import *
-from RulesetComparer.dataModel.dataParser.rulesetDiffBackupParser import RulesetDiffBackupParser
-from RulesetComparer.dataModel.dataParser.rulesetDiffBackupWithServerParser import RulesetDiffBackupWithServerParser
-from RulesetComparer.dataModel.dataParser.rulesetDiffCompareResultParser import RulesetDiffCompareResultParser
-from RulesetComparer.b2bRequestTask.downloadRuleListTask import DownloadRuleListTask
-from RulesetComparer.b2bRequestTask.compareRuleListTask import CompareRuleListTask
-from RulesetComparer.b2bRequestTask.packedRulesetsTask import PackedRulesetsTask
-from RulesetComparer.b2bRequestTask.clearRulesetFilesTask import ClearRulesetFilesTask
-from RulesetComparer.b2bRequestTask.clearCompareReportFilesTask import ClearCompareReportFilesTask
-from RulesetComparer.b2bRequestTask.clearRulesetArchivedFilesTask import ClearRulesetArchivedFilesTask
+from RulesetComparer.date_model.json_parser.ruleset_diff_backup import RulesetDiffBackupParser
+from RulesetComparer.date_model.json_parser.ruleset_diff_backup_with_server import RulesetDiffBackupWithServerParser
+from RulesetComparer.date_model.json_parser.ruleset_diff_result import RulesetDiffCompareResultParser
+from RulesetComparer.task.download_ruleset_list import DownloadRuleListTask
+from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
+from RulesetComparer.task.packed_rulesets import PackedRulesetsTask
+from RulesetComparer.task.clear_ruleset_files import ClearRulesetFilesTask
+from RulesetComparer.task.clear_report_files import ClearCompareReportFilesTask
+from RulesetComparer.task.clear_ruleset_zip_files import ClearRulesetArchivedFilesTask
 
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
-from RulesetComparer.dataModel.dataParser.getFilteredRulesetParser import GetFilteredRulesetParser
-from RulesetComparer.dataModel.dataParser.downloadRulesetParser import DownloadRulesetParser
+from RulesetComparer.date_model.json_parser.get_filter_ruleset import GetFilteredRulesetParser
+from RulesetComparer.date_model.json_parser.download_ruleset import DownloadRulesetParser
 
 from RulesetComparer.utils import fileManager
-from RulesetComparer.services import rulesetSyncSchedulerService, rulesetReportSchedulerService
+from RulesetComparer.services import sync_scheduler, report_scheduler
 from django.template.loader import get_template
 
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
-from RulesetComparer.utils.rulesetUtil import load_server_ruleset_with_name
+from RulesetComparer.date_model.json_builder.server_log_page import ServerLogPageBuilder
+
+
+def server_log_page(user, log_type):
+    data = ServerLogPageBuilder(user, log_type).get_data()
+    return data
 
 
 def get_rule_list_from_b2b(environment, country):
@@ -38,8 +44,10 @@ def get_rule_list_from_b2b(environment, country):
 
 def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
     task = CompareRuleListTask(base_env_id, compare_env_id, country_id)
-    return task
+    result_data = fileManager.load_compare_result_file(task.compare_hash_key)
+    data = CompareRulesetListPageBuilder(result_data).get_data()
 
+    return data
 
 def compare_ruleset_test():
     try:
@@ -140,8 +148,8 @@ def restart_all_scheduler():
         scheduler.add_hours_job_now(clear_compare_report_task.run_task, 24)
 
         info_log(None, "restart all scheduler")
-        rulesetReportSchedulerService.restart_schedulers()
-        rulesetSyncSchedulerService.restart_schedulers()
+        report_scheduler.restart_schedulers()
+        sync_scheduler.restart_schedulers()
 
         info_log(None, "restart all scheduler success")
     except BaseException as e:

@@ -31,7 +31,7 @@ function setCountryChecked(country_id) {
 
 function setMailContentTypeChecked(mail_content_type_id) {
     mailContentTypeCheckboxOnClick(mail_content_type_id);
-    $("#checkbox_input_" + mail_content_type_id).prop("checked", true);
+    $("#mail_content_type_checkbox_input_" + mail_content_type_id).prop("checked", true);
 };
 
 function setDailyProceedTime(start_time) {

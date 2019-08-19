@@ -1,5 +1,5 @@
 from django.conf import settings
-from RulesetComparer.properties.dataKey import *
+from RulesetComparer.properties.key import *
 
 FILE_PATH = {
     "rule_set_environment": "RulesetComparer/rulesets/%s/%s/%s",
@@ -7,6 +7,9 @@ FILE_PATH = {
     "rule_set_git": "RulesetComparer/rulesets/Git/%s",
     "compare_result": "/RulesetComparer/compare_result",
     "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
+    "permission_properties": "/permission/properties",
+    "role_function_permission_data": "/permission/properties/role_function_permission.json",
+    "user_role_permission_data": "/permission/properties/user_role_permission.json",
     "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
     "server_log": "/RulesetComparer/serverlog",
     "rule_set_zip_file_name": "RulesetComparer/rulesets/zip/%s.zip",
@@ -72,7 +75,7 @@ SEND_CLEAR_FILES_MAIL = {
 }
 
 DEFAULT_LOG_TYPE = 0
-DEFAULT_MODULE_NAME = "Ruleset"
+DEFAULT_MODULE_NAME = "ruleset"
 USER_NAME_TASK_MANAGER = "TaskManager"
 BACKUP_ENVIRONMENT_NAME = "Backup"
 ENVIRONMENT_SOURCE = "source"

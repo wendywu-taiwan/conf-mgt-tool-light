@@ -1,168 +1,9 @@
 from django.db import models
+from django.db.models import Q
+
+from permission.models import Environment, Country, Module
+from permission.utils.permission_manager import *
 from django.contrib.auth.models import User
-
-
-class CountryManager(models.Manager):
-    def create_country(self, name, full_name, icon_file_name):
-        country = self.create(name=name, full_name=full_name, icon_file_name=icon_file_name)
-        return country
-
-    def country_list(self, ids):
-        countries = list()
-        for data in ids:
-            country = self.get(id=data["country_id"])
-            countries.append(country)
-        return countries
-
-
-class Country(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    full_name = models.CharField(max_length=128, default=None, blank=True, null=True)
-    icon_file_name = models.CharField(max_length=128, default=None, blank=True, null=True)
-
-    objects = CountryManager()
-
-    def __str__(self):
-        return self.name
-
-
-class EnvironmentManager(models.Manager):
-    def create_environment(self, name, full_name, active):
-        environment = self.create(name=name, full_name=full_name, active=active)
-        return environment
-
-    def environment_list(self, ids):
-        environments = list()
-        for data in ids:
-            env = self.get(id=data["environment_id"])
-            environments.append(env)
-        return environments
-
-
-class Environment(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    full_name = models.CharField(max_length=128)
-    active = models.IntegerField(default=0)
-
-    objects = EnvironmentManager()
-
-    def __str__(self):
-        return self.name
-
-
-class B2BServiceManager(models.Manager):
-    def create_b2b_client(self, name, url):
-        service = self.create(name=name, url=url)
-        return service
-
-
-class B2BService(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    url = models.URLField()
-
-    objects = B2BServiceManager()
-
-    def __str__(self):
-        return self.id
-
-
-class DataCenterManager(models.Manager):
-    def create_b2b_client(self, name):
-        data_center = self.create(name=name)
-        return data_center
-
-
-class DataCenter(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-
-    objects = DataCenterManager()
-
-    def __str__(self):
-        return self.id
-
-
-class B2BClientManager(models.Manager):
-    def create_b2b_client(self, client_url):
-        client = self.create(client_url=client_url)
-        return client
-
-
-class B2BClient(models.Model):
-    id = models.AutoField(primary_key=True)
-    data_center = models.ForeignKey(DataCenter, related_name="data_center", on_delete=models.PROTECT)
-    url = models.URLField()
-
-    objects = B2BClientManager()
-
-    def __str__(self):
-        return self.id
-
-
-class B2BServerManager(models.Manager):
-    def create_country_environment_server(self, country_id, environment_id, server_id, server_url):
-        server = self.create(country_id=country_id, environment_id=environment_id,
-                             server_id=server_id, server_url=server_url)
-        return server
-
-
-class B2BServer(models.Model):
-    id = models.AutoField(primary_key=True)
-    country = models.ForeignKey(Country, related_name='country',
-                                on_delete=models.PROTECT)
-    environment = models.ForeignKey(Environment, related_name='environment',
-                                    on_delete=models.PROTECT)
-    client = models.ForeignKey(B2BClient, related_name='client',
-                               on_delete=models.PROTECT)
-    objects = B2BClientManager()
-
-    def __str__(self):
-        return self.id
-
-
-class FunctionManager(models.Manager):
-    def create_function(self, name, icon_file_name):
-        function = self.create(name=name, icon_file_name=icon_file_name)
-        return function
-
-
-class Function(models.Model):
-    id = models.IntegerField(primary_key=True, auto_created=True)
-    name = models.CharField(max_length=128)
-    icon_file_name = models.CharField(max_length=128)
-    objects = FunctionManager()
-
-
-class ModuleManager(models.Manager):
-    def create_module(self, name, icon_file_name):
-        module = self.create(name=name, icon_file_name=icon_file_name)
-        return module
-
-
-class Module(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    icon_file_name = models.CharField(max_length=128, default=None, blank=True, null=True)
-    functions = models.ManyToManyField(Function)
-
-    objects = ModuleManager()
-
-
-class UserRoleManager(models.Manager):
-    def create_user_role(self, name, modules):
-        user_role = self.create(name=name, modules=modules)
-        return user_role
-
-
-class UserRole(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=128)
-    modules = models.ManyToManyField(Module)
-
-    objects = UserRoleManager()
 
 
 class MailContentType(models.Model):
@@ -232,6 +73,24 @@ class ReportSchedulerInfoManager(models.Manager):
         task.enable = enable
         task.save()
         return task
+
+    def get_visible_schedulers(self, user_id):
+        enable_environment_ids = enable_environments(user_id)
+        query = Q()
+        for environment_id in enable_environment_ids:
+            sub_query = Q()
+            country_ids = enable_countries(user_id, environment_id)
+            sub_query.add(Q(base_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(compare_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
+            query.add(sub_query, Q.OR)
+
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
+        array = []
+        for id in scheduler_ids:
+            scheduler = self.get(id=id)
+            array.append(scheduler)
+        return array
 
 
 class ReportSchedulerInfo(models.Model):
@@ -322,6 +181,22 @@ class RulesetSyncUpSchedulerManager(models.Manager):
         task.save()
         return task
 
+    def filter_environments_and_countries(self, user_id, environment_ids):
+        query = Q()
+        for environment_id in environment_ids:
+            sub_query = Q()
+            country_ids = enable_countries(user_id, environment_id)
+            sub_query.add(Q(target_environment=environment_id), Q.AND)
+            sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
+            query.add(sub_query, Q.OR)
+
+        scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
+        array = []
+        for id in scheduler_ids:
+            scheduler = self.get(id=id)
+            array.append(scheduler)
+        return array
+
 
 class RulesetSyncUpScheduler(models.Model):
     id = models.AutoField(primary_key=True)
@@ -343,25 +218,6 @@ class RulesetSyncUpScheduler(models.Model):
     updated_time = models.DateTimeField(null=True)
 
     objects = RulesetSyncUpSchedulerManager()
-
-
-class DataUpdateTimeManager(models.Manager):
-    def get_data_update_time(self, table_name):
-        try:
-            update_time = self.get(table=table_name)
-            return update_time
-        except DataUpdateTime.DoesNotExist:
-            return None
-
-
-class DataUpdateTime(models.Model):
-    id = models.AutoField(primary_key=True)
-    table = models.CharField(max_length=128)
-    update_time = models.DateTimeField(null=True)
-    objects = DataUpdateTimeManager()
-
-    def __str__(self):
-        return self.id
 
 
 class RulesetLogGroup(models.Model):

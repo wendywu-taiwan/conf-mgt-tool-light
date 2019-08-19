@@ -1,0 +1,183 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/rule_item_list.css' %}" rel="stylesheet">
+    <script src="{% static '/js/rule-item-list.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="container-rule-list-item container-fluid">
+        <div class="row rule_list_item_header">
+            <div class="search_bar">
+                <div class="input-group">
+                    <input type="text" class="search_bar_input form-control" placeholder="Search" id="search-query-3">
+                    <span class="input-group-btn">
+                    <button type="submit" class="search_bar_button btn"><span class="fui-search"></span></button>
+                  </span>
+                </div>
+            </div>
+            <div class="icon_list">
+                <div class="row icon_row">
+                    <div class="icon_mail_border">
+                        <a href="{% url 'RulesetComparer:report-send' compare_hash_key %}">
+                            <i class="icon_mail far fa-envelope"></i>
+                        </a>
+                    </div>
+                    <div class="icon_download_border">
+                        <a href="{% url 'RulesetComparer:report-download' compare_hash_key %}">
+                            <i class="icon_download fas fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row rule_list_item_header_information">
+            <div class="rule_list_item_info">
+                <div class="green_boarder_info_div">
+                    <div class="nav green_boarder_nav" data-target=".add_data">
+                        <div>
+                            <i class="info_nav_icon fas fa-align-justify"></i>
+                        </div>
+                        <div class="info_nav_title file_title"> Information
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="custom-row info_row">
+                            <div class="info_title">Country</div>
+                            <div class="info_content">{{ country.full_name }}</div>
+                        </div>
+                        <div class="custom-row info_row">
+                            <div class="info_title">Environment (1)</div>
+                            <div class="info_content">{{ base_env.name }}</div>
+                        </div>
+                        <div class="custom-row info_row">
+                            <div class="info_title">Environment (2)</div>
+                            <div class="info_content">{{ compare_env.name }}</div>
+                        </div>
+                        <div class="custom-row info_row">
+                            <div class="info_title">Compared Time</div>
+                            <div class="info_content">{{ current_time }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rule_list_item_summary">
+                <div class="green_boarder_info_div">
+                    <div class="nav green_boarder_nav" data-target=".add_data">
+                        <div>
+                            <i class="info_nav_icon fas fa-align-justify"></i>
+                        </div>
+                        <div class="info_nav_title file_title"> Summary
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="custom-row info_row_margin_top info_row_bg_blue">
+                            <div class="summary_title"></div>
+                            <div class="summary_header_content">{{ base_env.name }}</div>
+                            <div class="summary_header_content">{{ compare_env.name }}</div>
+                        </div>
+                        <div class="custom-row info_row_no_margin">
+                            <div class="summary_title">Common Rule Set</div>
+                            <div class="summary_content_column_two">{{ normal_list|length }}</div>
+                        </div>
+                        <div class="custom-row info_row_no_margin">
+                            <div class="summary_title">Rule Set Only</div>
+                            {% if remove_file_count == add_file_count %}
+                                <div class="summary_content_column_two">{{ add_file_count }}</div>
+                            {% else %}
+                                <div class="summary_content summary_content_highlight">{{ remove_file_count }}</div>
+                                <div class="summary_content summary_content_highlight">{{ add_file_count }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="custom-row info_row_no_margin">
+                            <div class="summary_title">Rule Only</div>
+                            {% if remove_rule_count == add_rule_count %}
+                                <div class="summary_content_column_two">{{ add_rule_count }}</div>
+                            {% else %}
+                                <div class="summary_content summary_content_highlight">{{ remove_rule_count }}</div>
+                                <div class="summary_content summary_content_highlight">{{ add_rule_count }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="custom-row info_row_no_margin">
+                            <div class="summary_title">Different Rule Sets</div>
+                            {% if modify_file_count == 0 %}
+                                <div class="summary_content_column_two">{{ modify_file_count }}</div>
+                            {% else %}
+                                <div class="summary_content_column_two summary_content_highlight">{{ modify_file_count }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="custom-row info_row_no_margin">
+                            <div class="summary_title summary_title_last">Different Rules</div>
+                            {% if modify_rule_count == 0 %}
+                                <div class="summary_content_column_two summary_content_last">{{ modify_rule_count }}</div>
+                            {% else %}
+                                <div class="summary_content_column_two summary_content_last summary_content_highlight">
+                                    {{ modify_rule_count }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="rule_list_item">
+            <div class="add_list">
+                <div class="nav" data-toggle="collapse" data-target=".add_data">
+                    <div class="nav_title"> {{ compare_env.name }} Only
+                        <span class="fui-triangle-down"></span>
+                    </div>
+                </div>
+                {% for data in add_list %}
+                    <div class="collapse add_data data row">
+                        {% include 'rule_item_list_count.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="rule_list_item">
+            <div class="minus_list">
+                <div class="nav" data-toggle="collapse" data-target=".minus_data">
+                    <div class="nav_title">  {{ base_env.name }} Only
+                        <span class="fui-triangle-down"></span>
+                    </div>
+                </div>
+                {% for data in remove_list %}
+                    <div class="collapse minus_data data row">
+                        {% include 'rule_item_list_count.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="rule_list_item">
+            <div class="modify_list">
+                <div class="nav" data-toggle="collapse" data-target=".modify_data">
+                    <div class="nav_title"> Different Files
+                        <span class="fui-triangle-down"></span>
+                    </div>
+                </div>
+                {% for data in modify_list %}
+                    <div class="collapse modify_data data row">
+                        {% include 'rule_item_list_count.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="rule_list_item">
+            <div class="normal_list">
+                <div class="nav" data-toggle="collapse" data-target=".normal_data">
+                    <div class="nav_title"> Common Files
+                        <span class="fui-triangle-down"></span>
+                    </div>
+                </div>
+                {% for data in normal_list %}
+                    <div class="collapse normal_data data row">
+                        {% include 'rule_item_list_count.html' %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

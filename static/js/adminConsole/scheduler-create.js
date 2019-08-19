@@ -44,10 +44,17 @@ createTask = function () {
     }
 
     doPOST(postUrl, post_body, function (response) {
-        successDialog("create task success", function () {
-            console.log(response);
-            window.location = taskListUrl;
-        });
+        let statusCode = response["status_code"];
+        let message = response["message"];
+
+        if (response == null || statusCode != 200) {
+            showErrorDialog(message);
+        } else {
+            successDialog("create task success", function () {
+                console.log(response);
+                window.location = taskListUrl;
+            });
+        }
     }, function (response) {
         console.log(response);
         showErrorDialog("create task fail")
@@ -73,10 +80,17 @@ updateTask = function (task_id) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-        successDialog("update task success", function () {
-            console.log(response);
-            window.location = taskListUrl;
-        });
+        let statusCode = response["status_code"];
+        let message = response["message"];
+
+        if (response == null || statusCode != 200) {
+            showErrorDialog(message);
+        } else {
+            successDialog("update task success", function () {
+                console.log(response);
+                window.location = taskListUrl;
+            });
+        }
     }, function (response) {
         console.log(response);
         showErrorDialog("update task fail")

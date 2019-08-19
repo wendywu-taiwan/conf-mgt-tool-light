@@ -1,7 +1,7 @@
-from RulesetComparer.dataModel.dataBuilder.ruleModifiedBuilder import RuleModifiedBuilder
-from RulesetComparer.dataModel.dataBuilder.rulesetCompareResultBuilder import RulesetCompareResultBuilder
-from RulesetComparer.dataModel.dataBuilder.rulesetJsonBuilder import RulesetJsonBuilder
-from RulesetComparer.properties import dataKey as key
+from RulesetComparer.date_model.json_builder.ruleset_json import RulesetJsonBuilder
+from RulesetComparer.date_model.json_builder.ruleset_modified import RuleModifiedBuilder
+from RulesetComparer.date_model.json_builder.ruleset_compare_result import RulesetCompareResultBuilder
+from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import ModifiedRuleValueSerializer
 from RulesetComparer.utils.rulesetUtil import *
 
@@ -95,8 +95,7 @@ class RulesetComparer:
         diff_result = {
             key.RULE_LIST_ITEM_TABLE_TYPE_ADD: self.parse_list_data(self.get_target_rules_array()),
             key.RULE_LIST_ITEM_TABLE_TYPE_REMOVE: self.parse_list_data(self.get_source_rules_array()),
-            key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY: ModifiedRuleValueSerializer(self.get_difference_rules_array(),
-                                                                              many=True).data,
+            key.RULE_LIST_ITEM_TABLE_TYPE_MODIFY: ModifiedRuleValueSerializer(self.get_difference_rules_array(),many=True).data,
             key.RULE_LIST_ITEM_TABLE_TYPE_NORMAL: self.parse_list_data(self.get_normal_rules_array())
         }
         return diff_result

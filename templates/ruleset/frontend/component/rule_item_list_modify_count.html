@@ -1,0 +1,13 @@
+<div class="col count_div">
+    {% if data.modify_count > 0 %}
+    <a onclick="openDiffResultPage('{% url 'RulesetComparer:ruleset-diff-compare-result' compare_hash_key data.name %}')">
+        <button type="submit" class="button_modify btn btn-primary">
+            Different <span class="span_modify badge badge-light">{{ data.modify_count }}</span>
+        </button>
+    </a>
+    {% else %}
+    <button type="submit" class="button_inactive unclickable btn btn-primary">
+        Different <span class="span_inactive badge badge-light">{{ data.modify_count }}</span>
+    </button>
+    {% endif %}
+</div>
