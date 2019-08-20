@@ -39,7 +39,7 @@ def action_permission_check(request, executor):
         return executor()
     except PermissionDeniedError:
         data = ResponseBuilder(status_code=PERMISSION_DENIED, message=PERMISSION_DENIED_MESSAGE).get_data()
-        return render(request, "permission_denied.html", data)
+        return JsonResponse(data)
     except Exception:
         error_log(traceback.format_exc())
         result = ResponseBuilder(status_code=500, message="Internal Server Error").get_data()

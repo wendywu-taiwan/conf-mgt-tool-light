@@ -41,7 +41,7 @@ createTask = function () {
         "mail_list": mailList,
         "interval_hour": intervalHour,
         "start_date_time": startDateTime
-    }
+    };
 
     doPOST(postUrl, post_body, function (response) {
         let statusCode = response["status_code"];
