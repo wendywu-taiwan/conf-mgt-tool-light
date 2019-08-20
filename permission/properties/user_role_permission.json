@@ -1,6 +1,6 @@
 {
   "user_role_permission": [
-  {
+    {
       "user_name": "admin",
       "permission": [
         {
@@ -201,6 +201,31 @@
       ]
     },
     {
+      "user_name": "test.test",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "guest"
+        }
+      ]
+    },
+    {
       "user_name": "TaskManager",
       "permission": [
         {
@@ -228,7 +253,7 @@
   ],
   "update_time": {
     "user_role_permission": {
-      "update_time": "2019-8-19 18:10:00"
+      "update_time": "2019-8-19 18:30:00"
     }
   }
 }

@@ -93,6 +93,32 @@
         "is_superuser": false,
         "is_staff": true,
         "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "guest.01",
+        "email": "test.test@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "guest.02",
+        "email": "test.test@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },{
+        "model": "auth.user",
+        "username": "guest.03",
+        "email": "test.test@audatex.com",
+        "password": "audatex",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
       }
     ],
     "mail_content_type": [
@@ -238,7 +264,7 @@
       }
     ],
     "function": [
-       {
+      {
         "name": "user_role",
         "display_name": "User Role",
         "icon_file_name": "server_log_white.png",
@@ -481,7 +507,7 @@
     ],
     "update_time": {
       "auth_user": {
-        "update_time": "2019-7-12 18:10:00"
+        "update_time": "2019-8-12 18:10:00"
       },
       "mail_content_type": {
         "update_time": "2019-7-12 17:50:00"
