@@ -1,5 +1,30 @@
 {
   "user_role_permission": [
+  {
+      "user_name": "admin",
+      "permission": [
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
     {
       "user_name": "wendy.wu",
       "permission": [
@@ -203,7 +228,7 @@
   ],
   "update_time": {
     "user_role_permission": {
-      "update_time": "2019-7-12 18:10:00"
+      "update_time": "2019-8-19 18:10:00"
     }
   }
 }

@@ -17,22 +17,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -47,22 +47,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -77,23 +77,23 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             },
@@ -198,22 +198,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -228,22 +228,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -258,22 +258,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -379,23 +379,23 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             },
@@ -409,23 +409,23 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             },
@@ -439,22 +439,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -469,22 +469,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -560,22 +560,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -590,22 +590,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -620,23 +620,23 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             },
@@ -655,17 +655,17 @@
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -741,23 +741,23 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
-                  "editable": "false"
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             },
@@ -771,22 +771,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -801,22 +801,22 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -836,17 +836,17 @@
                 },
                 {
                   "function_name": "report_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "auto_sync_task",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 },
                 {
                   "function_name": "recovery",
-                  "visible": "false",
+                  "visible": "true",
                   "editable": "false"
                 }
               ]
@@ -923,12 +923,12 @@
                 {
                   "function_name": "ruleset_log",
                   "visible": "true",
-                  "editable": "false"
+                  "editable": "true"
                 },
                 {
                   "function_name": "report_task",
                   "visible": "true",
-                  "editable": "false"
+                  "editable": "true"
                 },
                 {
                   "function_name": "auto_sync_task",
@@ -1012,7 +1012,7 @@
                 },
                 {
                   "function_name": "ruleset_log",
-                  "visible": "true",
+                  "visible": "false",
                   "editable": "false"
                 },
                 {
@@ -1158,7 +1158,7 @@
               "function_permission": [
                 {
                   "function_name": "server_log",
-                  "visible": "true",
+                  "visible": "false",
                   "editable": "false"
                 },
                 {
@@ -1188,7 +1188,7 @@
               "function_permission": [
                 {
                   "function_name": "server_log",
-                  "visible": "true",
+                  "visible": "false",
                   "editable": "false"
                 },
                 {
@@ -1451,7 +1451,7 @@
   ],
   "update_time": {
     "role_function_permission": {
-      "update_time": "2019-7-18 18:10:00"
+      "update_time": "2019-8-19 18:10:00"
     }
   }
 }
