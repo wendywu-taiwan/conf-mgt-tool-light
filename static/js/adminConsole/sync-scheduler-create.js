@@ -1,5 +1,4 @@
 $(function () {
-    $('.clockpicker').clockpicker();
     $(".tagsinput").tagsinput();
 
     $("#source_env_select_list li").click(function () {
@@ -16,7 +15,7 @@ $(function () {
 });
 
 
-let sourceEnvId, targetEnvId, intervalHour, startDateTime;
+let sourceEnvId, targetEnvId, interval, frequencyType, startDateTime;
 let countryList = [];
 let mailList = [];
 let actionList = [];
@@ -41,7 +40,8 @@ runTask = function (postUrl) {
         "country_list": countryList,
         "action_list": actionList,
         "receiver_list": mailList,
-        "interval_hour": 0,
+        "frequency_type": frequencyType,
+        "interval": interval,
         "next_proceed_time": getCurrentDataTime(),
     };
 
@@ -72,8 +72,9 @@ createTask = function () {
         "country_list": countryList,
         "action_list": actionList,
         "receiver_list": mailList,
-        "interval_hour": intervalHour,
-        "created_time":getCurrentDataTime(),
+        "frequency_type": frequencyType,
+        "interval": interval,
+        "created_time": getCurrentDataTime(),
         "next_proceed_time": startDateTime
     };
 
@@ -104,9 +105,10 @@ updateTask = function (task_id) {
         "country_list": countryList,
         "action_list": actionList,
         "receiver_list": mailList,
-        "interval_hour": intervalHour,
+        "frequency_type": frequencyType,
+        "interval": interval,
         "next_proceed_time": startDateTime,
-        "updated_time":getCurrentDataTime()
+        "updated_time": getCurrentDataTime()
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -126,8 +128,9 @@ updateTask = function (task_id) {
 checkInputValid = function (runNow) {
     sourceEnvId = $("#select_source_env_btn:first-child").val();
     targetEnvId = $("#select_target_env_btn:first-child").val();
-    intervalHour = $("#hour_input").val();
-    startDateTime = getStartDateTime();
+    frequencyType = getFrequencyDropdownVal();
+    interval = getInterval();
+    startDateTime = getNextProceedTime();
     mailList = $("#mail_receiver_input").tagsinput('items');
 
     if (!sourceEnvId || !targetEnvId) {
@@ -149,17 +152,24 @@ checkInputValid = function (runNow) {
         return false;
     }
 
-    if (!runNow && !intervalHour) {
-        showWarningDialog("please enter hour interval");
-        return false;
-    } else if (Number(intervalHour) % 1 != 0) {
-        showWarningDialog("please enter integer hour interval");
-        return false;
-    }
+    if (!runNow) {
 
-    if (!runNow && !startDateTime) {
-        showWarningDialog("please enter daily start time");
-        return false;
+        if (!interval) {
+            showWarningDialog("please enter interval");
+            return false;
+        } else if (Number(interval) % 1 != 0) {
+            showWarningDialog("please enter integer hour interval");
+            return false;
+        }
+        if (!getProceedDate()) {
+            showWarningDialog("please select next proceed date");
+            return false;
+        }
+        if (!getProceedTime()) {
+            showWarningDialog("please select next proceed time");
+            return false;
+        }
+
     }
 
     if (mailList.length == 0) {
@@ -204,14 +214,4 @@ actionCheckboxOnChanged = function (checkboxItem) {
             return item !== action;
         })
     }
-};
-
-getStartDateTime = function () {
-    let start_time = $("#clock_picker_input").val();
-    let today = new Date();
-    let yy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
-    start_time = yy + "/" + mm + "/" + dd + " " + start_time + ":00";
-    return start_time
 };

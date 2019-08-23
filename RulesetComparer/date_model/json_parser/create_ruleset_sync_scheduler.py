@@ -2,6 +2,7 @@ from RulesetComparer.date_model.data_object.sync_action import SyncUpAction
 from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 from RulesetComparer.models import Environment
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
+from common.models import FrequencyType
 from permission.models import Module, Function
 from permission.utils.permission_manager import *
 from common.data_object.error.error import PermissionDeniedError
@@ -26,7 +27,8 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionPars
             self.receiver_list = json_data.get("receiver_list")
             self.action_list = json_data.get("action_list")
             self.action = SyncUpAction(self.action_list)
-            self.interval_hour = int(json_data.get("interval_hour"))
+            self.frequency_type = FrequencyType.objects.get(id=json_data.get("frequency_type"))
+            self.interval = int(json_data.get("interval"))
             self.created_time = self.frontend_time_to_utc_time(json_data.get("created_time"))
             self.updated_time = self.frontend_time_to_utc_time(json_data.get("updated_time"))
             # time with timezone setting for task running

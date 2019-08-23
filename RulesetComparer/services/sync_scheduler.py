@@ -42,7 +42,8 @@ def create_scheduler(json_data, user):
                                                                     parser.country_list,
                                                                     parser.action_list,
                                                                     parser.receiver_list,
-                                                                    parser.interval_hour,
+                                                                    parser.frequency_type,
+                                                                    parser.interval,
                                                                     parser.utc_time,
                                                                     parser.creator,
                                                                     parser.created_time)
@@ -62,7 +63,8 @@ def update_scheduler(json_data, user):
                                                                     parser.country_list,
                                                                     parser.action_list,
                                                                     parser.receiver_list,
-                                                                    parser.interval_hour,
+                                                                    parser.frequency_type,
+                                                                    parser.interval,
                                                                     parser.utc_time,
                                                                     parser.editor,
                                                                     parser.updated_time)
@@ -75,7 +77,12 @@ def update_scheduler(json_data, user):
 def add_task_to_scheduler(db_scheduler_id, parser):
     task = RulesetsSyncUpTask(parser)
     scheduler = CustomJobScheduler()
-    job = scheduler.add_hours_job(task.run_task, parser.interval_hour, parser.local_time)
+    if parser.frequency_type.interval_type == KEY_DAYS:
+        job = scheduler.add_days_job(task.run_task, parser.interval, parser.local_time)
+    elif parser.frequency_type.interval_type == KEY_WEEKS:
+        job = scheduler.add_weeks_job(task.run_task, parser.interval, parser.local_time)
+    else:
+        job = scheduler.add_months_job(task.run_task, parser.interval, parser.local_time)
     # save job id to database
     RulesetSyncUpScheduler.objects.update_job_id(db_scheduler_id, job.id)
     task.set_scheduled_job(job)

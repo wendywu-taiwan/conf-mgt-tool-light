@@ -6,6 +6,7 @@ from RulesetComparer.utils.logger import *
 from common.data_object.json_builder.environment import EnvironmentBuilder
 from common.data_object.json_builder.country import CountryBuilder
 from common.data_object.json_builder.user import UserBuilder
+from common.data_object.json_builder.frequency_type import FrequencyTypeBuilder
 
 
 class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):
@@ -29,7 +30,8 @@ class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):
         self.result_dict[KEY_RECEIVER_LIST] = self.get_mail_list()
         self.result_dict[KEY_CREATOR] = UserBuilder(self.scheduler.creator).get_data()
         self.result_dict[KEY_EDITOR] = UserBuilder(self.scheduler.editor).get_data()
-        self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
+        self.result_dict[KEY_FREQUENCY_TYPE] = FrequencyTypeBuilder(self.scheduler.frequency_type).get_data()
+        self.result_dict[KEY_INTERVAL] = self.scheduler.interval
         self.result_dict[KEY_CREATED_TIME] = self.get_format_time(self.scheduler.created_time)
         self.result_dict[KEY_UPDATED_TIME] = self.get_format_time(self.scheduler.updated_time)
         self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)

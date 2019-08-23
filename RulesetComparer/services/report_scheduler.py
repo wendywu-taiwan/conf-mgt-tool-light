@@ -81,17 +81,17 @@ def delete_scheduler(json_data, user):
 
 
 def add_task_to_scheduler(parser):
-    daily_task = DailyCompareReportTask(parser)
+    task = DailyCompareReportTask(parser)
     scheduler = CustomJobScheduler()
     if parser.frequency_type.interval_type == KEY_DAYS:
-        job = scheduler.add_days_job(daily_task.run_task, parser.interval, parser.local_time)
+        job = scheduler.add_days_job(task.run_task, parser.interval, parser.local_time)
     elif parser.frequency_type.interval_type == KEY_WEEKS:
-        job = scheduler.add_weeks_job(daily_task.run_task, parser.interval, parser.local_time)
+        job = scheduler.add_weeks_job(task.run_task, parser.interval, parser.local_time)
     else:
-        job = scheduler.add_months_job(daily_task.run_task, parser.interval, parser.local_time)
+        job = scheduler.add_months_job(task.run_task, parser.interval, parser.local_time)
 
     ReportSchedulerInfo.objects.update_job_id(parser.task_id, job.id)
-    daily_task.set_scheduled_job(job)
+    task.set_scheduled_job(job)
 
 
 def update_scheduler_status(json_data, user):

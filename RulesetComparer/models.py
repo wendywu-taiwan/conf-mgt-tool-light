@@ -120,13 +120,14 @@ class ReportSchedulerInfo(models.Model):
 class RulesetSyncUpSchedulerManager(models.Manager):
     def create_task(self, source_env_id, target_env_id, module,
                     country_list, action_list_str, mail_list_str,
-                    interval, next_proceed_time, creator, created_time):
+                    frequency_type, interval, next_proceed_time, creator, created_time):
         task = self.create(source_environment_id=source_env_id,
                            target_environment_id=target_env_id,
                            module=module,
                            action_list=action_list_str,
                            mail_list=mail_list_str,
-                           interval_hour=interval,
+                           frequency_type=frequency_type,
+                           interval=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
                            creator=creator,
@@ -142,13 +143,14 @@ class RulesetSyncUpSchedulerManager(models.Manager):
 
     def update_task(self, task_id, source_env_id, target_env_id,
                     country_list, action_list_str, mail_list_str,
-                    interval, next_proceed_time, editor, updated_time):
+                    frequency_type, interval, next_proceed_time, editor, updated_time):
         task = self.get(id=task_id)
         task.source_environment_id = source_env_id
         task.target_environment_id = target_env_id
         task.action_list = action_list_str
         task.mail_list = mail_list_str
-        task.interval_hour = interval
+        task.frequency_type = frequency_type
+        task.interval = interval
         task.next_proceed_time = next_proceed_time
         task.editor = editor
         task.updated_time = updated_time
@@ -211,7 +213,9 @@ class RulesetSyncUpScheduler(models.Model):
     country_list = models.ManyToManyField(Country)
     action_list = models.TextField()
     mail_list = models.TextField()
-    interval_hour = models.IntegerField()
+    frequency_type = models.ForeignKey(FrequencyType, related_name='sync_scheduler_frequency_type',
+                                       on_delete=models.PROTECT, null=True)
+    interval = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)

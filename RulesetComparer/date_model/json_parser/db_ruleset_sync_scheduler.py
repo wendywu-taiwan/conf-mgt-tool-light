@@ -18,7 +18,8 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.receiver_list = self.get_mail_list(scheduler.mail_list)
             self.action_list = self.get_action_list(scheduler.action_list)
             self.action = SyncUpAction(self.action_list)
-            self.interval_hour = scheduler.interval_hour
+            self.frequency_type = scheduler.frequency_type
+            self.interval = scheduler.interval
             self.enable = self.parse_int_to_boolean(scheduler.enable)
             # time with timezone setting for task running
             self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
