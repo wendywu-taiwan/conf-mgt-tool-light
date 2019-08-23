@@ -1,0 +1,20 @@
+{% load static from staticfiles %}
+<head>
+    <link href="{% static '/css/component/date_time_picker.css' %}" rel="stylesheet">
+    <script src="{% static '/js/component/date_time_picker.js' %}"></script>
+
+</head>
+<div id="select_proceed_time_div">
+    <div class="block_title_div">Next Proceed Time :</div>
+    <div class="row no-row-margin">
+        {% include 'date_picker.html' %}
+        {% include 'time_picker.html' %}
+    </div>
+</div>
+<script>
+    getNextProceedTime = function () {
+        let date = getProceedDate();
+        let time = getProceedTime();
+        return date + " " + time;
+    };
+</script>

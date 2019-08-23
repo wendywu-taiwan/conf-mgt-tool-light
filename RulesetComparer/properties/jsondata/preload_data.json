@@ -111,7 +111,8 @@
         "is_superuser": false,
         "is_staff": true,
         "is_active": true
-      },{
+      },
+      {
         "model": "auth.user",
         "username": "guest.03",
         "email": "test.test@audatex.com",
@@ -505,45 +506,68 @@
         "capital_name": "DELETE"
       }
     ],
+    "frequency_type": [
+      {
+        "name": "daily",
+        "display_name": "Daily",
+        "interval_type": "days",
+        "interval": 1
+      },
+      {
+        "name": "weekly",
+        "display_name": "Weekly",
+        "interval_type": "weeks",
+        "interval": 1
+      },
+      {
+        "name": "monthly",
+        "display_name": "Monthly",
+        "interval_type": "months",
+        "interval": 1
+      }
+    ],
     "update_time": {
       "auth_user": {
         "update_time": "2019-8-12 18:10:00"
       },
       "mail_content_type": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "country": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "environment": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "function": {
-        "update_time": "2019-7-18 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "module": {
-        "update_time": "2019-7-18 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "role_type": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "role_permission": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
       },
       "data_center": {
-        "update_time": "2019-7-12 18:00:00"
+        "update_time": "2019-8-12 18:00:00"
       },
       "b2b_client": {
-        "update_time": "2019-7-12 18:18:00"
+        "update_time": "2019-8-12 18:18:00"
       },
       "b2b_service": {
-        "update_time": "2019-7-12 18:00:00"
+        "update_time": "2019-8-12 18:00:00"
       },
       "b2b_server": {
-        "update_time": "2019-7-12 18:00:00"
+        "update_time": "2019-8-12 18:00:00"
       },
       "ruleset_action": {
-        "update_time": "2019-7-12 17:50:00"
+        "update_time": "2019-8-12 17:50:00"
+      },
+      "frequency_type": {
+        "update_time": "2019-8-12 17:50:00"
       }
     }
   }

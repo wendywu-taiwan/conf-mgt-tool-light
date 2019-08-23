@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Q
 
 from permission.models import Environment, Country, Module
+from common.models import FrequencyType
 from permission.utils.permission_manager import *
 from django.contrib.auth.models import User
 
@@ -17,12 +18,13 @@ class MailContentType(models.Model):
 
 class ReportSchedulerInfoManager(models.Manager):
     def create_task(self, base_env_id, compared_env_id, module_id,
-                    country_list, mail_content_type_list, mail_list_str, interval, next_proceed_time):
+                    country_list, mail_content_type_list, mail_list_str, frequency_type, interval, next_proceed_time):
         task = self.create(base_environment_id=base_env_id,
                            compare_environment_id=compared_env_id,
                            module_id=module_id,
                            mail_list=mail_list_str,
-                           interval_hour=interval,
+                           frequency_type=frequency_type,
+                           interval=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
                            enable=1)
@@ -36,12 +38,13 @@ class ReportSchedulerInfoManager(models.Manager):
         return task
 
     def update_task(self, task_id, base_env_id, compared_env_id, country_list,
-                    mail_content_type_list, mail_list_str, interval, next_proceed_time):
+                    mail_content_type_list, mail_list_str, frequency_type, interval, next_proceed_time):
         task = self.get(id=task_id)
         task.base_environment_id = base_env_id
         task.compare_environment_id = compared_env_id
         task.mail_list = mail_list_str
-        task.interval_hour = interval
+        task.frequency_type = frequency_type
+        task.interval = interval
         task.next_proceed_time = next_proceed_time
 
         task.country_list.clear()
@@ -103,7 +106,9 @@ class ReportSchedulerInfo(models.Model):
     country_list = models.ManyToManyField(Country)
     mail_content_type_list = models.ManyToManyField(MailContentType)
     mail_list = models.TextField()
-    interval_hour = models.IntegerField()
+    frequency_type = models.ForeignKey(FrequencyType, related_name='report_scheduler_frequency_type',
+                                       on_delete=models.PROTECT, null=True)
+    interval = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)

@@ -1,0 +1,37 @@
+{% load static from staticfiles %}
+<head>
+    <link href="{% static '/css/component/repeat_frequency_row.css' %}" rel="stylesheet">
+    <script src="{% static '/js/component/repeat_frequency_row.js' %}"></script>
+
+</head>
+
+<div class="block_title_div">Repeat:</div>
+<div class="row no-row-margin">
+    <div id="frequency_dropdown_div" class="btn-group">
+        <button id="frequency_dropdown_button" class="btn btn-inverse dropdown-toggle" type="button"
+                data-toggle="dropdown">
+            Select Frequency
+        </button>
+        <ul id="frequency_dropdown_ul" class="dropdown-menu dropdown-menu-inverse" role="menu">
+            {% for data in frequency_types %}
+                <li value="{{ data.id }}"><a href="#">{{ data.display_name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id="select_interval_time_div">
+        <div id="hour_input_div" class="input-group" data-placement="left"
+             data-align="top"
+             data-autoclose="true">
+            <div class="repeat_text_div">every</div>
+            <div id="repeat_input_div">
+                <input id="repeat_input" type="text" class="border_color_green form-control"
+                       placeholder="Enter Interval..">
+            </div>
+            <div id="frequency_text_div" class="repeat_text_div">day(s)</div>
+        </div>
+    </div>
+</div>
+<script>
+    setFrequencyDropdown('{{ frequency_types.0.id }}', '{{ frequency_types.0.display_name }}')
+    setInterval(1)
+</script>

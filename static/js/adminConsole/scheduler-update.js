@@ -1,5 +1,4 @@
 $(function () {
-    $('.clockpicker').clockpicker();
     $(".tagsinput").tagsinput();
 
     $("#base_env_select_list li").click(function () {
@@ -33,20 +32,6 @@ function setMailContentTypeChecked(mail_content_type_id) {
     mailContentTypeCheckboxOnClick(mail_content_type_id);
     $("#mail_content_type_checkbox_input_" + mail_content_type_id).prop("checked", true);
 };
-
-function setDailyProceedTime(start_time) {
-    var start_time_date = new Date(start_time);
-    var hours = leadingZero(start_time_date.getHours());
-    var minute = leadingZero(start_time_date.getMinutes());
-    var start_time_hour_minute = hours + ":" + minute;
-    $("#clock_picker_input").text(start_time_hour_minute);
-    $("#clock_picker_input").val(start_time_hour_minute);
-}
-
-function setIntervalHour(interval_hour) {
-    $("#hour_input").text(interval_hour);
-    $("#hour_input").val(interval_hour);
-}
 
 let receivers = [];
 

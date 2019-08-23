@@ -413,3 +413,15 @@ html, body {
     color: white;
     background-color: #34619b;
 }
+
+.border_color_green{
+    border-color: #049092;
+}
+
+.block_title_div {
+    font-size: 17px;
+    font-weight: 800;
+    color: #868686;
+    margin-bottom: 5px;
+    font-family: "Lato";
+}

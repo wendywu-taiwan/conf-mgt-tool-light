@@ -4,7 +4,7 @@ from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
     RoleType, RolePermission, RoleFunctionPermission, UserRolePermission
-from common.models import DataUpdateTime
+from common.models import DataUpdateTime, FrequencyType
 from RulesetComparer.models import MailContentType, RulesetAction
 from django.contrib.auth.models import User
 
@@ -27,6 +27,7 @@ KEY_B2B_SERVER = "b2b_server"
 # ruleset module
 KEY_MAIL_CONTENT_TYPE = "mail_content_type"
 KEY_RULESET_ACTION = "ruleset_action"
+KEY_FREQUENCY_TYPE = "frequency_type"
 
 
 def init_auth_user_data(auth_user_data):
@@ -300,6 +301,23 @@ def init_ruleset_action(ruleset_action_data):
     return True
 
 
+def init_frequency_type(frequency_type_data):
+    for frequency_type in frequency_type_data:
+        name = frequency_type["name"]
+        display_name = frequency_type["display_name"]
+        interval_type = frequency_type["interval_type"]
+        interval = frequency_type["interval"]
+
+        if FrequencyType.objects.filter(name=name).exists():
+            FrequencyType.objects.filter(name=name).update(display_name=display_name, interval_type=interval_type,
+                                                           interval=interval)
+        else:
+            FrequencyType.objects.create(name=name, display_name=display_name, interval_type=interval_type,
+                                         interval=interval)
+    info_log(LOG_CLASS, "init frequency type data success")
+    return True
+
+
 operator = {
     KEY_AUTH_USER: init_auth_user_data,
     KEY_ENVIRONMENT: init_environment_data,
@@ -315,13 +333,14 @@ operator = {
     KEY_B2B_CLIENT: init_b2b_client,
     KEY_B2B_SERVER: init_b2b_server,
     KEY_MAIL_CONTENT_TYPE: init_mail_content_type_data,
-    KEY_RULESET_ACTION: init_ruleset_action
+    KEY_RULESET_ACTION: init_ruleset_action,
+    KEY_FREQUENCY_TYPE: init_frequency_type
 }
 
 INIT_DATA_ARRAY = [KEY_AUTH_USER, KEY_ENVIRONMENT, KEY_COUNTRY,
                    KEY_MODULE, KEY_FUNCTION, KEY_ROLE_TYPE, KEY_ROLE_PERMISSION,
                    KEY_DATA_CENTER, KEY_B2B_SERVICE, KEY_B2B_CLIENT,
-                   KEY_B2B_SERVER, KEY_MAIL_CONTENT_TYPE, KEY_RULESET_ACTION]
+                   KEY_B2B_SERVER, KEY_MAIL_CONTENT_TYPE, KEY_RULESET_ACTION, KEY_FREQUENCY_TYPE]
 
 
 def init_data():

@@ -205,6 +205,7 @@ KEY_BACKUP_FOLDER = "backup_folder"
 KEY_ICON_FILE_NAME = "icon_file_name"
 KEY_COUNTRY_LIST = "country_list"
 KEY_INTERVAL_HOUR = "interval_hour"
+KEY_INTERVAL = "interval"
 KEY_LAST_PROCEED_TIME = "last_proceed_time"
 KEY_NEXT_PROCEED_TIME = "next_proceed_time"
 KEY_CREATED_TIME = "created_time"
@@ -246,14 +247,15 @@ KEY_EDITABLE = "editable"
 KEY_NAVIGATION_INFO = "navigation_info"
 KEY_CHECKED = "checked"
 KEY_ROLE_TYPE = "role_type"
-KEY_ENVIRONMENT_ROLE ="environment_role"
+KEY_ENVIRONMENT_ROLE = "environment_role"
 KEY_ROLE_PERMISSION = "role_permission"
 KEY_FUNCTION_ROLE_PERMISSION = "function_role_permission"
 KEY_TITLE = "title"
 KEY_DATA = "data"
+KEY_FREQUENCY_TYPE = "frequency_type"
+KEY_FREQUENCY_TYPES = "frequency_types"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
-
 
 # environment name
 INT2_NAME = "INT2"
@@ -264,6 +266,10 @@ GIT_NAME = "GIT"
 # module_key
 KEY_M_RULESET = "ruleset"
 KEY_M_SETTING = "setting"
+
+# frequency_key
+KEY_DAYS = "days"
+KEY_WEEKS = "weeks"
 
 # function key
 KEY_F_RECOVERY = "recovery"

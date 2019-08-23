@@ -40,14 +40,6 @@
     width: 35%;
 }
 
-.block_title_div {
-    font-size: 17px;
-    font-weight: 800;
-    color: #868686;
-    margin-bottom: 5px;
-    font-family: "Lato";
-}
-
 .env_select_dropdown_div {
     width: 60%;
 }
@@ -93,43 +85,10 @@
     margin-bottom: 50px;
 }
 
-.time_select_div {
-    width: 35%;
+#clock_picker_div {
+    width: 27%;
 }
 
-.time_input_div {
-    width: 60%;
-}
-
-.time_input_right_span {
-    margin: auto;
-    padding: 3px;
-    border: 2px solid #049092;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: #049092;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left: 0px;
-}
-
-.time_input_icon_span {
-    color: white;
-}
-
-#hour_input_right_span {
-    margin: auto;
-    padding: 4px;
-    border: 2px solid #049092;
-    padding-left: 10px;
-    padding-right: 10px;
-    background: #049092;
-    border-radius: 5px;
-    border-top-left-radius: 0px;
-    border-bottom-left-radius: 0px;
-    border-left: 0px;
-}
 
 #mail_receiver_input_div {
     width: 56%;
@@ -142,3 +101,9 @@
 .time_input {
     border-color: #049092;
 }
+
+/* time select */
+#repeat_frequency_div {
+    margin-bottom: 50px;
+}
+

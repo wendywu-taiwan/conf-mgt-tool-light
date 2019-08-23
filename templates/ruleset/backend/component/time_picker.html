@@ -1,0 +1,18 @@
+{% load static from staticfiles %}
+<head>
+    <link href="{% static '/css/component/time_picker.css' %}" rel="stylesheet">
+    <script src="{% static '/js/component/time_picker.js' %}"></script>
+</head>
+<div id="clock_picker_div" class="input-group clockpicker" data-placement="left"
+     data-align="top" data-autoclose="true">
+    <input id="clock_picker_input" type="text" class="border_color_green form-control" placeholder="Ex. 8:00">
+    <span id="clock_picker_right_span" class="input-group-addon">
+        <span id="clock_picker_icon_span" class="glyphicon fui-time"></span>
+    </span>
+</div>
+
+<script>
+    $(function () {
+        $('.clockpicker').clockpicker();
+    });
+</script>

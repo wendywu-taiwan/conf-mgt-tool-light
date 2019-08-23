@@ -1,6 +1,7 @@
 from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
 from permission.utils.permission_manager import *
+from common.models import FrequencyType
 
 
 class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParser):
@@ -12,12 +13,13 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParse
             self.task_id = json_data.get("id")
             self.base_env_id = json_data.get("base_environment_id")
             self.compare_env_id = json_data.get("compare_environment_id")
-            # self.module_id = json_data.get("module_id")
+            self.module_id = json_data.get("module_id")
             self.module_id = 1
             self.country_list = self.parse_country_id_list(json_data.get("country_list"))
             self.mail_content_type_list = self.parse_mail_content_type_list(json_data.get("mail_content_type_list"))
             self.mail_list = json_data.get("mail_list")
-            self.interval_hour = int(json_data.get("interval_hour"))
+            self.frequency_type = FrequencyType.objects.get(id=json_data.get("frequency_type"))
+            self.interval = int(json_data.get("interval"))
             # time with timezone setting for task running
             self.local_time = self.get_local_time_shift_days(json_data.get("start_date_time"))
             # utc time for saving to database

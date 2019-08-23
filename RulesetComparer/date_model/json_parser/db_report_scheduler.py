@@ -18,7 +18,8 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.country_list = self.parse_country(country_list)
             self.mail_content_type_list = self.parse_db_mail_content_type(mail_content_type_list)
             self.mail_list = self.get_mail_list(scheduler.mail_list)
-            self.interval_hour = scheduler.interval_hour
+            self.frequency_type = scheduler.frequency_type
+            self.interval = scheduler.interval
             self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:

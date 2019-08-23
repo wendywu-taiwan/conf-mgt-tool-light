@@ -6,6 +6,8 @@ from RulesetComparer.date_model.json_builder.admin_console_base import AdminCons
 from RulesetComparer.date_model.json_builder.mail_content_type import MailContentTypesBuilder
 from common.data_object.json_builder.environment import EnvironmentBuilder
 from common.data_object.json_builder.country import CountriesBuilder
+from common.data_object.json_builder.frequency_type import FrequencyTypeBuilder
+from common.data_object.json_builder.module import ModuleBuilder
 
 
 class ReportSchedulerInfoBuilder(AdminConsoleBaseBuilder):
@@ -23,25 +25,16 @@ class ReportSchedulerInfoBuilder(AdminConsoleBaseBuilder):
                 environment=self.scheduler.base_environment).get_data()
             self.result_dict["compare_environment"] = EnvironmentBuilder(
                 environment=self.scheduler.compare_environment).get_data()
-            self.result_dict["module"] = self.get_module_data()
+            self.result_dict[KEY_MODULE_DATA] = ModuleBuilder(self.scheduler.module).get_data()
             self.result_dict[KEY_COUNTRY_LIST] = CountriesBuilder(countries=self.countries).get_data()
             self.result_dict[RULESET_MAIL_CONTENT_TYPE] = MailContentTypesBuilder(self.mail_content_types).get_data()
             self.result_dict["mail_list"] = self.get_mail_list()
-            self.result_dict[KEY_INTERVAL_HOUR] = self.scheduler.interval_hour
+            self.result_dict[KEY_FREQUENCY_TYPE] = FrequencyTypeBuilder(self.scheduler.frequency_type).get_data()
+            self.result_dict[KEY_INTERVAL] = self.scheduler.interval
             self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
             self.result_dict[KEY_NEXT_PROCEED_TIME] = self.get_format_time(self.scheduler.next_proceed_time)
             self.result_dict[KEY_ENABLE] = bool(self.scheduler.enable)
 
-        except Exception as e:
-            error_log(traceback.format_exc())
-            raise e
-
-    def get_module_data(self):
-        try:
-            module_map = {"id": self.scheduler.module.id,
-                          "name": self.scheduler.module.name,
-                          "display_name": self.scheduler.module.display_name}
-            return module_map
         except Exception as e:
             error_log(traceback.format_exc())
             raise e

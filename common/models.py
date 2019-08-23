@@ -19,3 +19,14 @@ class DataUpdateTime(models.Model):
 
     def __str__(self):
         return self.id
+
+
+class FrequencyType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=128)
+    display_name = models.CharField(max_length=128)
+    interval_type = models.CharField(max_length=128)
+    interval = models.IntegerField()
+
+    def __str__(self):
+        return self.id

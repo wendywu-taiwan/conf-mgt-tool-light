@@ -18,6 +18,22 @@ class CustomJobScheduler:
         self.scheduler = BackgroundScheduler(executors=executors, job_defaults=job_defaults, timezone="Asia/Taipei")
         self.scheduler.start()
 
+    def add_months_job(self, execute_func, month_interval, start_date):
+        week_interval = month_interval * 4
+        job = self.scheduler.add_job(func=execute_func, trigger='interval', weeks=week_interval,
+                                     start_date=start_date)
+        return job
+
+    def add_weeks_job(self, execute_func, interval, start_date):
+        job = self.scheduler.add_job(func=execute_func, trigger='interval', weeks=interval,
+                                     start_date=start_date)
+        return job
+
+    def add_days_job(self, execute_func, interval, start_date):
+        job = self.scheduler.add_job(func=execute_func, trigger='interval', days=interval,
+                                     start_date=start_date)
+        return job
+
     def add_hours_job(self, execute_func, interval, start_date):
         job = self.scheduler.add_job(func=execute_func, trigger='interval', hours=interval,
                                      start_date=start_date)

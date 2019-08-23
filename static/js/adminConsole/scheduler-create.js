@@ -1,5 +1,4 @@
 $(function () {
-    $('.clockpicker').clockpicker();
     $(".tagsinput").tagsinput();
 
     $("#base_env_select_list li").click(function () {
@@ -14,7 +13,7 @@ $(function () {
 });
 
 
-let baseEnvId, compareEnvId, intervalHour, startDateTime;
+let baseEnvId, compareEnvId, interval, startDateTime, frequencyType;
 let countryList = [];
 let mailList = [];
 let mailContentTypeList = [];
@@ -39,7 +38,8 @@ createTask = function () {
         "country_list": countryList,
         "mail_content_type_list": mailContentTypeList,
         "mail_list": mailList,
-        "interval_hour": intervalHour,
+        "frequency_type": frequencyType,
+        "interval": interval,
         "start_date_time": startDateTime
     };
 
@@ -75,7 +75,8 @@ updateTask = function (task_id) {
         "country_list": countryList,
         "mail_content_type_list": mailContentTypeList,
         "mail_list": mailList,
-        "interval_hour": intervalHour,
+        "frequency_type": frequencyType,
+        "interval": interval,
         "start_date_time": startDateTime
     };
 
@@ -100,8 +101,10 @@ updateTask = function (task_id) {
 checkInputValid = function () {
     baseEnvId = $("#select_base_env_btn:first-child").val();
     compareEnvId = $("#select_compare_env_btn:first-child").val();
-    intervalHour = $("#hour_input").val();
-    startDateTime = getStartDateTime();
+    frequencyType = getFrequencyDropdownVal();
+    interval = getInterval();
+    startDateTime = getNextProceedTime();
+    console.log("getNextProceedTime:"+startDateTime);
     mailList = $("#mail_receiver_input").tagsinput('items');
 
     if (!baseEnvId || !compareEnvId) {
@@ -123,16 +126,21 @@ checkInputValid = function () {
         return false;
     }
 
-    if (!intervalHour) {
-        showWarningDialog("please enter hour interval");
+    if (!interval) {
+        showWarningDialog("please enter interval");
         return false;
-    } else if (Number(intervalHour) % 1 != 0) {
+    } else if (Number(interval) % 1 != 0) {
         showWarningDialog("please enter integer hour interval");
         return false;
     }
 
-    if (!startDateTime) {
-        showWarningDialog("please enter daily start time");
+    if (!getProceedDate()) {
+        showWarningDialog("please select next proceed date");
+        return false;
+    }
+
+    if (!getProceedTime()) {
+        showWarningDialog("please select next proceed time");
         return false;
     }
 
@@ -170,14 +178,4 @@ mailContentTypeCheckboxOnChange = function (checkboxItem) {
             return item !== mailContentId;
         })
     }
-};
-
-getStartDateTime = function () {
-    let start_time = $("#clock_picker_input").val();
-    let today = new Date();
-    let yy = today.getFullYear();
-    let mm = today.getMonth() + 1;
-    let dd = today.getDate();
-    start_time = yy + "/" + mm + "/" + dd + " " + start_time + ":00";
-    return start_time
 };

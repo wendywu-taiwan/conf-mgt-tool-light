@@ -43,7 +43,8 @@ def create_scheduler(json_data, user):
                                                                    parser.country_list,
                                                                    parser.mail_content_type_list,
                                                                    parser.mail_list,
-                                                                   parser.interval_hour,
+                                                                   parser.frequency_type,
+                                                                   parser.interval,
                                                                    parser.utc_time)
 
         parser.task_id = report_scheduler.id
@@ -62,7 +63,8 @@ def update_report_scheduler(json_data, user):
                                                                    parser.country_list,
                                                                    parser.mail_content_type_list,
                                                                    parser.mail_list,
-                                                                   parser.interval_hour,
+                                                                   parser.frequency_type,
+                                                                   parser.interval,
                                                                    parser.utc_time)
         add_task_to_scheduler(parser)
         return report_scheduler
@@ -81,7 +83,13 @@ def delete_scheduler(json_data, user):
 def add_task_to_scheduler(parser):
     daily_task = DailyCompareReportTask(parser)
     scheduler = CustomJobScheduler()
-    job = scheduler.add_hours_job(daily_task.run_task, parser.interval_hour, parser.local_time)
+    if parser.frequency_type.interval_type == KEY_DAYS:
+        job = scheduler.add_days_job(daily_task.run_task, parser.interval, parser.local_time)
+    elif parser.frequency_type.interval_type == KEY_WEEKS:
+        job = scheduler.add_weeks_job(daily_task.run_task, parser.interval, parser.local_time)
+    else:
+        job = scheduler.add_months_job(daily_task.run_task, parser.interval, parser.local_time)
+
     ReportSchedulerInfo.objects.update_job_id(parser.task_id, job.id)
     daily_task.set_scheduled_job(job)
 
