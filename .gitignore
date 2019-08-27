@@ -14,3 +14,5 @@ RulesetComparer/rulesets/backup
 RulesetComparer/rulesets/zip/*.zip
 permission/migrations
 common/migrations
+static/admin
+static/rest_framework
