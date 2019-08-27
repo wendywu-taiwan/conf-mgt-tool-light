@@ -430,7 +430,7 @@
           "MY"
         ],
         "environment_name": "CT",
-        "b2b_client_url": "https://www-ct.audatex.sg/"
+        "b2b_client_url": "https://www-ct.audatex.sg/b2b/services/"
       },
       {
         "country_name": [
@@ -556,13 +556,13 @@
         "update_time": "2019-8-12 18:00:00"
       },
       "b2b_client": {
-        "update_time": "2019-8-12 18:18:00"
+        "update_time": "2019-8-21 18:18:00"
       },
       "b2b_service": {
         "update_time": "2019-8-12 18:00:00"
       },
       "b2b_server": {
-        "update_time": "2019-8-20 18:00:00"
+        "update_time": "2019-8-21 18:00:00"
       },
       "ruleset_action": {
         "update_time": "2019-8-12 17:50:00"
