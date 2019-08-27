@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.contrib import admin
 
 
 # Create your models here.
@@ -24,8 +25,12 @@ class Country(models.Model):
 
     objects = CountryManager()
 
-    def __str__(self):
-        return self.name
+
+class CountryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'full_name', 'icon_file_name')
+
+
+admin.site.register(Country, CountryAdmin)
 
 
 class EnvironmentManager(models.Manager):
@@ -49,8 +54,12 @@ class Environment(models.Model):
 
     objects = EnvironmentManager()
 
-    def __str__(self):
-        return self.name
+
+class EnvironmentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'full_name', 'active')
+
+
+admin.site.register(Environment, EnvironmentAdmin)
 
 
 class B2BServiceManager(models.Manager):
@@ -66,8 +75,12 @@ class B2BService(models.Model):
 
     objects = B2BServiceManager()
 
-    def __str__(self):
-        return self.id
+
+class B2BServiceAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'url')
+
+
+admin.site.register(B2BService, B2BServiceAdmin)
 
 
 class DataCenterManager(models.Manager):
@@ -82,8 +95,12 @@ class DataCenter(models.Model):
 
     objects = DataCenterManager()
 
-    def __str__(self):
-        return self.id
+
+class DataCenterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+
+
+admin.site.register(DataCenter, DataCenterAdmin)
 
 
 class B2BClientManager(models.Manager):
@@ -99,8 +116,12 @@ class B2BClient(models.Model):
 
     objects = B2BClientManager()
 
-    def __str__(self):
-        return self.id
+
+class B2BClientAdmin(admin.ModelAdmin):
+    list_display = ('id', 'data_center', 'url')
+
+
+admin.site.register(B2BClient, B2BClientAdmin)
 
 
 class B2BServerManager(models.Manager):
@@ -120,8 +141,12 @@ class B2BServer(models.Model):
                                on_delete=models.PROTECT)
     objects = B2BClientManager()
 
-    def __str__(self):
-        return self.id
+
+class B2BServerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'country', 'environment', 'client')
+
+
+admin.site.register(B2BServer, B2BServerAdmin)
 
 
 class ModuleManager(models.Manager):
@@ -136,6 +161,13 @@ class Module(models.Model):
     display_name = models.CharField(max_length=128, default=name)
 
     objects = ModuleManager()
+
+
+class ModuleAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'display_name')
+
+
+admin.site.register(Module, ModuleAdmin)
 
 
 class FunctionManager(models.Manager):
@@ -156,6 +188,13 @@ class Function(models.Model):
     objects = FunctionManager()
 
 
+class FunctionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'icon_file_name', 'module')
+
+
+admin.site.register(Function, FunctionAdmin)
+
+
 class RoleTypeManager(models.Manager):
     pass
 
@@ -166,6 +205,13 @@ class RoleType(models.Model):
     display_name = models.CharField(max_length=128)
 
     objects = RoleTypeManager()
+
+
+class RoleTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'display_name')
+
+
+admin.site.register(RoleType, RoleTypeAdmin)
 
 
 class RolePermissionManager(models.Manager):
@@ -197,6 +243,13 @@ class RolePermission(models.Model):
     objects = RolePermissionManager()
 
 
+class RolePermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'role_type', 'environment', 'country')
+
+
+admin.site.register(RolePermission, RolePermissionAdmin)
+
+
 class UserRolePermissionManager(models.Manager):
     def get_role_permission_ids(self, user):
         array = []
@@ -224,6 +277,13 @@ class UserRolePermission(models.Model):
                                         null=True, on_delete=models.PROTECT)
 
 
+class UserRolePermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'role_permission')
+
+
+admin.site.register(UserRolePermission, UserRolePermissionAdmin)
+
+
 class RoleFunctionPermissionManager(models.Manager):
     def get_role_function_permission(self, role_permission_id, function_id):
         role_function_permission = self.filter(role_permission_id=role_permission_id, function_id=function_id).values()
@@ -243,3 +303,10 @@ class RoleFunctionPermission(models.Model):
     editable = models.IntegerField(default=0)
 
     objects = RoleFunctionPermissionManager()
+
+
+class RoleFunctionPermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'role_permission', 'function', 'visible', 'editable')
+
+
+admin.site.register(RoleFunctionPermission, RoleFunctionPermissionAdmin)

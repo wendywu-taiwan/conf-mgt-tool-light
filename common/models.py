@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib import admin
 
 
 # Create your models here.
@@ -17,8 +18,12 @@ class DataUpdateTime(models.Model):
     update_time = models.DateTimeField(null=True)
     objects = DataUpdateTimeManager()
 
-    def __str__(self):
-        return self.id
+
+class DataUpdateTimeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'table', 'update_time')
+
+
+admin.site.register(DataUpdateTime, DataUpdateTimeAdmin)
 
 
 class FrequencyType(models.Model):
@@ -28,5 +33,9 @@ class FrequencyType(models.Model):
     interval_type = models.CharField(max_length=128)
     interval = models.IntegerField()
 
-    def __str__(self):
-        return self.id
+
+class FrequencyTypeAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'display_name', 'interval_type', 'interval')
+
+
+admin.site.register(FrequencyType, FrequencyTypeAdmin)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Q
+from django.contrib import admin
 
 from permission.models import Environment, Country, Module
 from common.models import FrequencyType
@@ -12,8 +13,13 @@ class MailContentType(models.Model):
     name = models.CharField(max_length=128)
     title = models.CharField(max_length=128)
 
-    def __str__(self):
-        return self.id
+
+class MailContentTypeAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'name', 'title')
+
+
+admin.site.register(MailContentType, MailContentTypeAdmin)
 
 
 class ReportSchedulerInfoManager(models.Manager):
@@ -115,6 +121,15 @@ class ReportSchedulerInfo(models.Model):
     enable = models.IntegerField()
 
     objects = ReportSchedulerInfoManager()
+
+
+class ReportSchedulerInfoAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'base_environment', 'compare_environment', 'module',
+        'mail_list', 'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'enable')
+
+
+admin.site.register(ReportSchedulerInfo, ReportSchedulerInfoAdmin)
 
 
 class RulesetSyncUpSchedulerManager(models.Manager):
@@ -229,6 +244,16 @@ class RulesetSyncUpScheduler(models.Model):
     objects = RulesetSyncUpSchedulerManager()
 
 
+class RulesetSyncUpSchedulerAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'source_environment', 'target_environment', 'module', 'action_list', 'mail_list',
+        'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'enable', 'creator', 'editor',
+        'created_time', 'updated_time')
+
+
+admin.site.register(RulesetSyncUpScheduler, RulesetSyncUpSchedulerAdmin)
+
+
 class RulesetLogGroup(models.Model):
     id = models.AutoField(primary_key=True)
     backup_key = models.CharField(max_length=128)
@@ -249,10 +274,26 @@ class RulesetLogGroup(models.Model):
     log_count = models.IntegerField(default=0)
 
 
+class RulesetLogGroupAdmin(admin.ModelAdmin):
+    list_display = (
+        'id', 'backup_key', 'update_time', 'task', 'source_environment', 'target_environment', 'author', 'country',
+        'created', 'updated', 'deleted', 'log_count')
+
+
+admin.site.register(RulesetLogGroup, RulesetLogGroupAdmin)
+
+
 class RulesetAction(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=128)
     capital_name = models.CharField(max_length=128)
+
+
+class RulesetActionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'capital_name')
+
+
+admin.site.register(RulesetAction, RulesetActionAdmin)
 
 
 class RulesetLogManager(models.Manager):
@@ -271,6 +312,13 @@ class RulesetLog(models.Model):
     exception = models.CharField(max_length=128, null=True)
 
     objects = RulesetLogManager()
+
+
+class RulesetLogPermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'ruleset_log_group', 'action', 'ruleset_name', 'status', 'exception')
+
+
+admin.site.register(RulesetLog, RulesetLogPermissionAdmin)
 
 
 class Meta:
