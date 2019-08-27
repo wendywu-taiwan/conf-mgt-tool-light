@@ -310,3 +310,18 @@ class RoleFunctionPermissionAdmin(admin.ModelAdmin):
 
 
 admin.site.register(RoleFunctionPermission, RoleFunctionPermissionAdmin)
+
+
+class FTPClient(models.Model):
+    id = models.AutoField(primary_key=True)
+    url = models.URLField()
+    data_center = models.CharField(max_length=128)
+    port = models.IntegerField(default=0)
+
+
+class FTPServer(models.Model):
+    id = models.AutoField(primary_key=True)
+    ftp_client = models.ForeignKey(FTPClient, related_name='ftp_server_key_client', null=True,
+                                   on_delete=models.PROTECT)
+    environment = models.ForeignKey(Environment, related_name='ftp_server_key_environment', null=True,
+                                    on_delete=models.PROTECT)
