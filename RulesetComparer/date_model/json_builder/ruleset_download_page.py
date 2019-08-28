@@ -1,5 +1,6 @@
 from common.data_object.json_builder.base import BaseBuilder
 from common.data_object.json_builder.country import CountryBuilder
+from common.data_object.json_builder.environment import EnvironmentBuilder
 from permission.models import Country, Environment
 from RulesetComparer.properties.key import *
 
