@@ -27,6 +27,7 @@ class DailyCompareReportTask(BaseSchedulerTask):
         self.info_builder = None
 
     def set_scheduled_job(self, scheduled_job):
+        info_log(self.logger, "set scheduled job:" + str(scheduled_job.id))
         super().set_scheduled_job(scheduled_job)
 
     def run_task(self):
@@ -87,8 +88,8 @@ class DailyCompareReportTask(BaseSchedulerTask):
             task = ReportSchedulerInfo.objects.get(id=self.task_id)
             db_job_id = task.job_id
             current_job_id = self.scheduled_job.id
-            info_log(self.logger, "db_job_id:" + str(db_job_id))
-            info_log(self.logger, "current_job_id:" + str(current_job_id))
+            info_log(self.logger, "db_job_id: " + str(db_job_id))
+            info_log(self.logger, "current_job_id: " + str(current_job_id))
             if db_job_id == current_job_id:
                 return False
             else:

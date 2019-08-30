@@ -19,6 +19,7 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
         self.task_id = parser.task_id
 
     def set_scheduled_job(self, scheduled_job):
+        info_log(self.logger, "set scheduled job:" + str(scheduled_job.id))
         super().set_scheduled_job(scheduled_job)
 
     def run_task(self):

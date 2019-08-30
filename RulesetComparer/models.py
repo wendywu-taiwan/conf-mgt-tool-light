@@ -126,7 +126,7 @@ class ReportSchedulerInfo(models.Model):
 class ReportSchedulerInfoAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'base_environment', 'compare_environment', 'module',
-        'mail_list', 'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'enable')
+        'mail_list', 'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'job_id', 'enable')
 
 
 admin.site.register(ReportSchedulerInfo, ReportSchedulerInfoAdmin)
@@ -247,7 +247,7 @@ class RulesetSyncUpScheduler(models.Model):
 class RulesetSyncUpSchedulerAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'source_environment', 'target_environment', 'module', 'action_list', 'mail_list',
-        'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'enable', 'creator', 'editor',
+        'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'job_id', 'enable', 'creator', 'editor',
         'created_time', 'updated_time')
 
 

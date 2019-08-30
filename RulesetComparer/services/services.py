@@ -49,6 +49,7 @@ def compare_rule_list_rule_set(base_env_id, compare_env_id, country_id):
 
     return data
 
+
 def compare_ruleset_test():
     try:
         pass
@@ -141,17 +142,15 @@ def restart_all_scheduler():
         clear_zip_ruleset_task = ClearRulesetArchivedFilesTask()
         clear_ruleset_task = ClearRulesetFilesTask()
         clear_compare_report_task = ClearCompareReportFilesTask()
-
+        info_log(None, "restart clear scheduler")
         scheduler = CustomJobScheduler()
         scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
         scheduler.add_hours_job_now(clear_zip_ruleset_task.run_task, 24)
         scheduler.add_hours_job_now(clear_compare_report_task.run_task, 24)
+        info_log(None, "restart clear scheduler success")
 
-        info_log(None, "restart all scheduler")
         report_scheduler.restart_schedulers()
         sync_scheduler.restart_schedulers()
-
-        info_log(None, "restart all scheduler success")
     except BaseException as e:
         error_log(traceback.format_exc())
         raise e

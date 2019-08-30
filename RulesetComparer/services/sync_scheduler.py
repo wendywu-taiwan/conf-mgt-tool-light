@@ -21,6 +21,8 @@ def restart_schedulers():
             parser = DBRulesetSyncSchedulerParser(scheduler, country_list)
             RulesetSyncUpScheduler.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
             add_task_to_scheduler(scheduler.id, parser)
+        info_log("rulesetSyncUpService", "restart all schedulers success")
+
     except Exception as e:
         raise e
 

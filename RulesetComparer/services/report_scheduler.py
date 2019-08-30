@@ -22,6 +22,8 @@ def restart_schedulers():
             parser = DBReportSchedulerParser(scheduler, country_list, mail_content_type_list)
             ReportSchedulerInfo.objects.update_next_proceed_time(parser.task_id, parser.utc_time)
             add_task_to_scheduler(parser)
+        info_log("rulesetReportSchedulerService", "restart all success")
+
     except Exception as e:
         raise e
 
