@@ -41,7 +41,6 @@ from RulesetComparer.services.services import *
 from RulesetComparer.services.report_scheduler import *
 
 
-
 ######################################## Admin Console ########################################
 # admin console page
 @login_required
@@ -87,7 +86,7 @@ def admin_console_report_scheduler_create_page(request):
         check_function_visibility(request, KEY_F_REPORT_TASK)
 
     def get_visible_data():
-        environments = enable_environments_data(request.user.id)
+        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK)
         return environments
 
     def after_check(visible_data):
@@ -109,7 +108,7 @@ def admin_console_report_scheduler_update_page(request, scheduler_id):
                                           KEY_F_REPORT_TASK)
 
     def get_visible_data():
-        environments = enable_environments_data(request.user.id)
+        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK)
         return environments
 
     def after_check(visible_data):
@@ -125,7 +124,7 @@ def admin_console_sync_scheduler_list_page(request):
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
 
     def get_visible_data():
-        environment_list = enable_environments(request.user.id)
+        environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
         return RulesetSyncUpScheduler.objects.filter_environments_and_countries(request.user.id, environment_list)
 
     def after_check(visible_data):
@@ -139,7 +138,7 @@ def admin_console_sync_scheduler_list_page(request):
 def admin_console_sync_scheduler_create_page(request):
     def check_visibility():
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
-        enable_environment_list = enable_environments(request.user.id)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
         git_environment = Environment.objects.get(name=GIT_NAME)
         int2_environment = Environment.objects.get(name=INT2_NAME)
         # check data visibility
@@ -185,7 +184,7 @@ def admin_console_recover_ruleset_filtered_page(request):
 
     def get_visible_data():
         environment_list = recover.filter_environment()
-        enable_environment_list = enable_environments(request.user.id)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_RECOVERY)
         union_list = get_union(environment_list, enable_environment_list)
         return union_list
 
@@ -656,4 +655,3 @@ def update_ruleset(request):
         sync.update_ruleset_test()
 
     return action_error_check(after_check)
-

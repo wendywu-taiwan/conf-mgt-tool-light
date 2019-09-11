@@ -31,7 +31,9 @@ class GetRulesetLogListParser:
                 self.limit = json_data.get("limit")
 
             self.user = user
+            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG)
             self.new_filter = new_filter
+
             self.order_descend = self.is_descend_order()
             self.log_group_query = Q(log_count__gt=0)
             self.log_query = Q()
@@ -65,30 +67,28 @@ class GetRulesetLogListParser:
         self.log_group_query.add(query, Q.AND)
 
     def parse_environment_query(self):
-        enable_environment_ids = enable_environments(self.user.id)
         query = Q()
         if len(self.filter_environment_ids) == 0:
-            query.add(Q(source_environment__in=enable_environment_ids), Q.AND)
-            query.add(Q(target_environment__in=enable_environment_ids), Q.AND)
+            query.add(Q(source_environment__in=self.enable_environment_ids), Q.AND)
+            query.add(Q(target_environment__in=self.enable_environment_ids), Q.AND)
         else:
-            union_list = get_union(enable_environment_ids, self.filter_environment_ids)
+            union_list = get_union(self.enable_environment_ids, self.filter_environment_ids)
             if len(union_list) == 0:
-                union_list = enable_environment_ids
+                union_list = self.enable_environment_ids
 
             sub_query = Q()
             sub_query.add(Q(source_environment__in=union_list), Q.AND)
-            sub_query.add(Q(target_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(target_environment__in=self.enable_environment_ids), Q.AND)
             query.add(sub_query, Q.OR)
             sub_query = Q()
-            sub_query.add(Q(source_environment__in=enable_environment_ids), Q.AND)
+            sub_query.add(Q(source_environment__in=self.enable_environment_ids), Q.AND)
             sub_query.add(Q(target_environment__in=union_list), Q.AND)
             query.add(sub_query, Q.OR)
 
         self.log_group_query.add(query, Q.AND)
 
     def parse_country_query(self):
-        enable_environment_ids = enable_environments(self.user.id)
-        enable_country_ids = enable_environments_countries(self.user.id, enable_environment_ids)
+        enable_country_ids = enable_environments_countries(self.user.id, self.enable_environment_ids)
         query = Q()
         if len(self.filter_countries_ids) == 0:
             query.add(Q(country_id__in=enable_country_ids), Q.AND)

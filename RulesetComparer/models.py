@@ -84,7 +84,7 @@ class ReportSchedulerInfoManager(models.Manager):
         return task
 
     def get_visible_schedulers(self, user_id):
-        enable_environment_ids = enable_environments(user_id)
+        enable_environment_ids = enable_environments(user_id, KEY_F_REPORT_TASK)
         query = Q()
         for environment_id in enable_environment_ids:
             sub_query = Q()

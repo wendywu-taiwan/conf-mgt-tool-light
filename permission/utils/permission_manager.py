@@ -17,16 +17,19 @@ def check_function_visibility(request, function_key):
         raise PermissionDeniedError()
 
 
-def enable_environments(user_id):
+def enable_environments(user_id, function):
     user = User.objects.get(id=user_id)
+    function = Function.objects.get(name=function)
     role_permission_list = UserRolePermission.objects.filter(user=user).values_list("role_permission_id", flat=True)
+    role_permission_list = RoleFunctionPermission.objects.filter(function_id=function.id, visible=1,
+                                                                 role_permission__in=role_permission_list).values_list("role_permission_id", flat=True)
     enable_environments_ids = RolePermission.objects.filter(id__in=role_permission_list,
                                                             environment__active=1).values_list("environment_id", flat=True).distinct()
     return enable_environments_ids
 
 
-def enable_environments_data(user_id):
-    enable_environment_ids = enable_environments(user_id)
+def enable_environments_data(user_id, function):
+    enable_environment_ids = enable_environments(user_id, function)
     environment_data = EnvironmentsBuilder(ids=enable_environment_ids).get_data()
     return environment_data
 

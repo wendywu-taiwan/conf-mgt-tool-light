@@ -13,6 +13,8 @@ class RulesetLogListResultBuilder(AdminConsoleBaseBuilder):
             self.user = user
             self.parser = parser
             self.ruleset_log_list = ruleset_log_list
+            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG)
+
             AdminConsoleBaseBuilder.__init__(self, user)
         except Exception as e:
             raise e
@@ -47,12 +49,11 @@ class RulesetLogListResultBuilder(AdminConsoleBaseBuilder):
     def get_environments(self):
         env_id_list = []
         env_data_list = []
-        enable_environment_ids = enable_environments(self.user.id)
         source_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0,
-                                                                source_environment_id__in=enable_environment_ids).values_list(
+                                                                source_environment_id__in=self.enable_environment_ids).values_list(
             "source_environment").distinct()
         target_environment_ids = RulesetLogGroup.objects.filter(updated__gt=0,
-                                                                target_environment__in=enable_environment_ids).values_list(
+                                                                target_environment__in=self.enable_environment_ids).values_list(
             "target_environment").distinct()
         env_id_list = self.get_distinct_environment_id(env_id_list, source_environment_ids)
         env_id_list = self.get_distinct_environment_id(env_id_list, target_environment_ids)
@@ -65,8 +66,7 @@ class RulesetLogListResultBuilder(AdminConsoleBaseBuilder):
 
     def get_countries(self):
         country_data_list = []
-        enable_environment_ids = enable_environments(self.user.id)
-        enable_country_ids = enable_environments_countries(self.user.id, enable_environment_ids)
+        enable_country_ids = enable_environments_countries(self.user.id, self.enable_environment_ids)
         countries = RulesetLogGroup.objects.filter(log_count__gt=0, country_id__in=enable_country_ids).values_list(
             "country").distinct()
         for country_obj in countries:
