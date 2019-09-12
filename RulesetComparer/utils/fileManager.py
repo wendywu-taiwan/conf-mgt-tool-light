@@ -1,3 +1,4 @@
+import math
 import os, time, sys
 import shutil
 import glob
@@ -171,6 +172,7 @@ def get_rule_name_list(path):
         rule_name_list.append(file_name)
     return rule_name_list
 
+
 def get_files_list_in_path(path, exception=None):
     name_list = list()
     for file in os.listdir(path):
@@ -182,3 +184,13 @@ def get_files_list_in_path(path, exception=None):
 
         name_list.append(file)
     return name_list
+
+
+def convert_file_size(size_bytes):
+    if size_bytes == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return "%s %s" % (s, size_name[i])

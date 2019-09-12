@@ -3,7 +3,7 @@ from RulesetComparer.utils import fileManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
-    RoleType, RolePermission, RoleFunctionPermission, UserRolePermission
+    RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPClient
 from common.models import DataUpdateTime, FrequencyType
 from RulesetComparer.models import MailContentType, RulesetAction
 from django.contrib.auth.models import User
@@ -28,6 +28,8 @@ KEY_B2B_SERVER = "b2b_server"
 KEY_MAIL_CONTENT_TYPE = "mail_content_type"
 KEY_RULESET_ACTION = "ruleset_action"
 KEY_FREQUENCY_TYPE = "frequency_type"
+# FTP
+KEY_FTP_CLIENT = "ftp_client"
 
 
 def init_auth_user_data(auth_user_data):
@@ -318,6 +320,20 @@ def init_frequency_type(frequency_type_data):
     return True
 
 
+def init_ftp_client(data):
+    for ftp_client in data:
+        url = ftp_client.get("url")
+        name = ftp_client.get("name")
+        port = ftp_client.get("port")
+
+        if FTPClient.objects.filter(url=url).exists():
+            FTPClient.objects.filter(url=url).update(name=name, port=port)
+        else:
+            FTPClient.objects.create(name=name, url=url, port=port)
+    info_log(LOG_CLASS, "init ftp client data success")
+    return True
+
+
 operator = {
     KEY_AUTH_USER: init_auth_user_data,
     KEY_ENVIRONMENT: init_environment_data,
@@ -334,13 +350,15 @@ operator = {
     KEY_B2B_SERVER: init_b2b_server,
     KEY_MAIL_CONTENT_TYPE: init_mail_content_type_data,
     KEY_RULESET_ACTION: init_ruleset_action,
-    KEY_FREQUENCY_TYPE: init_frequency_type
+    KEY_FREQUENCY_TYPE: init_frequency_type,
+    KEY_FTP_CLIENT: init_ftp_client,
 }
 
 INIT_DATA_ARRAY = [KEY_AUTH_USER, KEY_ENVIRONMENT, KEY_COUNTRY,
                    KEY_MODULE, KEY_FUNCTION, KEY_ROLE_TYPE, KEY_ROLE_PERMISSION,
                    KEY_DATA_CENTER, KEY_B2B_SERVICE, KEY_B2B_CLIENT,
-                   KEY_B2B_SERVER, KEY_MAIL_CONTENT_TYPE, KEY_RULESET_ACTION, KEY_FREQUENCY_TYPE]
+                   KEY_B2B_SERVER, KEY_MAIL_CONTENT_TYPE, KEY_RULESET_ACTION, KEY_FREQUENCY_TYPE,
+                   KEY_FTP_CLIENT]
 
 
 def init_data():

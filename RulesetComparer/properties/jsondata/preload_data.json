@@ -527,6 +527,18 @@
         "interval": 1
       }
     ],
+    "ftp_client": [
+      {
+        "url": "ftp.audatex.cn",
+        "name": "CN",
+        "port": 22223
+      },
+      {
+        "url": "ftp.audatex.sg",
+        "name": "SG",
+        "port": 22223
+      }
+    ],
     "update_time": {
       "auth_user": {
         "update_time": "2019-8-12 18:10:00"
@@ -568,6 +580,9 @@
         "update_time": "2019-8-12 17:50:00"
       },
       "frequency_type": {
+        "update_time": "2019-8-12 17:50:00"
+      },
+      "ftp_client": {
         "update_time": "2019-8-12 17:50:00"
       }
     }
