@@ -53,7 +53,8 @@ class NodeObject:
             self.path = self.parent_node.path + "/" + self.name
 
     def set_size(self, size):
-        self.size = convert_file_size(size)
+        self.size = str(size) + "bytes"
+        # self.size = convert_file_size(size)
 
     def set_modification_time(self, modification_time):
         data_time = timestamp_to_date_time(modification_time)
@@ -68,6 +69,9 @@ class NodeObject:
     def add_child_node_list(self, child_node):
         self.child_node_list.append(child_node)
 
+    def sort_child_list(self):
+        self.child_node_list.sort(key=lambda x: x.index, reverse=False)
+
     def get_node_json(self):
         return self.parse_node_json()
 
@@ -81,6 +85,7 @@ class NodeObject:
         return json_obj
 
     def parse_child_nodes_json(self):
+        self.sort_child_list()
         json_list = list()
         for child_node in self.child_node_list:
             json_obj = {KEY_NAME: child_node.name,
