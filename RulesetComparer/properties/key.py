@@ -259,6 +259,21 @@ KEY_TITLE = "title"
 KEY_DATA = "data"
 KEY_FREQUENCY_TYPE = "frequency_type"
 KEY_FREQUENCY_TYPES = "frequency_types"
+KEY_FILE_NAME = "file_name"
+KEY_LEFT_FILE = "left_file"
+KEY_RIGHT_FILE = "right_file"
+KEY_CHANGED = "changed"
+KEY_ADDED = "added"
+KEY_BLANK = "blank"
+KEY_CONTEXT = "context"
+KEY_ROW = "row"
+KEY_INDEX = "index"
+KEY_LEFT_TYPE = "left_type"
+KEY_LEFT_ROW = "left_row"
+KEY_LEFT_LINE = "left_line"
+KEY_RIGHT_TYPE = "right_type"
+KEY_RIGHT_ROW = "right_row"
+KEY_RIGHT_LINE = "right_line"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
@@ -302,3 +317,8 @@ KEY_D_RESULT_ADD = "add"
 KEY_D_RESULT_REMOVE = "remove"
 KEY_D_RESULT_SAME = "same"
 KEY_D_RESULT_DIFFERENT = "different"
+
+
+# symbol
+KEY_S_EQUAL = "="
+KEY_S_HASH_TAG = "#"

@@ -1,5 +1,11 @@
+import difflib
 import traceback
-import stat
+
+from common.data_object.json_builder.key_content_diff_result import KeyContentDiffResultBuilder
+from common.data_object.key_content_diff_object import KeyContentDiffObject
+from common.data_object.file_load_object import FileLoadObject
+from common.data_object.diff_file_type_object import DiffFileTypeObject
+from shared_storage.data_object.json_builder.content_diff_result_builder import ContentDiffResultBuilder
 from shared_storage.data_object.node_object import NodeObject
 from shared_storage.data_object.dir_node_object import DirNodeObject
 from shared_storage.data_object.dir_entry_index_object import DirEntryIndexObject
@@ -107,18 +113,31 @@ class DirNodeDiffObject:
                                                         [left_last_version], [right_last_version])
                 diff_obj.diff()
             else:
-                if left_node.type is not KEY_FOLDER:
-                    diff_obj = None
-                    info_log(self.LOG_CLASS, "diff file, name :" + left_node.name)
-                    pass
-                else:
+                if left_node.type is KEY_FOLDER:
                     diff_obj = DirNodeDiffObject(self.left_ftp_connect_obj, self.right_ftp_connect_obj,
                                                  left_node, right_node)
                     diff_obj.diff()
+                elif left_node.type in COMPARE_TYPE_BLACK_LIST:
+                    if left_node.size != right_node.size:
+                        left_node.diff_result = KEY_CHANGED
+                        left_node.diff_result = KEY_CHANGED
+                else:
+                    left_file_object = FileLoadObject(left_node.name, left_node.path, left_node.type)
+                    right_file_object = FileLoadObject(right_node.name, right_node.path, right_node.type)
+                    left_file_object = self.left_ftp_connect_obj.get_file_contents(left_file_object)
+                    right_file_object = self.right_ftp_connect_obj.get_file_contents(right_file_object)
+                    diff_file_type_object = DiffFileTypeObject(left_file_object, right_file_object,
+                                                               self.left_ftp_connect_obj.compare_key)
+                    has_changes = diff_file_type_object.diff_file()
+
+                    if has_changes:
+                        left_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
+                        right_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
 
     def parse_node(self, name, entry_map, parent_node):
         entry_index_obj = entry_map.get(name)
         entry = entry_index_obj.entry
+
         index = entry_index_obj.index
         node = NodeObject(name, parent_node.environment, parent_node, index, entry.st_mode)
         node.set_size(entry.st_size)

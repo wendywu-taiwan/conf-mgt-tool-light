@@ -1,7 +1,21 @@
+from ConfigManageTool import settings
+
 DEPTH_COUNTRY_FOLDER = 0
 DEPTH_MODULE_FOLDER = 1
 DEPTH_MODULE_VERSION = 2
 DEPTH_MODULE_DATA_ROOT = 3
+
+COMPARE_RESULT_PATH = settings.BASE_DIR + "/shared_storage/compare_result/"
+COMPARE_FILE_PATH = settings.BASE_DIR + "/shared_storage/tmp_file/"
+
+COMPARE_TYPE_BLACK_LIST = {
+    "ttf",
+    "png",
+    "jpg",
+    "mp4",
+    "gif",
+    "dic"
+}
 
 FILTER_MODULE_FOLDER_MAP = {
     "tw": [

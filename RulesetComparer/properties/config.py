@@ -17,7 +17,7 @@ FILE_PATH = {
     "rule_set_backup_path": "RulesetComparer/rulesets/backup",
     "ruleset_backup_server_version": "RulesetComparer/rulesets/backup/server_version",
     "ruleset_backup_applied_version": "RulesetComparer/rulesets/backup/applied_version",
-    "ruleset_backup_pre_sync_data": "RulesetComparer/rulesets/backup/pre_sync"
+    "ruleset_backup_pre_sync_data": "RulesetComparer/rulesets/backup/pre_sync",
 }
 FILE_NAME = {
     "_html": "%s.html",

@@ -20,6 +20,9 @@ class DirRootObject:
         except Exception as e:
             raise e
 
+    def update_compare_key(self, compare_key):
+        self.ftp_connect_obj.set_compare_key(compare_key)
+
     def generate_json(self):
         json = self.node_object.parse_node_json()
         return json

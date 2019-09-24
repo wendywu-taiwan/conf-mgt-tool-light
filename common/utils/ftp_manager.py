@@ -1,5 +1,6 @@
 import pysftp
 from permission.models import FTPClient, Environment, Country
+from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
 
 
@@ -45,11 +46,15 @@ class SharedStorageConnectionObject(FTPConnectionObject):
         ftp_client = FTPClient.objects.get(id=client_id)
         self.environment = Environment.objects.get(id=environment_id)
         self.only_last_version = only_last_version
+        self.compare_key = None
 
         auth_data = FTPAuthDataParser(self.environment.name, folder_name)
         FTPConnectionObject.__init__(self, ftp_client.url, ftp_client.port,
                                      auth_data.get_account(),
                                      auth_data.get_password())
+
+    def set_compare_key(self, compare_key):
+        self.compare_key = compare_key
 
     def get_path_list_dir(self, path):
         return super().get_path_list_dir(path)
@@ -65,3 +70,18 @@ class SharedStorageConnectionObject(FTPConnectionObject):
         last_version = f.read().strip()
         f.close()
         return last_version
+
+    def get_file_contents(self, file_load_object):
+        local_path = COMPARE_FILE_PATH + file_load_object.file_name
+        self.sftp.get(file_load_object.file_path, localpath=local_path)
+        try:
+            f = open(local_path, 'r')
+            file_content = f.read()
+        except UnicodeDecodeError:
+            f = open(local_path, 'rb')
+            file_content = f.read()
+
+        f.close()
+
+        file_load_object.file_content = file_content
+        return file_load_object
