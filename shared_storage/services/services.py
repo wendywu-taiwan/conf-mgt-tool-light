@@ -1,8 +1,12 @@
 import traceback
+import json
 from shared_storage.data_object.dir_root_object import DirRootObject
 from shared_storage.data_object.dir_node_diff_object import DirNodeDiffObject, DirNodeDiffFilterObject
+from shared_storage.properties.config import COMPARE_RESULT_PATH
 from shared_storage.services.diff_file_test import diff_content_test
+from shared_storage.data_object.json_builder.country_level_diff_result_builder import CountryLevelDiffResultBuilder
 from RulesetComparer.utils.logger import *
+from RulesetComparer.utils.fileManager import save_file
 
 
 def diff_country_level():
@@ -31,9 +35,10 @@ def diff_country_level():
             dir_node_diff_obj = DirNodeDiffObject(left_root_obj.ftp_connect_obj, right_root_obj.ftp_connect_obj,
                                                   left_root_obj.node_object, right_root_obj.node_object)
         dir_node_diff_obj.diff()
-        left_json = left_root_obj.generate_json()
-        right_json = right_root_obj.generate_json()
-        # save folder compare result under compare key folder
+        json_data = CountryLevelDiffResultBuilder(left_root_obj, right_root_obj, compare_key).get_data()
+
+        file_path = COMPARE_RESULT_PATH + "%s.%s" % (compare_key, KEY_JSON)
+        save_file(file_path, json.dumps(json_data))
         info_log("service", "diff_country_level done")
     except Exception as e:
         error_log(e)

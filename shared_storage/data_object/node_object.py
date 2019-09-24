@@ -63,8 +63,6 @@ class NodeObject:
 
     def set_diff_result(self, diff_result):
         self.diff_result = diff_result
-        info_log(self.LOG_CLASS,
-                 "set NodeObject diff result, name: " + self.name + ", path: " + self.path + " , diff result: " + diff_result)
 
     def add_child_node_list(self, child_node):
         self.child_node_list.append(child_node)

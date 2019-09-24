@@ -16,3 +16,5 @@ permission/migrations
 common/migrations
 static/admin
 static/rest_framework
+shared_storage/compare_result
+shared_storage/tmp_file

@@ -65,20 +65,19 @@ class SharedStorageConnectionObject(FTPConnectionObject):
     def get_latest_version(self, node_path):
         tmp_file = 'lastversion.dat'
         last_version_path = node_path + "/" + tmp_file
-        self.sftp.get(last_version_path, localpath=tmp_file)
+        self.sftp.get(last_version_path, localpath=COMPARE_FILE_PATH + tmp_file)
         f = open(tmp_file, 'r')
         last_version = f.read().strip()
         f.close()
         return last_version
 
     def get_file_contents(self, file_load_object):
-        local_path = COMPARE_FILE_PATH + file_load_object.file_name
-        self.sftp.get(file_load_object.file_path, localpath=local_path)
+        self.sftp.get(file_load_object.file_path, localpath=file_load_object.local_path)
         try:
-            f = open(local_path, 'r')
+            f = open(file_load_object.local_path, 'r')
             file_content = f.read()
         except UnicodeDecodeError:
-            f = open(local_path, 'rb')
+            f = open(file_load_object.local_path, 'rb')
             file_content = f.read()
 
         f.close()
