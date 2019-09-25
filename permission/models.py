@@ -317,5 +317,14 @@ class FTPClient(models.Model):
     url = models.URLField()
     name = models.CharField(max_length=128)
     port = models.IntegerField(default=0)
+    active = models.IntegerField(default=0)
+
+
+class FTPClientAdmin(admin.ModelAdmin):
+    list_display = ('id', 'url', 'function', 'name', 'port', 'active')
+
+
+admin.site.register(FTPClient, FTPClientAdmin)
+
 
 

@@ -1,15 +1,15 @@
 from django.urls import path
 
-from permission import views
+from shared_storage import views
 from django.conf.urls import include
 
 app_name = 'shared_storage'
 
-ftp_pattern = [
-    path('diff', views.permission_index_page, name="permission-index"),
+compare_pattern = [
+    path('compare/select', views.select_to_compare_page, name="select-to-compare-page"),
 
 ]
 
 urlpatterns = [
-    path('shared_storage/', include(ftp_pattern)),
+    path('shared_storage/', include(compare_pattern)),
 ]

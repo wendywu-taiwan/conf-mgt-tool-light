@@ -72,6 +72,8 @@ TEMPLATES = [
                  'templates/ruleset/frontend/component',
                  'templates/ruleset/backend',
                  'templates/ruleset/backend/component',
+                 'templates/shared_storage/frontend',
+                 'templates/shared_storage/backend',
                  ],
         'APP_DIRS': True,
         'OPTIONS': {

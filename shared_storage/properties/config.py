@@ -7,6 +7,8 @@ DEPTH_MODULE_DATA_ROOT = 3
 
 COMPARE_RESULT_PATH = settings.BASE_DIR + "/shared_storage/compare_result/"
 COMPARE_FILE_PATH = settings.BASE_DIR + "/shared_storage/tmp_file/"
+GIT_SHARE_STORAGE_ROOT = settings.BASE_DIR + "/shared_storage/git_data/axn_op_apac/"
+DIR_GIT_SHARE_STORAGE_ROOT = GIT_SHARE_STORAGE_ROOT + "master"
 
 COMPARE_TYPE_BLACK_LIST = {
     "ttf",

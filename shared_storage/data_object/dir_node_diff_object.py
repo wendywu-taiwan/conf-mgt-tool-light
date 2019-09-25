@@ -12,13 +12,13 @@ from shared_storage.properties.config import *
 class DirNodeDiffObject:
     LOG_CLASS = "DirNodeDiffObject"
 
-    def __init__(self, left_ftp_connect_obj, right_ftp_connect_obj, left_node, right_node):
+    def __init__(self, left_dir_connect_obj, right_dir_connect_obj, left_node, right_node):
         self.depth = left_node.depth
         self.index = left_node.index
         self.left_node = left_node
         self.right_node = right_node
-        self.left_ftp_connect_obj = left_ftp_connect_obj
-        self.right_ftp_connect_obj = right_ftp_connect_obj
+        self.left_dir_connect_obj = left_dir_connect_obj
+        self.right_dir_connect_obj = right_dir_connect_obj
         self.left_entry_map = {}
         self.right_entry_map = {}
         self.left_name_set = set()
@@ -29,8 +29,8 @@ class DirNodeDiffObject:
 
     def diff(self):
         try:
-            left_entry_list = self.left_ftp_connect_obj.get_path_list_dir(self.left_node.path)
-            right_entry_list = self.right_ftp_connect_obj.get_path_list_dir(self.right_node.path)
+            left_entry_list = self.left_dir_connect_obj.get_path_list_dir(self.left_node.path)
+            right_entry_list = self.right_dir_connect_obj.get_path_list_dir(self.right_node.path)
             self.parse_name_set(left_entry_list, self.left_entry_map, self.left_name_set)
             self.parse_name_set(right_entry_list, self.right_entry_map, self.right_name_set)
             self.diff_to_list()
@@ -62,18 +62,16 @@ class DirNodeDiffObject:
     def parse_left_only_node(self):
         info_log(self.LOG_CLASS, "update_left_only_node, list:" + str(self.left_only))
         for name in self.left_only:
-            self.parse_environment_only_node(name, self.left_ftp_connect_obj, self.left_entry_map, self.right_entry_map,
-                                             self.left_node,
-                                             self.right_node)
+            self.parse_environment_only_node(name, self.left_dir_connect_obj, self.left_entry_map,
+                                             self.right_entry_map, self.left_node, self.right_node)
 
     def parse_right_only_node(self):
         info_log(self.LOG_CLASS, "update_right_only_node, list:" + str(self.right_only))
         for name in self.right_only:
-            self.parse_environment_only_node(name, self.right_ftp_connect_obj, self.right_entry_map,
-                                             self.left_entry_map,
-                                             self.right_node, self.left_node)
+            self.parse_environment_only_node(name, self.right_dir_connect_obj, self.right_entry_map,
+                                             self.left_entry_map, self.right_node, self.left_node)
 
-    def parse_environment_only_node(self, name, ftp_connect_obj, entry_map, opposite_entry_map, parent_node_add,
+    def parse_environment_only_node(self, name, dir_connect_obj, entry_map, opposite_entry_map, parent_node_add,
                                     parent_node_remove):
         node_add = self.parse_node(name, entry_map, opposite_entry_map, parent_node_add)
         node_add.set_diff_result(KEY_D_RESULT_ADD)
@@ -82,14 +80,14 @@ class DirNodeDiffObject:
         node_remove.set_diff_result(KEY_D_RESULT_REMOVE)
 
         if node_add.type is KEY_FOLDER:
-            child_node_obj = DirNodeObject(ftp_connect_obj, node_add, node_remove)
+            child_node_obj = DirNodeObject(dir_connect_obj, node_add, node_remove)
             child_node_obj.parse_child_node()
 
     def parse_union_node(self):
         info_log(self.LOG_CLASS, "update_union_node, list:" + str(self.union))
 
         current_depth = self.left_node.depth + 1
-        only_last_version = self.left_ftp_connect_obj.only_last_version
+        only_last_version = self.left_dir_connect_obj.only_last_version
 
         if current_depth == DEPTH_MODULE_FOLDER and only_last_version:
             self.apply_latest_version_diff()
@@ -103,7 +101,7 @@ class DirNodeDiffObject:
 
                 # diff folder
                 if left_node.type is KEY_FOLDER:
-                    diff_obj = DirNodeDiffObject(self.left_ftp_connect_obj, self.right_ftp_connect_obj, left_node,
+                    diff_obj = DirNodeDiffObject(self.left_dir_connect_obj, self.right_dir_connect_obj, left_node,
                                                  right_node)
                     diff_obj.diff()
                 # diff file
@@ -112,10 +110,10 @@ class DirNodeDiffObject:
                                                                    left_node.size)
                     right_file_object = SharedStorageFileLoadObject(right_node.name, right_node.path, right_node.type,
                                                                     right_node.size)
-                    left_file_object = self.left_ftp_connect_obj.get_file_contents(left_file_object)
-                    right_file_object = self.right_ftp_connect_obj.get_file_contents(right_file_object)
+                    left_file_object = self.left_dir_connect_obj.get_file_contents(left_file_object)
+                    right_file_object = self.right_dir_connect_obj.get_file_contents(right_file_object)
                     diff_file_type_object = DiffFileTypeObject(left_file_object, right_file_object,
-                                                               self.left_ftp_connect_obj.compare_key)
+                                                               self.left_dir_connect_obj.compare_key)
                     has_changes = diff_file_type_object.diff_file()
 
                     if has_changes:
@@ -130,12 +128,12 @@ class DirNodeDiffObject:
             left_node.set_diff_result(KEY_D_RESULT_SAME)
             right_node.set_diff_result(KEY_D_RESULT_SAME)
 
-            left_last_version = self.left_ftp_connect_obj.get_latest_version(left_node.path)
-            right_last_version = self.right_ftp_connect_obj.get_latest_version(right_node.path)
+            left_last_version = self.left_dir_connect_obj.get_latest_version(left_node.path)
+            right_last_version = self.right_dir_connect_obj.get_latest_version(right_node.path)
             info_log(self.LOG_CLASS, "left_last_version:" + str(left_last_version))
             info_log(self.LOG_CLASS, "right_last_version:" + str(right_last_version))
-            diff_obj = DirNodeDiffLastVersionObject(self.left_ftp_connect_obj,
-                                                    self.right_ftp_connect_obj,
+            diff_obj = DirNodeDiffLastVersionObject(self.left_dir_connect_obj,
+                                                    self.right_dir_connect_obj,
                                                     left_node, right_node,
                                                     [left_last_version], [right_last_version])
             diff_obj.diff()
@@ -174,8 +172,8 @@ class DirNodeDiffFilterObject(DirNodeDiffObject):
 
     def diff(self):
         try:
-            left_entry_list = self.left_ftp_connect_obj.get_path_list_dir(self.left_node.path)
-            right_entry_list = self.right_ftp_connect_obj.get_path_list_dir(self.right_node.path)
+            left_entry_list = self.left_dir_connect_obj.get_path_list_dir(self.left_node.path)
+            right_entry_list = self.right_dir_connect_obj.get_path_list_dir(self.right_node.path)
             self.parse_filter_node_object(left_entry_list, self.left_entry_map, self.left_name_set,
                                           self.left_filters)
             self.parse_filter_node_object(right_entry_list, self.right_entry_map, self.right_name_set,
@@ -231,8 +229,8 @@ class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):
 
     def diff(self):
         try:
-            left_entry_list = self.left_ftp_connect_obj.get_path_list_dir(self.left_node.path)
-            right_entry_list = self.right_ftp_connect_obj.get_path_list_dir(self.right_node.path)
+            left_entry_list = self.left_dir_connect_obj.get_path_list_dir(self.left_node.path)
+            right_entry_list = self.right_dir_connect_obj.get_path_list_dir(self.right_node.path)
             self.parse_filter_node_object(left_entry_list, self.left_entry_map, self.left_name_set,
                                           self.left_filters)
             self.parse_filter_node_object(right_entry_list, self.right_entry_map, self.right_name_set,
@@ -252,7 +250,7 @@ class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):
         right_node = self.parse_node(self.right_filters[0], self.right_entry_map, self.left_entry_map, self.right_node)
         right_node.set_diff_result(KEY_D_RESULT_SAME)
 
-        diff_obj = DirNodeDiffObject(self.left_ftp_connect_obj, self.right_ftp_connect_obj, left_node, right_node)
+        diff_obj = DirNodeDiffObject(self.left_dir_connect_obj, self.right_dir_connect_obj, left_node, right_node)
         diff_obj.diff()
 
     def parse_node(self, name, entry_map, opposite_entry_map, parent_node):
