@@ -1,5 +1,5 @@
 import pysftp
-from permission.models import FTPClient, Environment, Country
+from permission.models import FTPRegion, FTPServer, Environment, Country
 from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
 from common.data_object.dir_connect_object import DirConnectObject
@@ -44,18 +44,19 @@ class FTPConnectionObject(DirConnectObject):
 class SharedStorageConnectionObject(FTPConnectionObject):
     LOG_CLASS = "SharedStorageConnectionObject"
 
-    def __init__(self, client_id, environment_id, only_last_version):
-        ftp_client = FTPClient.objects.get(id=client_id)
-        self.environment = Environment.objects.get(id=environment_id)
+    def __init__(self, region_id, environment_id, only_last_version):
+        ftp_region = FTPRegion.objects.get(id=region_id)
+        environment = Environment.objects.get(id=environment_id)
+        ftp_server = FTPServer.objects.get(region=ftp_region, environment=environment)
         self.only_last_version = only_last_version
 
-        auth_data = FTPAuthDataParser(self.environment.name, ftp_client.name)
-        FTPConnectionObject.__init__(self, ftp_client.url, ftp_client.port,
+        auth_data = FTPAuthDataParser(ftp_server.environment.name, ftp_server.region.name)
+        FTPConnectionObject.__init__(self, ftp_server.client.url, ftp_server.client.port,
                                      auth_data.get_account(),
                                      auth_data.get_password())
 
-    def set_compare_key(self, compare_key):
-        super().set_compare_key(compare_key)
+    def set_root_hash_key(self, root_hash_key):
+        super().set_root_hash_key(root_hash_key)
 
     def get_path_list_dir(self, path):
         return super().get_path_list_dir(path)

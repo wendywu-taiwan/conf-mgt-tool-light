@@ -5,10 +5,10 @@ class DirConnectObject:
     LOG_CLASS = "DirConnectObject"
 
     def __init__(self):
-        self.compare_key = None
+        self.root_hash_key = None
 
-    def set_compare_key(self, compare_key):
-        self.compare_key = compare_key
+    def set_root_hash_key(self, root_hash_key):
+        self.root_hash_key = root_hash_key
 
     @abstractmethod
     def connect(self):

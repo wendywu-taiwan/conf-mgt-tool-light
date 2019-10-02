@@ -1,5 +1,4 @@
 import stat
-from RulesetComparer.utils.fileManager import convert_file_size
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
 
@@ -22,6 +21,7 @@ class NodeObject:
         self.diff_result = None
         self.st_mode = st_mode
         self.is_latest_version_node = False
+        self.node_hash_key = None
         self.parse_depth()
         self.parse_type()
         self.parse_path()
@@ -53,13 +53,15 @@ class NodeObject:
             self.path = self.parent_node.path + "/" + self.name
 
     def set_size(self, size):
-        self.size = str(size) + "bytes"
-        # self.size = convert_file_size(size)
+        self.size = str(size) + " bytes"
 
     def set_modification_time(self, modification_time):
         data_time = timestamp_to_date_time(modification_time)
         time_format = config.TIME_FORMAT.get("year_month_date_hour_minute_second")
         self.modification_time = date_time_to_time(data_time, time_format)
+
+    def set_node_hash_key(self, node_hash_key):
+        self.node_hash_key = node_hash_key
 
     def set_diff_result(self, diff_result):
         self.diff_result = diff_result
@@ -70,14 +72,13 @@ class NodeObject:
     def sort_child_list(self):
         self.child_node_list.sort(key=lambda x: x.index, reverse=False)
 
-    def get_node_json(self):
-        return self.parse_node_json()
-
-    def parse_node_json(self):
+    def parse_root_node_json(self):
         json_obj = {KEY_NAME: self.name,
                     KEY_TYPE: self.type,
-                    KEY_DIFF_RESULT: self.diff_result,
+                    KEY_DIFF_RESULT: KEY_D_RESULT_SAME,
                     KEY_SIZE: self.size,
+                    KEY_DEPTH: self.depth,
+                    KEY_INDEX: self.index,
                     KEY_MODIFICATION_TIME: self.modification_time,
                     KEY_CHILD_NODES: self.parse_child_nodes_json()}
         return json_obj
@@ -90,7 +91,11 @@ class NodeObject:
                         KEY_TYPE: child_node.type,
                         KEY_DIFF_RESULT: child_node.diff_result,
                         KEY_SIZE: child_node.size,
-                        KEY_MODIFICATION_TIME: child_node.modification_time,
-                        KEY_CHILD_NODES: child_node.parse_child_nodes_json()}
+                        KEY_DEPTH: child_node.depth,
+                        KEY_INDEX: child_node.index,
+                        KEY_COMPARE_HASH_KEY: child_node.node_hash_key,
+                        KEY_MODIFICATION_TIME: child_node.modification_time}
+            if len(child_node.child_node_list) > 0:
+                json_obj[KEY_CHILD_NODES] = child_node.parse_child_nodes_json()
             json_list.append(json_obj)
         return json_list

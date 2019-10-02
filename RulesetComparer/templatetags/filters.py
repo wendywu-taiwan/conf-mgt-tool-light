@@ -47,3 +47,8 @@ def subtract(value, arg):
 @register.filter
 def add(value, arg):
     return value + arg
+
+
+@register.filter
+def add_str(arg1, arg2):
+    return str(arg1) + str(arg2)

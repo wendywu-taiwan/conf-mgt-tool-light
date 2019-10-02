@@ -40,13 +40,15 @@ class DirNodeObject:
                 child_node_add.set_size(entry.st_size)
                 child_node_add.set_modification_time(entry.st_mtime)
                 child_node_add.set_diff_result(KEY_D_RESULT_ADD)
-                self.parent_node_add.add_child_node_list(child_node_add)
 
                 child_node_remove = NodeObject(name, self.parent_node_remove.environment, self.parent_node_remove,
                                                index, entry.st_mode)
                 child_node_remove.set_size(entry.st_size)
                 child_node_remove.set_modification_time(entry.st_mtime)
                 child_node_remove.set_diff_result(KEY_D_RESULT_REMOVE)
+
+                self.update_node_hash_key(child_node_add, child_node_remove)
+                self.parent_node_add.add_child_node_list(child_node_add)
                 self.parent_node_remove.add_child_node_list(child_node_remove)
 
                 next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
@@ -60,3 +62,10 @@ class DirNodeObject:
         except Exception as e:
             traceback.print_exc()
             raise e
+
+    @staticmethod
+    def update_node_hash_key(left_node, right_node):
+        node_hash_key = str(hash(left_node) + hash(right_node))
+        left_node.set_node_hash_key(node_hash_key)
+        right_node.set_node_hash_key(node_hash_key)
+        return node_hash_key

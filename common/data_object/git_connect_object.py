@@ -2,7 +2,6 @@ import os
 from common.data_object.dir_connect_object import DirConnectObject
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils.logger import *
-from RulesetComparer.utils.fileManager import load_file
 from permission.models import Environment
 from shared_storage.properties.config import *
 
@@ -35,8 +34,8 @@ class SharedStorageGitConnectObject(DirConnectObject):
     def disconnect(self):
         self.git_manager = None
 
-    def set_compare_key(self, compare_key):
-        super().set_compare_key(compare_key)
+    def set_root_hash_key(self, root_hash_key):
+        super().set_root_hash_key(root_hash_key)
 
     def get_path_list_dir(self, path):
         path = self.root_path + path

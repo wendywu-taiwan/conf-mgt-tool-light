@@ -79,6 +79,8 @@ class DirNodeDiffObject:
         node_remove = self.parse_node(name, entry_map, opposite_entry_map, parent_node_remove)
         node_remove.set_diff_result(KEY_D_RESULT_REMOVE)
 
+        self.update_node_hash_key(node_add, node_remove)
+
         if node_add.type is KEY_FOLDER:
             child_node_obj = DirNodeObject(dir_connect_obj, node_add, node_remove)
             child_node_obj.parse_child_node()
@@ -99,6 +101,8 @@ class DirNodeDiffObject:
                 right_node = self.parse_node(name, self.right_entry_map, self.left_entry_map, self.right_node)
                 right_node.set_diff_result(KEY_D_RESULT_SAME)
 
+                node_hash_key = self.update_node_hash_key(left_node, right_node)
+
                 # diff folder
                 if left_node.type is KEY_FOLDER:
                     diff_obj = DirNodeDiffObject(self.left_dir_connect_obj, self.right_dir_connect_obj, left_node,
@@ -113,7 +117,7 @@ class DirNodeDiffObject:
                     left_file_object = self.left_dir_connect_obj.get_file_contents(left_file_object)
                     right_file_object = self.right_dir_connect_obj.get_file_contents(right_file_object)
                     diff_file_type_object = DiffFileTypeObject(left_file_object, right_file_object,
-                                                               self.left_dir_connect_obj.compare_key)
+                                                               self.left_dir_connect_obj.root_hash_key, node_hash_key)
                     has_changes = diff_file_type_object.diff_file()
 
                     if has_changes:
@@ -127,6 +131,8 @@ class DirNodeDiffObject:
 
             left_node.set_diff_result(KEY_D_RESULT_SAME)
             right_node.set_diff_result(KEY_D_RESULT_SAME)
+
+            self.update_node_hash_key(left_node, right_node)
 
             left_last_version = self.left_dir_connect_obj.get_latest_version(left_node.path)
             right_last_version = self.right_dir_connect_obj.get_latest_version(right_node.path)
@@ -155,6 +161,12 @@ class DirNodeDiffObject:
         info_log(self.LOG_CLASS,
                  "parse_node , index:" + str(node.index) + ", depth: " + str(node.depth) + ", path: " + node.path)
         return node
+
+    def update_node_hash_key(self, left_node, right_node):
+        node_hash_key = str(hash(left_node) + hash(right_node))
+        left_node.set_node_hash_key(node_hash_key)
+        right_node.set_node_hash_key(node_hash_key)
+        return node_hash_key
 
 
 class DirNodeDiffFilterObject(DirNodeDiffObject):
@@ -214,6 +226,9 @@ class DirNodeDiffFilterObject(DirNodeDiffObject):
     def parse_node(self, name, entry_map, opposite_entry_map, parent_node):
         return super().parse_node(name, entry_map, opposite_entry_map, parent_node)
 
+    def update_node_hash_key(self, left_node, right_node):
+        super().update_node_hash_key(left_node, right_node)
+
 
 class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):
     LOG_CLASS = "DirNodeDiffLastVersionObject"
@@ -237,7 +252,6 @@ class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):
                                           self.right_filters)
             self.diff_last_version_node()
         except Exception as e:
-            traceback.print_exc()
             raise e
 
     def parse_filter_node_object(self, entry_list, entry_map, name_set, filters):
@@ -250,8 +264,13 @@ class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):
         right_node = self.parse_node(self.right_filters[0], self.right_entry_map, self.left_entry_map, self.right_node)
         right_node.set_diff_result(KEY_D_RESULT_SAME)
 
+        self.update_node_hash_key(left_node, right_node)
+
         diff_obj = DirNodeDiffObject(self.left_dir_connect_obj, self.right_dir_connect_obj, left_node, right_node)
         diff_obj.diff()
 
     def parse_node(self, name, entry_map, opposite_entry_map, parent_node):
         return super().parse_node(name, entry_map, opposite_entry_map, parent_node)
+
+    def update_node_hash_key(self, left_node, right_node):
+        super().update_node_hash_key(left_node, right_node)
