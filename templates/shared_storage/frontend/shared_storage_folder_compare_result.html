@@ -1,0 +1,30 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+{% load filters %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-folder-compare-result.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/shared_storage_folder_compare_result.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="compare_result_container" class="container-fluid">
+        <div id="folder_compare_result_div" class="row no-row-margin">
+            {% with side="left" root_node_object=data.left_diff_result region=data.left_region environment=data.left_environment folder=data.left_folder %}
+                {% include 'side_result_div.html' %}
+            {% endwith %}
+            <div id="middle_divider"></div>
+            {% with side="right" root_node_object=data.right_diff_result region=data.right_region environment=data.right_environment folder=data.right_folder %}
+                {% include 'side_result_div.html' %}
+            {% endwith %}
+
+        </div>
+    </div>
+    <script>
+        onRegionSelected = function (side, regionId) {
+            filterEnvironments(side, regionId, "{% url 'shared_storage:select-to-compare-filter-environment-page' %}");
+        };
+        onEnvironmentSelected = function (side) {
+            filterFolders(side, "{% url 'shared_storage:select-to-compare-filter-folder-page' %}");
+        };
+    </script>
+{% endblock %}
+

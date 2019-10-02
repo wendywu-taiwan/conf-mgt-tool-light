@@ -1,0 +1,14 @@
+<div class="drop_down_label_text" for="{{ side }}_select_{{ type }}">{{ title }}</div>
+<div id="{{ side }}_select_{{ type }}" class="custom-btn-group-1 btn-group">
+    <button id="{{ side }}_select_{{ type }}_btn"
+            class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+            type="button" data-toggle="dropdown">
+        {{ title }}
+    </button>
+    <ul id="{{ side }}_select_{{ type }}_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+        role="menu">
+        {% for object in data %}
+            <li value="{{ object.id }}"><a href="#">{{ object.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>

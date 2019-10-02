@@ -123,6 +123,11 @@ function split_str(name, index) {
     return tagSplitArray[index];
 }
 
+function split_str_array(name) {
+    let tagSplitArray = (name).split("_");
+    return tagSplitArray;
+}
+
 function openNewPageWithHTML(url, html) {
     var newWindows = window.open(url);
     newWindows.document.write(html);

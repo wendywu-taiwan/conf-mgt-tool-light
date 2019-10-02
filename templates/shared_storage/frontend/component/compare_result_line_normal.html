@@ -1,0 +1,17 @@
+{% load staticfiles %}
+
+<div class="folder_name_info_div row no-row-margin">
+    {% if child_node.type == "folder" %}
+        {% include 'compare_result_line_folder_collapse_icon.html' %}
+        <img class="folder_icon" src="{% static '/icons/folder.png' %}">
+    {% else %}
+        <span class="expand_folder_icon_span"></span>
+        <img class="folder_icon" src="{% static '/icons/file.png' %}">
+    {% endif %}
+
+    <div class="name folder_text normal_text_color">{{ child_node.name }}</div>
+</div>
+<div class="folder_other_info_div row no-row-margin">
+    <div class="size ellipsis other_info_text normal_text_color">{{ child_node.size }}</div>
+    <div class="modification_time other_info_text normal_text_color">{{ child_node.modification_time }}</div>
+</div>

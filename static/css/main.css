@@ -378,7 +378,6 @@ html, body {
     box-shadow: 4px 8px 8px 0 rgba(50, 50, 50, .08);
 }
 
-
 .create_action_div {
     border-color: #3cc8ab;
     background: #3cc8ab;
@@ -409,12 +408,12 @@ html, body {
     text-align: center;
 }
 
-.custom_button{
+.custom_button {
     color: white;
     background-color: #34619b;
 }
 
-.border_color_green{
+.border_color_green {
     border-color: #049092;
 }
 
@@ -424,4 +423,10 @@ html, body {
     color: #868686;
     margin-bottom: 5px;
     font-family: "Lato";
+}
+
+.ellipsis {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
