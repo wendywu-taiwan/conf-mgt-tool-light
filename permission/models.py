@@ -312,19 +312,42 @@ class RoleFunctionPermissionAdmin(admin.ModelAdmin):
 admin.site.register(RoleFunctionPermission, RoleFunctionPermissionAdmin)
 
 
-class FTPClient(models.Model):
+class FTPRegion(models.Model):
     id = models.AutoField(primary_key=True)
-    url = models.URLField()
     name = models.CharField(max_length=128)
-    port = models.IntegerField(default=0)
     active = models.IntegerField(default=0)
 
 
+class FTPRegionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'active')
+
+
+admin.site.register(FTPRegion, FTPRegionAdmin)
+
+
+class FTPClient(models.Model):
+    id = models.AutoField(primary_key=True)
+    url = models.URLField()
+    port = models.IntegerField(default=0)
+
+
 class FTPClientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'url', 'function', 'name', 'port', 'active')
+    list_display = ('id', 'url', 'port')
 
 
 admin.site.register(FTPClient, FTPClientAdmin)
 
 
+class FTPServer(models.Model):
+    id = models.AutoField(primary_key=True)
+    region = models.ForeignKey(FTPRegion, related_name='ftp_server_region', null=True, on_delete=models.PROTECT)
+    environment = models.ForeignKey(Environment, related_name='ftp_server_environment', null=True,
+                                    on_delete=models.PROTECT)
+    client = models.ForeignKey(FTPClient, related_name='ftp_server_client', null=True, on_delete=models.PROTECT)
 
+
+class FTPServerAdmin(admin.ModelAdmin):
+    list_display = ('id', 'region', 'environment', 'client')
+
+
+admin.site.register(FTPServer, FTPServerAdmin)

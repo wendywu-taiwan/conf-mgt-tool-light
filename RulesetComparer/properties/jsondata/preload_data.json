@@ -215,6 +215,11 @@
         "name": "INT2",
         "active": 1
       },
+       {
+        "full_name": "int3",
+        "name": "INT3",
+        "active": 0
+      },
       {
         "full_name": "git",
         "name": "GIT",
@@ -527,16 +532,177 @@
         "interval": 1
       }
     ],
+    "ftp_region": [
+      {
+        "name": "GIT",
+        "active": 1
+      },
+      {
+        "name": "REF",
+        "active": 0
+      },
+      {
+        "name": "CEE",
+        "active": 0
+      },
+      {
+        "name": "GAS",
+        "active": 0
+      },
+      {
+        "name": "NL",
+        "active": 0
+      },
+      {
+        "name": "CN",
+        "active": 1
+      },
+      {
+        "name": "SG",
+        "active": 1
+      },
+      {
+        "name": "AU",
+        "active": 0
+      }
+    ],
     "ftp_client": [
       {
+        "url": "ftp-int.audatex.net",
+        "port": 22223
+      },
+      {
+        "url": "axnftp.audatex.net",
+        "port": 22223
+      },
+      {
         "url": "ftp.audatex.cn",
-        "name": "CN",
         "port": 22223
       },
       {
         "url": "ftp.audatex.sg",
-        "name": "SG",
         "port": 22223
+      },
+      {
+        "url": "ftp.audatex.com.au",
+        "port": 22223
+      }
+    ],
+    "ftp_server": [
+       {
+        "region": "GIT",
+        "environment": "GIT",
+        "client": ""
+      },
+      {
+        "region": "REF",
+        "environment": "INT1",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "REF",
+        "environment": "INT2",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "REF",
+        "environment": "CAE",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "CEE",
+        "environment": "INT1",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "CEE",
+        "environment": "INT3",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "CEE",
+        "environment": "CT",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "CEE",
+        "environment": "CAE",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "GAS",
+        "environment": "INT1",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "GAS",
+        "environment": "INT2",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "GAS",
+        "environment": "CT",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "GAS",
+        "environment": "CAE",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "NL",
+        "environment": "INT1",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "NL",
+        "environment": "INT2",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "NL",
+        "environment": "CAE",
+        "client": "axnftp.audatex.net"
+      },
+      {
+        "region": "CN",
+        "environment": "INT1",
+        "client": "ftp.audatex.cn"
+      },
+      {
+        "region": "SG",
+        "environment": "INT1",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "SG",
+        "environment": "INT2",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "SG",
+        "environment": "CT",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "SG",
+        "environment": "CAE",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "AU",
+        "environment": "INT1",
+        "client": "ftp.audatex.com.au"
+      },
+      {
+        "region": "AU",
+        "environment": "INT2",
+        "client": "ftp.audatex.com.au"
+      },
+      {
+        "region": "AU",
+        "environment": "CAE",
+        "client": "ftp.audatex.com.au"
       }
     ],
     "update_time": {
@@ -550,7 +716,7 @@
         "update_time": "2019-8-12 17:50:00"
       },
       "environment": {
-        "update_time": "2019-8-12 17:50:00"
+        "update_time": "2019-9-1 17:51:00"
       },
       "function": {
         "update_time": "2019-8-12 17:50:00"
@@ -582,8 +748,14 @@
       "frequency_type": {
         "update_time": "2019-8-12 17:50:00"
       },
+      "ftp_region": {
+        "update_time": "2019-9-2 17:50:00"
+      },
       "ftp_client": {
-        "update_time": "2019-8-12 17:50:00"
+        "update_time": "2019-9-1 17:50:00"
+      },
+      "ftp_server": {
+        "update_time": "2019-9-2 17:50:00"
       }
     }
   }

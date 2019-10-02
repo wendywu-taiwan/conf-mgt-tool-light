@@ -50,8 +50,8 @@ class B2BServiceAuthDataParser(AuthDataParser):
 
 
 class FTPAuthDataParser(AuthDataParser):
-    def __init__(self, environment, client_name):
-        AuthDataParser.__init__(self, self.KEY_AUTH_FTP, environment, client_name)
+    def __init__(self, environment, region_name):
+        AuthDataParser.__init__(self, self.KEY_AUTH_FTP, environment, region_name)
 
     def get_account(self):
         return super().get_account()
