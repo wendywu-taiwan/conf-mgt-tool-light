@@ -13,59 +13,73 @@ class DirNodeObject:
         self.parent_node_add = parent_node_add
         self.parent_node_remove = parent_node_remove
         self.depth = parent_node_add.depth + 1
-        self.last_version = self.parse_last_version()
         info_log(self.LOG_CLASS,
                  "node path: " + self.parent_node_add.path + ", depth: " + str(self.parent_node_add.depth))
 
-    def parse_last_version(self):
-        if self.dir_connect_obj.only_last_version and self.depth == DEPTH_MODULE_VERSION:
-            return self.dir_connect_obj.get_latest_version(self.parent_node_add.path)
-        return None
-
-    def parse_child_node(self):
+    def parse_child_nodes(self):
         try:
             if self.parent_node_add.type is not KEY_FOLDER:
                 return
 
             entry_list = self.dir_connect_obj.get_path_list_dir(self.parent_node_add.path)
+
             index = 0
             for entry in entry_list:
-                name = entry.filename
-
-                if self.last_version is not None and name != self.last_version:
-                    continue
-
-                child_node_add = NodeObject(name, self.parent_node_add.environment, self.parent_node_add, index,
-                                            entry.st_mode)
-                child_node_add.set_size(entry.st_size)
-                child_node_add.set_modification_time(entry.st_mtime)
-                child_node_add.set_diff_result(KEY_D_RESULT_ADD)
-
-                child_node_remove = NodeObject(name, self.parent_node_remove.environment, self.parent_node_remove,
-                                               index, entry.st_mode)
-                child_node_remove.set_size(entry.st_size)
-                child_node_remove.set_modification_time(entry.st_mtime)
-                child_node_remove.set_diff_result(KEY_D_RESULT_REMOVE)
-
-                self.update_node_hash_key(child_node_add, child_node_remove)
-                self.parent_node_add.add_child_node_list(child_node_add)
-                self.parent_node_remove.add_child_node_list(child_node_remove)
-
-                next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
-                info_log(self.LOG_CLASS,
-                         "parse_child_node , index:" + str(
-                             child_node_add.index) + ", path: " + child_node_add.path + " , name: " + child_node_add.name)
-
-                next_depth_child_node_obj.parse_child_node()
-
+                self.parse_child_node(index, entry)
                 index = index + 1
         except Exception as e:
-            traceback.print_exc()
             raise e
 
-    @staticmethod
-    def update_node_hash_key(left_node, right_node):
+    def parse_child_node(self, index, entry):
+        child_node_add = self.create_node(self.parent_node_add, index, entry, KEY_D_RESULT_ADD)
+        child_node_remove = self.create_node(self.parent_node_remove, index, entry, KEY_D_RESULT_REMOVE)
+        self.update_node_hash_key(child_node_add, child_node_remove)
+
+        next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
+        next_depth_child_node_obj.parse_child_nodes()
+        info_log(self.LOG_CLASS,
+                 "parse_child_node , index:" + str(
+                     child_node_add.index) + ", path: " + child_node_add.path + " , name: " + child_node_add.name)
+
+    def create_node(self, parent_node, index, entry, diff_result):
+        node = NodeObject(entry.filename, parent_node.environment, parent_node, index, entry.st_mode)
+        node.set_size(entry.st_size)
+        node.set_modification_time(entry.st_mtime)
+        node.set_diff_result(diff_result)
+        parent_node.add_child_node_list(node)
+        return node
+
+    def update_node_hash_key(self, left_node, right_node):
         node_hash_key = str(hash(left_node) + hash(right_node))
         left_node.set_node_hash_key(node_hash_key)
         right_node.set_node_hash_key(node_hash_key)
         return node_hash_key
+
+
+class DirNodeLastVersionObject(DirNodeObject):
+    LOG_CLASS = "DirNodeLastVersionObject"
+
+    def __init__(self, dir_connect_obj, parent_node_add, parent_node_remove):
+        DirNodeObject.__init__(self, dir_connect_obj, parent_node_add, parent_node_remove)
+
+    def parse_child_nodes(self):
+        try:
+            index = 0
+            last_version = self.dir_connect_obj.get_latest_version(self.parent_node_add.path)
+            entry_list = self.dir_connect_obj.get_path_list_dir(self.parent_node_add.path)
+
+            for entry in entry_list:
+                name = entry.filename
+                if last_version is not None and name != last_version:
+                    continue
+
+                self.parse_child_node(index, entry)
+                index = index + 1
+        except Exception as e:
+            raise e
+
+    def create_node(self, parent_node, index, entry, diff_result):
+        return super().create_node(parent_node, index, entry, diff_result)
+
+    def update_node_hash_key(self, left_node, right_node):
+        return super().update_node_hash_key(left_node, right_node)
