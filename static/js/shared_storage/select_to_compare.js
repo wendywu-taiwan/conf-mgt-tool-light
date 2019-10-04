@@ -114,8 +114,11 @@ submitSharedFolderCompare = function (postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let blockContentDiv = document.getElementById("block_content_div");
-            blockContentDiv.innerHTML = response;
+        // location.reload(response)
+        console.log(response);
+        // window.location.href =postUrl;
+            // document.getElementsByTagName('body')[0].innerHTML = response;
+            // location.reload();
             stopDialog();
         }, function (response) {
             console.log(response);

@@ -63,7 +63,7 @@ def get_environment_dir_list(json_data):
 
 def compare_shared_storage_folder(json_data):
     try:
-        json_data = load_json_file(COMPARE_RESULT_PATH + "-18446744073164169244.json")
+        # json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036284746972.json")
 
         # parser = CompareSharedStorageFolderParser(json_data)
         # left_root_obj = DirRootObject(parser.left_region_id, parser.left_environment_id, parser.left_folder,
@@ -76,6 +76,38 @@ def compare_shared_storage_folder(json_data):
         # info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
         #
         # if parser.apply_filter_folders:
+        #     dir_node_diff_obj = DirNodeDiffFilterObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
+        #                                                 left_root_obj.node_object, right_root_obj.node_object,
+        #                                                 left_root_obj.filter_modules, right_root_obj.filter_modules)
+        # else:
+        #     dir_node_diff_obj = DirNodeDiffObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
+        #                                           left_root_obj.node_object, right_root_obj.node_object)
+        # dir_node_diff_obj.diff()
+        # json_data = CountryLevelDiffResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
+        #
+        # file_path = COMPARE_RESULT_PATH + "%s.%s" % (root_hash_key, KEY_JSON)
+        # save_file(file_path, json.dumps(json_data))
+        # info_log("service", "diff_country_level done")
+        return json_data
+    except Exception as e:
+        raise e
+
+
+def compare_shared_storage_folder_test(left_region_id, left_environment_id, left_folder,
+                                       right_region_id, right_environment_id, right_folder):
+    try:
+        json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036284746972.json")
+
+        # only_last_version = True
+        # apply_filter_folders = True
+        # left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
+        # right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
+        # root_hash_key = hash(left_root_obj) + hash(right_root_obj)
+        # left_root_obj.update_root_hash_key(root_hash_key)
+        # right_root_obj.update_root_hash_key(root_hash_key)
+        # info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
+        #
+        # if apply_filter_folders:
         #     dir_node_diff_obj = DirNodeDiffFilterObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
         #                                                 left_root_obj.node_object, right_root_obj.node_object,
         #                                                 left_root_obj.filter_modules, right_root_obj.filter_modules)

@@ -1,4 +1,5 @@
 $(function () {
+    console.log("init javascript");
     $('.collapse').on('hidden.bs.collapse', function (e) {
         triggerOppositeComponent(e, "hide");
         changeCollapseIconVisibility(e, hide, showBlock);

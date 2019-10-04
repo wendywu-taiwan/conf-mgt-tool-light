@@ -11,10 +11,10 @@ compare_pattern = [
          name="select-to-compare-filter-environment-page"),
     path('compare/select/filter/folder', views.select_to_compare_filter_folder_page,
          name="select-to-compare-filter-folder-page"),
-    path('compare/result',views.compare_shared_storage_folder_result_page,name="compare-result-page"),
-
-    path('compare/result/test', views.compare_shared_storage_folder_result_page, name="compare-result-test-page")
-
+    path('compare/result', views.compare_shared_storage_folder_result_page, name="compare-result-page"),
+    path(
+        'compare/result/<str:left_region_id>/<str:left_environment_id>/<str:left_folder>/<str:right_region_id>/<str:right_environment_id>/<str:right_folder>',
+        views.compare_shared_storage_folder_result_test_page, name="compare-result-data-page"),
 ]
 
 urlpatterns = [
