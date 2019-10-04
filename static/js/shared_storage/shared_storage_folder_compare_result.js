@@ -21,6 +21,46 @@ $(function () {
     });
 });
 
+function showCollapseComponent(side, depth, index, node_hash_key) {
+    let collapseShowIcon = getCollapseShowIcon(side, depth, index, node_hash_key);
+    let collapseHideIcon = getCollapseHideIcon(side, depth, index, node_hash_key);
+    let collapseComponent = getCollapseComponent(side, depth, index, node_hash_key);
+
+    showBlock(collapseShowIcon);
+    hide(collapseHideIcon);
+    collapseComponent.collapse("show");
+}
+
+function hideCollapseComponent(side, depth, index, node_hash_key) {
+    let collapseShowIcon = getCollapseShowIcon(side, depth, index, node_hash_key);
+    let collapseHideIcon = getCollapseHideIcon(side, depth, index, node_hash_key);
+    let collapseComponent = getCollapseComponent(side, depth, index, node_hash_key);
+
+    showBlock(collapseHideIcon);
+    hide(collapseShowIcon);
+    collapseComponent.collapse("hide");
+
+}
+
+function getCollapseShowIcon(side, depth, index, node_hash_key) {
+    return getCollapseIcon(side, depth, index, node_hash_key, "collapse_show")
+}
+
+function getCollapseHideIcon(side, depth, index, node_hash_key) {
+    return getCollapseIcon(side, depth, index, node_hash_key, "collapse_hide")
+}
+
+function getCollapseComponent(side, depth, index, node_hash_key) {
+    let collapseComponentId = side + "_folder_" + depth + "_" + index + "_" + node_hash_key + "_child_div";
+    return $('#' + collapseComponentId + '');
+}
+
+function getCollapseIcon(side, depth, index, node_hash_key, idSuffix) {
+    let idPrefix = side + "_" + depth + "_" + index + "_" + node_hash_key;
+    let componentId = idPrefix + "_" + idSuffix;
+    return document.getElementById(componentId);
+}
+
 
 function triggerOppositeComponent(e, status) {
     let idArray = split_str_array(e.currentTarget.id);

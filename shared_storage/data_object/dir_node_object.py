@@ -33,6 +33,8 @@ class DirNodeObject:
     def parse_child_node(self, index, entry):
         child_node_add = self.create_node(self.parent_node_add, index, entry, KEY_D_RESULT_ADD)
         child_node_remove = self.create_node(self.parent_node_remove, index, entry, KEY_D_RESULT_REMOVE)
+        child_node_add.set_show_collapse()
+        child_node_remove.set_show_collapse()
         self.update_node_hash_key(child_node_add, child_node_remove)
 
         next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)

@@ -13,6 +13,13 @@
                 {% include 'compare_result_line.html' %}
             </div>
             {% include 'side_folder_compare_expand_component.html' %}
+            <script type="text/javascript">
+                $(function () {
+                    {% if child_node.show_collapse is False %}
+                        hideCollapseComponent("{{ side }}", "{{ child_node.depth }}", "{{ child_node.index }}", "{{ child_node.compare_hash_key }}");
+                    {% endif %}
+                });
+            </script>
         {% endfor %}
     {% endwith %}
 </div>

@@ -22,6 +22,7 @@ class NodeObject:
         self.st_mode = st_mode
         self.is_latest_version_node = False
         self.node_hash_key = None
+        self.show_collapse = False
         self.parse_depth()
         self.parse_type()
         self.parse_path()
@@ -66,6 +67,11 @@ class NodeObject:
     def set_diff_result(self, diff_result):
         self.diff_result = diff_result
 
+    def set_show_collapse(self):
+        self.show_collapse = True
+        if self.parent_node is not None:
+            self.parent_node.set_show_collapse()
+
     def add_child_node_list(self, child_node):
         self.child_node_list.append(child_node)
 
@@ -79,6 +85,7 @@ class NodeObject:
                     KEY_SIZE: self.size,
                     KEY_DEPTH: self.depth,
                     KEY_INDEX: self.index,
+                    KEY_SHOW_COLLAPSE: self.show_collapse,
                     KEY_MODIFICATION_TIME: self.modification_time,
                     KEY_CHILD_NODES: self.parse_child_nodes_json()}
         return json_obj
@@ -96,6 +103,7 @@ class NodeObject:
                         KEY_COMPARE_HASH_KEY: child_node.node_hash_key,
                         KEY_MODIFICATION_TIME: child_node.modification_time}
             if len(child_node.child_node_list) > 0:
+                json_obj[KEY_SHOW_COLLAPSE] = child_node.show_collapse
                 json_obj[KEY_CHILD_NODES] = child_node.parse_child_nodes_json()
             json_list.append(json_obj)
         return json_list

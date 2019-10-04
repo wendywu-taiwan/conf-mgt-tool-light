@@ -4,7 +4,7 @@
     margin-right: auto;
     background: #edf0f1de;
     border-radius: 5px;
-    padding: 10px 20px 10px 20px;
+    padding: 15px 20px;
     margin-bottom: 20px;
 }
 
@@ -12,25 +12,40 @@
     width: 49%;
 }
 
+.information_div {
+    background: #ffffff;
+    border-radius: 3px;
+}
+
 #middle_divider {
     width: 2%;
+}
+
+.line_div {
+    border: 0.5px solid #e2e3e3;
+    border-bottom: none;
+}
+
+.line_div_bottom {
+    border: 0.5px solid #e2e3e3;
+
 }
 
 .info_title {
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 16px;
-    font-weight: 800;
+    font-size: 13px;
+    font-weight: 600;
     min-width: 130px;
+    padding: 2px 10px;
+    background: #e2e3e3;
+    margin-right: 20px;
 }
 
 .info_text {
     margin-top: auto;
     margin-bottom: auto;
-    font-size: 16px;
-    font-weight: 600;
-    min-width: 130px;
-    color: #6f97ad;
+    font-size: 13px;
 }
 
 .folder_title_div {
@@ -187,7 +202,7 @@
     margin-bottom: auto;
 }
 
-.folder_collapse_hide_icon{
+.folder_collapse_hide_icon {
     width: 10px;
     height: 10px;
     margin-right: 5px;

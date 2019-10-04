@@ -285,6 +285,7 @@ KEY_LEFT_LINE = "left_line"
 KEY_RIGHT_TYPE = "right_type"
 KEY_RIGHT_ROW = "right_row"
 KEY_RIGHT_LINE = "right_line"
+KEY_SHOW_COLLAPSE = "show_collapse"
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'

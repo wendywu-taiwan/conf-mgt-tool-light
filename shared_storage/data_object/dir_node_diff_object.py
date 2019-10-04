@@ -97,6 +97,8 @@ class DirNodeDiffObject:
                                           parent_node_add, parent_node_remove):
         node_add = self.parse_node(name, entry_map, opposite_entry_map, parent_node_add, KEY_D_RESULT_ADD)
         node_remove = self.parse_node(name, entry_map, opposite_entry_map, parent_node_remove, KEY_D_RESULT_REMOVE)
+        node_add.set_show_collapse()
+        node_remove.set_show_collapse()
         self.update_node_hash_key(node_add, node_remove)
         return node_add, node_remove
 
@@ -126,6 +128,8 @@ class DirNodeDiffObject:
                 has_changes = diff_file_type_object.diff_file()
 
                 if has_changes:
+                    left_node.set_show_collapse()
+                    right_node.set_show_collapse()
                     left_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
                     right_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
 

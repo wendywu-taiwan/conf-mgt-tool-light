@@ -39,12 +39,10 @@ class SharedStorageGitConnectObject(DirConnectObject):
 
     def get_path_list_dir(self, path):
         path = self.root_path + path
-        info_log(self.LOG_CLASS, "get_path_list_dir , path: " + path)
         entry_list = list()
         dir_list = sorted(os.listdir(path))
         for file in dir_list:
             file_path = path + "/" + file
-            info_log(self.LOG_CLASS, "get_path_list_dir , file_path: " + file_path)
 
             entry = os.stat(file_path)
             entry_object = GitDirEntryObject(entry, file)
