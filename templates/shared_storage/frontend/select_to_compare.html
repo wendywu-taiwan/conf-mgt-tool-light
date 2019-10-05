@@ -69,10 +69,21 @@
                 </div>
             </div>
         </div>
-        <button id="compare_submit_button" class="custom-btn-1 btn btn-embossed btn-primary" type="submit"
-                form="compare" value="Submit" onclick="submitFolderCompare()">
-            Submit
-        </button>
+
+        <form id="compare" method="post">
+            {% csrf_token %}
+            <input name='left_region_id' id="left_region_id" value="" type="hidden">
+            <input name='right_region_id' id="right_region_id" value="" type="hidden">
+            <input name='left_environment_id' id="left_environment_id" value="" type="hidden">
+            <input name='right_environment_id' id="right_environment_id" value="" type="hidden">
+            <input name='left_folder' id="left_folder" value="" type="hidden">
+            <input name='right_folder' id="right_folder" value="" type="hidden">
+
+            <button id="compare_submit_button" class="custom-btn-1 btn btn-embossed btn-primary" type="submit"
+                    form="compare" value="Submit">
+                Submit
+            </button>
+        </form>
     </div>
     <script>
         onRegionSelected = function (side, regionId) {
@@ -80,9 +91,6 @@
         };
         onEnvironmentSelected = function (side) {
             filterFolders(side, "{% url 'shared_storage:select-to-compare-filter-folder-page' %}");
-        };
-        submitFolderCompare = function () {
-            submitSharedFolderCompare("{% url 'shared_storage:compare-result-page' %}");
         };
     </script>
 {% endblock %}

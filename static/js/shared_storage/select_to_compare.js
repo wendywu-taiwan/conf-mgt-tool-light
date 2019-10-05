@@ -5,6 +5,7 @@ $(function () {
     $("#left_select_region_list li").click(function () {
         $("#left_select_region_btn:first-child").text($(this).text());
         $("#left_select_region_btn:first-child").val($(this).val());
+        $("#left_region_id").val($(this).val());
         leftRegionId = $(this).val();
         onRegionSelected("left", $(this).val());
     });
@@ -12,6 +13,7 @@ $(function () {
     $("#right_select_region_list li").click(function () {
         $("#right_select_region_btn:first-child").text($(this).text());
         $("#right_select_region_btn:first-child").val($(this).val());
+        $("#right_region_id").val($(this).val());
         rightRegionId = $(this).val();
         onRegionSelected("right", $(this).val());
     });
@@ -28,6 +30,7 @@ initEnvironmentDropDownComponent = function () {
     $("#left_select_environment_list li").click(function () {
         $("#left_select_environment_btn:first-child").text($(this).text());
         $("#left_select_environment_btn:first-child").val($(this).val());
+        $("#left_environment_id").val($(this).val());
         leftEnvId = $(this).val();
         onEnvironmentSelected("left");
     });
@@ -36,6 +39,7 @@ initEnvironmentDropDownComponent = function () {
 
         $("#right_select_environment_btn:first-child").text($(this).text());
         $("#right_select_environment_btn:first-child").val($(this).val());
+        $("#right_environment_id").val($(this).val());
         rightEnvId = $(this).val();
         onEnvironmentSelected("right");
     });
@@ -45,6 +49,7 @@ initFolderDropDownComponent = function () {
     $("#left_select_folder_list li").click(function () {
         $("#left_select_folder_btn:first-child").text($(this).text());
         $("#left_select_folder_btn:first-child").val($(this).val());
+        $("#left_folder").val($(this).val());
         leftFolder = $(this).text();
     });
 
@@ -52,6 +57,7 @@ initFolderDropDownComponent = function () {
 
         $("#right_select_folder_btn:first-child").text($(this).text());
         $("#right_select_folder_btn:first-child").val($(this).val());
+        $("#right_folder").val($(this).val());
         rightFolder = $(this).text();
     });
 
@@ -94,31 +100,6 @@ filterFolders = function (side, postUrl) {
             let folderDropDownDiv = document.getElementById(side + '_folder_dropdown_div');
             folderDropDownDiv.innerHTML = response;
             initFolderDropDownComponent();
-            stopDialog();
-        }, function (response) {
-            console.log(response);
-        }
-    );
-};
-
-
-submitSharedFolderCompare = function (postUrl) {
-    showWaitingDialog();
-    let post_body = {
-        "left_region_id": leftRegionId,
-        "right_region_id": rightRegionId,
-        "left_environment_id": leftEnvId,
-        "right_environment_id": rightEnvId,
-        "left_folder": leftFolder,
-        "right_folder": rightFolder
-    };
-
-    doPOST(postUrl, post_body, function (response) {
-        // location.reload(response)
-        console.log(response);
-        // window.location.href =postUrl;
-            // document.getElementsByTagName('body')[0].innerHTML = response;
-            // location.reload();
             stopDialog();
         }, function (response) {
             console.log(response);
