@@ -1,5 +1,4 @@
 $(function () {
-    console.log("init javascript");
     $('.collapse').on('hidden.bs.collapse', function (e) {
         triggerOppositeComponent(e, "hide");
         changeCollapseIconVisibility(e, hide, showBlock);
@@ -108,4 +107,86 @@ function changeCollapseIconVisibility(e, showIconSwitchMethod, hideIconSwitchMet
 
     showIconSwitchMethod(collapseShowIcon);
     hideIconSwitchMethod(collapseHideIcon);
+}
+
+let lastClickedRDataLineId;
+
+function dataLineOnclick(element, type, diffResult, detailUrl, diffUrl) {
+    // example id: right_-18446744073139484987_data_line_div
+    //remove last select item bg color
+    if (lastClickedRDataLineId != null) {
+        let lastElement = document.getElementById(lastClickedRDataLineId);
+        let lastOppositeElement = getOppositeElement(lastClickedRDataLineId);
+        lastElement.style.backgroundColor = "#ffffff";
+        lastOppositeElement.style.backgroundColor = "#ffffff";
+    }
+
+    if (type == "folder") {
+        return
+    }
+
+    //add bg color to current select item
+    lastClickedRDataLineId = element.id;
+    element.style.backgroundColor = "#d8ecffbd";
+    let oppositeElement = getOppositeElement(element.id);
+    oppositeElement.style.backgroundColor = "#d8ecffbd";
+
+    //open file detail or diff page
+    if (diffResult == "different") {
+        getFileDiffPage(diffUrl);
+    } else {
+        getFileDetailPage(detailUrl)
+    }
+}
+
+function getOppositeElement(id) {
+    let idArray = split_str_array(id);
+    let side = idArray[0];
+    let oppositeElementId = (side == "left") ? "right" : "left";
+
+    delete idArray[0];
+    idArray.forEach(function (string) {
+        oppositeElementId = oppositeElementId + "_" + string;
+    });
+    return document.getElementById(oppositeElementId);
+}
+
+function getFileDetailPage(url) {
+    showWaitingDialog();
+
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == 200) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 222)
+                showSuccessDialog("Preview is not supported for this file");
+            else
+                showErrorDialog(response["message"])
+        }
+    }, function (response) {
+        showErrorDialog(response);
+    });
+
+}
+
+function getFileDiffPage(url) {
+    showWaitingDialog();
+
+    doGET(url, function (response) {
+        let statusCode = response["status_code"];
+        if (statusCode == null) {
+            stopDialog();
+            window.open(url);
+        } else {
+            if (statusCode == 222)
+                showSuccessDialog("Preview is not supported for this file");
+            else
+                showErrorDialog(response["message"])
+        }
+    }, function (response) {
+        showErrorDialog(response);
+    });
+
 }

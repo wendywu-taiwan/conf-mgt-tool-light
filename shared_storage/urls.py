@@ -11,6 +11,12 @@ compare_pattern = [
          name="select-to-compare-filter-environment-page"),
     path('compare/select/filter/folder', views.select_to_compare_filter_folder_page,
          name="select-to-compare-filter-folder-page"),
+    path('compare/file/detail/<str:side>/<str:node_key>/<str:type>', views.select_to_compare_filter_folder_page,
+         name="select-to-compare-file-detail-page"),
+    path('compare/file/diff/<str:node_key>/<str:type>', views.select_to_compare_filter_folder_page,
+         name="select-to-compare-file-diff-page"),
+    path('compare/file/properties/test', views.properties_file_diff_test_page,
+         name="file-diff-page"),
 ]
 
 urlpatterns = [

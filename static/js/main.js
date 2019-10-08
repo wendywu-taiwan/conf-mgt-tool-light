@@ -107,14 +107,20 @@ function arrayContains(string, array) {
 }
 
 function hide(item) {
+    if (item == null)
+        return;
     item.style.display = "none";
 }
 
 function showFlex(item) {
+    if (item == null)
+        return;
     item.style.display = "flex";
 }
 
 function showBlock(item) {
+    if (item == null)
+        return;
     item.style.display = "block";
 }
 

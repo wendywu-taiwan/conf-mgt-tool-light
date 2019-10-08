@@ -1,0 +1,122 @@
+#properties_file_diff_div {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    background: #edf0f1de;
+    border-radius: 5px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+}
+
+#diff_information_div {
+}
+
+#environment_folder_data_div {
+    margin-bottom: 10px;
+}
+
+#diff_result_header_div {
+    border: solid 0.5px;
+    border-color: #d4d7d7;
+    background: #e2e3e3;
+    margin-top: 15px;
+    text-align: center;
+}
+
+#diff_result_div {
+    background: white;
+    border-radius: 3px;
+    /*padding: 10px 15px 10px 15px;*/
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+}
+
+.diff_result_header_text {
+    font-size: 14px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 600;
+    color: #34495d;
+}
+
+.info_icon {
+    width: 22px;
+    height: 22px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
+.folder_icon {
+    width: 20px;
+    height: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 10px;
+}
+
+.info_text {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.environment_div {
+    margin-right: 25px;
+}
+
+.result_line_div {
+    height: 25px;
+}
+
+.line_index_bg_div {
+    color: #a5a5a5;
+    width: 5%;
+    text-align: center;
+    background: #ececec;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.line_index_div {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.line_content_bg_div {
+    padding-left: 5px;
+    align-items: center;
+    display: flex;
+    width: 95%;
+}
+
+.line_content_div {
+    font-size: 14px;
+    font-weight: 500;
+    color: #34495d;
+}
+
+
+
+
+.add_file_bg {
+    background: #e2fde282;
+}
+
+.add_file_text {
+    color: #1abc9c;
+    font-weight: 600;
+}
+
+.different_file_bg {
+    background: #fee4e375;
+}
+
+.different_file_text {
+    color: #e78880;
+    font-weight: 600;
+}
+
+

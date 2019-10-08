@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
-from django.http import JsonResponse
 
+from common.data_object.error.status import NOT_SUPPORT_PREVIEW
 from common.data_object.json_builder.response import ResponseBuilder
 from common.utils.utility import get_post_request_json
 from common.views import page_error_check
+from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
 from shared_storage.services.services import *
+from shared_storage.utils.file_manager import load_file_diff_json, load_folder_file_diff_json
+from shared_storage.data_object.json_builder.bind_folder_file_diff_result_builder import BindFolderFileDiffResultBuilder
 
 
 def select_to_compare_page(request):
@@ -43,5 +46,42 @@ def select_to_compare_filter_folder_page(request):
         request_json = get_post_request_json(request)
         result_json = get_environment_dir_list(request_json)
         return render(request, "select_to_compare_dropdown.html", result_json)
+
+    return page_error_check(after_check)
+
+
+def select_to_compare_file_detail_page(request, root_key):
+    def after_check():
+        pass
+
+    return page_error_check(after_check)
+
+
+def select_to_compare_file_diff_page(request, root_key, node_key, type):
+    def after_check():
+        if type in COMPARE_TYPE_BLACK_LIST:
+            result = ResponseBuilder(status_code=NOT_SUPPORT_PREVIEW).get_data()
+        else:
+            root_file_json = load_folder_file_diff_json(root_key)
+            file_json = load_file_diff_json(root_key, node_key)
+            result_json = BindFolderFileDiffResultBuilder(root_file_json, file_json).get_data()
+            if type == KEY_PROPERTIES:
+                pass
+            else:
+                pass
+
+    return page_error_check(after_check)
+
+
+def properties_file_diff_test_page(request):
+    def after_check():
+        root_key = "-9223372036284746972"
+        node_key = "-18446744073139533543"
+        root_file_json = load_folder_file_diff_json(root_key)
+        file_json = load_file_diff_json(root_key, node_key)
+        result_json = BindFolderFileDiffResultBuilder(root_file_json, file_json).get_data()
+
+        response = ResponseBuilder(data=result_json).get_data()
+        return render(request, "shared_storage_properties_file_diff.html", response)
 
     return page_error_check(after_check)

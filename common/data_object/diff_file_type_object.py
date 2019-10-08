@@ -1,10 +1,9 @@
 import difflib
-import json
-from RulesetComparer.utils.fileManager import create_folder, save_file
 from common.data_object.json_builder.key_content_diff_result import KeyContentDiffResultBuilder
 from common.data_object.key_content_diff_object import KeyContentDiffObject
 from shared_storage.data_object.json_builder.content_diff_result_builder import ContentDiffResultBuilder
-from shared_storage.properties.config import COMPARE_RESULT_PATH, COMPARE_TYPE_BLACK_LIST
+from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
+from shared_storage.utils.file_manager import save_file_diff_json
 from RulesetComparer.utils.logger import *
 
 
@@ -53,9 +52,4 @@ class DiffFileTypeObject:
             return
 
         json_data[KEY_COMPARE_HASH_KEY] = self.node_hash_key
-
-        compare_key_folder_path = COMPARE_RESULT_PATH + self.root_hash_key
-        create_folder(compare_key_folder_path)
-
-        file_path = compare_key_folder_path + "/%s.%s" % (self.node_hash_key, KEY_JSON)
-        save_file(file_path, json.dumps(json_data))
+        save_file_diff_json(self.root_hash_key, self.node_hash_key, json_data)

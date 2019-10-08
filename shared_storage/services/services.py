@@ -4,7 +4,6 @@ from permission.models import Environment
 from shared_storage.data_object.dir_root_object import DirRootObject
 from shared_storage.data_object.dir_node_diff_object import DirNodeDiffObject, DirNodeDiffFilterObject
 from shared_storage.properties.config import COMPARE_RESULT_PATH
-from shared_storage.services.diff_file_test import diff_content_test
 from shared_storage.data_object.json_builder.country_level_diff_result_builder import CountryLevelDiffResultBuilder
 from common.data_object.ftp_connect_object import SharedStorageConnectionObject
 from common.data_object.git_connect_object import SharedStorageGitConnectObject
@@ -61,39 +60,7 @@ def get_environment_dir_list(json_data):
         raise e
 
 
-def compare_shared_storage_folder(json_data):
-    try:
-        # json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036284746972.json")
-
-        # parser = CompareSharedStorageFolderParser(json_data)
-        # left_root_obj = DirRootObject(parser.left_region_id, parser.left_environment_id, parser.left_folder,
-        #                               parser.only_last_version)
-        # right_root_obj = DirRootObject(parser.right_region_id, parser.right_environment_id, parser.right_folder,
-        #                                parser.only_last_version)
-        # root_hash_key = hash(left_root_obj) + hash(right_root_obj)
-        # left_root_obj.update_root_hash_key(root_hash_key)
-        # right_root_obj.update_root_hash_key(root_hash_key)
-        # info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
-        #
-        # if parser.apply_filter_folders:
-        #     dir_node_diff_obj = DirNodeDiffFilterObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-        #                                                 left_root_obj.node_object, right_root_obj.node_object,
-        #                                                 left_root_obj.filter_modules, right_root_obj.filter_modules)
-        # else:
-        #     dir_node_diff_obj = DirNodeDiffObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-        #                                           left_root_obj.node_object, right_root_obj.node_object)
-        # dir_node_diff_obj.diff()
-        # json_data = CountryLevelDiffResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
-        #
-        # file_path = COMPARE_RESULT_PATH + "%s.%s" % (root_hash_key, KEY_JSON)
-        # save_file(file_path, json.dumps(json_data))
-        # info_log("service", "diff_country_level done")
-        return json_data
-    except Exception as e:
-        raise e
-
-
-def compare_shared_storage_folder_test(left_region_id, left_environment_id, left_folder,
+def compare_shared_storage_folder(left_region_id, left_environment_id, left_folder,
                                        right_region_id, right_environment_id, right_folder):
     try:
         json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036284746972.json")
@@ -123,11 +90,3 @@ def compare_shared_storage_folder_test(left_region_id, left_environment_id, left
         return json_data
     except Exception as e:
         raise e
-
-
-def diff_file():
-    try:
-        diff_content_test()
-    except Exception as e:
-        error_log(e)
-        traceback.print_exc()

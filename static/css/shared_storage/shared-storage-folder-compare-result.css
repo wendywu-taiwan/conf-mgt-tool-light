@@ -21,6 +21,10 @@
     width: 2%;
 }
 
+.folder_data_line{
+    cursor: pointer;
+}
+
 .line_div {
     border: 0.5px solid #e2e3e3;
     border-bottom: none;
@@ -82,8 +86,6 @@
     padding: 10px 15px 10px 15px;
     border-top-left-radius: unset;
     border-top-right-radius: unset;
-    height: 500px;
-    overflow-y: scroll;
 }
 
 .folder_name_info_div {

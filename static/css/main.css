@@ -430,3 +430,32 @@ html, body {
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
+
+.full_width {
+    width: 100%;
+}
+
+.half_width {
+    width: 50%;
+}
+
+.border-top{
+    border-top: 0.5px solid #cccccc;
+}
+
+.border-right{
+    border-right: 0.5px solid #cccccc;
+}
+
+.border-left{
+    border-left: 0.5px solid #cccccc;
+}
+
+.border-bottom{
+    border-bottom: 0.5px solid #cccccc;
+}
+
+.border-all{
+    border: 0.5px solid #cccccc;
+}
