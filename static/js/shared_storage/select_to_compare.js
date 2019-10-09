@@ -49,7 +49,7 @@ initFolderDropDownComponent = function () {
     $("#left_select_folder_list li").click(function () {
         $("#left_select_folder_btn:first-child").text($(this).text());
         $("#left_select_folder_btn:first-child").val($(this).val());
-        $("#left_folder").val($(this).val());
+        $("#left_folder").val($(this).text());
         leftFolder = $(this).text();
     });
 
@@ -57,7 +57,7 @@ initFolderDropDownComponent = function () {
 
         $("#right_select_folder_btn:first-child").text($(this).text());
         $("#right_select_folder_btn:first-child").val($(this).val());
-        $("#right_folder").val($(this).val());
+        $("#right_folder").val($(this).text());
         rightFolder = $(this).text();
     });
 

@@ -287,6 +287,10 @@ KEY_RIGHT_TYPE = "right_type"
 KEY_RIGHT_ROW = "right_row"
 KEY_RIGHT_LINE = "right_line"
 KEY_SHOW_COLLAPSE = "show_collapse"
+KEY_LEFT_ONLY = "left_only"
+KEY_RIGHT_ONLY = "right_only"
+KEY_COMMON = "common"
+
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
@@ -330,7 +334,7 @@ KEY_XSLT = "xslt"
 KEY_D_RESULT_ADD = "add"
 KEY_D_RESULT_REMOVE = "remove"
 KEY_D_RESULT_SAME = "same"
-KEY_D_RESULT_DIFFERENT = "different"
+KEY_DIFFERENT = "different"
 
 # symbol
 KEY_S_EQUAL = "="

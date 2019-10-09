@@ -20,7 +20,6 @@ class KeyContentDiffResultBuilder(BaseBuilder):
             self.different_left_list = different_left_list
             self.common_left_list = common_left_list
             self.right_object_map = right_object_map
-            self.result_list = list()
             self.has_changes = False
             super().__init__()
         except Exception as e:
@@ -37,10 +36,20 @@ class KeyContentDiffResultBuilder(BaseBuilder):
         self.result_dict[KEY_FILE_NAME] = self.file_name
         self.result_dict[KEY_LEFT_FILE] = self.left_file_path
         self.result_dict[KEY_RIGHT_FILE] = self.right_file_path
-        self.result_dict[KEY_DIFF_RESULT] = self.result_list
+        self.result_dict[KEY_DIFF_RESULT] = self.parse_diff_result_object()
         self.result_dict[COMPARE_RESULT_HAS_CHANGES] = self.has_changes
 
+    def parse_diff_result_object(self):
+        diff_result_object = {
+            KEY_LEFT_ONLY: self.parse_left_only_list(),
+            KEY_RIGHT_ONLY: self.parse_right_only_list(),
+            KEY_COMMON: self.parse_common_list(),
+            KEY_DIFFERENT: self.parse_different_list()
+        }
+        return diff_result_object
+
     def parse_left_only_list(self):
+        result_list = list()
         for line_object in self.left_only_list:
             json_object = {
                 KEY_TYPE: self.KEY_LEFT_ONLY,
@@ -49,9 +58,12 @@ class KeyContentDiffResultBuilder(BaseBuilder):
                 KEY_RIGHT_LINE: "",
                 KEY_RIGHT_ROW: ""
             }
-            self.result_list.append(json_object)
+            result_list.append(json_object)
+        return result_list
 
     def parse_right_only_list(self):
+        result_list = list()
+
         for line_object in self.right_only_list:
             json_object = {
                 KEY_TYPE: self.KEY_RIGHT_ONLY,
@@ -60,9 +72,11 @@ class KeyContentDiffResultBuilder(BaseBuilder):
                 KEY_RIGHT_LINE: line_object.index,
                 KEY_RIGHT_ROW: line_object.context
             }
-            self.result_list.append(json_object)
+            result_list.append(json_object)
+        return result_list
 
     def parse_different_list(self):
+        result_list = list()
         for left_object in self.different_left_list:
             right_object = self.right_object_map.get(left_object.key)
             json_object = {
@@ -72,9 +86,11 @@ class KeyContentDiffResultBuilder(BaseBuilder):
                 KEY_RIGHT_LINE: right_object.index,
                 KEY_RIGHT_ROW: right_object.context
             }
-            self.result_list.append(json_object)
+            result_list.append(json_object)
+        return result_list
 
     def parse_common_list(self):
+        result_list = list()
         for left_object in self.common_left_list:
             right_object = self.right_object_map.get(left_object.key)
             json_object = {
@@ -84,7 +100,8 @@ class KeyContentDiffResultBuilder(BaseBuilder):
                 KEY_RIGHT_LINE: right_object.index,
                 KEY_RIGHT_ROW: right_object.context
             }
-            self.result_list.append(json_object)
+            result_list.append(json_object)
+        return result_list
 
     def has_different(self):
         if len(self.right_only_list) == 0 and len(self.left_only_list) == 0 and len(self.different_left_list) == 0:

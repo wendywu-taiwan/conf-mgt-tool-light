@@ -1,7 +1,9 @@
+{% load staticfiles %}
+
 <div id="{{ side }}_side_div" class="half_width row no-row-margin">
     <div id="{{ side }}_environment_div" class="environment_div row no-row-margin">
         <img class="info_icon" src="{% static '/icons/detail_data_center.png' %}">
-        <div id="environment_text_div" class="info_text">{{ region }} {{ environment }}</div>
+        <div id="environment_text_div" class="info_text">{{ region.name }} {{ environment.name }}</div>
     </div>
     <div id="left_folder_div" class="environment_div row no-row-margin">
         <div id="left_folder_div" class="row no-row-margin">

@@ -130,8 +130,8 @@ class DirNodeDiffObject:
                 if has_changes:
                     left_node.set_show_collapse()
                     right_node.set_show_collapse()
-                    left_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
-                    right_node.set_diff_result(KEY_D_RESULT_DIFFERENT)
+                    left_node.set_diff_result(KEY_DIFFERENT)
+                    right_node.set_diff_result(KEY_DIFFERENT)
 
     # for latest version folder depth node
     def parse_union_node_lv(self):
