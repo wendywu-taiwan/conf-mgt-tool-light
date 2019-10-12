@@ -84,7 +84,7 @@
 
 .line_index_bg_div {
     color: #a5a5a5;
-    width: 5%;
+    width: 7%;
     text-align: center;
     background: #ececec;
     align-items: center;
@@ -102,12 +102,13 @@
     padding-right: 10px;
     align-items: center;
     display: flex;
-    width: 95%;
+    width: 93%;
 }
 
 .line_content_div {
     font-size: 13px;
     color: #34495d;
+    word-break: break-word;
 }
 
 .add_file_text {

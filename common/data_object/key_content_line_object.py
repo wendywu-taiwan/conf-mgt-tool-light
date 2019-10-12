@@ -11,7 +11,8 @@ class KeyContentLineObject:
         self.parse_key_value()
 
     def parse_key_value(self):
-        if self.context is "" or self.context.startswith(KEY_S_HASH_TAG):
+        trim_context = self.context.strip(' \t\n\r')
+        if trim_context is "" or self.context.startswith(KEY_S_HASH_TAG):
             self.empty_line = True
             return
 
@@ -19,5 +20,9 @@ class KeyContentLineObject:
 
         if KEY_S_EQUAL in self.context:
             split_list = self.key.split(KEY_S_EQUAL)
+            self.key = split_list[0].strip(" ")
+            self.value = split_list[1]
+        elif KEY_S_COLON in self.context:
+            split_list = self.key.split(KEY_S_COLON)
             self.key = split_list[0].strip(" ")
             self.value = split_list[1]

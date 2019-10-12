@@ -5,7 +5,7 @@
     {% with parent_node=child_node %}
         {% for child_node in parent_node.child_nodes %}
             <div id="{{ side }}_{{ child_node.compare_hash_key }}_data_line_div"
-                 onclick='dataLineOnclick(this,"{{ child_node.type }}","{{ child_node.diff_result }}","{% url 'shared_storage:select-to-compare-file-detail-page' side child_node.compare_hash_key child_node.type %}","{% url 'shared_storage:select-to-compare-file-diff-page' child_node.compare_hash_key child_node.type %}")'
+                 onclick='dataLineOnclick(this,"{{ child_node.type }}","{{ child_node.diff_result }}","{% url 'shared_storage:select-to-compare-file-detail-page' side child_node.compare_hash_key child_node.type %}","{% url 'shared_storage:select-to-compare-file-diff-page' data.compare_hash_key child_node.compare_hash_key child_node.type %}")'
                  class="folder_data_line row no-row-margin"
                  data-toggle="collapse"
                  href="#{{ side }}_folder_{{ child_node.depth }}_{{ child_node.index }}_{{ child_node.compare_hash_key }}_child_div"

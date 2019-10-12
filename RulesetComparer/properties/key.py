@@ -339,3 +339,4 @@ KEY_DIFFERENT = "different"
 # symbol
 KEY_S_EQUAL = "="
 KEY_S_HASH_TAG = "#"
+KEY_S_COLON = ":"
