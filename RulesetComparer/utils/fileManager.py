@@ -1,3 +1,4 @@
+import hashlib
 import math
 import os, time, sys
 import shutil
@@ -194,3 +195,21 @@ def convert_file_size(size_bytes):
     p = math.pow(1024, i)
     s = round(size_bytes / p, 2)
     return "%s %s" % (s, size_name[i])
+
+
+def get_file_md5(file_path):
+    m = hashlib.md5()
+    try:
+        fd = open(file_path, "rb")
+    except Exception as e:
+        raise e
+    f = fd.read()
+    fd.close()
+    m.update(f)
+    return m.hexdigest()
+
+
+def get_file_md5_from_file(file):
+    m = hashlib.md5()
+    m.update(file)
+    return m.hexdigest()

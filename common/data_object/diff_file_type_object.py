@@ -5,6 +5,7 @@ from shared_storage.data_object.json_builder.content_diff_result_builder import 
 from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
 from shared_storage.utils.file_manager import save_file_diff_json
 from RulesetComparer.utils.logger import *
+from RulesetComparer.utils.fileManager import get_file_md5_from_file
 
 
 class DiffFileTypeObject:
@@ -21,13 +22,17 @@ class DiffFileTypeObject:
 
     def diff_file(self):
         if self.file_type in COMPARE_TYPE_BLACK_LIST:
-            if self.left_file_object.file_size != self.right_file_object.file_size:
-                return True
+            return self.diff_file_md5()
         else:
             if self.file_type == KEY_PROPERTIES:
                 return self.diff_properties_file()
             else:
                 return self.diff_string_content_file()
+
+    def diff_file_md5(self):
+        left_md5 = get_file_md5_from_file(self.left_file_object.file_content)
+        right_md5 = get_file_md5_from_file(self.right_file_object.file_content)
+        return left_md5 != right_md5
 
     def diff_properties_file(self):
         diff_object = KeyContentDiffObject(self.left_contents_lines, self.right_contents_lines)
