@@ -9,12 +9,14 @@ class KeyContentDiffResultBuilder(BaseBuilder):
     KEY_DIFFERENT = "different"
     KEY_COMMON = "common"
 
-    def __init__(self, file_name, left_file_path, right_file_path, left_only_list, right_only_list, different_left_list,
-                 common_left_list, right_object_map):
+    def __init__(self, file_name, left_file_path, right_file_path, left_modification_time, right_modification_time,
+                 left_only_list, right_only_list, different_left_list, common_left_list, right_object_map):
         try:
             self.file_name = file_name
             self.left_file_path = left_file_path
             self.right_file_path = right_file_path
+            self.left_modification_time = left_modification_time
+            self.right_modification_time = right_modification_time
             self.left_only_list = left_only_list
             self.right_only_list = right_only_list
             self.different_left_list = different_left_list
@@ -36,6 +38,8 @@ class KeyContentDiffResultBuilder(BaseBuilder):
         self.result_dict[KEY_FILE_NAME] = self.file_name
         self.result_dict[KEY_LEFT_FILE] = self.left_file_path
         self.result_dict[KEY_RIGHT_FILE] = self.right_file_path
+        self.result_dict[KEY_LEFT_MODIFICATION_TIME] = self.left_modification_time
+        self.result_dict[KEY_RIGHT_MODIFICATION_TIME] = self.right_modification_time
         self.result_dict[KEY_DIFF_RESULT] = self.parse_diff_result_object()
         self.result_dict[COMPARE_RESULT_HAS_CHANGES] = self.has_changes
 

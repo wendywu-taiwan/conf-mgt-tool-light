@@ -1,14 +1,11 @@
 import traceback
 from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.config import *
-from shared_storage.utils.file_manager import load_folder_file_diff_json, load_file_diff_json
 
 
 class BindFolderFileDiffResultBuilder(BaseBuilder):
-    def __init__(self, root_key, node_key):
+    def __init__(self, root_json, file_json):
         try:
-            root_json = load_folder_file_diff_json(root_key)
-
             self.left_environment = root_json.get(KEY_LEFT_ENVIRONMENT)
             self.right_environment = root_json.get(KEY_RIGHT_ENVIRONMENT)
             self.left_region = root_json.get(KEY_LEFT_REGION)
@@ -16,7 +13,7 @@ class BindFolderFileDiffResultBuilder(BaseBuilder):
             self.left_folder = root_json.get(KEY_LEFT_FOLDER)
             self.right_folder = root_json.get(KEY_RIGHT_FOLDER)
             self.root_key = root_json.get(KEY_COMPARE_HASH_KEY)
-            self.file_json = load_file_diff_json(root_key, node_key)
+            self.file_json = file_json
 
             BaseBuilder.__init__(self)
         except Exception as e:

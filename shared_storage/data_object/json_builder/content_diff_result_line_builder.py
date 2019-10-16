@@ -59,16 +59,19 @@ class ContentDiffLineResultBuilder(BaseBuilder):
             else:
                 if self.KEY_ADDED_SIGN in string:
                     split_str_list2 = string.split(self.KEY_ADDED_SIGN)
+                    result_type = KEY_ADDED
                 elif self.KEY_DELETED_SIGN in string:
                     split_str_list2 = string.split(self.KEY_DELETED_SIGN)
+                    result_type = KEY_DELETED
                 else:
                     split_str_list2 = string.split(self.KEY_CHANGED_SIGN)
+                    result_type = KEY_CHANGED
 
                 if split_str_list2[0] is not "":
                     self.result_list.append(self.build_line_object(KEY_CONTEXT, split_str_list2[0], index))
                     index = index + 1
 
-                self.result_list.append(self.build_line_object(KEY_CHANGED, split_str_list2[1], index))
+                self.result_list.append(self.build_line_object(result_type, split_str_list2[1], index))
 
             index = index + 1
         self.result_list.sort(key=lambda x: x.get(KEY_INDEX), reverse=False)

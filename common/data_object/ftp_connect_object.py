@@ -2,6 +2,7 @@ import pysftp
 from permission.models import FTPRegion, FTPServer, Environment, Country
 from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
+from RulesetComparer.utils.fileManager import load_path_file
 from common.data_object.dir_connect_object import DirConnectObject
 
 
@@ -72,14 +73,5 @@ class SharedStorageConnectionObject(FTPConnectionObject):
 
     def get_file_contents(self, file_load_object):
         self.sftp.get(file_load_object.file_path, localpath=file_load_object.local_path)
-        try:
-            f = open(file_load_object.local_path, 'r')
-            file_content = f.read()
-        except UnicodeDecodeError:
-            f = open(file_load_object.local_path, 'rb')
-            file_content = f.read()
-
-        f.close()
-
-        file_load_object.file_content = file_content
+        file_load_object.file_content = load_path_file(file_load_object.local_path)
         return file_load_object

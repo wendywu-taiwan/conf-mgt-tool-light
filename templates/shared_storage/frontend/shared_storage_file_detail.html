@@ -1,0 +1,43 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+{% load filters %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-file-detail.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div id="file_detail_container" class="container-fluid">
+        <div id="file_detail_div" class="row no-row-margin">
+            <div id="file_information_div" class="full_width">
+                <div id="environment_folder_data_div" class="full_width row no-row-margin">
+                    {% with side="left" region=data.region environment=data.environment folder=data.folder %}
+                        {% include 'file_diff_environment_folder_component.html' %}
+                    {% endwith %}
+                </div>
+                <div id="path_div" class="full_width row no-row-margin">
+                    {% with side="left" path=data.file_path %}
+                        {% include 'file_diff_path_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="diff_result_header_div" class="full_width">
+                <div id="header_text_div" class="diff_result_header_text">{{ data.file_name }}</div>
+            </div>
+            <div id="diff_result_div" class="full_width">
+                <div id="diff_result_left_only_div">
+                    {% for row_data in data.data %}
+                        <div class="result_line_div row no-row-margin">
+                            <div class="line_index_bg_div border-right">
+                                <div class="line_index_div">{{ row_data.index }}</div>
+                            </div>
+                            <div class="line_content_bg_div no-row-margin row">
+                                {% include 'string_file_diff_line_content.html' %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

@@ -11,7 +11,11 @@ class KeyContentLineObject:
         self.parse_key_value()
 
     def parse_key_value(self):
+        if isinstance(self.context, bytes):
+            self.context = self.context.decode('utf-8', errors='ignore')
+
         trim_context = self.context.strip(' \t\n\r')
+
         if trim_context is "" or self.context.startswith(KEY_S_HASH_TAG):
             self.empty_line = True
             return

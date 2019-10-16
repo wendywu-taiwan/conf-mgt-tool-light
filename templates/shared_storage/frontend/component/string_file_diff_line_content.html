@@ -1,0 +1,12 @@
+{% load staticfiles %}
+{% load filters %}
+
+{% if row_data.type == "changed" %}
+<div class="line_content_div line_content_changed_div">
+    {{ row_data.row|force_escape|parse_space_large|parse_tab|parse_space }}
+</div>
+{% else %}
+    <div class="line_content_div">
+    {{ row_data.row|force_escape|parse_space_large|parse_tab|parse_space }}
+</div>
+{% endif %}

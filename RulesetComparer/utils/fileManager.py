@@ -127,6 +127,20 @@ def load_file(file_name):
         return None
 
 
+def load_path_file(file_path):
+    if not is_file_exist(file_path):
+        info_log(LOG_CLASS + ": load_path_file", " file not exist :" + file_path)
+        return
+    try:
+        f = open(file_path, 'r')
+        file_content = f.read()
+    except UnicodeDecodeError:
+        f = open(file_path, 'rb')
+        file_content = f.read()
+
+    return file_content.strip()
+
+
 def archive_file(source_path, dst_path, dst_file):
     create_folder(dst_path)
     zip_handler = zipfile.ZipFile(dst_file, mode='w')

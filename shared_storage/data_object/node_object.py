@@ -1,6 +1,7 @@
 import stat
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
+from common.data_object.file_load_object import SharedStorageFileLoadObject
 
 
 class NodeObject:
@@ -107,3 +108,10 @@ class NodeObject:
                 json_obj[KEY_CHILD_NODES] = child_node.parse_child_nodes_json()
             json_list.append(json_obj)
         return json_list
+
+    def download_files(self, root_key, connect_obj):
+        root_key = str(root_key)
+        file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
+                                                  root_key, self.environment.name)
+        file_object = connect_obj.get_file_contents(file_object)
+        return file_object

@@ -5,11 +5,13 @@ from RulesetComparer.properties.config import *
 
 
 class ContentDiffResultBuilder(BaseBuilder):
-    def __init__(self, file_name, left_file, right_file, diff_list):
+    def __init__(self, file_name, left_file, right_file, left_modification_time, right_modification_time, diff_list):
         try:
             self.file_name = file_name
             self.left_file = left_file
             self.right_file = right_file
+            self.left_modification_time = left_modification_time
+            self.right_modification_time = right_modification_time
             self.diff_list = diff_list
             self.has_different = False
             BaseBuilder.__init__(self)
@@ -21,6 +23,8 @@ class ContentDiffResultBuilder(BaseBuilder):
         self.result_dict[KEY_FILE_NAME] = self.file_name
         self.result_dict[KEY_LEFT_FILE] = self.left_file
         self.result_dict[KEY_RIGHT_FILE] = self.right_file
+        self.result_dict[KEY_LEFT_MODIFICATION_TIME] = self.left_modification_time
+        self.result_dict[KEY_RIGHT_MODIFICATION_TIME] = self.right_modification_time
         self.result_dict[KEY_DIFF_RESULT] = self.parse_diff_result()
         self.result_dict[COMPARE_RESULT_HAS_CHANGES] = self.has_different
 

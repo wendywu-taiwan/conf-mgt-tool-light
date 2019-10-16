@@ -1,8 +1,9 @@
-from common.data_object.file_load_object import SharedStorageFileLoadObject
 from common.data_object.diff_file_type_object import DiffFileTypeObject
 from shared_storage.data_object.node_object import NodeObject
 from shared_storage.data_object.dir_node_object import DirNodeObject, DirNodeLastVersionObject
 from shared_storage.data_object.dir_entry_index_object import DirEntryIndexObject
+from shared_storage.data_object.json_builder.file_detail_builder import FileDetailBuilder
+from shared_storage.utils.file_manager import save_file_detail_json
 from RulesetComparer.utils.logger import *
 from shared_storage.properties.config import *
 
@@ -17,6 +18,7 @@ class DirNodeDiffObject:
         self.right_dir_connect_obj = right_dir_connect_obj
         self.left_entry_list = left_dir_connect_obj.get_path_list_dir(self.left_node.path)
         self.right_entry_list = right_dir_connect_obj.get_path_list_dir(self.right_node.path)
+        self.root_key = str(self.left_dir_connect_obj.root_hash_key)
         self.left_entry_map = {}
         self.right_entry_map = {}
         self.left_name_set = set()
@@ -33,16 +35,6 @@ class DirNodeDiffObject:
             self.parse_diff_nodes()
         except Exception as e:
             raise e
-
-    def parse_diff_nodes(self):
-        if self.left_node.depth + 1 == DEPTH_MODULE_FOLDER and self.left_dir_connect_obj.only_last_version:
-            self.parse_left_only_node(self.parse_environment_only_node_lv)
-            self.parse_right_only_node(self.parse_environment_only_node_lv)
-            self.parse_union_node_lv()
-        else:
-            self.parse_left_only_node(self.parse_environment_only_node)
-            self.parse_right_only_node(self.parse_environment_only_node)
-            self.parse_union_node()
 
     @staticmethod
     def parse_name_set(entry_list, entry_map, name_set):
@@ -61,6 +53,16 @@ class DirNodeDiffObject:
         self.right_only = list(set(self.right_name_set).difference(set(self.left_name_set)))
         # name in both set
         self.union = list(set(self.left_name_set) & set(self.right_name_set))
+
+    def parse_diff_nodes(self):
+        if self.left_node.depth + 1 == DEPTH_MODULE_FOLDER and self.left_dir_connect_obj.only_last_version:
+            self.parse_left_only_node(self.parse_environment_only_node_lv)
+            self.parse_right_only_node(self.parse_environment_only_node_lv)
+            self.parse_union_node_lv()
+        else:
+            self.parse_left_only_node(self.parse_environment_only_node)
+            self.parse_right_only_node(self.parse_environment_only_node)
+            self.parse_union_node()
 
     def parse_left_only_node(self, parse_func):
         info_log(self.LOG_CLASS, "update_left_only_node, list:" + str(self.left_only))
@@ -83,6 +85,10 @@ class DirNodeDiffObject:
         if node_add.type is KEY_FOLDER:
             child_node_obj = DirNodeObject(dir_connect_obj, node_add, node_remove)
             child_node_obj.parse_child_nodes()
+        else:
+            file_object = node_add.download_files(self.root_key, dir_connect_obj)
+            json = FileDetailBuilder(file_object).get_data()
+            save_file_detail_json(self.root_key, node_add.environment.name, node_add.node_hash_key, json)
 
     # for latest version folder depth node
     def parse_environment_only_node_lv(self, name, dir_connect_obj, entry_map, opposite_entry_map,
@@ -116,15 +122,11 @@ class DirNodeDiffObject:
                 diff_obj.diff()
             # diff file
             else:
-                left_file_object = SharedStorageFileLoadObject(left_node.name, left_node.path,
-                                                               left_node.type, left_node.size)
-                right_file_object = SharedStorageFileLoadObject(right_node.name, right_node.path,
-                                                                right_node.type, right_node.size)
-                left_file_object = self.left_dir_connect_obj.get_file_contents(left_file_object)
-                right_file_object = self.right_dir_connect_obj.get_file_contents(right_file_object)
+                left_file_object = left_node.download_files(self.root_key, self.left_dir_connect_obj)
+                right_file_object = right_node.download_files(self.root_key, self.right_dir_connect_obj)
+
                 diff_file_type_object = DiffFileTypeObject(left_file_object, right_file_object,
-                                                           self.left_dir_connect_obj.root_hash_key,
-                                                           left_node.node_hash_key)
+                                                           self.root_key, left_node.node_hash_key)
                 has_changes = diff_file_type_object.diff_file()
 
                 if has_changes:
@@ -223,25 +225,6 @@ class DirNodeDiffFilterObject(DirNodeDiffObject):
 
     def diff_to_list(self):
         super().diff_to_list()
-
-    def parse_left_only_node(self, parse_environment_func):
-        super().parse_left_only_node(parse_environment_func)
-
-    def parse_right_only_node(self, parse_environment_func):
-        super().parse_right_only_node(parse_environment_func)
-
-    def parse_environment_only_node(self, name, dir_connect_obj, entry_map, opposite_entry_map,
-                                    parent_node_add, parent_node_remove):
-        super().parse_environment_only_node(name, dir_connect_obj, entry_map, opposite_entry_map,
-                                            parent_node_add, parent_node_remove)
-
-    def parse_environment_only_node_lv(self, name, dir_connect_obj, entry_map, opposite_entry_map,
-                                       parent_node_add, parent_node_remove):
-        super().parse_environment_only_node_lv(name, dir_connect_obj, entry_map, opposite_entry_map,
-                                               parent_node_add, parent_node_remove)
-
-    def parse_union_node(self):
-        super().parse_union_node()
 
 
 class DirNodeDiffLastVersionObject(DirNodeDiffFilterObject):

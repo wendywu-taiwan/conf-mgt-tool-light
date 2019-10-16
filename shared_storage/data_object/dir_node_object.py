@@ -1,8 +1,10 @@
 import stat
 import traceback
+
+from shared_storage.data_object.json_builder.file_detail_builder import FileDetailBuilder
 from shared_storage.data_object.node_object import NodeObject
-from shared_storage.properties.config import *
 from RulesetComparer.utils.logger import *
+from shared_storage.utils.file_manager import save_file_detail_json
 
 
 class DirNodeObject:
@@ -19,6 +21,13 @@ class DirNodeObject:
     def parse_child_nodes(self):
         try:
             if self.parent_node_add.type is not KEY_FOLDER:
+                file_object = self.parent_node_add.download_files(self.parent_node_add.node_hash_key,
+                                                                  self.dir_connect_obj)
+                json = FileDetailBuilder(file_object).get_data()
+                save_file_detail_json(self.parent_node_add.node_hash_key,
+                                      self.parent_node_add.environment.name,
+                                      self.parent_node_add.node_hash_key, json)
+
                 return
 
             entry_list = self.dir_connect_obj.get_path_list_dir(self.parent_node_add.path)

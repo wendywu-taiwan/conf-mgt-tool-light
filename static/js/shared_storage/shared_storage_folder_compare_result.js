@@ -112,6 +112,7 @@ function changeCollapseIconVisibility(e, showIconSwitchMethod, hideIconSwitchMet
 let lastClickedRDataLineId;
 
 function dataLineOnclick(element, type, diffResult, detailUrl, diffUrl) {
+    console.log("dataLineOnclick, element:"+element);
     // example id: right_-18446744073139484987_data_line_div
     //remove last select item bg color
     if (lastClickedRDataLineId != null) {
@@ -156,11 +157,11 @@ function getFileDetailPage(url) {
 
     doGET(url, function (response) {
         let statusCode = response["status_code"];
-        if (statusCode == 200) {
+        if (statusCode == null) {
             stopDialog();
             window.open(url);
         } else {
-            if (statusCode == 222)
+            if (statusCode == 234)
                 showSuccessDialog("Preview is not supported for this file");
             else
                 showErrorDialog(response["message"])
@@ -180,7 +181,7 @@ function getFileDiffPage(url) {
             stopDialog();
             window.open(url);
         } else {
-            if (statusCode == 222)
+            if (statusCode == 234)
                 showSuccessDialog("Preview is not supported for this file");
             else
                 showErrorDialog(response["message"])

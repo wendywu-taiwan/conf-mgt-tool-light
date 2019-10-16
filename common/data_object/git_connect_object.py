@@ -2,6 +2,8 @@ import os
 from common.data_object.dir_connect_object import DirConnectObject
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils.logger import *
+from RulesetComparer.utils.fileManager import load_path_file
+from common.data_object.file_entry_object import FileEntryObject
 from permission.models import Environment
 from shared_storage.properties.config import *
 
@@ -44,8 +46,7 @@ class SharedStorageGitConnectObject(DirConnectObject):
         for file in dir_list:
             file_path = path + "/" + file
 
-            entry = os.stat(file_path)
-            entry_object = GitDirEntryObject(entry, file)
+            entry_object = FileEntryObject(file_path, file)
             entry_list.append(entry_object)
         return entry_list
 
@@ -56,24 +57,9 @@ class SharedStorageGitConnectObject(DirConnectObject):
         return last_version
 
     def get_path_file(self, file_path, save_path):
-        try:
-            f = open(file_path, 'r')
-            file_content = f.read()
-        except UnicodeDecodeError:
-            f = open(file_path, 'rb')
-            file_content = f.read()
-        return file_content.strip()
+        return load_path_file(file_path)
 
     def get_file_contents(self, file_load_object):
         file_path = self.root_path + file_load_object.file_path
         file_load_object.file_content = self.get_path_file(file_path, None)
         return file_load_object
-
-
-class GitDirEntryObject:
-    def __init__(self, entry, filename):
-        self.entry = entry
-        self.st_mode = entry.st_mode
-        self.st_size = entry.st_size
-        self.st_mtime = entry.st_mtime
-        self.filename = filename
