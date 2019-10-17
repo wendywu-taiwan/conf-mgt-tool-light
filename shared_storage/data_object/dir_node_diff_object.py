@@ -18,7 +18,7 @@ class DirNodeDiffObject:
         self.right_dir_connect_obj = right_dir_connect_obj
         self.left_entry_list = left_dir_connect_obj.get_path_list_dir(self.left_node.path)
         self.right_entry_list = right_dir_connect_obj.get_path_list_dir(self.right_node.path)
-        self.root_key = str(self.left_dir_connect_obj.root_hash_key)
+        self.root_key = self.left_dir_connect_obj.root_hash_key
         self.left_entry_map = {}
         self.right_entry_map = {}
         self.left_name_set = set()

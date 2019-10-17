@@ -8,7 +8,7 @@ class DirConnectObject:
         self.root_hash_key = None
 
     def set_root_hash_key(self, root_hash_key):
-        self.root_hash_key = root_hash_key
+        self.root_hash_key = str(root_hash_key)
 
     @abstractmethod
     def connect(self):

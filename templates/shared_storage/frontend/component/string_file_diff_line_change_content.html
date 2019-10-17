@@ -1,0 +1,12 @@
+{% load staticfiles %}
+{% load filters %}
+
+{% for row_data in row_list %}
+    {% if row_data.type != "context" %}
+        <div class="line_content_div line_content_changed_div">
+    {% else %}
+        <div class="line_content_div">
+    {% endif %}
+            {{ row_data.row|force_escape|parse_space_large|parse_tab|parse_space }}
+        </div>
+{% endfor %}

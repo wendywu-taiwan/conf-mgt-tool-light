@@ -20,18 +20,7 @@ class DirNodeObject:
 
     def parse_child_nodes(self):
         try:
-            if self.parent_node_add.type is not KEY_FOLDER:
-                file_object = self.parent_node_add.download_files(self.parent_node_add.node_hash_key,
-                                                                  self.dir_connect_obj)
-                json = FileDetailBuilder(file_object).get_data()
-                save_file_detail_json(self.parent_node_add.node_hash_key,
-                                      self.parent_node_add.environment.name,
-                                      self.parent_node_add.node_hash_key, json)
-
-                return
-
             entry_list = self.dir_connect_obj.get_path_list_dir(self.parent_node_add.path)
-
             index = 0
             for entry in entry_list:
                 self.parse_child_node(index, entry)
@@ -46,7 +35,11 @@ class DirNodeObject:
         child_node_remove.set_show_collapse()
         self.update_node_hash_key(child_node_add, child_node_remove)
 
-        next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
+        if child_node_add.type is KEY_FOLDER:
+            next_depth_child_node_obj = DirNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
+        else:
+            next_depth_child_node_obj = FileNodeObject(self.dir_connect_obj, child_node_add, child_node_remove)
+
         next_depth_child_node_obj.parse_child_nodes()
         info_log(self.LOG_CLASS,
                  "parse_child_node , index:" + str(
@@ -65,6 +58,23 @@ class DirNodeObject:
         left_node.set_node_hash_key(node_hash_key)
         right_node.set_node_hash_key(node_hash_key)
         return node_hash_key
+
+
+class FileNodeObject(DirNodeObject):
+    LOG_CLASS = "FileNodeObject"
+
+    def __init__(self, dir_connect_obj, parent_node_add, parent_node_remove):
+        DirNodeObject.__init__(self, dir_connect_obj, parent_node_add, parent_node_remove)
+
+    def parse_child_nodes(self):
+        try:
+            file_object = self.parent_node_add.download_files(self.dir_connect_obj.root_hash_key, self.dir_connect_obj)
+            json = FileDetailBuilder(file_object).get_data()
+            save_file_detail_json(self.dir_connect_obj.root_hash_key,
+                                  self.parent_node_add.environment.name,
+                                  self.parent_node_add.node_hash_key, json)
+        except Exception as e:
+            raise e
 
 
 class DirNodeLastVersionObject(DirNodeObject):
@@ -88,9 +98,3 @@ class DirNodeLastVersionObject(DirNodeObject):
                 index = index + 1
         except Exception as e:
             raise e
-
-    def create_node(self, parent_node, index, entry, diff_result):
-        return super().create_node(parent_node, index, entry, diff_result)
-
-    def update_node_hash_key(self, left_node, right_node):
-        return super().update_node_hash_key(left_node, right_node)

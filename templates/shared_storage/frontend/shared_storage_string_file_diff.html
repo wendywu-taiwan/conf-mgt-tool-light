@@ -36,37 +36,41 @@
                             <div class="line_index_bg_div border-right">
                                 <div class="line_index_div">{{ line_data.left_line }}</div>
                             </div>
-                            {% if line_data.left_type == "changed" %}
-                                <div class="line_content_bg_div line_content_remove_bg_div no-row-margin row">
-                                    {% for row_data in line_data.left_row %}
-                                        {% include 'string_file_diff_line_content.html' %}
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="line_content_bg_div no-row-margin row">
-                                    {% for row_data in line_data.left_row %}
-                                        {% include 'string_file_diff_line_content.html' %}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            {% with row_list=line_data.left_row %}
+                                {% if line_data.left_type == "context" %}
+                                    <div class="line_content_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% elif line_data.left_type == "changed" %}
+                                    <div class="line_content_bg_div line_content_remove_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_change_content.html' %}
+                                    </div>
+                                {% else %}
+                                    <div class="line_content_bg_div line_content_remove_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                         <div id="diff_result_line_right_div" class="row no-row-margin half_width">
                             <div class="line_index_bg_div border-right">
                                 <div class="line_index_div">{{ line_data.right_line }}</div>
                             </div>
-                            {% if line_data.right_type == "changed" %}
-                                <div class="line_content_bg_div line_content_add_bg_div no-row-margin row">
-                                    {% for row_data in line_data.right_row %}
-                                        {% include 'string_file_diff_line_content.html' %}
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                <div class="line_content_bg_div no-row-margin row">
-                                    {% for row_data in line_data.right_row %}
-                                        {% include 'string_file_diff_line_content.html' %}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
+                            {% with row_list=line_data.right_row %}
+                                {% if line_data.right_type == "context" %}
+                                    <div class="line_content_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% elif line_data.right_type == "changed" %}
+                                    <div class="line_content_bg_div line_content_add_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_change_content.html' %}
+                                    </div>
+                                {% else %}
+                                    <div class="line_content_bg_div line_content_add_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                     </div>
                 {% endfor %}

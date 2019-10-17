@@ -63,7 +63,7 @@ class NodeObject:
         self.modification_time = date_time_to_time(data_time, time_format)
 
     def set_node_hash_key(self, node_hash_key):
-        self.node_hash_key = node_hash_key
+        self.node_hash_key = str(node_hash_key)
 
     def set_diff_result(self, diff_result):
         self.diff_result = diff_result
@@ -110,7 +110,7 @@ class NodeObject:
         return json_list
 
     def download_files(self, root_key, connect_obj):
-        root_key = str(root_key)
+        root_key = root_key
         file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
                                                   root_key, self.environment.name)
         file_object = connect_obj.get_file_contents(file_object)
