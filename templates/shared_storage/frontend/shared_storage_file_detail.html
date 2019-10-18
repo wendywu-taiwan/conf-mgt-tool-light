@@ -30,7 +30,9 @@
                                 <div class="line_index_div">{{ row_data.index }}</div>
                             </div>
                             <div class="line_content_bg_div no-row-margin row">
-                                {% include 'string_file_diff_line_content.html' %}
+                                <div class="line_content_div">
+                                    {{ row_data.row|force_escape|parse_space_large|parse_tab|parse_space }}
+                                </div>
                             </div>
                         </div>
                     {% endfor %}

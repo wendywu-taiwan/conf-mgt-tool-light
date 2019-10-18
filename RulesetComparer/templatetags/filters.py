@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 
@@ -52,3 +53,18 @@ def add(value, arg):
 @register.filter
 def add_str(arg1, arg2):
     return str(arg1) + str(arg2)
+
+
+@register.filter()
+def parse_space(value):
+    return mark_safe("&ensp;".join(value.split(' ')))
+
+
+@register.filter()
+def parse_space_large(value):
+    return mark_safe("&ensp;&ensp;".join(value.split('  ')))
+
+
+@register.filter()
+def parse_tab(value):
+    return mark_safe("&ensp;&ensp;&ensp;&ensp;".join(value.split('\t')))
