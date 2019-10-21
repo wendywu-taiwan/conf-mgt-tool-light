@@ -21,8 +21,9 @@
     width: 2%;
 }
 
-.folder_data_line{
+.folder_data_line {
     cursor: pointer;
+    line-height: 25px;
 }
 
 .line_div {
@@ -121,6 +122,8 @@
     margin-top: auto;
     margin-bottom: auto;
     font-weight: 500;
+    width: 85%;
+    word-break: break-all;
 }
 
 .other_info_text {
