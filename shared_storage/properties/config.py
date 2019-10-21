@@ -16,7 +16,8 @@ COMPARE_TYPE_BLACK_LIST = {
     "jpg",
     "mp4",
     "gif",
-    "dic"
+    "dic",
+    "pal"
 }
 
 FILTER_MODULE_FOLDER_MAP = {

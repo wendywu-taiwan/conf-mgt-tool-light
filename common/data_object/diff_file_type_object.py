@@ -31,8 +31,8 @@ class DiffFileTypeObject:
                 return self.diff_string_content_file()
 
     def diff_file_md5(self):
-        left_md5 = get_file_md5_from_file(self.left_file_object.file_content)
-        right_md5 = get_file_md5_from_file(self.right_file_object.file_content)
+        left_md5 = get_file_md5_from_file(self.left_file_object.file_content_bytes)
+        right_md5 = get_file_md5_from_file(self.right_file_object.file_content_bytes)
         left_json = FileDetailBuilder(self.left_file_object).get_data()
         right_json = FileDetailBuilder(self.right_file_object).get_data()
         self.save_detail_json(self.left_file_object.environment_name, left_json)

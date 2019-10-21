@@ -11,9 +11,16 @@ class FileLoadObject:
         self.local_path = local_path
         self.modification_time = modification_time
         self.file_content = None
+        self.file_content_bytes = None
 
     def set_file_content(self, file_content):
-        self.file_content = file_content
+        if isinstance(file_content, bytes):
+            self.file_content = file_content.decode('utf-8', errors='ignore')
+            self.file_content_bytes = file_content
+        else:
+            self.file_content = file_content
+            self.file_content_bytes = file_content.encode('utf-8', errors='ignore')
+
 
 
 class SharedStorageFileLoadObject(FileLoadObject):

@@ -61,5 +61,5 @@ class SharedStorageGitConnectObject(DirConnectObject):
 
     def get_file_contents(self, file_load_object):
         file_path = self.root_path + file_load_object.file_path
-        file_load_object.file_content = self.get_path_file(file_path, None)
+        file_load_object.set_file_content(self.get_path_file(file_path, None))
         return file_load_object

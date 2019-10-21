@@ -73,5 +73,5 @@ class SharedStorageConnectionObject(FTPConnectionObject):
 
     def get_file_contents(self, file_load_object):
         self.sftp.get(file_load_object.file_path, localpath=file_load_object.local_path)
-        file_load_object.file_content = load_path_file(file_load_object.local_path)
+        file_load_object.set_file_content(load_path_file(file_load_object.local_path))
         return file_load_object

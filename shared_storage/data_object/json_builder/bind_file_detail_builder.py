@@ -23,6 +23,7 @@ class BindFileDetailBaseBuilder(BaseBuilder):
             self.file_path = None
             self.modification_time = None
             self.node_json = None
+            self.git_path_key = None
             self.parse_root_info()
             self.parse_node_info()
             self.file_content = self.parse_content().splitlines()
@@ -50,7 +51,7 @@ class BindFileDetailBaseBuilder(BaseBuilder):
         file_name = self.node_json.get(KEY_FILE_NAME)
 
         if environment_name == GIT_NAME:
-            file_path = DIR_GIT_SHARE_STORAGE_ROOT + self.node_json.get(KEY_FILE_PATH)
+            file_path = DIR_GIT_SHARE_STORAGE_ROOT + self.node_json.get(self.git_path_key)
         else:
             file_path = COMPARE_FILE_PATH + "%s/%s/%s" % (self.root_key, self.environment.get(KEY_NAME), file_name)
         return load_path_file(file_path)
@@ -91,6 +92,10 @@ class BindFileDetailBuilder(BindFileDetailBaseBuilder):
         self.file_path = self.node_json.get(KEY_FILE_PATH)
         self.modification_time = self.node_json.get(KEY_MODIFICATION_TIME)
 
+    def parse_content(self):
+        self.git_path_key = KEY_FILE_PATH
+        return super().parse_content()
+
     def __generate_data__(self):
         super().__generate_data__()
 
@@ -114,6 +119,13 @@ class BindFileSameDetailBuilder(BindFileDetailBaseBuilder):
         else:
             self.file_path = self.node_json.get(KEY_RIGHT_FILE)
             self.modification_time = self.node_json.get(KEY_RIGHT_MODIFICATION_TIME)
+
+    def parse_content(self):
+        if self.side == "left":
+            self.git_path_key = KEY_LEFT_FILE
+        else:
+            self.git_path_key = KEY_RIGHT_FILE
+        return super().parse_content()
 
     def __generate_data__(self):
         super().__generate_data__()
