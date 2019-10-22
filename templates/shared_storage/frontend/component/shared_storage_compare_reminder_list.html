@@ -1,0 +1,47 @@
+{% if left_only_data|length > 0 %}
+    <div id="normal_env_rulesets_div">
+        <div class="list_title">Files exist on {{ left_environment.name }} Only</div>
+        <div class="list_remind_title">
+            The following files only exist on {{ left_environment.name }}, we suggest you review them and commit back to
+            us
+        </div>
+        {% for data in left_only_data %}
+            <div class="list_ruleset_name">&ensp;&ensp;<a
+                    href="{{ request_host }}/ConfigManageTool/shared_storage/compare/file/detail/left/{{ compare_hash_key }}/{{ data.compare_hash_key }}/{{ data.diff_result }}/{{ data.type }}">+</a> {{ data.file_path }}
+            </div>
+        {% endfor %}
+        <br>
+        <br>
+    </div>
+{% endif %}
+
+{% if right_only_data|length > 0 %}
+    <div id="developer_env_rulesets_div">
+        <div class="list_title">Files exist on {{ right_environment.name }} Only</div>
+        <div class="list_remind_title">
+            The following files only exist on {{ right_environment.name }}, we suggest you review them and deploy to
+            server or remove the deprecated files
+        </div>
+        {% for data in right_only_data %}
+            <div class="list_ruleset_name">&ensp;&ensp;<a
+                    href="{{ request_host }}/ConfigManageTool/shared_storage/compare/file/detail/right/{{ compare_hash_key }}/{{ data.compare_hash_key }}/{{ data.diff_result }}/{{ data.type }}">+</a> {{ data.file_path }}</div>
+        {% endfor %}
+        <br>
+        <br>
+    </div>
+{% endif %}
+
+{% if different|length > 0 %}
+    <div id="different_rulesets_div">
+        <div class="list_title">Different Files</div>
+        <div class="list_remind_title">
+            The following files are different between {{ left_environment.name }} and {{ right_environment.name }},
+            please review them and commit your change back or deploy the latest version
+            from {{ right_environment.name }}
+        </div>
+        {% for data in different %}
+            <div class="list_ruleset_name">&ensp;&ensp;<a
+                    href="{{ request_host }}/ConfigManageTool/shared_storage/compare/file/diff/{{ compare_hash_key }}/{{ data.compare_hash_key }}/{{ data.type }}">+</a> {{ data.file_path }}</div>
+        {% endfor %}
+    </div>
+{% endif %}

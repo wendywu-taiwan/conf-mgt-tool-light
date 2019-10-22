@@ -35,3 +35,6 @@ class DirRootObject:
     def generate_json(self):
         json = self.node_object.parse_root_node_json()
         return json
+
+    def generate_mail_json(self, self_only_list, self_no_list, different_list):
+        self.node_object.parse_mail_node_json(self_only_list, self_no_list, different_list)

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        table, th, td {
+            border: 1.5px solid white;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .header {
+            background: #34495d;
+            color: white;
+            font-size: 10.0pt;
+            font-family: Calibri, sans-serif;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .td_title {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+            font-family: Calibri, sans-serif;
+        }
+
+        .td_title_blue {
+            width: 200px;
+            padding: .75pt .75pt .75pt 3.75pt;
+            font-weight: 600;
+            color: black;
+            font-family: Calibri, sans-serif;
+            background-color: #bcd7f16b;
+        }
+
+        .td_content {
+            font-family: Calibri, sans-serif;
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+        }
+
+        .td_content_blue {
+            font-family: Calibri, sans-serif;
+            width: 200px;
+            margin-left: 5px;
+            text-align: center;
+            color: black;
+            background-color: #bcd7f16b;
+        }
+
+        .env_title_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .env_text {
+            margin-left: 5px;
+            color: #5b9bd5;
+            font-weight: 600;
+            font-family: Calibri, sans-serif;
+            display: inline-block;
+        }
+
+        .content_text {
+            font-family: Calibri, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .list_title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #e69136;
+            font-family: Calibri, sans-serif;
+        }
+
+        .list_remind_title {
+            font-size: 16px;
+            color: #7b8996;
+            font-weight: 600;
+            font-family: Calibri, sans-serif;
+        }
+
+        .list_ruleset_name {
+            font-size: 14px;
+            font-family: Calibri, sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="content_text">This is the shared storage compare result for</div>
+</div>
+<div class="row">
+    <div class="env_title_text">Country :</div>
+    <div class="env_text">{{ left_folder }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">Left environment :</div>
+    <div class="env_text">{{ left_environment.name }}</div>
+</div>
+<div class="row">
+    <div class="env_title_text">Right environment :</div>
+    <div class="env_text"> {{ right_environment.name }}</div>
+</div>
+<br>
+{% if has_changes == True %}
+    <div class="content_text">there are summary information in following table,</div>
+    <div class="content_text">you can check out the <a
+            href="{{ request_host }}/ConfigManageTool/shared_storage/compare/result/{{ compare_hash_key }}">link</a>
+        for more details,
+    </div>
+    <div class="content_text">Thank you.</div>
+    <br>
+    <br>
+    {% include 'shared_storage_compare_reminder_list.html' %}
+{% else %}
+    <div class="content_text">there are no differences between two environments today,</div>
+    <div class="content_text">Thank you.</div>
+{% endif %}
+</body>
+</html>

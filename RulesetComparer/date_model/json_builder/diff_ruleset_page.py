@@ -28,6 +28,6 @@ class DiffRulesetPageBuilder(BaseBuilder):
         self.result_dict[RULE_DIFF_KEY_NORMAL_LIST] = normal_list
 
         if len(add_list) == 0 and len(remove_list) == 0 and len(modify_list) == 0:
-            self.result_dict[RULE_DIFF_HAS_CHANGES] = False
+            self.result_dict[KEY_HAS_CHANGES] = False
         else:
-            self.result_dict[RULE_DIFF_HAS_CHANGES] = True
+            self.result_dict[KEY_HAS_CHANGES] = True

@@ -83,7 +83,7 @@ RULE_DIFF_KEY_ADD_LIST = 'add_list'
 RULE_DIFF_KEY_REMOVE_LIST = 'remove_list'
 RULE_DIFF_KEY_MODIFY_LIST = 'modify_list'
 RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
-RULE_DIFF_HAS_CHANGES = 'has_changes'
+KEY_HAS_CHANGES = 'has_changes'
 
 # environment model key
 NO_ENVIRONMENT_GIT = 0
@@ -278,6 +278,8 @@ KEY_LEFT_DIFF_RESULT = "left_diff_result"
 KEY_RIGHT_DIFF_RESULT = "right_diff_result"
 KEY_LEFT_MODIFICATION_TIME = "left_modification_time"
 KEY_RIGHT_MODIFICATION_TIME = "right_modification_time"
+KEY_LEFT_ONLY_DATA = "left_only_data"
+KEY_RIGHT_ONLY_DATA = "right_only_data"
 KEY_RIGHT_FILE = "right_file"
 KEY_CHANGED = "changed"
 KEY_ADDED = "added"
@@ -297,6 +299,7 @@ KEY_SHOW_COLLAPSE = "show_collapse"
 KEY_LEFT_ONLY = "left_only"
 KEY_RIGHT_ONLY = "right_only"
 KEY_COMMON = "common"
+KEY_REQUEST_HOST = "request_host"
 
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'

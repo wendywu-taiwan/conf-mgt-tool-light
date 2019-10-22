@@ -109,6 +109,22 @@ class NodeObject:
             json_list.append(json_obj)
         return json_list
 
+    def parse_mail_node_json(self, self_only_list, self_no_list, different_list):
+        for child_node in self.child_node_list:
+            if child_node.type is not KEY_FOLDER:
+                data_object = {KEY_FILE_PATH: child_node.path,
+                               KEY_TYPE: child_node.type,
+                               KEY_DIFF_RESULT: child_node.diff_result,
+                               KEY_COMPARE_HASH_KEY: child_node.node_hash_key}
+                if child_node.diff_result is KEY_DIFFERENT:
+                    different_list.append(data_object)
+                elif child_node.diff_result is KEY_D_RESULT_ADD:
+                    self_only_list.append(data_object)
+                elif child_node.diff_result is KEY_D_RESULT_REMOVE:
+                    self_no_list.append(data_object)
+
+            child_node.parse_mail_node_json(self_only_list, self_no_list, different_list)
+
     def download_files(self, root_key, connect_obj):
         root_key = root_key
         file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
