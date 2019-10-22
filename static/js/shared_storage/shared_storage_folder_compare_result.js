@@ -112,9 +112,13 @@ function changeCollapseIconVisibility(e, showIconSwitchMethod, hideIconSwitchMet
 let lastClickedRDataLineId;
 
 function dataLineOnclick(element, type, diffResult, detailUrl, diffUrl) {
-    console.log("dataLineOnclick, element:"+element);
+    console.log("dataLineOnclick, element:" + element + ", diffResult:" + diffResult);
     // example id: right_-18446744073139484987_data_line_div
     //remove last select item bg color
+
+    if (diffResult == "remove")
+        return;
+
     if (lastClickedRDataLineId != null) {
         let lastElement = document.getElementById(lastClickedRDataLineId);
         let lastOppositeElement = getOppositeElement(lastClickedRDataLineId);
@@ -123,7 +127,7 @@ function dataLineOnclick(element, type, diffResult, detailUrl, diffUrl) {
     }
 
     if (type == "folder") {
-        return
+        return;
     }
 
     //add bg color to current select item
