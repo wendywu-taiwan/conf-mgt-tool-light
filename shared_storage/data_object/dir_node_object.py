@@ -44,7 +44,7 @@ class DirNodeObject:
         child_node_add.set_show_collapse()
         child_node_remove.set_show_collapse()
 
-        node_hash_key = str(hash(child_node_add) + hash(child_node_remove))
+        node_hash_key = str(hash(child_node_add))
         child_node_add.set_node_hash_key(node_hash_key)
         child_node_remove.set_node_hash_key(node_hash_key)
 

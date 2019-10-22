@@ -112,7 +112,6 @@ function changeCollapseIconVisibility(e, showIconSwitchMethod, hideIconSwitchMet
 let lastClickedRDataLineId;
 
 function dataLineOnclick(element, type, diffResult, detailUrl, diffUrl) {
-    console.log("dataLineOnclick, element:" + element + ", diffResult:" + diffResult);
     // example id: right_-18446744073139484987_data_line_div
     //remove last select item bg color
 

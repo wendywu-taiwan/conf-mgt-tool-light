@@ -133,7 +133,7 @@ class DirNodeBaseObject:
         return node
 
     def update_node_hash_key(self, left_node, right_node):
-        node_hash_key = str(hash(left_node) + hash(right_node))
+        node_hash_key = str(hash(left_node))
         left_node.set_node_hash_key(node_hash_key)
         right_node.set_node_hash_key(node_hash_key)
         return node_hash_key
