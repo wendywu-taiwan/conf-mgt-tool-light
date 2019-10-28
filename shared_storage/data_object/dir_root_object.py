@@ -32,9 +32,12 @@ class DirRootObject:
     def update_root_hash_key(self, root_hash_key):
         self.dir_connect_obj.set_root_hash_key(root_hash_key)
 
-    def generate_json(self):
+    def generate_compare_result_json(self):
         json = self.node_object.parse_root_node_json()
         return json
 
-    def generate_mail_json(self, self_only_list, self_no_list, different_list):
+    def generate_compare_result_mail_json(self, self_only_list, self_no_list, different_list):
         self.node_object.parse_mail_node_json(self_only_list, self_no_list, different_list)
+
+    def generate_filtered_files_list_json(self, result_list, filter_keys):
+        self.node_object.parse_filtered_files_list_json(self.dir_connect_obj, result_list, filter_keys)

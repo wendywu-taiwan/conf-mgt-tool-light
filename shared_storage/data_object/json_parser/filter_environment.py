@@ -1,3 +1,10 @@
+class SelectToDownloadFilterEnvironmentParser:
+
+    def __init__(self, json_data):
+        try:
+            self.region_id = json_data.get("region_id")
+        except BaseException as e:
+            raise e
 
 
 class SelectToCompareFilterEnvironmentParser:

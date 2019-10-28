@@ -25,14 +25,14 @@ from RulesetComparer.utils.fileManager import save_file, load_json_file, create_
 from permission.models import FTPRegion, FTPServer
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from common.data_object.json_builder.ftp_region import FTPRegionsBuilder
-from shared_storage.data_object.json_builder.select_to_compare_filter_environment import \
+from shared_storage.data_object.json_builder.filter_environment import \
     SelectToCompareFilterEnvironmentBuilder
-from shared_storage.data_object.json_parser.select_to_compare_filter_environment import \
+from shared_storage.data_object.json_parser.filter_environment import \
     SelectToCompareFilterEnvironmentParser
-from shared_storage.data_object.json_builder.select_to_compare_filter_folder import \
-    SelectToCompareFilterFolderBuilder
-from shared_storage.data_object.json_parser.select_to_compare_filter_folder import \
-    SelectToCompareFilterEnvironmentParser
+from shared_storage.data_object.json_builder.filter_folder_builder import \
+    SelectToCompareFilterDirFolderBuilder
+from shared_storage.data_object.json_parser.filter_folder import \
+    SelectToCompareFilterFolderParser
 from shared_storage.utils.file_manager import load_file_content
 
 
@@ -59,7 +59,7 @@ def get_region_environment_list(json_data):
 
 def get_environment_dir_list(json_data):
     try:
-        parser = SelectToCompareFilterEnvironmentParser(json_data)
+        parser = SelectToCompareFilterFolderParser(json_data)
         environment = Environment.objects.get(id=parser.environment_id)
         if environment.name == GIT_NAME:
             dir_connect_obj = SharedStorageGitConnectObject(False)
@@ -67,7 +67,7 @@ def get_environment_dir_list(json_data):
             dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
 
         list_dir = dir_connect_obj.get_path_list_dir("")
-        result_json = SelectToCompareFilterFolderBuilder(parser.side, list_dir).get_data()
+        result_json = SelectToCompareFilterDirFolderBuilder(parser.side, list_dir).get_data()
         return result_json
     except Exception as e:
         raise e

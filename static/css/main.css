@@ -425,6 +425,14 @@ html, body {
     font-family: "Lato";
 }
 
+.div_title_text{
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+    min-width: 130px;
+}
+
 .ellipsis {
     overflow: hidden;
     white-space: nowrap;

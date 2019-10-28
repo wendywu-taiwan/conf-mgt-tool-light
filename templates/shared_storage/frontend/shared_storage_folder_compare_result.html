@@ -18,15 +18,6 @@
 
         </div>
     </div>
-    <script>
-        onRegionSelected = function (side, regionId) {
-            filterEnvironments(side, regionId, "{% url 'shared_storage:select-to-compare-filter-environment-page' %}");
-        };
-        onEnvironmentSelected = function (side) {
-            filterFolders(side, "{% url 'shared_storage:select-to-compare-filter-folder-page' %}");
-        };
-
-    </script>
 
 {% endblock %}
 

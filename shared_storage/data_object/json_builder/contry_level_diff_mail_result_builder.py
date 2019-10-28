@@ -17,7 +17,8 @@ class CountryLevelDiffMailResultBuilder(BaseBuilder):
             self.left_only_list = list()
             self.right_only_list = list()
             self.different_list = list()
-            self.left_root_object.generate_mail_json(self.left_only_list, self.right_only_list, self.different_list)
+            self.left_root_object.generate_compare_result_mail_json(self.left_only_list, self.right_only_list,
+                                                                    self.different_list)
             self.has_changes = self.check_has_changes()
             BaseBuilder.__init__(self)
         except Exception as e:

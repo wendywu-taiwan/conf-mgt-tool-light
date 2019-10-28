@@ -35,14 +35,6 @@
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
-#rule_download_container .div_title_text {
-    margin-top: auto;
-    margin-bottom: auto;
-    font-size: 18px;
-    font-weight: 800;
-    min-width: 130px;
-}
-
 #rule_download_container .drop_down_label_text {
     font-weight: 600;
     color: #bbbbbb;

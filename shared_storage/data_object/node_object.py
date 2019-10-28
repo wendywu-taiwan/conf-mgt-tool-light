@@ -1,4 +1,6 @@
 import stat
+
+from RulesetComparer.utils.stringFilter import string_filter_array_keys
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
 from common.data_object.file_load_object import SharedStorageFileLoadObject
@@ -79,6 +81,7 @@ class NodeObject:
     def sort_child_list(self):
         self.child_node_list.sort(key=lambda x: x.index, reverse=False)
 
+    # parse compare result json
     def parse_root_node_json(self):
         json_obj = {KEY_NAME: self.name,
                     KEY_TYPE: self.type,
@@ -91,6 +94,7 @@ class NodeObject:
                     KEY_CHILD_NODES: self.parse_child_nodes_json()}
         return json_obj
 
+    # parse compare result json
     def parse_child_nodes_json(self):
         self.sort_child_list()
         json_list = list()
@@ -109,6 +113,7 @@ class NodeObject:
             json_list.append(json_obj)
         return json_list
 
+    # parse compare result mail json
     def parse_mail_node_json(self, self_only_list, self_no_list, different_list):
         for child_node in self.child_node_list:
             if child_node.type is not KEY_FOLDER:
@@ -124,6 +129,20 @@ class NodeObject:
                     self_no_list.append(data_object)
 
             child_node.parse_mail_node_json(self_only_list, self_no_list, different_list)
+
+    def parse_filtered_files_list_json(self, connect_object, result_list, filtered_keys):
+        for child_node in self.child_node_list:
+            if child_node.type is not KEY_FOLDER and string_filter_array_keys(child_node.path, filtered_keys):
+                data_object = {KEY_FILE_NAME: child_node.name,
+                               KEY_FILE_PATH: child_node.path,
+                               KEY_FILE_SIZE: child_node.size,
+                               KEY_MODIFICATION_TIME: child_node.modification_time,
+                               KEY_COMPARE_HASH_KEY: child_node.node_hash_key}
+                result_list.append(data_object)
+            child_node.parse_filtered_files_list_json(connect_object, result_list, filtered_keys)
+
+    def parse_files_list_json(self):
+        pass
 
     def download_files(self, root_key, connect_obj):
         root_key = root_key

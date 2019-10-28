@@ -68,6 +68,7 @@ TEMPLATES = [
                  'templates/registration',
                  'templates/ruleset',
                  'templates/setting',
+                 'templates/common/component',
                  'templates/ruleset/frontend',
                  'templates/ruleset/frontend/component',
                  'templates/ruleset/backend',

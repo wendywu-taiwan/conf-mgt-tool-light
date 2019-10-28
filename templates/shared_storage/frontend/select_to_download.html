@@ -1,0 +1,222 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/shared_storage/select-to-download.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/select_to_download.js' %}"></script>
+    <script src="{% static '/js/shared_storage/download_filter_result.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div id="select_to_download_container" class="container-fluid">
+        <div id="select_data_div" class="white_block_div">
+            <p class="header-text">Download</p>
+            <div id="data_center_select_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Data Center</div>
+                <div class="drop_down_div">
+                    {% with type="region" data=data %}
+                        {% include 'dropdown_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="environment_select_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Environment</div>
+                <div class="drop_down_div">
+                    {% with type="environment" data="" %}
+                        {% include 'dropdown_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="folder_select_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Folder</div>
+                <div class="drop_down_div">
+                    {% with type="folder"  data="" %}
+                        {% include 'dropdown_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="module_select_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Module</div>
+                <div class="drop_down_div">
+                    {% with type="module" data="" %}
+                        {% include 'dropdown_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="filter_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Filter</div>
+                <div class="drop_down_div">
+                    <div id="filter_input_div" class="tagsinput-primary">
+                        <input id="filter_tags_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
+                               placeholder="bre_translation / onepad / template...etc"
+                               style="display: none;">
+                    </div>
+                </div>
+            </div>
+            <div id="only_latest_version_div" class="row no-row-margin">
+                <div id="latest_version_text_div" class="select_data_title"> Only Latest Version</div>
+                <div class="bootstrap-switch-square">
+                    <input type="checkbox" checked data-toggle="switch" id="only_latest_version_switch"
+                           data-on-text="<span class='fui-check'></span>"
+                           data-off-text="<span class='fui-cross'></span>"/>
+                </div>
+            </div>
+            <div id="filter_button_div">
+                <button id="filter_btn" class="btn btn-default btn-wide"
+                        onclick="filterFiles('{% url 'shared_storage:select-to-download-filter-result' %}')">
+                    Search
+                </button>
+            </div>
+        </div>
+        <div id="filter_result_div" class="white_block_div">
+            <div id="filter_result_header_div" class="header_div row no-row-margin">
+                <p id="filter_result_title" class="header_result_title header-text">Filter Result</p>
+                <div class="download_button_div row no_row_margin">
+                    <div id="filter_result_download_selected_btn_div"
+                         class="download_selected_btn_div download-icon no-col-padding">
+                        <button id="download_selected_btn" class="download_button_width btn btn-inverse btn-font-13"
+                                onclick="downloadSelectedRulesOnClick()">
+                            Download(1)
+                        </button>
+                    </div>
+                    <div id="filter_result_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
+                        <button id="filter_result_select_all_btn" class="download_button_width btn btn-info btn-font-13"
+                                onclick="filteredFilesSelectAll()">Select All
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="filter_result_row_div">
+                <div id="filter_result_row_title_div" class="row no-row-margin">
+                    <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
+                    <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
+                    <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
+                    <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size</div>
+                    <div id="modification_time_title_div"
+                         class="row_modification_time_width filter_result_row_title_text">
+                        Modification Time
+                    </div>
+                </div>
+                <div id="filter_result_row_data_div">
+                    <div class="filter_result_row row no-row-margin">
+                        <div id="row_checkbox_div"
+                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">
+                            <label class="checkbox" for="checkbox1">
+                                <input type="checkbox" data-toggle="checkbox" value="" id="checkbox1" required>
+                            </label>
+                        </div>
+                        <div class="row_file_icon_width">
+                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">
+                        </div>
+                        <div class="filter_result_row_text row_file_path_width">
+                            tw/audacx/0016/NewModificationsRules_supplementary.xml
+                        </div>
+                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>
+                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>
+                    </div>
+                    {#                    <div class="filter_result_row row no-row-margin">#}
+                    {#                        <div id="row_checkbox_div"#}
+                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
+                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
+                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
+                    {#                        </div>#}
+                    {#                        <div class="row_file_icon_width">#}
+                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
+                    {#                        </div>#}
+                    {#                        <div class="filter_result_row_text row_file_path_width">#}
+                    {#                            tw/audacx/0016/NewModificationsRules_yulong_compare.xml#}
+                    {#                        </div>#}
+                    {#                        <div class="filter_result_row_text row_file_size_width">2798 bytes</div>#}
+                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/22 11:03:13</div>#}
+                    {#                    </div>#}
+                    {#                    <div class="filter_result_row row no-row-margin">#}
+                    {#                        <div id="row_checkbox_div"#}
+                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
+                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
+                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
+                    {#                        </div>#}
+                    {#                        <div class="row_file_icon_width">#}
+                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
+                    {#                        </div>#}
+                    {#                        <div class="filter_result_row_text row_file_path_width">tw/audacx/0016/Rules.xml</div>#}
+                    {#                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>#}
+                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>#}
+                    {#                    </div>#}
+                    {#                    <div class="filter_result_row row no-row-margin">#}
+                    {#                        <div id="row_checkbox_div"#}
+                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
+                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
+                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
+                    {#                        </div>#}
+                    {#                        <div class="row_file_icon_width">#}
+                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
+                    {#                        </div>#}
+                    {#                        <div class="filter_result_row_text row_file_path_width">#}
+                    {#                            tw/audawatch/0000/audawatchmobiletranslation.properties#}
+                    {#                        </div>#}
+                    {#                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>#}
+                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>#}
+                    {#                    </div>#}
+                </div>
+            </div>
+        </div>
+        <div id="file_list_div" class="white_block_div">
+            <div id="file_list_header_div" class="header_div row no-row-margin">
+                <p id="file_list_title" class="header_result_title header-text">File List</p>
+                <div class="download_button_div row no_row_margin">
+                    <div id="file_list_download_selected_btn_div"
+                         class="download_selected_btn_div download-icon no-col-padding">
+                        <button id="download_selected_btn" class="download_button_width btn btn-inverse btn-font-13"
+                                onclick="downloadSelectedRulesOnClick()">
+                            Download(1)
+                        </button>
+                    </div>
+                    <div id="file_list_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
+                        <button class="download_button_width btn btn-info btn-font-13"
+                                onclick="downloadAllRulesOnClick()">Select All
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="file_list_data_div">
+                <div id="filter_result_row_title_div" class="row no-row-margin">
+                    <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
+                    <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
+                    <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
+                    <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size</div>
+                    <div id="modification_time_title_div"
+                         class="row_modification_time_width filter_result_row_title_text">
+                        Modification Time
+                    </div>
+                </div>
+                <div id="file_list_row_list_div">
+                    <div id="file_list_row_div">
+                        <div id="{{ root_node_object.compare_hash_key }}_folder_div">
+                            <div class="folder_data_line row no-row-margin" data-toggle="collapse"
+                                 href="#{{ root_node_object.compare_hash_key }}_folder_child_div"
+                                 role="button" aria-expanded="true"
+                                 aria-controls="{{ root_node_object.compare_hash_key }}_folder_child_div">
+                                {% include 'compare_result_line.html' %}
+                            </div>
+                            {% include 'normal_folder_expand_component.html' %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        onRegionSelected = function (regionId) {
+            filterEnvironments(regionId, "{% url 'shared_storage:download-filter-region-environments' %}");
+        };
+        onEnvironmentSelected = function () {
+            filterFolders("{% url 'shared_storage:download-filter-environment-folders' %}");
+        };
+        onFolderSelected = function () {
+            filterModuleFolders("{% url 'shared_storage:download-filter-folder-modules' %}")
+        }
+    </script>
+{% endblock %}
+
+

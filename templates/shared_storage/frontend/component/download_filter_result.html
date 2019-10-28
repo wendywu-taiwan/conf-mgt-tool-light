@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<script src="{% static '/js/application.js' %}"></script>
+{% for row_object in data %}
+    <div class="filter_result_row row no-row-margin">
+        <div id="row_checkbox_div"
+             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">
+            <label class="checkbox" for="{{ row_object.compare_hash_key }}_checkbox">
+                <input id="{{ row_object.compare_hash_key }}_checkbox" class="filter_result_file_checkbox"
+                       type="checkbox" data-toggle="checkbox" value=""
+                       onclick="onClickCheckbox(this, '{{ row_object.file_path }}')" required>
+            </label>
+        </div>
+        <div class="row_file_icon_width">
+            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">
+        </div>
+        <div class="filter_result_row_text row_file_path_width">
+            {{ row_object.file_path }}
+        </div>
+        <div class="filter_result_row_text row_file_size_width">{{ row_object.file_size }}</div>
+        <div class="filter_result_row_text row_modification_time_width">{{ row_object.modification_time }}</div>
+    </div>
+{% endfor %}

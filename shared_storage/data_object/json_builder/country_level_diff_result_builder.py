@@ -25,6 +25,6 @@ class CountryLevelDiffResultBuilder(BaseBuilder):
         self.result_dict[KEY_RIGHT_REGION] = FTPRegionBuilder(id=self.right_root_object.region_id).get_data()
         self.result_dict[KEY_LEFT_FOLDER] = self.left_root_object.folder
         self.result_dict[KEY_RIGHT_FOLDER] = self.right_root_object.folder
-        self.result_dict[KEY_LEFT_DIFF_RESULT] = self.left_root_object.generate_json()
-        self.result_dict[KEY_RIGHT_DIFF_RESULT] = self.right_root_object.generate_json()
+        self.result_dict[KEY_LEFT_DIFF_RESULT] = self.left_root_object.generate_compare_result_json()
+        self.result_dict[KEY_RIGHT_DIFF_RESULT] = self.right_root_object.generate_compare_result_json()
         self.result_dict[KEY_COMPARE_HASH_KEY] = self.compare_key
