@@ -137,6 +137,15 @@ def select_to_download_filter_module_folder(request):
     return page_error_check(after_check)
 
 
+def select_to_download_filter_latest_version_folder(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        result_json = download_services.filter_latest_version_folder(request_json)
+        return render(request, "dropdown_component.html", result_json)
+
+    return page_error_check(after_check)
+
+
 def select_to_download_filter_result_page(request):
     def after_check():
         request_json = get_post_request_json(request)

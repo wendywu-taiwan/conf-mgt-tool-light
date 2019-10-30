@@ -143,7 +143,10 @@ function arrayRemove(arr, value) {
     return arr.filter(function (ele) {
         return ele != value;
     });
+}
 
+function refreshPartialHTML(id, html) {
+    $('#' + id).html(html);
 }
 
 openNewPage = function (url) {
@@ -161,3 +164,11 @@ openNewPage = function (url) {
         showErrorDialog(response);
     });
 };
+
+function removeWithAnimate(obj, time) {
+    // obj.style.opacity = '0';
+    window.setTimeout(
+        function removeThis() {
+            obj.style.display = 'none';
+        }, time);
+}

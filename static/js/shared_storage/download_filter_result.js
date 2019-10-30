@@ -63,7 +63,7 @@ function checkDownloadBtnVisibility() {
 
 function changeDownloadBtnVisibility(visible, checkCount) {
     let downloadBtnDiv = document.getElementById('filter_result_download_selected_btn_div');
-    let downloadBtn = document.getElementById('download_selected_btn');
+    let downloadBtn = document.getElementById('filter_result_download_selected_btn');
     if (visible) {
         downloadBtnDiv.style.display = 'block';
         downloadBtn.innerText = "Download(" + checkCount + ")";

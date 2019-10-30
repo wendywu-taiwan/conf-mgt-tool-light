@@ -45,6 +45,14 @@
                     {% endwith %}
                 </div>
             </div>
+            <div id="latest_version_select_div" class="select_data_row_div row no-row-margin">
+                <div class="select_data_title">Latest Version</div>
+                <div class="drop_down_div">
+                    {% with type="latest_version" data="" %}
+                        {% include 'dropdown_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
             <div id="filter_div" class="select_data_row_div row no-row-margin">
                 <div class="select_data_title">Filter</div>
                 <div class="drop_down_div">
@@ -58,7 +66,7 @@
             <div id="only_latest_version_div" class="row no-row-margin">
                 <div id="latest_version_text_div" class="select_data_title"> Only Latest Version</div>
                 <div class="bootstrap-switch-square">
-                    <input type="checkbox" checked data-toggle="switch" id="only_latest_version_switch"
+                    <input type="checkbox" data-toggle="switch" id="only_latest_version_switch"
                            data-on-text="<span class='fui-check'></span>"
                            data-off-text="<span class='fui-cross'></span>"/>
                 </div>
@@ -76,7 +84,8 @@
                 <div class="download_button_div row no_row_margin">
                     <div id="filter_result_download_selected_btn_div"
                          class="download_selected_btn_div download-icon no-col-padding">
-                        <button id="download_selected_btn" class="download_button_width btn btn-inverse btn-font-13"
+                        <button id="filter_result_download_selected_btn"
+                                class="download_button_width btn btn-inverse btn-font-13"
                                 onclick="downloadSelectedRulesOnClick()">
                             Download(1)
                         </button>
@@ -110,7 +119,8 @@
                 <div class="download_button_div row no_row_margin">
                     <div id="file_list_download_selected_btn_div"
                          class="download_selected_btn_div download-icon no-col-padding">
-                        <button id="file_list_download_selected_btn" class="download_button_width btn btn-inverse btn-font-13">
+                        <button id="file_list_download_selected_btn"
+                                class="download_button_width btn btn-inverse btn-font-13">
                             Download(1)
                         </button>
                     </div>
@@ -145,6 +155,9 @@
         };
         onFolderSelected = function () {
             filterModuleFolders("{% url 'shared_storage:download-filter-folder-modules' %}")
+        };
+        onModuleSelected = function () {
+            filterLatestVersionFolders("{% url 'shared_storage:download-filter-latest-version-folder' %}")
         }
     </script>
 {% endblock %}

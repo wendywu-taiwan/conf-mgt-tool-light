@@ -58,19 +58,16 @@ def get_region_environment_list(json_data):
 
 
 def get_environment_dir_list(json_data):
-    try:
-        parser = SelectToCompareFilterFolderParser(json_data)
-        environment = Environment.objects.get(id=parser.environment_id)
-        if environment.name == GIT_NAME:
-            dir_connect_obj = SharedStorageGitConnectObject(False)
-        else:
-            dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
+    parser = SelectToCompareFilterFolderParser(json_data)
+    environment = Environment.objects.get(id=parser.environment_id)
+    if environment.name == GIT_NAME:
+        dir_connect_obj = SharedStorageGitConnectObject(False)
+    else:
+        dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
 
-        list_dir = dir_connect_obj.get_path_list_dir("")
-        result_json = SelectToCompareFilterDirFolderBuilder(parser.side, list_dir).get_data()
-        return result_json
-    except Exception as e:
-        raise e
+    list_dir = dir_connect_obj.get_path_list_dir("")
+    result_json = SelectToCompareFilterDirFolderBuilder(parser.side, list_dir).get_data()
+    return result_json
 
 
 def compare_shared_storage_folder(left_region_id, left_environment_id, left_folder,

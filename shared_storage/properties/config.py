@@ -296,9 +296,11 @@ FILTER_MODULE_FOLDER_MAP = {
         "xsltStylesheets"
     ]
 }
+
 LATEST_VERSION_GRAND_PARENT_FOLDER = [
     "/axr"
 ]
+
 LATEST_VERSION_PARENT_FOLDER = [
     "/audacx",
     "/audamobile",
@@ -321,4 +323,28 @@ LATEST_VERSION_PARENT_FOLDER = [
     "/webpad",
     "/webresources",
     "/xsltStylesheets"
+]
+
+FILTER_MODULE_FOLDER = [
+    "audacx",
+    "audamobile",
+    "audawatch",
+    "axr/configuration",
+    "axr/translation",
+    "bre",
+    "business",
+    "config",
+    "customreports",
+    "customerportal",
+    "dictionary",
+    "fonts",
+    "idbc",
+    "partsinformation",
+    "onepad",
+    "searchtree",
+    "template",
+    "vin",
+    "webpad",
+    "webresources",
+    "xsltStylesheets"
 ]

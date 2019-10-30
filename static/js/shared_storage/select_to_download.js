@@ -1,4 +1,4 @@
-let regionId, environmentId, folderName, moduleName, onlyLatestVersion;
+let regionId, environmentId, countryFolder, moduleFolder, latestVersionFolder, onlyLatestVersion;
 let filterKeyList = [];
 
 $(function () {
@@ -13,6 +13,15 @@ $(function () {
 
     initEnvironmentDropDownComponent();
     initFolderDropDownComponent();
+
+    $('#only_latest_version_switch').on('switchChange.bootstrapSwitch', function (event, state) {
+        let latestVersionDropdown = document.getElementById("latest_version_select_div");
+        if ($("#only_latest_version_switch").is(':checked')) {
+            removeWithAnimate(latestVersionDropdown, 300);
+        } else {
+            latestVersionDropdown.style.display = 'flex';
+        }
+    });
 });
 
 initEnvironmentDropDownComponent = function () {
@@ -28,7 +37,7 @@ initFolderDropDownComponent = function () {
     $("#folder_select_dropdown_list li").click(function () {
         $("#folder_select_dropdown_btn:first-child").text($(this).text());
         $("#folder_select_dropdown_btn:first-child").val($(this).val());
-        folderName = $(this).text();
+        countryFolder = $(this).text();
         onFolderSelected();
     });
 };
@@ -37,7 +46,16 @@ initModuleFolderDropDownComponent = function () {
     $("#module_select_dropdown_list li").click(function () {
         $("#module_select_dropdown_btn:first-child").text($(this).text());
         $("#module_select_dropdown_btn:first-child").val($(this).val());
-        moduleName = $(this).text();
+        moduleFolder = $(this).text();
+        onModuleSelected();
+    });
+};
+
+initLatestVersionFolderDropDownComponent = function () {
+    $("#latest_version_select_dropdown_list li").click(function () {
+        $("#latest_version_select_dropdown_btn:first-child").text($(this).text());
+        $("#latest_version_select_dropdown_btn:first-child").val($(this).val());
+        latestVersionFolder = $(this).text();
     });
 };
 
@@ -60,7 +78,6 @@ filterEnvironments = function (regionId, postUrl) {
 filterFolders = function (postUrl) {
     showWaitingDialog();
     let post_body = {
-        "side": "left",
         "environment_id": environmentId,
         "region_id": regionId,
     };
@@ -79,13 +96,35 @@ filterFolders = function (postUrl) {
 filterModuleFolders = function (postUrl) {
     showWaitingDialog();
     let post_body = {
-        "folder_name": folderName,
+        "environment_id": environmentId,
+        "region_id": regionId,
+        "folder_name": countryFolder,
     };
 
     doPOST(postUrl, post_body, function (response) {
             let folderDropDownDiv = document.getElementById('module_select_dropdown_div');
             folderDropDownDiv.innerHTML = response;
             initModuleFolderDropDownComponent();
+            stopDialog();
+        }, function (response) {
+            console.log(response);
+        }
+    );
+};
+
+
+filterLatestVersionFolders = function (postUrl) {
+    showWaitingDialog();
+    let post_body = {
+        "environment_id": environmentId,
+        "region_id": regionId,
+        "country_folder": countryFolder,
+        "module_folder": moduleFolder
+    };
+
+    doPOST(postUrl, post_body, function (response) {
+            refreshPartialHTML("latest_version_select_dropdown_div", response);
+            initLatestVersionFolderDropDownComponent();
             stopDialog();
         }, function (response) {
             console.log(response);
@@ -102,8 +141,9 @@ onClickSearchButton = function (filterFilesUrl, fileListUrl) {
     let postBody = {
         "region_id": regionId,
         "environment_id": environmentId,
-        "folder_name": folderName,
-        "module_name": moduleName,
+        "country_folder": countryFolder,
+        "module_folder": moduleFolder,
+        "latest_version_folder": latestVersionFolder,
         "filter_keys": filterKeyList,
         "only_latest_version": onlyLatestVersion
     };
@@ -118,6 +158,7 @@ onClickSearchButton = function (filterFilesUrl, fileListUrl) {
 filterFiles = function (postUrl, postBody) {
     doPOST(postUrl, postBody, function (response) {
             successDialog("filter success", function () {
+                let fileListDiv = document.getElementById('file_list_div');
                 let filterResultDiv = document.getElementById('filter_result_div');
                 let selectAllBtn = document.getElementById('filter_result_select_all_btn_div');
                 $('#filter_result_row_data_div').html(response);
@@ -127,6 +168,7 @@ filterFiles = function (postUrl, postBody) {
                 } else {
                     selectAllBtn.style.display = 'block';
                 }
+                fileListDiv.style.display = 'none';
                 filterResultDiv.style.display = 'block';
             });
         }, function (response) {
@@ -141,6 +183,7 @@ getFilesList = function (postUrl, postBody) {
 
     doPOST(postUrl, postBody, function (response) {
             successDialog("filter success", function () {
+                let filterResultDiv = document.getElementById('filter_result_div');
                 let fileListDiv = document.getElementById('file_list_div');
                 let selectAllBtn = document.getElementById('file_list_select_all_btn_div');
                 $('#file_list_row_list_div').html(response);
@@ -150,6 +193,7 @@ getFilesList = function (postUrl, postBody) {
                 } else {
                     selectAllBtn.style.display = 'block';
                 }
+                filterResultDiv.style.display = 'none';
                 fileListDiv.style.display = 'block';
             });
         }, function (response) {
@@ -163,8 +207,8 @@ getFilesList = function (postUrl, postBody) {
 checkFilterValid = function () {
     regionId = $("#region_select_dropdown_btn:first-child").val();
     environmentId = $("#environment_select_dropdown_btn:first-child").val();
-    folderName = $("#folder_select_dropdown_btn:first-child").text();
-    moduleName = $("#module_select_dropdown_btn:first-child").text();
+    countryFolder = $("#folder_select_dropdown_btn:first-child").text();
+    moduleFolder = $("#module_select_dropdown_btn:first-child").text();
     filterKeyList = $("#filter_tags_input").tagsinput('items');
     onlyLatestVersion = $('#only_latest_version_switch').bootstrapSwitch('state');
 
@@ -176,12 +220,12 @@ checkFilterValid = function () {
         showWarningDialog("please select environment");
         return false;
     }
-    if (!folderName) {
+    if (!countryFolder) {
         showWarningDialog("please select folder");
         return false;
     }
 
-    if (!moduleName) {
+    if (!moduleFolder) {
         showWarningDialog("please select module");
         return false;
     }

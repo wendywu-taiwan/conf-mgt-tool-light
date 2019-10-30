@@ -4,8 +4,10 @@ class SelectToDownloadFileListParser:
         try:
             self.region_id = json_data.get("region_id")
             self.environment_id = json_data.get("environment_id")
-            self.folder_name = json_data.get("folder_name")
-            self.module_name = json_data.get("module_name")
+            self.country_folder = json_data.get("country_folder")
+            self.module_folder = json_data.get("module_folder")
+            self.latest_version_folder = json_data.get("latest_version_folder")
+            self.module_path = self.country_folder + "/" + self.module_folder
             self.only_latest_version = json_data.get("only_latest_version")
         except BaseException as e:
             raise e

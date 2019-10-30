@@ -34,6 +34,8 @@ filter_pattern = [
          name="download-filter-environment-folders"),
     path('download/module/folder', views.select_to_download_filter_module_folder,
          name="download-filter-folder-modules"),
+    path('download/latest/version/folder', views.select_to_download_filter_latest_version_folder,
+         name="download-filter-latest-version-folder"),
 ]
 
 urlpatterns = [

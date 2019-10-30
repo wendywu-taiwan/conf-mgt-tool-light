@@ -1,3 +1,5 @@
+import stat
+
 from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.key import *
 
@@ -38,9 +40,11 @@ class SelectToDownloadFilterModuleBuilder(SelectToDownloadFilterFolderBuilder):
 
 
 class SelectToDownloadFilterDirFolderBuilder(BaseBuilder):
-    def __init__(self, folders):
+
+    def __init__(self, type, folders):
         try:
             self.folders = folders
+            self.type = type
             self.folder_object_list = self.build_folder_object()
             BaseBuilder.__init__(self)
         except Exception as e:
@@ -50,6 +54,9 @@ class SelectToDownloadFilterDirFolderBuilder(BaseBuilder):
         folder_object_list = list()
         index = 1
         for entry in self.folders:
+            if not stat.S_ISDIR(entry.st_mode):
+                continue
+
             folder_object = {
                 "id": index,
                 "name": entry.filename
@@ -59,15 +66,23 @@ class SelectToDownloadFilterDirFolderBuilder(BaseBuilder):
         return folder_object_list
 
     def __generate_data__(self):
-        self.result_dict[KEY_TYPE] = "folder"
+        self.result_dict[KEY_TYPE] = self.type
         self.result_dict[KEY_DATA] = self.folder_object_list
+
+
+class SelectToDownloadFilterLatestVersionBuilder(SelectToDownloadFilterDirFolderBuilder):
+    def __init__(self, folders):
+        try:
+            SelectToDownloadFilterDirFolderBuilder.__init__(self, "latest_version", folders)
+        except Exception as e:
+            raise e
 
 
 class SelectToCompareFilterDirFolderBuilder(SelectToDownloadFilterDirFolderBuilder):
     def __init__(self, side, folders):
         try:
             self.side = side
-            SelectToDownloadFilterDirFolderBuilder.__init__(self, folders)
+            SelectToDownloadFilterDirFolderBuilder.__init__(self, "folder", folders)
         except Exception as e:
             raise e
 
