@@ -39,5 +39,8 @@ class DirRootObject:
     def generate_compare_result_mail_json(self, self_only_list, self_no_list, different_list):
         self.node_object.parse_mail_node_json(self_only_list, self_no_list, different_list)
 
+    def generate_files_list_json(self):
+        return self.node_object.parse_files_list_json()
+
     def generate_filtered_files_list_json(self, result_list, filter_keys):
         self.node_object.parse_filtered_files_list_json(self.dir_connect_obj, result_list, filter_keys)

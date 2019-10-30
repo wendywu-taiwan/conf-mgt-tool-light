@@ -19,6 +19,8 @@ compare_pattern = [
 download_pattern = [
     path('', views.select_to_download_page, name="select-to-download-page"),
     path('with/filters', views.select_to_download_filter_result_page, name="select-to-download-filter-result"),
+    path('with/file/list', views.select_to_download_file_list_page, name="select-to-download-file-list"),
+
 ]
 
 filter_pattern = [

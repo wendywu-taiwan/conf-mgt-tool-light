@@ -146,6 +146,15 @@ def select_to_download_filter_result_page(request):
     return page_error_check(after_check)
 
 
+def select_to_download_file_list_page(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        result_json = download_services.file_list(request_json)
+        return render(request, "download_file_list.html", result_json)
+
+    return page_error_check(after_check)
+
+
 # def download_files(request):
 #     def after_check():
 #         if file_type in COMPARE_TYPE_BLACK_LIST:

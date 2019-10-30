@@ -4,7 +4,8 @@ from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from permission.models import Environment, FTPServer
 from shared_storage.data_object.dir_root_object import DirRootObject
-from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFilterResultParser
+from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFileListParser, \
+    SelectToDownloadFilterResultParser
 from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject, \
     DirNodeParseFilteredLatestVersionParentObject
 from shared_storage.data_object.json_builder.select_to_download_filterd_files_builder import \
@@ -19,6 +20,7 @@ from shared_storage.data_object.json_parser.filter_folder import \
     SelectToDownloadFilterFolderParser
 from shared_storage.data_object.json_builder.filter_folder_builder import \
     SelectToDownloadFilterModuleBuilder, SelectToDownloadFilterDirFolderBuilder
+from shared_storage.data_object.json_builder.select_to_download_file_list_builder import SelectToDownloadFileListBuilder
 
 
 def get_region_environment_list(json_data):
@@ -73,4 +75,24 @@ def filter_file_result(json_data):
 
     # filter correspond node data to result list and download files
     result_json = SelectToDownloadFilteredFilesBuilder(root_obj, parser.filter_keys).get_data()
+    return result_json
+
+
+def file_list(json_data):
+    parser = SelectToDownloadFileListParser(json_data)
+    # initial root node
+    root_obj = DirRootObject(parser.region_id, parser.environment_id, parser.folder_name,
+                             parser.only_latest_version)
+    root_obj.update_root_hash_key(hash(root_obj))
+
+    # parse node data to list
+    if parser.only_latest_version:
+        parse_obj = DirNodeParseFilteredLatestVersionParentObject(root_obj.dir_connect_obj, root_obj.node_object,
+                                                                  [parser.module_name])
+    else:
+        parse_obj = DirNodeParseFilteredObject(root_obj.dir_connect_obj, root_obj.node_object, [parser.module_name])
+    parse_obj.parse_nodes()
+
+    # filter correspond node data to result list and download files
+    result_json = SelectToDownloadFileListBuilder(root_obj).get_data()
     return result_json

@@ -93,13 +93,13 @@ filterModuleFolders = function (postUrl) {
     );
 };
 
-filterFiles = function (postUrl) {
+onClickSearchButton = function (filterFilesUrl, fileListUrl) {
     showWaitingDialog();
     let validData = checkFilterValid();
     if (!validData)
         return;
 
-    let post_body = {
+    let postBody = {
         "region_id": regionId,
         "environment_id": environmentId,
         "folder_name": folderName,
@@ -108,7 +108,15 @@ filterFiles = function (postUrl) {
         "only_latest_version": onlyLatestVersion
     };
 
-    doPOST(postUrl, post_body, function (response) {
+    if (filterKeyList.length == 0) {
+        getFilesList(fileListUrl, postBody);
+    } else {
+        filterFiles(filterFilesUrl, postBody);
+    }
+};
+
+filterFiles = function (postUrl, postBody) {
+    doPOST(postUrl, postBody, function (response) {
             successDialog("filter success", function () {
                 let filterResultDiv = document.getElementById('filter_result_div');
                 let selectAllBtn = document.getElementById('filter_result_select_all_btn_div');
@@ -120,6 +128,29 @@ filterFiles = function (postUrl) {
                     selectAllBtn.style.display = 'block';
                 }
                 filterResultDiv.style.display = 'block';
+            });
+        }, function (response) {
+            console.log(response);
+            showErrorDialog("filter error")
+        }
+    )
+    ;
+};
+
+getFilesList = function (postUrl, postBody) {
+
+    doPOST(postUrl, postBody, function (response) {
+            successDialog("filter success", function () {
+                let fileListDiv = document.getElementById('file_list_div');
+                let selectAllBtn = document.getElementById('file_list_select_all_btn_div');
+                $('#file_list_row_list_div').html(response);
+
+                if (response.includes("No matching result")) {
+                    selectAllBtn.style.display = 'none';
+                } else {
+                    selectAllBtn.style.display = 'block';
+                }
+                fileListDiv.style.display = 'block';
             });
         }, function (response) {
             console.log(response);

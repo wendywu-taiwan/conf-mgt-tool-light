@@ -22,6 +22,8 @@
     padding-left: 3%;
     padding-right: 3%;
     margin: auto;
+    display: none;
+
 }
 
 #filter_result_div {
@@ -69,16 +71,6 @@
     padding-bottom: 5px;
 }
 
-#filter_result_row_title_div {
-    width: 100%;
-    border-bottom: solid 0.5px;
-    border-color: #d4d7d7;
-    background: #1abb9c;
-    padding-left: 20px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
 #only_latest_version_div {
     margin-bottom: 40px;
 }
@@ -88,11 +80,19 @@
     min-width: 125px;
 }
 
-#filter_result_download_selected_btn_div{
+#filter_result_download_selected_btn_div {
     display: none;
 }
 
-#filter_result_select_all_btn_div{
+#file_list_download_selected_btn_div {
+    display: none;
+}
+
+#filter_result_select_all_btn_div {
+    margin-left: auto;
+}
+
+#file_list_select_all_btn_div {
     margin-left: auto;
 }
 
@@ -130,6 +130,16 @@
 .header_result_title {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+.row_title_div {
+    width: 100%;
+    border-bottom: solid 0.5px;
+    border-color: #d4d7d7;
+    background: #1abb9c;
+    padding-left: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .filter_result_row {
@@ -227,4 +237,19 @@
 .filter_result_row .checkbox {
     margin-top: auto;
     margin-bottom: auto;
+}
+
+#file_list_row_title_div .row_file_path_width {
+    width: 64%;
+    margin-right: 5px;
+    text-align: center;
+}
+
+#file_list_row_title_div .row_file_size_width {
+    width: 12%;
+    margin-right: 10px;
+}
+
+#file_list_row_title_div .row_modification_time_width {
+    width: 15%;
 }

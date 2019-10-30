@@ -3,6 +3,8 @@
 
 {% block resource %}
     <link href="{% static '/css/shared_storage/select-to-download.css' %}" rel="stylesheet">
+    <link href="{% static '/css/shared_storage/download-file-folder-structure.css' %}" rel="stylesheet">
+
     <script src="{% static '/js/shared_storage/select_to_download.js' %}"></script>
     <script src="{% static '/js/shared_storage/download_filter_result.js' %}"></script>
 {% endblock %}
@@ -63,7 +65,7 @@
             </div>
             <div id="filter_button_div">
                 <button id="filter_btn" class="btn btn-default btn-wide"
-                        onclick="filterFiles('{% url 'shared_storage:select-to-download-filter-result' %}')">
+                        onclick="onClickSearchButton('{% url 'shared_storage:select-to-download-filter-result' %}','{% url 'shared_storage:select-to-download-file-list' %}')">
                     Search
                 </button>
             </div>
@@ -87,7 +89,7 @@
                 </div>
             </div>
             <div id="filter_result_row_div">
-                <div id="filter_result_row_title_div" class="row no-row-margin">
+                <div id="filter_result_row_title_div" class="row_title_div row no-row-margin">
                     <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
                     <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
                     <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
@@ -98,65 +100,7 @@
                     </div>
                 </div>
                 <div id="filter_result_row_data_div">
-                    <div class="filter_result_row row no-row-margin">
-                        <div id="row_checkbox_div"
-                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">
-                            <label class="checkbox" for="checkbox1">
-                                <input type="checkbox" data-toggle="checkbox" value="" id="checkbox1" required>
-                            </label>
-                        </div>
-                        <div class="row_file_icon_width">
-                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">
-                        </div>
-                        <div class="filter_result_row_text row_file_path_width">
-                            tw/audacx/0016/NewModificationsRules_supplementary.xml
-                        </div>
-                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>
-                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>
-                    </div>
-                    {#                    <div class="filter_result_row row no-row-margin">#}
-                    {#                        <div id="row_checkbox_div"#}
-                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
-                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
-                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
-                    {#                        </div>#}
-                    {#                        <div class="row_file_icon_width">#}
-                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
-                    {#                        </div>#}
-                    {#                        <div class="filter_result_row_text row_file_path_width">#}
-                    {#                            tw/audacx/0016/NewModificationsRules_yulong_compare.xml#}
-                    {#                        </div>#}
-                    {#                        <div class="filter_result_row_text row_file_size_width">2798 bytes</div>#}
-                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/22 11:03:13</div>#}
-                    {#                    </div>#}
-                    {#                    <div class="filter_result_row row no-row-margin">#}
-                    {#                        <div id="row_checkbox_div"#}
-                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
-                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
-                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
-                    {#                        </div>#}
-                    {#                        <div class="row_file_icon_width">#}
-                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
-                    {#                        </div>#}
-                    {#                        <div class="filter_result_row_text row_file_path_width">tw/audacx/0016/Rules.xml</div>#}
-                    {#                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>#}
-                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>#}
-                    {#                    </div>#}
-                    {#                    <div class="filter_result_row row no-row-margin">#}
-                    {#                        <div id="row_checkbox_div"#}
-                    {#                             class="row_checkbox_div row_checkbox_width checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">#}
-                    {#                            <input type="checkbox" data-toggle="switch" name="{{ data }}" data-on-color="primary"#}
-                    {#                                   data-off-color="default" id="switch-03" onclick="onCheckboxSelected()"/>#}
-                    {#                        </div>#}
-                    {#                        <div class="row_file_icon_width">#}
-                    {#                            <img class="filter_result_row_icon" src="{% static '/icons/file.png' %}">#}
-                    {#                        </div>#}
-                    {#                        <div class="filter_result_row_text row_file_path_width">#}
-                    {#                            tw/audawatch/0000/audawatchmobiletranslation.properties#}
-                    {#                        </div>#}
-                    {#                        <div class="filter_result_row_text row_file_size_width">201798 bytes</div>#}
-                    {#                        <div class="filter_result_row_text row_modification_time_width">2019/09/24 11:06:13</div>#}
-                    {#                    </div>#}
+                    {# after filter will response download_filter_result.html #}
                 </div>
             </div>
         </div>
@@ -166,22 +110,19 @@
                 <div class="download_button_div row no_row_margin">
                     <div id="file_list_download_selected_btn_div"
                          class="download_selected_btn_div download-icon no-col-padding">
-                        <button id="download_selected_btn" class="download_button_width btn btn-inverse btn-font-13"
-                                onclick="downloadSelectedRulesOnClick()">
+                        <button id="file_list_download_selected_btn" class="download_button_width btn btn-inverse btn-font-13">
                             Download(1)
                         </button>
                     </div>
                     <div id="file_list_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
-                        <button class="download_button_width btn btn-info btn-font-13"
-                                onclick="downloadAllRulesOnClick()">Select All
+                        <button id="file_list_select_all_btn" class="download_button_width btn btn-info btn-font-13"
+                                onclick="fileListSelectAll()">Select All
                         </button>
                     </div>
                 </div>
             </div>
             <div id="file_list_data_div">
-                <div id="filter_result_row_title_div" class="row no-row-margin">
-                    <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
-                    <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
+                <div id="file_list_row_title_div" class="row_title_div row no-row-margin">
                     <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
                     <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size</div>
                     <div id="modification_time_title_div"
@@ -190,18 +131,7 @@
                     </div>
                 </div>
                 <div id="file_list_row_list_div">
-                    <div id="file_list_row_div">
-                        <div id="{{ root_node_object.compare_hash_key }}_folder_div">
-                            <div class="folder_data_line row no-row-margin" data-toggle="collapse"
-                                 href="#{{ root_node_object.compare_hash_key }}_folder_child_div"
-                                 role="button" aria-expanded="true"
-                                 aria-controls="{{ root_node_object.compare_hash_key }}_folder_child_div">
-                                {% include 'compare_result_line.html' %}
-                            </div>
-                            {% include 'normal_folder_expand_component.html' %}
-                        </div>
-                    </div>
-
+                    {# after filter will response download_file_list.html #}
                 </div>
             </div>
         </div>
