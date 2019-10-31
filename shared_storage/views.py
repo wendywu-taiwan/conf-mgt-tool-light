@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+import os
 
+from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse, Http404
+
+from RulesetComparer.properties.config import TIME_FORMAT
 from RulesetComparer.properties.key import KEY_PROPERTIES, REQUEST_GET, REQUEST_POST, KEY_DATA
 from common.data_object.error.status import NOT_SUPPORT_PREVIEW, SUCCESS_NO_DATA
 from common.data_object.json_builder.response import ResponseBuilder
 from common.utils.utility import get_post_request_json
-from common.views import page_error_check
+from common.views import page_error_check, action_error_check
 from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
 from shared_storage.services import compare_services, download_services
 
@@ -13,6 +16,7 @@ from shared_storage.data_object.json_builder.bind_file_diff_result_builder impor
 from shared_storage.data_object.json_builder.bind_file_detail_builder import BindFileDetailBuilder, \
     BindFileSameDetailBuilder
 from shared_storage.utils.file_manager import load_folder_file_diff_json
+from RulesetComparer.utils import timeUtil
 from shared_storage.services.download_services import filter_file_result, filter_second_folder
 
 
@@ -169,21 +173,18 @@ def select_to_download_file_list_page(request):
     return page_error_check(after_check)
 
 
-# def download_files(request):
-#     def after_check():
-#         if file_type in COMPARE_TYPE_BLACK_LIST:
-#             result = ResponseBuilder(status_code=NOT_SUPPORT_PREVIEW).get_data()
-#             return JsonResponse(result)
-#
-#         if diff_result == "same":
-#             result_json = BindFileSameDetailBuilder(side, root_key, node_key).get_data()
-#         else:
-#             result_json = BindFileDetailBuilder(side, root_key, node_key).get_data()
-#
-#         response = ResponseBuilder(data=result_json).get_data()
-#         return render(request, "shared_storage_file_detail.html", response)
-#
-#     return page_error_check(after_check)
+def download_files(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        zip_file_path = download_services.download_files(request_json)
+
+        if os.path.exists(zip_file_path):
+            with open(zip_file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/zip")
+                return response
+        raise Http404
+
+    return action_error_check(after_check)
 
 
 def send_compare_result_mail(request):

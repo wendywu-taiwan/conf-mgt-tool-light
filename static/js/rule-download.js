@@ -80,7 +80,6 @@ function downloadRulesFromBRE(url, ruleNameList) {
         "ruleset_name_list": ruleNameList
     };
 
-
     jQuery.ajax({
         url: url,
         method: 'POST',
@@ -92,7 +91,7 @@ function downloadRulesFromBRE(url, ruleNameList) {
         responseType: 'arraybuffer',
     }).then(function success(data) {
         stopDialog();
-        downloadZipFile(data);
+        downloadZipFile(data, "rulesets");
     })
 }
 

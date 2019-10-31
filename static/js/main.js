@@ -66,7 +66,7 @@ function confirmDialog(text, confirmButtonText, onConfirmClick) {
 }
 
 
-function downloadZipFile(data) {
+function downloadZipFile(data, fileNameSuffix) {
     // transfer unicode data to characters
     let newContent = "";
     for (let i = 0; i < data.length; i++) {
@@ -80,8 +80,9 @@ function downloadZipFile(data) {
     // use blob to download files
     let blob = new Blob([bytes], {type: "application/zip"});
     let element = document.createElement('a');
+    let fileNamePrefix = getFileNameCurrentDataTime();
     element.href = URL.createObjectURL(blob);
-    element.download = "ruleset.zip";
+    element.download = fileNamePrefix + "_" + fileNameSuffix + ".zip";
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
@@ -100,6 +101,13 @@ function getCurrentDataTime() {
     var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
     var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     return date + " " + time;
+}
+
+function getFileNameCurrentDataTime() {
+    var today = new Date();
+    var date = today.getFullYear() +""+ (today.getMonth() + 1) +""+ today.getDate();
+    var time = today.getHours() +""+ today.getMinutes() +""+ today.getSeconds();
+    return date +""+ time;
 }
 
 function arrayContains(string, array) {

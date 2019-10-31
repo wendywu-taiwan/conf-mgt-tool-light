@@ -46,3 +46,6 @@ def load_file_detail_json(root_key, env_name, node_key):
 def load_file_content(root_key, environment, file_name):
     path = COMPARE_FILE_PATH + "%s/%s/%s" % (root_key, environment, file_name)
     return load_file(path)
+
+
+

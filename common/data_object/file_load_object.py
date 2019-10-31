@@ -22,13 +22,12 @@ class FileLoadObject:
             self.file_content_bytes = file_content.encode('utf-8', errors='ignore')
 
 
-
 class SharedStorageFileLoadObject(FileLoadObject):
     def __init__(self, file_name, file_path, file_type, file_size, modification_time, root_key, environment_name):
-        folder_path = COMPARE_FILE_PATH + root_key + "/" + environment_name
-        create_folder(folder_path)
+        self.folder_path = COMPARE_FILE_PATH + root_key + "/" + environment_name
+        create_folder(self.folder_path)
 
-        self.local_path = folder_path + "/" + file_name
+        self.local_path = self.folder_path + "/" + file_name
         self.environment_name = environment_name
         super().__init__(file_name, file_path, file_type, file_size, modification_time, self.local_path)
 

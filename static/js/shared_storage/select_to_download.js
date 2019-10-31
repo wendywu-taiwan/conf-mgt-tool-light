@@ -1,6 +1,6 @@
-let regionId, environmentId, countryFolder, moduleFolder, latestVersionFolder;
+let regionId, environmentId, countryFolder, moduleFolder, versionFolder;
 let filterKeyList = [];
-
+let DROPDOWN_OPTION_SELECT = "Select";
 $(function () {
     $(".tagsinput").tagsinput();
 
@@ -46,7 +46,7 @@ initLatestVersionFolderDropDownComponent = function () {
     $("#latest_version_select_dropdown_list li").click(function () {
         $("#latest_version_select_dropdown_btn:first-child").text($(this).text());
         $("#latest_version_select_dropdown_btn:first-child").val($(this).val());
-        latestVersionFolder = $(this).text();
+        versionFolder = $(this).text();
     });
 };
 
@@ -140,7 +140,7 @@ onClickSearchButton = function (filterFilesUrl, fileListUrl) {
         "environment_id": environmentId,
         "country_folder": countryFolder,
         "module_folder": moduleFolder,
-        "latest_version_folder": latestVersionFolder,
+        "latest_version_folder": versionFolder,
         "filter_keys": filterKeyList,
     };
 
@@ -167,6 +167,8 @@ filterFiles = function (postUrl, postBody) {
                     }
                     fileListDiv.style.display = 'none';
                     filterResultDiv.style.display = 'block';
+                    checkFilterResultDownloadBtnVisibility();
+                    checkFilterResultSelectAllBtnStatus();
                 }
             );
         }, function (response) {
@@ -206,6 +208,8 @@ checkFilterValid = function () {
     environmentId = $("#environment_select_dropdown_btn:first-child").val();
     countryFolder = $("#folder_select_dropdown_btn:first-child").text();
     moduleFolder = $("#module_select_dropdown_btn:first-child").text();
+    versionFolder = $("#latest_version_select_dropdown_btn:first-child").text();
+    console.log("checkFilterValid, versionFolder:" + versionFolder);
     filterKeyList = $("#filter_tags_input").tagsinput('items');
 
     if (!regionId) {
@@ -216,13 +220,18 @@ checkFilterValid = function () {
         showWarningDialog("please select environment");
         return false;
     }
-    if (!countryFolder) {
+    if (countryFolder === DROPDOWN_OPTION_SELECT) {
         showWarningDialog("please select folder");
         return false;
     }
 
-    if (!moduleFolder) {
+    if (moduleFolder === DROPDOWN_OPTION_SELECT) {
         showWarningDialog("please select module");
+        return false;
+    }
+
+    if (versionFolder === DROPDOWN_OPTION_SELECT) {
+        showWarningDialog("please select version");
         return false;
     }
     return true;

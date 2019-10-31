@@ -4,7 +4,7 @@ from common.data_object.ftp_connect_object import SharedStorageConnectionObject
 from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from permission.models import Environment, FTPServer
-from shared_storage.data_object.dir_root_object import DirRootObject
+from shared_storage.data_object.dir_root_object import DirRootObject, DirRootDownloadObject
 from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFileListParser, \
     SelectToDownloadFilterResultParser
 from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject
@@ -21,6 +21,8 @@ from shared_storage.data_object.json_builder.filter_folder_builder import \
     SelectToDownloadFilterModuleBuilder, SelectToDownloadFilterDirFolderBuilder, \
     SelectToDownloadFilterLatestVersionBuilder
 from shared_storage.data_object.json_builder.select_to_download_file_list_builder import SelectToDownloadFileListBuilder
+from shared_storage.data_object.json_parser.download_files import DownloadFilesParser
+from shared_storage.task.download_server_file_task import DownloadServerFileTask
 
 
 def get_region_environment_list(json_data):
@@ -103,3 +105,11 @@ def parse_files(parser):
                                            [parser.latest_version_folder])
     parse_obj.parse_nodes()
     return root_obj
+
+
+def download_files(json_data):
+    parser = DownloadFilesParser(json_data)
+    root_obj = DirRootDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
+    file_object_list = root_obj.download_node_files()
+    task = DownloadServerFileTask(file_object_list)
+    return task.zip_file_full_path

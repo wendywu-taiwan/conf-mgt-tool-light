@@ -78,7 +78,7 @@ def compare_shared_storage_folder(left_region_id, left_environment_id, left_fold
         apply_filter_folders = True
         left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
         right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
-        root_hash_key = hash(left_root_obj) + hash(right_root_obj)
+        root_hash_key = hash(left_root_obj)
         left_root_obj.update_root_hash_key(root_hash_key)
         right_root_obj.update_root_hash_key(root_hash_key)
         info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
@@ -115,7 +115,7 @@ def compare_shared_storage_folder_mail_result(request, left_region_id, left_envi
     apply_filter_folders = True
     left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
     right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
-    root_hash_key = hash(left_root_obj) + hash(right_root_obj)
+    root_hash_key = hash(left_root_obj)
     left_root_obj.update_root_hash_key(root_hash_key)
     right_root_obj.update_root_hash_key(root_hash_key)
     info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
