@@ -300,6 +300,7 @@ KEY_LEFT_ONLY = "left_only"
 KEY_RIGHT_ONLY = "right_only"
 KEY_COMMON = "common"
 KEY_REQUEST_HOST = "request_host"
+KEY_LAST_VERSION = "last version"
 
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'

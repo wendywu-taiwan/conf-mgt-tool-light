@@ -1,16 +1,15 @@
 from RulesetComparer.properties.key import KEY_FOLDER_NAME, GIT_NAME
+from common.data_object.error.error import SharedStorageFolderNotFoundError
 from common.data_object.ftp_connect_object import SharedStorageConnectionObject
-from common.data_object.git_connect_object import SharedStorageGitConnectObject, LATEST_VERSION_PARENT_FOLDER
+from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from permission.models import Environment, FTPServer
 from shared_storage.data_object.dir_root_object import DirRootObject
 from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFileListParser, \
     SelectToDownloadFilterResultParser
-from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject, \
-    DirNodeParseFilteredLatestVersionParentObject
+from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject
 from shared_storage.data_object.json_builder.select_to_download_filterd_files_builder import \
     SelectToDownloadFilteredFilesBuilder
-from shared_storage.data_object.node_object import NodeObject
 from shared_storage.properties.config import COUNTRY_MODULE_MAP, FILTER_MODULE_FOLDER
 from shared_storage.data_object.json_parser.filter_environment import \
     SelectToDownloadFilterEnvironmentParser
@@ -66,8 +65,10 @@ def filter_latest_version_folder(json_data):
         dir_connect_obj = SharedStorageGitConnectObject(False)
     else:
         dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
-
-    list_dir = dir_connect_obj.get_path_list_dir(parser.full_path)
+    try:
+        list_dir = dir_connect_obj.get_path_list_dir(parser.full_path)
+    except FileNotFoundError:
+        raise SharedStorageFolderNotFoundError
     result_json = SelectToDownloadFilterLatestVersionBuilder(list_dir).get_data()
 
     return result_json
@@ -75,20 +76,7 @@ def filter_latest_version_folder(json_data):
 
 def filter_file_result(json_data):
     parser = SelectToDownloadFilterResultParser(json_data)
-    # initial root node
-    root_obj = DirRootObject(parser.region_id, parser.environment_id, parser.module_path,
-                             parser.only_latest_version)
-    root_obj.update_root_hash_key(hash(root_obj))
-
-    # parse node data to list
-    if parser.only_latest_version:
-        parse_obj = DirNodeParseFilteredLatestVersionParentObject(root_obj.dir_connect_obj, root_obj.node_object,
-                                                                  [parser.latest_version_folder])
-    else:
-        parse_obj = DirNodeParseFilteredObject(root_obj.dir_connect_obj, root_obj.node_object,
-                                               [parser.latest_version_folder])
-    parse_obj.parse_nodes()
-
+    root_obj = parse_files(parser)
     # filter correspond node data to result list and download files
     result_json = SelectToDownloadFilteredFilesBuilder(root_obj, parser.filter_keys).get_data()
     return result_json
@@ -96,20 +84,22 @@ def filter_file_result(json_data):
 
 def file_list(json_data):
     parser = SelectToDownloadFileListParser(json_data)
-    # initial root node
+    root_obj = parse_files(parser)
+    # filter correspond node data to result list and download files
+    result_json = SelectToDownloadFileListBuilder(root_obj).get_data()
+    return result_json
+
+
+def parse_files(parser):
     root_obj = DirRootObject(parser.region_id, parser.environment_id, parser.module_path,
                              parser.only_latest_version)
     root_obj.update_root_hash_key(hash(root_obj))
 
-    # parse node data to list
     if parser.only_latest_version:
-        parse_obj = DirNodeParseFilteredLatestVersionParentObject(root_obj.dir_connect_obj, root_obj.node_object,
-                                                                  [parser.latest_version_folder])
-    else:
-        parse_obj = DirNodeParseFilteredObject(root_obj.dir_connect_obj, root_obj.node_object,
-                                               [parser.latest_version_folder])
-    parse_obj.parse_nodes()
+        latest_version = root_obj.dir_connect_obj.get_latest_version(root_obj.node_object.path)
+        parser.latest_version_folder = latest_version
 
-    # filter correspond node data to result list and download files
-    result_json = SelectToDownloadFileListBuilder(root_obj).get_data()
-    return result_json
+    parse_obj = DirNodeParseFilteredObject(root_obj.dir_connect_obj, root_obj.node_object,
+                                           [parser.latest_version_folder])
+    parse_obj.parse_nodes()
+    return root_obj

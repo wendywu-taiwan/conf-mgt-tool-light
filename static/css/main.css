@@ -21,6 +21,12 @@
     cursor: initial !important;
 }
 
+.dropdown_fix_height {
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+}
+
 /* environment select */
 .container-select .dropdown-limit {
     height: auto;
@@ -425,7 +431,7 @@ html, body {
     font-family: "Lato";
 }
 
-.div_title_text{
+.div_title_text {
     margin-top: auto;
     margin-bottom: auto;
     font-size: 18px;
@@ -439,7 +445,6 @@ html, body {
     text-overflow: ellipsis;
 }
 
-
 .full_width {
     width: 100%;
 }
@@ -448,22 +453,22 @@ html, body {
     width: 50%;
 }
 
-.border-top{
+.border-top {
     border-top: 0.5px solid #cccccc;
 }
 
-.border-right{
+.border-right {
     border-right: 0.5px solid #cccccc;
 }
 
-.border-left{
+.border-left {
     border-left: 0.5px solid #cccccc;
 }
 
-.border-bottom{
+.border-bottom {
     border-bottom: 0.5px solid #cccccc;
 }
 
-.border-all{
+.border-all {
     border: 0.5px solid #cccccc;
 }

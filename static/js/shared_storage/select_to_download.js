@@ -1,4 +1,4 @@
-let regionId, environmentId, countryFolder, moduleFolder, latestVersionFolder, onlyLatestVersion;
+let regionId, environmentId, countryFolder, moduleFolder, latestVersionFolder;
 let filterKeyList = [];
 
 $(function () {
@@ -13,15 +13,6 @@ $(function () {
 
     initEnvironmentDropDownComponent();
     initFolderDropDownComponent();
-
-    $('#only_latest_version_switch').on('switchChange.bootstrapSwitch', function (event, state) {
-        let latestVersionDropdown = document.getElementById("latest_version_select_div");
-        if ($("#only_latest_version_switch").is(':checked')) {
-            removeWithAnimate(latestVersionDropdown, 300);
-        } else {
-            latestVersionDropdown.style.display = 'flex';
-        }
-    });
 });
 
 initEnvironmentDropDownComponent = function () {
@@ -123,11 +114,17 @@ filterLatestVersionFolders = function (postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            refreshPartialHTML("latest_version_select_dropdown_div", response);
-            initLatestVersionFolderDropDownComponent();
-            stopDialog();
+            let statusCode = response["status_code"];
+            if (statusCode == null) {
+                refreshPartialHTML("latest_version_select_dropdown_div", response);
+                initLatestVersionFolderDropDownComponent();
+                stopDialog();
+            } else {
+                if (statusCode == 236)
+                    showErrorDialog(response["message"])
+            }
         }, function (response) {
-            console.log(response);
+            showErrorDialog(response["message"]);
         }
     );
 };
@@ -145,7 +142,6 @@ onClickSearchButton = function (filterFilesUrl, fileListUrl) {
         "module_folder": moduleFolder,
         "latest_version_folder": latestVersionFolder,
         "filter_keys": filterKeyList,
-        "only_latest_version": onlyLatestVersion
     };
 
     if (filterKeyList.length == 0) {
@@ -158,21 +154,22 @@ onClickSearchButton = function (filterFilesUrl, fileListUrl) {
 filterFiles = function (postUrl, postBody) {
     doPOST(postUrl, postBody, function (response) {
             successDialog("filter success", function () {
-                let fileListDiv = document.getElementById('file_list_div');
-                let filterResultDiv = document.getElementById('filter_result_div');
-                let selectAllBtn = document.getElementById('filter_result_select_all_btn_div');
-                $('#filter_result_row_data_div').html(response);
+                    let statusCode = response["status_code"];
+                    let fileListDiv = document.getElementById('file_list_div');
+                    let filterResultDiv = document.getElementById('filter_result_div');
+                    let selectAllBtn = document.getElementById('filter_result_select_all_btn_div');
+                    $('#filter_result_row_data_div').html(response);
 
-                if (response.includes("No matching result")) {
-                    selectAllBtn.style.display = 'none';
-                } else {
-                    selectAllBtn.style.display = 'block';
+                    if (statusCode == 208) {
+                        selectAllBtn.style.display = 'none';
+                    } else {
+                        selectAllBtn.style.display = 'block';
+                    }
+                    fileListDiv.style.display = 'none';
+                    filterResultDiv.style.display = 'block';
                 }
-                fileListDiv.style.display = 'none';
-                filterResultDiv.style.display = 'block';
-            });
+            );
         }, function (response) {
-            console.log(response);
             showErrorDialog("filter error")
         }
     )
@@ -210,7 +207,6 @@ checkFilterValid = function () {
     countryFolder = $("#folder_select_dropdown_btn:first-child").text();
     moduleFolder = $("#module_select_dropdown_btn:first-child").text();
     filterKeyList = $("#filter_tags_input").tagsinput('items');
-    onlyLatestVersion = $('#only_latest_version_switch').bootstrapSwitch('state');
 
     if (!regionId) {
         showWarningDialog("please select data center");

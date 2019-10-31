@@ -30,7 +30,7 @@
                 </div>
             </div>
             <div id="folder_select_div" class="select_data_row_div row no-row-margin">
-                <div class="select_data_title">Folder</div>
+                <div class="select_data_title">Country</div>
                 <div class="drop_down_div">
                     {% with type="folder"  data="" %}
                         {% include 'dropdown_component.html' %}
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <div id="latest_version_select_div" class="select_data_row_div row no-row-margin">
-                <div class="select_data_title">Latest Version</div>
+                <div class="select_data_title">Version</div>
                 <div class="drop_down_div">
                     {% with type="latest_version" data="" %}
                         {% include 'dropdown_component.html' %}
@@ -61,14 +61,6 @@
                                placeholder="bre_translation / onepad / template...etc"
                                style="display: none;">
                     </div>
-                </div>
-            </div>
-            <div id="only_latest_version_div" class="row no-row-margin">
-                <div id="latest_version_text_div" class="select_data_title"> Only Latest Version</div>
-                <div class="bootstrap-switch-square">
-                    <input type="checkbox" data-toggle="switch" id="only_latest_version_switch"
-                           data-on-text="<span class='fui-check'></span>"
-                           data-off-text="<span class='fui-cross'></span>"/>
                 </div>
             </div>
             <div id="filter_button_div">

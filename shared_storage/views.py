@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
-from RulesetComparer.properties.key import KEY_PROPERTIES, REQUEST_GET, REQUEST_POST
-from common.data_object.error.status import NOT_SUPPORT_PREVIEW
+from RulesetComparer.properties.key import KEY_PROPERTIES, REQUEST_GET, REQUEST_POST, KEY_DATA
+from common.data_object.error.status import NOT_SUPPORT_PREVIEW, SUCCESS_NO_DATA
 from common.data_object.json_builder.response import ResponseBuilder
 from common.utils.utility import get_post_request_json
 from common.views import page_error_check
@@ -150,7 +150,12 @@ def select_to_download_filter_result_page(request):
     def after_check():
         request_json = get_post_request_json(request)
         result_json = download_services.filter_file_result(request_json)
-        return render(request, "download_filter_result.html", result_json)
+        result_data_list = result_json.get(KEY_DATA)
+        if len(result_data_list) == 0:
+            result = ResponseBuilder(status_code=SUCCESS_NO_DATA).get_data()
+            return JsonResponse(result)
+        else:
+            return render(request, "download_filter_result.html", result_json)
 
     return page_error_check(after_check)
 

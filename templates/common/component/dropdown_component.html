@@ -4,7 +4,7 @@
             type="button" data-toggle="dropdown">
         Select
     </button>
-    <ul id="{{ type }}_select_dropdown_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+    <ul id="{{ type }}_select_dropdown_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse dropdown_fix_height"
         role="menu">
         {% for object in data %}
             <li value="{{ object.id }}"><a href="#">{{ object.name }}</a></li>

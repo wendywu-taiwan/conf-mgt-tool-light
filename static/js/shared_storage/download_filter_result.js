@@ -44,16 +44,7 @@ function onClickCheckbox(inputItem, filePath) {
 }
 
 function checkDownloadBtnVisibility() {
-    let inputs = document.getElementsByClassName('filter_result_file_checkbox');
-    let i, input;
-    let checkCount = 0;
-    for (i = 0; i < inputs.length; i++) {
-        input = inputs[i];
-        if (input.checked) {
-            checkCount++;
-        }
-    }
-
+    let checkCount = $('.filter_result_file_checkbox').filter(':checked').length;
     if (checkCount == 0) {
         changeDownloadBtnVisibility(false, 0);
     } else {

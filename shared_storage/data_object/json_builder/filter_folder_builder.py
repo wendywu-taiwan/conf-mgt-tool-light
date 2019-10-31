@@ -72,10 +72,19 @@ class SelectToDownloadFilterDirFolderBuilder(BaseBuilder):
 
 class SelectToDownloadFilterLatestVersionBuilder(SelectToDownloadFilterDirFolderBuilder):
     def __init__(self, folders):
-        try:
-            SelectToDownloadFilterDirFolderBuilder.__init__(self, "latest_version", folders)
-        except Exception as e:
-            raise e
+        SelectToDownloadFilterDirFolderBuilder.__init__(self, "latest_version", folders)
+        self.add_latest_version_object()
+
+    def add_latest_version_object(self):
+        folder_object = {
+            "id": 0,
+            "name": KEY_LAST_VERSION
+        }
+        self.folder_object_list.insert(0, folder_object)
+
+    def __generate_data__(self):
+        self.result_dict[KEY_TYPE] = self.type
+        self.result_dict[KEY_DATA] = self.folder_object_list
 
 
 class SelectToCompareFilterDirFolderBuilder(SelectToDownloadFilterDirFolderBuilder):
