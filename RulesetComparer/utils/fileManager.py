@@ -152,7 +152,8 @@ def archive_file(source_path, dst_path, dst_file):
     zip_handler.close()
 
 
-def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
+def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix=None):
+    #  if arcname_prefix contains {folder_name}/ , after unzip will show folder/files
     create_folder(dst_path)
     abs_src = os.path.abspath(source_path)
 
@@ -160,7 +161,10 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
     for dirname, subdirs, files in os.walk(source_path):
         for filename in files:
             absname = os.path.abspath(os.path.join(dirname, filename))
-            arcname = arcname_prefix + absname[len(abs_src) + 1:]
+            if arcname_prefix is not None:
+                arcname = arcname_prefix + absname[len(abs_src) + 1:]
+            else:
+                arcname = absname[len(abs_src) + 1:]
             print("archive_file, resource path :" + absname)
             zip_handler.write(absname, arcname)
     zip_handler.close()

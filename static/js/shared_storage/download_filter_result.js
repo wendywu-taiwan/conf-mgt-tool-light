@@ -63,36 +63,8 @@ function changeDownloadBtnVisibility(visible, checkCount) {
     }
 }
 
-function downloadFiles(url) {
+function downloadFilterFiles() {
     showWaitingDialog();
     let inputs = $('.filter_result_file_checkbox').filter(':checked');
-    let inputCounts = inputs.length;
-    let i, input;
-    let selectFilePathArray = [];
-
-    for (i = 0; i < inputCounts; i++) {
-        input = inputs[i];
-        selectFilePathArray.push(input.value);
-        console.log("onClickDownloadBtn, add file path:" + input.value)
-    }
-
-    let post_body = {
-        "region_id": regionId,
-        "environment_id": environmentId,
-        "file_path_list": selectFilePathArray
-    };
-
-    jQuery.ajax({
-        url: url,
-        method: 'POST',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("X-CSRFToken", csrftoken);
-        },
-        data: JSON.stringify(post_body),
-        mimeType: 'text/plain; charset=x-user-defined',
-        responseType: 'arraybuffer',
-    }).then(function success(data) {
-        stopDialog();
-        downloadZipFile(data,"files");
-    })
+    downloadFiles(inputs);
 }

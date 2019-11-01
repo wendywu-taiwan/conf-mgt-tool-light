@@ -21,8 +21,7 @@ class DownloadServerFileTask:
         self.remove_files()
 
     def archive_file(self):
-        archive_file_with_arcname(self.resource_path, self.zip_file_folder_path, self.zip_file_full_path,
-                                  "files")
+        archive_file_with_arcname(self.resource_path, self.zip_file_folder_path, self.zip_file_full_path)
 
     def remove_files(self):
         download_folder_hash_key = self.resource_path.split("/")[-2]

@@ -132,3 +132,9 @@ function getChildFileClassNameFromCheckboxId(id) {
     let compare_hash_key = split_str(id, 0);
     return "child_checkbox_file_" + compare_hash_key;
 }
+
+function downloadListFiles() {
+    showWaitingDialog();
+    let inputs = $('.file_checkbox').filter(':checked');
+    downloadFiles(inputs);
+}

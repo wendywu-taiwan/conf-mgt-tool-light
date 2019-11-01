@@ -40,8 +40,7 @@ class PackedRulesetsTask:
         zip_file_full_path = self.zip_file
 
         # to have single folder ruleset in zip file
-        arcname_prefix = "ruleset/"
-        archive_file_with_arcname(self.copied_path, zip_file_path, zip_file_full_path, arcname_prefix)
+        archive_file_with_arcname(self.copied_path, zip_file_path, zip_file_full_path)
 
     def remove_copied_files(self):
         copied_path_key = self.copied_path.split("/")[-3]

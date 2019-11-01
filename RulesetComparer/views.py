@@ -41,7 +41,6 @@ from RulesetComparer.services.services import *
 from RulesetComparer.services.report_scheduler import *
 
 
-
 ######################################## Admin Console ########################################
 # admin console page
 @login_required
@@ -426,12 +425,10 @@ def download_rulesets(request):
     def after_check():
         request_json = get_post_request_json(request)
         zip_file_path = services.download_rulesets(request_json)
-        download_file_name = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date")) + "_ruleset"
 
         if os.path.exists(zip_file_path):
             with open(zip_file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/zip")
-                response['Content-Disposition'] = 'attachment; filename="' + download_file_name + '.zip"'
                 return response
         raise Http404
 
@@ -656,4 +653,3 @@ def update_ruleset(request):
         sync.update_ruleset_test()
 
     return action_error_check(after_check)
-

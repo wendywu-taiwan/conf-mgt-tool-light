@@ -78,8 +78,7 @@
                          class="download_selected_btn_div download-icon no-col-padding">
                         <button id="filter_result_download_selected_btn"
                                 class="download_button_width btn btn-inverse btn-font-13"
-                                onclick="onClickDownloadButton()">
-                            Download(1)
+                                onclick="downloadFilterFiles()">Download(1)
                         </button>
                     </div>
                     <div id="filter_result_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
@@ -112,8 +111,8 @@
                     <div id="file_list_download_selected_btn_div"
                          class="download_selected_btn_div download-icon no-col-padding">
                         <button id="file_list_download_selected_btn"
-                                class="download_button_width btn btn-inverse btn-font-13">
-                            Download(1)
+                                class="download_button_width btn btn-inverse btn-font-13"
+                                onclick="downloadListFiles()">Download(1)
                         </button>
                     </div>
                     <div id="file_list_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
@@ -139,6 +138,7 @@
         </div>
     </div>
     <script>
+        initDownloadFileUrl("{% url 'shared_storage:select-to-download-files' %}");
         onRegionSelected = function (regionId) {
             filterEnvironments(regionId, "{% url 'shared_storage:download-filter-region-environments' %}");
         };
@@ -152,7 +152,7 @@
             filterLatestVersionFolders("{% url 'shared_storage:download-filter-latest-version-folder' %}")
         };
         onClickDownloadButton = function () {
-            downloadFiles("{% url 'shared_storage:select-to-download-files' %}")
+            downloadFilterFiles()
         }
     </script>
 {% endblock %}

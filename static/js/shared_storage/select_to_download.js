@@ -1,6 +1,7 @@
 let regionId, environmentId, countryFolder, moduleFolder, versionFolder;
 let filterKeyList = [];
 let DROPDOWN_OPTION_SELECT = "Select";
+let downloadFileUrl;
 $(function () {
     $(".tagsinput").tagsinput();
 
@@ -14,6 +15,10 @@ $(function () {
     initEnvironmentDropDownComponent();
     initFolderDropDownComponent();
 });
+
+initDownloadFileUrl = function (url) {
+    downloadFileUrl = url;
+};
 
 initEnvironmentDropDownComponent = function () {
     $("#environment_select_dropdown_list li").click(function () {
@@ -236,4 +241,37 @@ checkFilterValid = function () {
     }
     return true;
 };
+
+function downloadFiles(inputs) {
+    showWaitingDialog();
+    let inputCounts = inputs.length;
+    let i, input;
+    let selectFilePathArray = [];
+
+    for (i = 0; i < inputCounts; i++) {
+        input = inputs[i];
+        selectFilePathArray.push(input.value);
+        console.log("onClickDownloadBtn, add file path:" + input.value)
+    }
+
+    let post_body = {
+        "region_id": regionId,
+        "environment_id": environmentId,
+        "file_path_list": selectFilePathArray
+    };
+
+    jQuery.ajax({
+        url: downloadFileUrl,
+        method: 'POST',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        },
+        data: JSON.stringify(post_body),
+        mimeType: 'text/plain; charset=x-user-defined',
+        responseType: 'arraybuffer',
+    }).then(function success(data) {
+        stopDialog();
+        downloadZipFile(data, "files");
+    })
+}
 
