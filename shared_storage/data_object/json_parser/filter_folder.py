@@ -31,6 +31,8 @@ class SelectToDownloadFilterLatestVersionFolderParser:
             self.country_folder = json_data.get("country_folder")
             self.module_folder = json_data.get("module_folder")
             self.full_path = self.country_folder + "/" + self.module_folder
+            self.git_full_path = "/" + self.country_folder + "/" + self.module_folder
+
             self.has_latest_version = self.parse_has_latest_version()
         except BaseException as e:
             raise e

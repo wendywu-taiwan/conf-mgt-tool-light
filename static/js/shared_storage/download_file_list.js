@@ -4,17 +4,17 @@ $(function () {
     })
 });
 
-function checkButtonStatus() {
+function checkFileListButtonStatus() {
     let fileCount = $('.file_checkbox').length;
     let fileCheckedCount = $('.file_checkbox').filter(':checked').length;
     if (fileCheckedCount == 0) {
         $('#file_list_select_all_btn').text("Select All");
-        changeDownloadBtnVisibility(false, 0);
+        changeFileListDownloadBtnVisibility(false, 0);
     } else if (fileCount == fileCheckedCount) {
         $('#file_list_select_all_btn').text("Deselect All");
-        changeDownloadBtnVisibility(true, fileCheckedCount);
+        changeFileListDownloadBtnVisibility(true, fileCheckedCount);
     } else {
-        changeDownloadBtnVisibility(true, fileCheckedCount);
+        changeFileListDownloadBtnVisibility(true, fileCheckedCount);
     }
 }
 
@@ -60,7 +60,7 @@ function checkboxOnClick(item) {
 
     checkedLoopChildInputByClassName(childFoldersClassName, checked);
     checkedLoopChildInputByClassName(childFilesClassName, checked);
-    checkButtonStatus();
+    checkFileListButtonStatus();
     checkFolderCheckboxStatus();
 }
 
@@ -102,17 +102,17 @@ function fileListSelectAll() {
 
     if (selectAllButton.text() == "Deselect All") {
         checkedStatus = false;
-        changeDownloadBtnVisibility(false, 0);
+        changeFileListDownloadBtnVisibility(false, 0);
         selectAllButton.text("Select All");
     } else {
         checkedStatus = true;
-        changeDownloadBtnVisibility(true, checkCount);
+        changeFileListDownloadBtnVisibility(true, checkCount);
         selectAllButton.text("Deselect All");
     }
     checkedChildInputByClassName("file_list_file_checkbox", checkedStatus);
 }
 
-function changeDownloadBtnVisibility(visible, checkCount) {
+function changeFileListDownloadBtnVisibility(visible, checkCount) {
     let downloadBtnDiv = document.getElementById('file_list_download_selected_btn_div');
     let downloadBtn = document.getElementById('file_list_download_selected_btn');
     if (visible) {

@@ -6,15 +6,12 @@ class DownloadServerFileTask:
     LOG_CLASS = "DownloadServerFileTask"
 
     def __init__(self, file_object_list):
-        try:
-            self.file_object_list = file_object_list
-            self.resource_path = self.file_object_list[0].folder_path
-            self.compare_hash_key = hash(self)
-            self.zip_file_folder_path = get_zip_file_folder_path()
-            self.zip_file_full_path = get_zip_file_full_path(self.compare_hash_key)
-            self.execute()
-        except Exception as e:
-            raise e
+        self.file_object_list = file_object_list
+        self.resource_path = self.file_object_list[0].folder_path
+        self.compare_hash_key = hash(self)
+        self.zip_file_folder_path = get_zip_file_folder_path()
+        self.zip_file_full_path = get_zip_file_full_path(self.compare_hash_key)
+        self.execute()
 
     def execute(self):
         self.archive_file()

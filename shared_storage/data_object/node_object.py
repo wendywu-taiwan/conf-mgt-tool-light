@@ -1,5 +1,7 @@
 import stat
+from shutil import copyfile
 
+from RulesetComparer.utils.fileManager import create_folder
 from RulesetComparer.utils.stringFilter import string_filter_array_keys, string_filter
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
@@ -159,8 +161,16 @@ class NodeObject:
         return json_list
 
     def download_files(self, root_key, connect_obj):
-        root_key = root_key
         file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
                                                   root_key, self.environment.name)
         file_object = connect_obj.get_file_contents(file_object)
+        return file_object
+
+    def download_git_files(self, root_key, connect_obj):
+        file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
+                                                  root_key, self.environment.name)
+        create_folder(file_object.folder_path)
+        resource_path = connect_obj.root_path + file_object.file_path
+        copied_path = file_object.local_path
+        copyfile(resource_path, copied_path)
         return file_object

@@ -4,7 +4,8 @@ from common.data_object.ftp_connect_object import SharedStorageConnectionObject
 from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from permission.models import Environment, FTPServer
-from shared_storage.data_object.dir_root_object import DirRootObject, DirRootDownloadObject
+from shared_storage.data_object.dir_root_object import DirRootObject
+from shared_storage.data_object.dir_root_download_object import DirRootServerDownloadObject, DirRootGitDownloadObject
 from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFileListParser, \
     SelectToDownloadFilterResultParser
 from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject
@@ -63,12 +64,13 @@ def filter_second_folder(json_data):
 def filter_latest_version_folder(json_data):
     parser = SelectToDownloadFilterLatestVersionFolderParser(json_data)
     environment = Environment.objects.get(id=parser.environment_id)
-    if environment.name == GIT_NAME:
-        dir_connect_obj = SharedStorageGitConnectObject(False)
-    else:
-        dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
     try:
-        list_dir = dir_connect_obj.get_path_list_dir(parser.full_path)
+        if environment.name == GIT_NAME:
+            dir_connect_obj = SharedStorageGitConnectObject(False)
+            list_dir = dir_connect_obj.get_path_list_dir(parser.git_full_path)
+        else:
+            dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
+            list_dir = dir_connect_obj.get_path_list_dir(parser.full_path)
     except FileNotFoundError:
         raise SharedStorageFolderNotFoundError
     result_json = SelectToDownloadFilterLatestVersionBuilder(list_dir).get_data()
@@ -109,7 +111,10 @@ def parse_files(parser):
 
 def download_files(json_data):
     parser = DownloadFilesParser(json_data)
-    root_obj = DirRootDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
+    if parser.environment.name == GIT_NAME:
+        root_obj = DirRootGitDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
+    else:
+        root_obj = DirRootServerDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
     file_object_list = root_obj.download_node_files()
     task = DownloadServerFileTask(file_object_list)
     return task.zip_file_full_path

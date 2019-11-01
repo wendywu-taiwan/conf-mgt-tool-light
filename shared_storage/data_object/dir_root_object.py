@@ -41,21 +41,3 @@ class DirRootObject:
 
     def generate_filtered_files_list_json(self, result_list, filter_keys):
         self.node_object.parse_filtered_files_list_json(self.dir_connect_obj, result_list, filter_keys)
-
-
-class DirRootDownloadObject(DirRootObject):
-    def __init__(self, region_id, environment_id, folder_paths):
-        DirRootObject.__init__(self, region_id, environment_id, folder_paths[0], False)
-        self.folder_paths = folder_paths
-        self.root_hash_key = str(hash(self))
-        self.update_root_hash_key(self.root_hash_key)
-
-    def download_node_files(self):
-        file_object_list = list()
-        for folder_path in self.folder_paths:
-            file_name = folder_path.split("/")[-1]
-            node_object = NodeObject(file_name, self.environment, None, 0, None)
-            node_object.path = folder_path
-            file_object = node_object.download_files(self.root_hash_key, self.dir_connect_obj)
-            file_object_list.append(file_object)
-        return file_object_list

@@ -1,6 +1,5 @@
 let regionId, environmentId, countryFolder, moduleFolder, versionFolder;
 let filterKeyList = [];
-let DROPDOWN_OPTION_SELECT = "Select";
 let downloadFileUrl;
 $(function () {
     $(".tagsinput").tagsinput();
@@ -8,11 +7,16 @@ $(function () {
     $("#region_select_dropdown_list li").click(function () {
         $("#region_select_dropdown_btn:first-child").text($(this).text());
         $("#region_select_dropdown_btn:first-child").val($(this).val());
+
+        if (regionId == $(this).val()) {
+            return;
+        }
         regionId = $(this).val();
-        refreshEnvironmentDropDown();
-        refreshFolderDropDown();
-        refreshModuleDropDown();
-        refreshLastVersionDropDown();
+        resetResultBlock();
+        resetEnvironmentDropDown();
+        resetFolderDropDown();
+        resetModuleDropDown();
+        resetLastVersionDropDown();
         onRegionSelected($(this).val());
     });
 
@@ -28,10 +32,15 @@ initEnvironmentDropDownComponent = function () {
     $("#environment_select_dropdown_list li").click(function () {
         $("#environment_select_dropdown_btn:first-child").text($(this).text());
         $("#environment_select_dropdown_btn:first-child").val($(this).val());
+
+        if (environmentId == $(this).val()) {
+            return;
+        }
         environmentId = $(this).val();
-        refreshFolderDropDown();
-        refreshModuleDropDown();
-        refreshLastVersionDropDown();
+        resetResultBlock();
+        resetFolderDropDown();
+        resetModuleDropDown();
+        resetLastVersionDropDown();
         onEnvironmentSelected();
     });
 };
@@ -40,9 +49,13 @@ initFolderDropDownComponent = function () {
     $("#folder_select_dropdown_list li").click(function () {
         $("#folder_select_dropdown_btn:first-child").text($(this).text());
         $("#folder_select_dropdown_btn:first-child").val($(this).val());
+        if (countryFolder == $(this).val()) {
+            return;
+        }
         countryFolder = $(this).text();
-        refreshModuleDropDown();
-        refreshLastVersionDropDown();
+        resetResultBlock();
+        resetModuleDropDown();
+        resetLastVersionDropDown();
         onFolderSelected();
     });
 };
@@ -51,8 +64,12 @@ initModuleFolderDropDownComponent = function () {
     $("#module_select_dropdown_list li").click(function () {
         $("#module_select_dropdown_btn:first-child").text($(this).text());
         $("#module_select_dropdown_btn:first-child").val($(this).val());
+        if (moduleFolder == $(this).val()) {
+            return;
+        }
         moduleFolder = $(this).text();
-        refreshLastVersionDropDown();
+        resetResultBlock();
+        resetLastVersionDropDown();
         onModuleSelected();
     });
 };
@@ -61,31 +78,44 @@ initLatestVersionFolderDropDownComponent = function () {
     $("#latest_version_select_dropdown_list li").click(function () {
         $("#latest_version_select_dropdown_btn:first-child").text($(this).text());
         $("#latest_version_select_dropdown_btn:first-child").val($(this).val());
+        if (versionFolder == $(this).val()) {
+            return;
+        }
         versionFolder = $(this).text();
+        resetResultBlock();
     });
 };
-refreshEnvironmentDropDown = function () {
-    $("#environment_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
-    $("#environment_select_dropdown_btn:first-child").val("");
+resetEnvironmentDropDown = function () {
+    resetDropdown("environment_select_dropdown_btn");
     environmentId = null;
 };
 
-refreshFolderDropDown = function () {
-    $("#folder_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
-    $("#folder_select_dropdown_btn:first-child").val("");
+resetFolderDropDown = function () {
+    resetDropdown("folder_select_dropdown_btn");
     countryFolder = DROPDOWN_OPTION_SELECT;
 };
 
-refreshModuleDropDown = function () {
-    $("#module_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
-    $("#module_select_dropdown_btn:first-child").val("");
+resetModuleDropDown = function () {
+    resetDropdown("module_select_dropdown_btn");
     moduleFolder = DROPDOWN_OPTION_SELECT;
 };
 
-refreshLastVersionDropDown = function () {
-    $("#latest_version_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
-    $("#latest_version_select_dropdown_btn:first-child").val("");
+resetLastVersionDropDown = function () {
+    resetDropdown("latest_version_select_dropdown_btn");
     versionFolder = DROPDOWN_OPTION_SELECT;
+};
+
+resetResultBlock = function () {
+    $('#filter_result_select_all_btn').text("Select All");
+    $('#file_list_select_all_btn').text("Select All");
+    changeFilterResultDownloadBtnVisibility(false, 0);
+    changeFileListDownloadBtnVisibility(false, 0);
+
+    let filterResultDiv = document.getElementById('filter_result_div');
+    let fileListDiv = document.getElementById('file_list_div');
+
+    filterResultDiv.style.display = "none";
+    fileListDiv.style.display = "none";
 };
 
 filterEnvironments = function (regionId, postUrl) {

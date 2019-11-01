@@ -1,3 +1,5 @@
+let DROPDOWN_OPTION_SELECT = "Select";
+
 $(function () {
     let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     setToken(csrftoken);
@@ -156,6 +158,12 @@ function arrayRemove(arr, value) {
 function refreshPartialHTML(id, html) {
     $('#' + id).html(html);
 }
+
+function resetDropdown(id) {
+    $("#" + id + ":first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#" + id + ":first-child").val("");
+}
+
 
 openNewPage = function (url) {
     showWaitingDialog();

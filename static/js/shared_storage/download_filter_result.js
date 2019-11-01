@@ -6,11 +6,11 @@ function filteredFilesSelectAll() {
 
     if (selectAllButtonText == "Deselect All") {
         checkedStatus = false;
-        changeDownloadBtnVisibility(false, 0);
+        changeFilterResultDownloadBtnVisibility(false, 0);
         $('#filter_result_select_all_btn').text("Select All");
     } else {
         checkedStatus = true;
-        changeDownloadBtnVisibility(true, inputCounts);
+        changeFilterResultDownloadBtnVisibility(true, inputCounts);
         $('#filter_result_select_all_btn').text("Deselect All");
     }
 
@@ -35,9 +35,9 @@ function onClickCheckbox(inputItem, filePath) {
 function checkFilterResultDownloadBtnVisibility() {
     let checkCount = $('.filter_result_file_checkbox').filter(':checked').length;
     if (checkCount == 0) {
-        changeDownloadBtnVisibility(false, 0);
+        changeFilterResultDownloadBtnVisibility(false, 0);
     } else {
-        changeDownloadBtnVisibility(true, checkCount);
+        changeFilterResultDownloadBtnVisibility(true, checkCount);
     }
 }
 
@@ -51,8 +51,8 @@ function checkFilterResultSelectAllBtnStatus() {
     }
 }
 
-function changeDownloadBtnVisibility(visible, checkCount) {
-    console.log("changeDownloadBtnVisibility, visible:" + visible + ", checkCount:" + checkCount);
+function changeFilterResultDownloadBtnVisibility(visible, checkCount) {
+    console.log("changeFilterResultDownloadBtnVisibility, visible:" + visible + ", checkCount:" + checkCount);
     let downloadBtnDiv = document.getElementById('filter_result_download_selected_btn_div');
     let downloadBtn = document.getElementById('filter_result_download_selected_btn');
     if (visible) {
