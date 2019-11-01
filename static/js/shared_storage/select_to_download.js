@@ -9,6 +9,10 @@ $(function () {
         $("#region_select_dropdown_btn:first-child").text($(this).text());
         $("#region_select_dropdown_btn:first-child").val($(this).val());
         regionId = $(this).val();
+        refreshEnvironmentDropDown();
+        refreshFolderDropDown();
+        refreshModuleDropDown();
+        refreshLastVersionDropDown();
         onRegionSelected($(this).val());
     });
 
@@ -25,6 +29,9 @@ initEnvironmentDropDownComponent = function () {
         $("#environment_select_dropdown_btn:first-child").text($(this).text());
         $("#environment_select_dropdown_btn:first-child").val($(this).val());
         environmentId = $(this).val();
+        refreshFolderDropDown();
+        refreshModuleDropDown();
+        refreshLastVersionDropDown();
         onEnvironmentSelected();
     });
 };
@@ -34,6 +41,8 @@ initFolderDropDownComponent = function () {
         $("#folder_select_dropdown_btn:first-child").text($(this).text());
         $("#folder_select_dropdown_btn:first-child").val($(this).val());
         countryFolder = $(this).text();
+        refreshModuleDropDown();
+        refreshLastVersionDropDown();
         onFolderSelected();
     });
 };
@@ -43,6 +52,7 @@ initModuleFolderDropDownComponent = function () {
         $("#module_select_dropdown_btn:first-child").text($(this).text());
         $("#module_select_dropdown_btn:first-child").val($(this).val());
         moduleFolder = $(this).text();
+        refreshLastVersionDropDown();
         onModuleSelected();
     });
 };
@@ -53,6 +63,29 @@ initLatestVersionFolderDropDownComponent = function () {
         $("#latest_version_select_dropdown_btn:first-child").val($(this).val());
         versionFolder = $(this).text();
     });
+};
+refreshEnvironmentDropDown = function () {
+    $("#environment_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#environment_select_dropdown_btn:first-child").val("");
+    environmentId = null;
+};
+
+refreshFolderDropDown = function () {
+    $("#folder_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#folder_select_dropdown_btn:first-child").val("");
+    countryFolder = DROPDOWN_OPTION_SELECT;
+};
+
+refreshModuleDropDown = function () {
+    $("#module_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#module_select_dropdown_btn:first-child").val("");
+    moduleFolder = DROPDOWN_OPTION_SELECT;
+};
+
+refreshLastVersionDropDown = function () {
+    $("#latest_version_select_dropdown_btn:first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#latest_version_select_dropdown_btn:first-child").val("");
+    versionFolder = DROPDOWN_OPTION_SELECT;
 };
 
 filterEnvironments = function (regionId, postUrl) {
@@ -226,7 +259,7 @@ checkFilterValid = function () {
         return false;
     }
     if (countryFolder === DROPDOWN_OPTION_SELECT) {
-        showWarningDialog("please select folder");
+        showWarningDialog("please select country");
         return false;
     }
 
