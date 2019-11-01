@@ -98,16 +98,16 @@ function leadingZero(value) {
 
 function getCurrentDataTime() {
     var today = new Date();
-    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var date = today.getFullYear() + '/' + leadingZero((today.getMonth() + 1)) + '/' + leadingZero(today.getDate());
+    var time = leadingZero(today.getHours()) + ":" + leadingZero(today.getMinutes()) + ":" + leadingZero(today.getSeconds());
     return date + " " + time;
 }
 
 function getFileNameCurrentDataTime() {
     var today = new Date();
-    var date = today.getFullYear() +""+ (today.getMonth() + 1) +""+ today.getDate();
-    var time = today.getHours() +""+ today.getMinutes() +""+ today.getSeconds();
-    return date +""+ time;
+    var date = today.getFullYear() + "" + leadingZero((today.getMonth() + 1)) + "" + leadingZero(today.getDate());
+    var time = leadingZero(today.getHours()) + "" + leadingZero(today.getMinutes()) + "" + leadingZero(today.getSeconds());
+    return date + "_" + time;
 }
 
 function arrayContains(string, array) {
