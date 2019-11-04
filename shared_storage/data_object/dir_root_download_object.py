@@ -48,3 +48,16 @@ class DirRootGitDownloadObject(DirRootDownloadObject):
     def download_node_file(self, node_object):
         file_object = node_object.download_git_files(self.root_hash_key, self.dir_connect_obj)
         return file_object
+
+
+class DirRootExistDownloadObject(DirRootDownloadObject):
+    def __init__(self, region_id, environment_id, folder_paths, resource_hash_key):
+        self.resource_hash_key = resource_hash_key
+        DirRootDownloadObject.__init__(self, region_id, environment_id, folder_paths)
+
+    def download_node_files(self):
+        return super().download_node_files()
+
+    def download_node_file(self, node_object):
+        file_object = node_object.download_exist_files(self.resource_hash_key, self.root_hash_key)
+        return file_object

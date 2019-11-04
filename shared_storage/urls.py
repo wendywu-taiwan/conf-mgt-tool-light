@@ -21,6 +21,7 @@ download_pattern = [
     path('with/filters', views.select_to_download_filter_result_page, name="select-to-download-filter-result"),
     path('with/file/list', views.select_to_download_file_list_page, name="select-to-download-file-list"),
     path('files', views.download_files, name="select-to-download-files"),
+    path('exist/files', views.download_exist_files, name="select-to-download-exist-files"),
 
 ]
 

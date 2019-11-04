@@ -4,16 +4,18 @@
 {% block resource %}
     <link href="{% static '/css/shared_storage/shared-storage-string-file-diff.css' %}" rel="stylesheet">
     <script src="{% static '/js/shared_storage/shared_storage_string_file_diff.js' %}"></script>
+    <script src="{% static '/js/shared_storage/download_file_component.js' %}"></script>
+
 {% endblock %}
 {% block content %}
     <div id="string_file_diff_container" class="container-fluid">
         <div id="string_file_diff_div" class="row no-row-margin">
             <div id="diff_information_div" class="full_width">
                 <div id="environment_folder_data_div" class="full_width row no-row-margin">
-                    {% with side="left" region=data.left_region environment=data.left_environment folder=data.left_folder %}
+                    {% with side="left" region=data.left_region environment=data.left_environment folder=data.left_folder path=data.left_file %}
                         {% include 'file_diff_environment_folder_component.html' %}
                     {% endwith %}
-                    {% with side="right" region=data.right_region environment=data.right_environment folder=data.right_folder %}
+                    {% with side="right" region=data.right_region environment=data.right_environment folder=data.right_folder path=data.right_file %}
                         {% include 'file_diff_environment_folder_component.html' %}
                     {% endwith %}
                 </div>
@@ -77,6 +79,8 @@
             </div>
         </div>
     </div>
-
+    <script>
+        initDownloadUrl("{% url 'shared_storage:select-to-download-exist-files' %}");
+    </script>
 {% endblock %}
 

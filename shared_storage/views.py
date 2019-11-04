@@ -187,6 +187,20 @@ def download_files(request):
     return action_error_check(after_check)
 
 
+def download_exist_files(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        zip_file_path = download_services.download_exist_files(request_json)
+
+        if os.path.exists(zip_file_path):
+            with open(zip_file_path, 'rb') as fh:
+                response = HttpResponse(fh.read(), content_type="application/zip")
+                return response
+        raise Http404
+
+    return action_error_check(after_check)
+
+
 def send_compare_result_mail(request):
     def after_check():
         left_region_id = 6

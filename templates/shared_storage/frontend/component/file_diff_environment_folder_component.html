@@ -11,4 +11,10 @@
             <div id="folder_text_div" class="info_text">{{ folder }}</div>
         </div>
     </div>
+    <div id="{{ side }}_download_button_div">
+        <button class="btn btn-embossed btn-info"
+                onclick="downloadFiles('{{ region.id }}','{{ environment.id }}','{{ data.root_key }}','{{ path }}')">
+            Download
+        </button>
+    </div>
 </div>

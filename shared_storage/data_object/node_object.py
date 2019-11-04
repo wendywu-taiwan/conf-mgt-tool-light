@@ -6,6 +6,7 @@ from RulesetComparer.utils.stringFilter import string_filter_array_keys, string_
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
 from common.data_object.file_load_object import SharedStorageFileLoadObject
+from shared_storage.utils.path_manager import *
 
 
 class NodeObject:
@@ -171,6 +172,15 @@ class NodeObject:
                                                   root_key, self.environment.name)
         create_folder(file_object.folder_path)
         resource_path = connect_obj.root_path + file_object.file_path
+        copied_path = file_object.local_path
+        copyfile(resource_path, copied_path)
+        return file_object
+
+    def download_exist_files(self, resource_root_key, new_root_key):
+        file_object = SharedStorageFileLoadObject(self.name, self.path, self.type, self.size, self.modification_time,
+                                                  new_root_key, self.environment.name)
+        create_folder(file_object.folder_path)
+        resource_path = get_download_file_path(resource_root_key, self.environment.name, self.name)
         copied_path = file_object.local_path
         copyfile(resource_path, copied_path)
         return file_object

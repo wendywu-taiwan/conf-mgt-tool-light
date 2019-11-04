@@ -5,7 +5,8 @@ from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from permission.models import Environment, FTPServer
 from shared_storage.data_object.dir_root_object import DirRootObject
-from shared_storage.data_object.dir_root_download_object import DirRootServerDownloadObject, DirRootGitDownloadObject
+from shared_storage.data_object.dir_root_download_object import DirRootServerDownloadObject, DirRootGitDownloadObject, \
+    DirRootExistDownloadObject
 from shared_storage.data_object.json_parser.select_to_download_parser import SelectToDownloadFileListParser, \
     SelectToDownloadFilterResultParser
 from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject
@@ -22,7 +23,7 @@ from shared_storage.data_object.json_builder.filter_folder_builder import \
     SelectToDownloadFilterModuleBuilder, SelectToDownloadFilterDirFolderBuilder, \
     SelectToDownloadFilterLatestVersionBuilder
 from shared_storage.data_object.json_builder.select_to_download_file_list_builder import SelectToDownloadFileListBuilder
-from shared_storage.data_object.json_parser.download_files import DownloadFilesParser
+from shared_storage.data_object.json_parser.download_files import DownloadFilesParser, DownloadExistFilesParser
 from shared_storage.task.download_server_file_task import DownloadServerFileTask
 
 
@@ -115,6 +116,18 @@ def download_files(json_data):
         root_obj = DirRootGitDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
     else:
         root_obj = DirRootServerDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
+    file_object_list = root_obj.download_node_files()
+    task = DownloadServerFileTask(file_object_list)
+    return task.zip_file_full_path
+
+
+def download_exist_files(json_data):
+    parser = DownloadExistFilesParser(json_data)
+    if parser.environment.name == GIT_NAME:
+        root_obj = DirRootGitDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list)
+    else:
+        root_obj = DirRootExistDownloadObject(parser.region_id, parser.environment_id, parser.file_path_list,
+                                              parser.root_hash_key)
     file_object_list = root_obj.download_node_files()
     task = DownloadServerFileTask(file_object_list)
     return task.zip_file_full_path
