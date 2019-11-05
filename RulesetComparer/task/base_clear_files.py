@@ -1,5 +1,4 @@
 from RulesetComparer.utils.fileManager import clear_folder_over_days
-from RulesetComparer.properties import config
 from django.template.loader import render_to_string
 
 from RulesetComparer.utils.logger import error_log
