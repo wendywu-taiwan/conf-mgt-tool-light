@@ -2,7 +2,7 @@ from abc import abstractmethod
 
 from RulesetComparer.utils.logger import info_log
 from RulesetComparer.properties.key import *
-from RulesetComparer.utils.stringFilter import string_filter_array_keys
+from RulesetComparer.utils.stringFilter import string_filter
 from shared_storage.data_object.node_object import NodeObject
 from shared_storage.properties.config import LATEST_VERSION_PARENT_FOLDER, LATEST_VERSION_GRAND_PARENT_FOLDER
 
@@ -48,11 +48,11 @@ class DirNodeParseLatestVersionParentObject(DirNodeParseBaseObject):
         super().parse_nodes()
 
     def parse_child_nodes(self, node):
-        if string_filter_array_keys(node.path, LATEST_VERSION_PARENT_FOLDER):
+        if string_filter(node.path, LATEST_VERSION_PARENT_FOLDER):
             latest_version = self.connect_obj.get_latest_version(node.path)
             info_log(self.LOG_CLASS, "latest_version:" + str(latest_version))
             child_node_parser = DirNodeParseFilteredObject(self.connect_obj, node, latest_version)
-        elif string_filter_array_keys(node.path, LATEST_VERSION_GRAND_PARENT_FOLDER):
+        elif string_filter(node.path, LATEST_VERSION_GRAND_PARENT_FOLDER):
             child_node_parser = DirNodeParseLatestVersionParentObject(self.connect_obj, node)
         else:
             child_node_parser = DirNodeParseObject(self.connect_obj, node)

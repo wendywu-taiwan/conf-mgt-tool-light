@@ -2,7 +2,7 @@ import stat
 from shutil import copyfile
 
 from RulesetComparer.utils.fileManager import create_folder
-from RulesetComparer.utils.stringFilter import string_filter_array_keys, string_filter
+from RulesetComparer.utils.stringFilter import string_filter
 from RulesetComparer.utils.timeUtil import *
 from RulesetComparer.utils.logger import *
 from common.data_object.file_load_object import SharedStorageFileLoadObject
