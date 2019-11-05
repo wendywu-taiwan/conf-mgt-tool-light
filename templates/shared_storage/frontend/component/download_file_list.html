@@ -1,0 +1,12 @@
+{% load staticfiles %}
+<script src="{% static '/js/application.js' %}"></script>
+<script src="{% static '/js/shared_storage/download_file_list.js' %}"></script>
+
+<div id="file_list_row_div">
+    {% with child_node=data.0 %}
+        <div id="{{ child_node.compare_hash_key }}_folder_div">
+            {% include 'download_file_list_line.html' %}
+            {% include 'normal_folder_expand_component.html' %}
+        </div>
+    {% endwith %}
+</div>

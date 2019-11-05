@@ -31,6 +31,6 @@ function downloadRulesFromServer(url) {
         responseType: 'arraybuffer',
     }).then(function success(data) {
         stopDialog();
-        downloadZipFile(data);
+        downloadZipFile(data,"rulesets");
     })
 }

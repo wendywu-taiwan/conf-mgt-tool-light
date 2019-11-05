@@ -83,7 +83,7 @@ RULE_DIFF_KEY_ADD_LIST = 'add_list'
 RULE_DIFF_KEY_REMOVE_LIST = 'remove_list'
 RULE_DIFF_KEY_MODIFY_LIST = 'modify_list'
 RULE_DIFF_KEY_NORMAL_LIST = 'normal_list'
-RULE_DIFF_HAS_CHANGES = 'has_changes'
+KEY_HAS_CHANGES = 'has_changes'
 
 # environment model key
 NO_ENVIRONMENT_GIT = 0
@@ -188,6 +188,13 @@ KEY_ENVIRONMENTS = "environments"
 KEY_ENVIRONMENT_ID = "environment_id"
 KEY_COUNTRY_ID = "country_id"
 KEY_NAME = "name"
+KEY_TYPE = "type"
+KEY_SIZE = "size"
+KEY_DEPTH = "depth"
+KEY_INDEX = "index"
+KEY_MODIFICATION_TIME = "modification_time"
+KEY_CHILD_NODES = "child_nodes"
+KEY_DIFF_RESULT = "diff_result"
 KEY_CAPITAL_NAME = "capital_name"
 KEY_FULL_NAME = "full_name"
 KEY_COMPARE_HASH_KEY = "compare_hash_key"
@@ -254,6 +261,48 @@ KEY_TITLE = "title"
 KEY_DATA = "data"
 KEY_FREQUENCY_TYPE = "frequency_type"
 KEY_FREQUENCY_TYPES = "frequency_types"
+KEY_FILE_NAME = "file_name"
+KEY_FILE_PATH = "file_path"
+KEY_FILE_SIZE = "file_size"
+KEY_LEFT_FILE = "left_file"
+
+KEY_LEFT_ENVIRONMENT = "left_environment"
+KEY_RIGHT_ENVIRONMENT = "right_environment"
+KEY_REGION = "region"
+KEY_LEFT_REGION = "left_region"
+KEY_RIGHT_REGION = "right_region"
+KEY_FOLDER = "folder"
+KEY_LEFT_FOLDER = "left_folder"
+KEY_RIGHT_FOLDER = "right_folder"
+KEY_LEFT_DIFF_RESULT = "left_diff_result"
+KEY_RIGHT_DIFF_RESULT = "right_diff_result"
+KEY_LEFT_MODIFICATION_TIME = "left_modification_time"
+KEY_RIGHT_MODIFICATION_TIME = "right_modification_time"
+KEY_LEFT_ONLY_DATA = "left_only_data"
+KEY_RIGHT_ONLY_DATA = "right_only_data"
+KEY_RIGHT_FILE = "right_file"
+KEY_CHANGED = "changed"
+KEY_ADDED = "added"
+KEY_BLANK = "blank"
+KEY_CONTEXT = "context"
+KEY_ROW = "row"
+KEY_INDEX = "index"
+KEY_ROOT_KEY = "root_key"
+KEY_PARENT_INDEX = "parent_index"
+KEY_LEFT_TYPE = "left_type"
+KEY_LEFT_ROW = "left_row"
+KEY_LEFT_LINE = "left_line"
+KEY_RIGHT_TYPE = "right_type"
+KEY_RIGHT_ROW = "right_row"
+KEY_RIGHT_LINE = "right_line"
+KEY_SHOW_COLLAPSE = "show_collapse"
+KEY_LEFT_ONLY = "left_only"
+KEY_RIGHT_ONLY = "right_only"
+KEY_COMMON = "common"
+KEY_REQUEST_HOST = "request_host"
+KEY_LAST_VERSION = "last version"
+
+KEY_SIDE = "side"
 REQUEST_GET = 'GET'
 REQUEST_POST = 'POST'
 
@@ -279,3 +328,26 @@ KEY_F_RULESET_LOG = "ruleset_log"
 KEY_F_SERVER_LOG = "server_log"
 KEY_F_USER_ROLE = "user_role"
 KEY_F_ROLE_PERMISSION = "role_permission"
+
+# File Type key
+KEY_FOLDER = "folder"
+KEY_OTHERS = "other"
+KEY_XML = "xml"
+KEY_PROPERTIES = "properties"
+KEY_XSL = "xsl"
+KEY_PNG = "png"
+KEY_EXE = "exe"
+KEY_JSON = "json"
+KEY_CSS = "css"
+KEY_XSLT = "xslt"
+
+# Diff Result Key
+KEY_D_RESULT_ADD = "add"
+KEY_D_RESULT_REMOVE = "remove"
+KEY_D_RESULT_SAME = "same"
+KEY_DIFFERENT = "different"
+
+# symbol
+KEY_S_EQUAL = "="
+KEY_S_HASH_TAG = "#"
+KEY_S_COLON = ":"

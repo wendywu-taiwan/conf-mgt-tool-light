@@ -17,7 +17,7 @@ FILE_PATH = {
     "rule_set_backup_path": "RulesetComparer/rulesets/backup",
     "ruleset_backup_server_version": "RulesetComparer/rulesets/backup/server_version",
     "ruleset_backup_applied_version": "RulesetComparer/rulesets/backup/applied_version",
-    "ruleset_backup_pre_sync_data": "RulesetComparer/rulesets/backup/pre_sync"
+    "ruleset_backup_pre_sync_data": "RulesetComparer/rulesets/backup/pre_sync",
 }
 FILE_NAME = {
     "_html": "%s.html",
@@ -46,16 +46,6 @@ TIME_FORMAT = {
 
 TIME_ZONE = {
     "asia_taipei": "Asia/Taipei",
-}
-
-SMTP = {
-    # "login_username": "mailtest20181112@gmail.com",
-    # "login_password": "shqkvjarskvbkigv",
-    # "host": "smtp.gmail.com",
-    # "host": "10.29.25.73",
-    "host": "smtp-ch-anon.int.audatex.com",
-    # "port": "465"
-    "port": "25"
 }
 
 SEND_COMPARE_RESULT_MAIL = {

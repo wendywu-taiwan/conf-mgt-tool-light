@@ -1,7 +1,7 @@
 from zeep import Client
 from abc import abstractmethod
 from permission.models import Country, Environment, B2BServer, B2BService
-from RulesetComparer.date_model.json_parser.auth_data import AuthDataParser
+from RulesetComparer.date_model.json_parser.auth_data import B2BServiceAuthDataParser
 
 
 class BaseRequestTask:
@@ -19,7 +19,7 @@ class BaseRequestTask:
         try:
             self.country = Country.objects.get(id=country_id)
             self.environment = Environment.objects.get(id=environment_id)
-            self.auth_data = AuthDataParser(self.environment.name, self.country.name)
+            self.auth_data = B2BServiceAuthDataParser(self.environment.name, self.country.name)
             self.client = self.combine_client_url(b2b_service_name)
         except Exception as e:
             raise e

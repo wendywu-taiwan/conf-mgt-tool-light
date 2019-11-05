@@ -1,0 +1,9 @@
+{% load staticfiles %}
+{% load filters %}
+
+
+{% for row_data in row_list %}
+    <div class="line_content_div">
+        {{ row_data.row|force_escape|parse_space_large|parse_tab|parse_space }}
+    </div>
+{% endfor %}

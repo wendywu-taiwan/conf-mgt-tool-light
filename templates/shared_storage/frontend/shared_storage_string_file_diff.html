@@ -1,0 +1,86 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+{% load filters %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-string-file-diff.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/shared_storage_string_file_diff.js' %}"></script>
+    <script src="{% static '/js/shared_storage/download_file_component.js' %}"></script>
+
+{% endblock %}
+{% block content %}
+    <div id="string_file_diff_container" class="container-fluid">
+        <div id="string_file_diff_div" class="row no-row-margin">
+            <div id="diff_information_div" class="full_width">
+                <div id="environment_folder_data_div" class="full_width row no-row-margin">
+                    {% with side="left" region=data.left_region environment=data.left_environment folder=data.left_folder path=data.left_file %}
+                        {% include 'file_diff_environment_folder_component.html' %}
+                    {% endwith %}
+                    {% with side="right" region=data.right_region environment=data.right_environment folder=data.right_folder path=data.right_file %}
+                        {% include 'file_diff_environment_folder_component.html' %}
+                    {% endwith %}
+                </div>
+                <div id="path_div" class="full_width row no-row-margin">
+                    {% with side="left" path=data.left_file %}
+                        {% include 'file_diff_path_component.html' %}
+                    {% endwith %}
+                    {% with side="right" path=data.right_file %}
+                        {% include 'file_diff_path_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="diff_result_header_div" class="full_width">
+                <div id="header_text_div" class="diff_result_header_text">{{ data.file_name }}</div>
+            </div>
+            <div id="diff_result_div" class="full_width">
+                {% for line_data in data.diff_result %}
+                    <div id="diff_result_line_div" class="result_line_div row no-row-margin">
+                        <div id="diff_result_line_left_div" class="row no-row-margin half_width">
+                            <div class="line_index_bg_div border-right">
+                                <div class="line_index_div">{{ line_data.left_line }}</div>
+                            </div>
+                            {% with row_list=line_data.left_row %}
+                                {% if line_data.left_type == "context" %}
+                                    <div class="line_content_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% elif line_data.left_type == "changed" %}
+                                    <div class="line_content_bg_div line_content_remove_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_change_content.html' %}
+                                    </div>
+                                {% else %}
+                                    <div class="line_content_bg_div line_content_remove_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                        <div id="diff_result_line_right_div" class="row no-row-margin half_width">
+                            <div class="line_index_bg_div border-right">
+                                <div class="line_index_div">{{ line_data.right_line }}</div>
+                            </div>
+                            {% with row_list=line_data.right_row %}
+                                {% if line_data.right_type == "context" %}
+                                    <div class="line_content_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% elif line_data.right_type == "changed" %}
+                                    <div class="line_content_bg_div line_content_add_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_change_content.html' %}
+                                    </div>
+                                {% else %}
+                                    <div class="line_content_bg_div line_content_add_bg_div no-row-margin row">
+                                        {% include 'string_file_diff_line_normal_content.html' %}
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <script>
+        initDownloadUrl("{% url 'shared_storage:select-to-download-exist-files' %}");
+    </script>
+{% endblock %}
+

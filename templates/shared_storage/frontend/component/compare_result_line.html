@@ -1,0 +1,11 @@
+{% load staticfiles %}
+{% if child_node.diff_result == "same" %}
+    {% include 'compare_result_line_normal.html' %}
+{% elif child_node.diff_result == "different" %}
+    {% include 'compare_result_line_different.html' %}
+{% elif child_node.diff_result == "add" %}
+    {% include 'compare_result_line_add.html' %}
+{% else %}
+    {% include 'compare_result_line_remove.html' %}
+{% endif %}
+

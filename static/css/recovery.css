@@ -50,14 +50,6 @@
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
-.recovery_container .div_title_text {
-    margin-top: auto;
-    margin-bottom: auto;
-    font-size: 18px;
-    font-weight: 800;
-    min-width: 130px;
-}
-
 .recovery_container .div_title_description_text {
     margin-top: auto;
     margin-bottom: auto;

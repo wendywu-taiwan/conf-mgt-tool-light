@@ -1,0 +1,145 @@
+.folder_title_name_div {
+    width: 63%;
+}
+.folder_title_size_div {
+    width: 12%;
+}
+.folder_title_modification_div {
+    width: 25%;
+}
+
+.folder_title_text {
+    font-size: 14px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 600;
+    color: #34495d;
+    padding-left: 10px;
+    border: solid 0.5px;
+    border-color: #d4d7d7;
+    background: #e2e3e3;
+}
+
+.folder_data_line {
+    cursor: pointer;
+    line-height: 30px;
+}
+
+.folder_name_info_div {
+    width: 58%;
+    margin-right: 2%;
+}
+
+.folder_icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.folder_icon_type {
+    margin-left: 1px;
+}
+
+.normal_text_color {
+    color: #34495d;
+}
+
+.folder_text {
+    font-size: 14px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 500;
+    width: 85%;
+    word-break: break-all;
+}
+
+.folder_other_info_div {
+    width: 35%;
+}
+
+.normal_text_color {
+    color: #34495d;
+}
+
+.size {
+    width: 34%;
+    margin-right: 3%;
+}
+
+.modification_time {
+    width: 63%;
+}
+
+.other_info_text {
+    font-size: 13px;
+    margin-top: auto;
+    margin-bottom: auto;
+    font-weight: 500;
+}
+
+.folder_child_div_0 .folder_name_info_div {
+    width: 62%;
+    margin-left: auto;
+}
+
+.folder_child_div_1 .folder_name_info_div {
+    width: 56%;
+    /*margin-left: auto;*/
+}
+
+.folder_child_div_2 .folder_name_info_div {
+    width: 53%;
+    /*margin-left: auto;*/
+}
+
+.folder_child_div_3 .folder_name_info_div {
+    width: 50%;
+    /*margin-left: auto;*/
+}
+
+.folder_child_div_4 .folder_name_info_div {
+    width: 47%;
+    /*margin-left: auto;*/
+}
+
+.folder_child_div_5 .folder_name_info_div {
+    width: 44%;
+    /*margin-left: auto;*/
+}
+
+.folder_collapse_show_icon {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.folder_collapse_hide_icon {
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    margin-top: auto;
+    margin-bottom: auto;
+    display: none;
+}
+
+.expand_folder_icon_span {
+    font-size: 16px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 5px;
+}
+
+.file_list_checkbox_div .checkbox {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.file_list_checkbox_div{
+    width: 2%;
+    margin-right:10px;
+    margin-left: auto;
+}

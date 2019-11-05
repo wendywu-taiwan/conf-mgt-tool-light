@@ -3,9 +3,11 @@ import traceback
 from django.shortcuts import render
 from django.http import JsonResponse
 from RulesetComparer.utils.logger import error_log
-from common.data_object.error.error import PermissionDeniedError, B2BRulesetNotFoundError
-from common.data_object.error.message import PERMISSION_DENIED_MESSAGE, RULESET_NOT_FOUND_MESSAGE
-from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED
+from common.data_object.error.error import PermissionDeniedError, B2BRulesetNotFoundError, \
+    SharedStorageFolderNotFoundError
+from common.data_object.error.message import PERMISSION_DENIED_MESSAGE, RULESET_NOT_FOUND_MESSAGE, \
+    FOLDER_NOT_EXIST_MESSAGE
+from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED, FOLDER_NOT_EXIST
 from common.data_object.json_builder.response import ResponseBuilder
 
 
@@ -27,6 +29,9 @@ def page_error_check(executor):
         return executor()
     except B2BRulesetNotFoundError:
         result = ResponseBuilder(status_code=RULESET_NOT_FOUND, message=RULESET_NOT_FOUND_MESSAGE).get_data()
+        return JsonResponse(result)
+    except SharedStorageFolderNotFoundError:
+        result = ResponseBuilder(status_code=FOLDER_NOT_EXIST, message=FOLDER_NOT_EXIST_MESSAGE).get_data()
         return JsonResponse(result)
     except Exception:
         error_log(traceback.format_exc())

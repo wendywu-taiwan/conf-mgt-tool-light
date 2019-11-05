@@ -1,3 +1,5 @@
+let DROPDOWN_OPTION_SELECT = "Select";
+
 $(function () {
     let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
     setToken(csrftoken);
@@ -66,7 +68,7 @@ function confirmDialog(text, confirmButtonText, onConfirmClick) {
 }
 
 
-function downloadZipFile(data) {
+function downloadZipFile(data, fileNameSuffix) {
     // transfer unicode data to characters
     let newContent = "";
     for (let i = 0; i < data.length; i++) {
@@ -80,8 +82,9 @@ function downloadZipFile(data) {
     // use blob to download files
     let blob = new Blob([bytes], {type: "application/zip"});
     let element = document.createElement('a');
+    let fileNamePrefix = getFileNameCurrentDataTime();
     element.href = URL.createObjectURL(blob);
-    element.download = "ruleset.zip";
+    element.download = fileNamePrefix + "_" + fileNameSuffix + ".zip";
     element.style.display = 'none';
     document.body.appendChild(element);
     element.click();
@@ -97,9 +100,16 @@ function leadingZero(value) {
 
 function getCurrentDataTime() {
     var today = new Date();
-    var date = today.getFullYear() + '/' + (today.getMonth() + 1) + '/' + today.getDate();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var date = today.getFullYear() + '/' + leadingZero((today.getMonth() + 1)) + '/' + leadingZero(today.getDate());
+    var time = leadingZero(today.getHours()) + ":" + leadingZero(today.getMinutes()) + ":" + leadingZero(today.getSeconds());
     return date + " " + time;
+}
+
+function getFileNameCurrentDataTime() {
+    var today = new Date();
+    var date = today.getFullYear() + "" + leadingZero((today.getMonth() + 1)) + "" + leadingZero(today.getDate());
+    var time = leadingZero(today.getHours()) + "" + leadingZero(today.getMinutes()) + "" + leadingZero(today.getSeconds());
+    return date + "_" + time;
 }
 
 function arrayContains(string, array) {
@@ -107,20 +117,31 @@ function arrayContains(string, array) {
 }
 
 function hide(item) {
+    if (item == null)
+        return;
     item.style.display = "none";
 }
 
 function showFlex(item) {
+    if (item == null)
+        return;
     item.style.display = "flex";
 }
 
 function showBlock(item) {
+    if (item == null)
+        return;
     item.style.display = "block";
 }
 
 function split_str(name, index) {
     let tagSplitArray = (name).split("_");
     return tagSplitArray[index];
+}
+
+function split_str_array(name) {
+    let tagSplitArray = (name).split("_");
+    return tagSplitArray;
 }
 
 function openNewPageWithHTML(url, html) {
@@ -132,8 +153,17 @@ function arrayRemove(arr, value) {
     return arr.filter(function (ele) {
         return ele != value;
     });
-
 }
+
+function refreshPartialHTML(id, html) {
+    $('#' + id).html(html);
+}
+
+function resetDropdown(id) {
+    $("#" + id + ":first-child").text(DROPDOWN_OPTION_SELECT);
+    $("#" + id + ":first-child").val("");
+}
+
 
 openNewPage = function (url) {
     showWaitingDialog();
@@ -150,3 +180,11 @@ openNewPage = function (url) {
         showErrorDialog(response);
     });
 };
+
+function removeWithAnimate(obj, time) {
+    // obj.style.opacity = '0';
+    window.setTimeout(
+        function removeThis() {
+            obj.style.display = 'none';
+        }, time);
+}

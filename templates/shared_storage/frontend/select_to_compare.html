@@ -1,0 +1,97 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/shared_storage/select-to-compare.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/select_to_compare.js' %}"></script>
+    <link href="{% static '/css/shared_storage/shared-storage-folder-compare-result.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <div id="select_to_compare_container" class="container-fluid">
+        <p class="header-text">Compare</p>
+        <div class="row no-row-margin">
+            <div id="left_data_div">
+                <div id="left_region_dropdown_div" class="dropdown-block">
+                    <div class="drop_down_label_text" for="select_country">Data Center</div>
+                    <div id="left_select_region" class="custom-btn-group-1 btn-group">
+                        <button id="left_select_region_btn"
+                                class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+                                type="button" data-toggle="dropdown">
+                            Select
+                        </button>
+                        <ul id="left_select_region_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for region in data %}
+                                <li value="{{ region.id }}"><a href="#">{{ region.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="left_environment_dropdown_div" class="dropdown-block">
+                    {% with type="environment" side="left" title="Environment" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+                <div id="left_folder_dropdown_div" class="dropdown-block">
+                    {% with type="folder" side="left" title="Folder" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="right_data_div">
+                <div id="right_region_dropdown_div" class="dropdown-block">
+                    <div class="drop_down_label_text" for="select_country">Data Center</div>
+                    <div id="right_select_region" class="custom-btn-group-1 btn-group">
+                        <button id="right_select_region_btn"
+                                class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+                                type="button" data-toggle="dropdown">
+                            Select
+                        </button>
+                        <ul id="right_select_region_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for region in data %}
+                                <li value="{{ region.id }}"><a href="#">{{ region.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="right_environment_dropdown_div" class="dropdown-block">
+                    {% with type="environment" side="right" title="Environment" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+                <div id="right_folder_dropdown_div" class="dropdown-block">
+                    {% with type="folder" side="right" title="Folder" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+
+        <form id="compare" method="post">
+            {% csrf_token %}
+            <input name='left_region_id' id="left_region_id" value="" type="hidden">
+            <input name='right_region_id' id="right_region_id" value="" type="hidden">
+            <input name='left_environment_id' id="left_environment_id" value="" type="hidden">
+            <input name='right_environment_id' id="right_environment_id" value="" type="hidden">
+            <input name='left_folder' id="left_folder" value="" type="hidden">
+            <input name='right_folder' id="right_folder" value="" type="hidden">
+
+            <button id="compare_submit_button" class="custom-btn-1 btn btn-embossed btn-primary" type="submit"
+                    form="compare" value="Submit">
+                Submit
+            </button>
+        </form>
+    </div>
+    <script>
+        onRegionSelected = function (side, regionId) {
+            filterEnvironments(side, regionId, "{% url 'shared_storage:compare-filter-region-environments' %}");
+        };
+        onEnvironmentSelected = function (side) {
+            filterFolders(side, "{% url 'shared_storage:compare-filter-environment-folders' %}");
+        };
+    </script>
+{% endblock %}
+
+

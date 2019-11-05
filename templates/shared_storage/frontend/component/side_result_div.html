@@ -1,0 +1,38 @@
+{% load staticfiles %}
+
+<div id="{{ side }}_result_div" class="result_div">
+    <div id="{{ side }}_info_div" class="information_div">
+        <div class="line_div row no-row-margin">
+            <div class="info_title">Data Center</div>
+            <div class="info_text"> {{ region.name }}</div>
+        </div>
+        <div class="line_div row no-row-margin">
+            <div class="info_title">Environment</div>
+            <div class="info_text"> {{ environment.name }}</div>
+        </div>
+        <div class="line_div_bottom row no-row-margin">
+            <div class="info_title">Folder</div>
+            <div class="info_text"> {{ folder }}</div>
+        </div>
+    </div>
+    <div id="{{ side }}_folder_title_div" class="folder_title_div row no-row-margin">
+        <div class="folder_title_text folder_title_name_div">name</div>
+        <div class="folder_title_text folder_title_size_div">size</div>
+        <div class="folder_title_text folder_title_modification_div">modification time
+        </div>
+    </div>
+    <div id="{{ side }}_folder_structure_div" class="folder_structure_div">
+        {% with child_node=root_node_object %}
+            <div id="{{ side }}_folder_{{ root_node_object.depth }}_{{ root_node_object.index }}_div">
+                <div class="folder_data_line row no-row-margin" data-toggle="collapse"
+                     href="#{{ side }}_folder_{{ root_node_object.depth }}_{{ root_node_object.index }}_child_div"
+                     role="button" aria-expanded="true"
+                     aria-controls="{{ side }}_folder_{{ root_node_object.depth }}_{{ root_node_object.index }}_child_div">
+                    {% include 'compare_result_line.html' %}
+                </div>
+                {% include 'side_folder_compare_expand_component.html' %}
+            </div>
+        {% endwith %}
+
+    </div>
+</div>

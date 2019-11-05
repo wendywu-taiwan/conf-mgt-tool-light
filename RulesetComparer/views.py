@@ -362,7 +362,7 @@ def ruleset_detail_backup_page(request, backup_key, backup_folder, ruleset_name)
 def ruleset_diff_page(request, compare_key, ruleset_name):
     def after_check():
         data = services.ruleset_diff_compare_result(compare_key, ruleset_name)
-        if data[RULE_DIFF_HAS_CHANGES] is False:
+        if data[KEY_HAS_CHANGES] is False:
             result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
             return JsonResponse(result)
         else:
@@ -374,7 +374,7 @@ def ruleset_diff_page(request, compare_key, ruleset_name):
 def ruleset_diff_backup_page(request, backup_key, ruleset_name):
     def after_check():
         data = services.ruleset_diff_backup(backup_key, ruleset_name)
-        if data[RULE_DIFF_HAS_CHANGES] is False:
+        if data[KEY_HAS_CHANGES] is False:
             result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
             return JsonResponse(result)
         else:
@@ -386,7 +386,7 @@ def ruleset_diff_backup_page(request, backup_key, ruleset_name):
 def ruleset_diff_backup_with_server_page(request, backup_key, backup_folder, ruleset_name):
     def after_check():
         data = services.ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name)
-        if data[RULE_DIFF_HAS_CHANGES] is False:
+        if data[KEY_HAS_CHANGES] is False:
             result = ResponseBuilder(status_code=COMPARE_NO_CHANGES).get_data()
             return JsonResponse(result)
         else:
@@ -425,12 +425,10 @@ def download_rulesets(request):
     def after_check():
         request_json = get_post_request_json(request)
         zip_file_path = services.download_rulesets(request_json)
-        download_file_name = timeUtil.get_format_current_time(config.TIME_FORMAT.get("year_month_date")) + "_ruleset"
 
         if os.path.exists(zip_file_path):
             with open(zip_file_path, 'rb') as fh:
                 response = HttpResponse(fh.read(), content_type="application/zip")
-                response['Content-Disposition'] = 'attachment; filename="' + download_file_name + '.zip"'
                 return response
         raise Http404
 

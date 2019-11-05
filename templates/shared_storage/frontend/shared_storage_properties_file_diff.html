@@ -1,0 +1,90 @@
+{% extends "shared_storage_front_base.html" %}
+{% load staticfiles %}
+{% load filters %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-properties-file-diff.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/shared_storage_properties_file_diff.js' %}"></script>
+    <script src="{% static '/js/shared_storage/download_file_component.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="properties_file_diff_container" class="container-fluid">
+        <div id="properties_file_diff_div" class="row no-row-margin">
+            <div id="diff_information_div" class="full_width">
+                <div id="environment_folder_data_div" class="full_width row no-row-margin">
+                    {% with side="left" region=data.left_region environment=data.left_environment folder=data.left_folder path=data.left_file %}
+                        {% include 'file_diff_environment_folder_component.html' %}
+                    {% endwith %}
+                    {% with side="right" region=data.right_region environment=data.right_environment folder=data.right_folder path=data.right_file %}
+                        {% include 'file_diff_environment_folder_component.html' %}
+                    {% endwith %}
+                </div>
+                <div id="path_div" class="full_width row no-row-margin">
+                    {% with side="left" path=data.left_file %}
+                        {% include 'file_diff_path_component.html' %}
+                    {% endwith %}
+                    {% with side="right" path=data.right_file %}
+                        {% include 'file_diff_path_component.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="diff_result_header_div" class="full_width">
+                <div id="header_text_div" class="diff_result_header_text">{{ data.file_name }}</div>
+            </div>
+            <div id="diff_result_div" class="full_width">
+                <div id="diff_result_left_only_div">
+                    {% for node in data.diff_result.left_only %}
+                        <div class="result_line_div row no-row-margin">
+                            {% with side="left" index=node.left_line value=node.left_row %}
+                                {% include 'file_diff_line_add_component.html' %}
+                            {% endwith %}
+                            {% with side="right" %}
+                                {% include 'file_diff_line_normal_component.html' %}
+                            {% endwith %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="diff_result_right_only_div">
+                    {% for node in data.diff_result.right_only %}
+                        <div class="result_line_div row no-row-margin">
+                            {% with side="left" index=node.left_line value=node.left_row %}
+                                {% include 'file_diff_line_normal_component.html' %}
+                            {% endwith %}
+                            {% with side="right" index=node.right_line value=node.right_row %}
+                                {% include 'file_diff_line_add_component.html' %}
+                            {% endwith %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="diff_result_different_only_div">
+                    {% for node in data.diff_result.different %}
+                        <div class="result_line_div row no-row-margin">
+                            {% with side="left" index=node.left_line value=node.left_row %}
+                                {% include 'file_diff_line_different_component.html' %}
+                            {% endwith %}
+                            {% with side="right" index=node.right_line value=node.right_row %}
+                                {% include 'file_diff_line_different_component.html' %}
+                            {% endwith %}
+                        </div>
+                    {% endfor %}
+                </div>
+                <div id="diff_result_common_div">
+                    {% for node in data.diff_result.common %}
+                        <div class="result_line_div row no-row-margin">
+                            {% with side="left" index=node.left_line value=node.left_row %}
+                                {% include 'file_diff_line_normal_component.html' %}
+                            {% endwith %}
+                            {% with side="right" index=node.right_line value=node.right_row %}
+                                {% include 'file_diff_line_normal_component.html' %}
+                            {% endwith %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        initDownloadUrl("{% url 'shared_storage:select-to-download-exist-files' %}");
+    </script>
+
+{% endblock %}
+

@@ -32,6 +32,9 @@ class GitManager:
         return remote
 
     def pull(self):
+        if self.status != self.STATUS_NEED_PULL:
+            return
+
         info_log(self.LOG_CLASS, "pull code from remote")
         self._remote_repo().pull()
         self.check_commit_status()

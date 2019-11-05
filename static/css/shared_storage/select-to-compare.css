@@ -1,0 +1,49 @@
+#select_to_compare_container {
+    max-width: 100%;
+    text-align: center;
+}
+
+#select_to_compare_container #left_data_div {
+    width: 20%;
+    margin-left: auto;
+    margin-right: 20px;
+}
+
+#select_to_compare_container #right_data_div {
+    width: 20%;
+    margin-right: auto;
+}
+
+#select_to_compare_container .drop_down_button_width {
+    width: 75%;
+}
+
+.drop_down_label_text {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 3;
+}
+
+.content-text-1 {
+    width: 100%;
+}
+
+.custom-dropdown-btn-1 {
+    min-width: 30%;
+    margin: 0px auto;
+}
+
+.container-select .dropdown-limit {
+    height: auto;
+    max-height: 180px;
+    overflow-x: hidden;
+}
+
+.dropdown-block {
+    margin-bottom: 22px;
+}
+
+#compare_submit_button {
+    width: 15%;
+    margin-top: 30px;
+}

@@ -1,3 +1,5 @@
+import hashlib
+import math
 import os, time, sys
 import shutil
 import glob
@@ -125,6 +127,20 @@ def load_file(file_name):
         return None
 
 
+def load_path_file(file_path):
+    if not is_file_exist(file_path):
+        info_log(LOG_CLASS + ": load_path_file", " file not exist :" + file_path)
+        return
+    try:
+        f = open(file_path, 'r')
+        file_content = f.read()
+    except UnicodeDecodeError:
+        f = open(file_path, 'rb')
+        file_content = f.read()
+
+    return file_content.strip()
+
+
 def archive_file(source_path, dst_path, dst_file):
     create_folder(dst_path)
     zip_handler = zipfile.ZipFile(dst_file, mode='w')
@@ -136,7 +152,8 @@ def archive_file(source_path, dst_path, dst_file):
     zip_handler.close()
 
 
-def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
+def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix=None):
+    #  if arcname_prefix contains {folder_name}/ , after unzip will show folder/files
     create_folder(dst_path)
     abs_src = os.path.abspath(source_path)
 
@@ -144,7 +161,10 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix):
     for dirname, subdirs, files in os.walk(source_path):
         for filename in files:
             absname = os.path.abspath(os.path.join(dirname, filename))
-            arcname = arcname_prefix + absname[len(abs_src) + 1:]
+            if arcname_prefix is not None:
+                arcname = arcname_prefix + absname[len(abs_src) + 1:]
+            else:
+                arcname = absname[len(abs_src) + 1:]
             print("archive_file, resource path :" + absname)
             zip_handler.write(absname, arcname)
     zip_handler.close()
@@ -171,6 +191,7 @@ def get_rule_name_list(path):
         rule_name_list.append(file_name)
     return rule_name_list
 
+
 def get_files_list_in_path(path, exception=None):
     name_list = list()
     for file in os.listdir(path):
@@ -182,3 +203,31 @@ def get_files_list_in_path(path, exception=None):
 
         name_list.append(file)
     return name_list
+
+
+def convert_file_size(size_bytes):
+    if size_bytes == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return "%s %s" % (s, size_name[i])
+
+
+def get_file_md5(file_path):
+    m = hashlib.md5()
+    try:
+        fd = open(file_path, "rb")
+    except Exception as e:
+        raise e
+    f = fd.read()
+    fd.close()
+    m.update(f)
+    return m.hexdigest()
+
+
+def get_file_md5_from_file(file):
+    m = hashlib.md5()
+    m.update(file)
+    return m.hexdigest()

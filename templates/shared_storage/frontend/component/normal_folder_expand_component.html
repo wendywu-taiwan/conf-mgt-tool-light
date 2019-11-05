@@ -1,0 +1,11 @@
+{% load staticfiles %}
+
+<div id="{{ child_node.compare_hash_key }}_folder_child_div"
+     class="show collapse folder_child_div_{{ child_node.depth }}">
+    {% with parent_node=child_node %}
+        {% for child_node in parent_node.child_nodes %}
+            {% include 'download_file_list_line.html' %}
+            {% include 'normal_folder_expand_component.html' %}
+        {% endfor %}
+    {% endwith %}
+</div>

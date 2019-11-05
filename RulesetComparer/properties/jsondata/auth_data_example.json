@@ -1,22 +1,122 @@
 {
   "PROD": {
+    "FTP": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "CN": {
+        "account": "wendy.wu.admin.cn",
+        "password": "secret"
+      },
+      "SG": {
+        "account": "wendy.wu.admin.sg",
+        "password": "secret"
+      }
+    },
+    "B2BService": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "KR": {
+        "account": "wendy.wu.admin.kr",
+        "password": "audatex"
+      },
+      "TW": {
+        "account": "wendy.wu.admin.tw",
+        "password": "audatex"
+      }
+    }
   },
-  "CT": {
+  "PROD2": {
+    "FTP": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "CN": {
+        "account": "wendy.wu.admin.cn",
+        "password": "secret"
+      },
+      "SG": {
+        "account": "wendy.wu.admin.sg",
+        "password": "secret"
+      }
+    },
+    "B2BService": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "KR": {
+        "account": "wendy.wu.admin.kr",
+        "password": "audatex"
+      },
+      "TW": {
+        "account": "wendy.wu.admin.tw",
+        "password": "audatex"
+      }
+    }
   },
   "INT1": {
-    "KR": {
-      "account": "wendy.wu.admin.kr",
-      "password": "audatex"
+    "FTP": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "CN": {
+        "account": "wendy.wu.admin.cn",
+        "password": "secret"
+      },
+      "SG": {
+        "account": "wendy.wu.admin.sg",
+        "password": "secret"
+      }
     },
-    "TW": {
-      "account": "wendy.wu.admin.tw",
-      "password": "audatex"
+    "B2BService": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "KR": {
+        "account": "wendy.wu.admin.kr",
+        "password": "audatex"
+      },
+      "TW": {
+        "account": "wendy.wu.admin.tw",
+        "password": "audatex"
+      }
     }
   },
   "INT2": {
-    "ROOT": {
-      "account": "wendy.wu.admin.tw",
-      "password": "admin@gdctpe"
+    "FTP": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "CN": {
+        "account": "wendy.wu.admin.cn",
+        "password": "secret"
+      },
+      "SG": {
+        "account": "wendy.wu.admin.sg",
+        "password": "secret"
+      }
+    },
+    "B2BService": {
+      "ROOT": {
+        "account": "wendy.wu.admin",
+        "password": "secret"
+      },
+      "KR": {
+        "account": "wendy.wu.admin.kr",
+        "password": "audatex"
+      },
+      "TW": {
+        "account": "wendy.wu.admin.tw",
+        "password": "audatex"
+      }
     }
   }
 }

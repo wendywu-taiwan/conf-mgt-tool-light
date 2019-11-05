@@ -1,0 +1,5 @@
+{% load staticfiles %}
+<img id="{{ side }}_{{ child_node.depth }}_{{ child_node.index }}_{{ child_node.compare_hash_key }}_collapse_show"
+     class="folder_collapse_show_icon" src="{% static '/icons/arrow-down-triangle.png' %}">
+<img id="{{ side }}_{{ child_node.depth }}_{{ child_node.index }}_{{ child_node.compare_hash_key }}_collapse_hide"
+     class="folder_collapse_hide_icon" src="{% static '/icons/arrow-right-triangle.png' %}">

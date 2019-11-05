@@ -1,3 +1,6 @@
 [submodule "RulesetComparer/rulesets/Git"]
 	path = RulesetComparer/rulesets/Git
 	url = git@10.29.25.73:axn/bre_ruleset.git
+[submodule "shared_storage/git_data/axn_op_apac"]
+	path = shared_storage/git_data/axn_op_apac
+	url = git@10.29.25.73:axn/axn_op_apac.git

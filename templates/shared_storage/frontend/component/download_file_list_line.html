@@ -1,0 +1,41 @@
+{% load staticfiles %}
+
+<div id="{{ child_node.compare_hash_key }}_data_line_div"
+     class="folder_data_line row no-row-margin" data-toggle="collapse"
+     href="#{{ child_node.compare_hash_key }}_folder_child_div"
+     role="button" aria-expanded="true"
+     aria-controls="{{ child_node.compare_hash_key }}_folder_child_div">
+    {% if child_node.type == "folder" %}
+        <div class="file_list_checkbox_div checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">
+            <label class="checkbox" for="{{ child_node.compare_hash_key }}_checkbox">
+                <input id="{{ child_node.compare_hash_key }}_checkbox"
+                       class="file_list_file_checkbox child_checkbox_folder_{{ parent_node.compare_hash_key }} folder_checkbox"
+                       type="checkbox" data-toggle="checkbox" value="{{ child_node.file_path }}"
+                       onclick="checkboxOnClick(this)" required>
+            </label>
+        </div>
+        <div class="folder_name_info_div row no-row-margin">
+            {% include 'compare_result_line_folder_collapse_icon.html' %}
+            <img class="folder_icon" src="{% static '/icons/folder.png' %}">
+            <div class="name folder_text normal_text_color">{{ child_node.name }}</div>
+        </div>
+    {% else %}
+        <div class="file_list_checkbox_div checkbox_space_set checkbox_rule_name no-col-padding vertical_align_middle">
+            <label class="checkbox" for="{{ child_node.compare_hash_key }}_checkbox">
+                <input id="{{ child_node.compare_hash_key }}_checkbox"
+                       class="file_list_file_checkbox child_checkbox_file_{{ parent_node.compare_hash_key }} file_checkbox"
+                       type="checkbox" data-toggle="checkbox" value="{{ child_node.file_path }}"
+                       onclick="checkboxOnClick(this)" required>
+            </label>
+        </div>
+        <div class="folder_name_info_div row no-row-margin">
+            <span class="expand_folder_icon_span"></span>
+            <img class="folder_icon" src="{% static '/icons/file.png' %}">
+            <div class="name folder_text normal_text_color">{{ child_node.name }}</div>
+        </div>
+    {% endif %}
+    <div class="folder_other_info_div row no-row-margin">
+        <div class="size ellipsis other_info_text normal_text_color">{{ child_node.size }}</div>
+        <div class="modification_time other_info_text normal_text_color">{{ child_node.modification_time }}</div>
+    </div>
+</div>
