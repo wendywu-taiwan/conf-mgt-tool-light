@@ -2,6 +2,7 @@ import traceback
 from RulesetComparer.utils import fileManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
+from common.properties.config import PRELOAD_DATA_PATH
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
     RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPRegion, FTPClient, FTPServer
 from common.models import DataUpdateTime, FrequencyType
@@ -403,7 +404,7 @@ def init_data():
     try:
         info_log(LOG_CLASS, "init data")
         # load preload data
-        preload_data_path = settings.BASE_DIR + config.get_file_path("preload_data")
+        preload_data_path = PRELOAD_DATA_PATH
         preload_data = fileManager.load_json_file(preload_data_path)
         data = preload_data["data"]
 

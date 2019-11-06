@@ -1,4 +1,5 @@
 import pytz
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from datetime import datetime, timezone, timedelta
 from RulesetComparer.properties import config
 
@@ -57,8 +58,7 @@ def date_time_to_date_time(date_time, time_format):
 
 
 def timestamp_to_local_time(timestamp):
-    time_zone = config.TIME_ZONE.get('asia_taipei')
-    return timestamp_to_time(timestamp, time_zone)
+    return timestamp_to_time(timestamp, CURRENT_TIME_ZONE)
 
 
 # provide date time and hour, return date time add hour
@@ -126,8 +126,7 @@ def get_current_time():
 # return current time date time
 def get_current_date_time():
     utc_date_time = datetime.utcnow()
-    time_zone = config.TIME_ZONE.get('asia_taipei')
-    local_time = utc_to_locale_time(utc_date_time, time_zone)
+    local_time = utc_to_locale_time(utc_date_time, CURRENT_TIME_ZONE)
     return local_time
 
 
@@ -177,13 +176,12 @@ def get_frontend_format_time(utc_date_time):
     if utc_date_time is None:
         return None
 
-    time_zone = config.TIME_ZONE.get('asia_taipei')
     time_format = config.TIME_FORMAT.get('db_time_format')
 
     naive_time = get_naive_time(utc_date_time.year, utc_date_time.month, utc_date_time.day,
                                 utc_date_time.hour, utc_date_time.minute, utc_date_time.second)
 
-    local_date_time = utc_to_locale_time(naive_time, time_zone)
+    local_date_time = utc_to_locale_time(naive_time, CURRENT_TIME_ZONE)
     str_time = date_time_to_time(local_date_time, time_format)
     return str_time
 

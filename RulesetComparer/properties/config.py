@@ -44,10 +44,6 @@ TIME_FORMAT = {
     "hour_minute_second_without_slash": '%H%M%S',
 }
 
-TIME_ZONE = {
-    "asia_taipei": "Asia/Taipei",
-}
-
 SEND_COMPARE_RESULT_MAIL = {
     "sender": "no-reply@audatex.com",
     "receivers": ["wendy.wu@audatex.com", "engle6030@gmail.com"],

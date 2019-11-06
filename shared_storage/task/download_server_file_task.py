@@ -1,6 +1,6 @@
 from RulesetComparer.utils.fileManager import *
 from shared_storage.properties.config import get_zip_file_folder_path, get_zip_file_full_path, COMPARE_FILE_PATH
-from common.properties.time_format import ARCHIVE_FOLDER_FORMAT
+from common.properties.time_setting import ARCHIVE_FOLDER_FORMAT
 from RulesetComparer.utils.timeUtil import get_format_current_time
 
 

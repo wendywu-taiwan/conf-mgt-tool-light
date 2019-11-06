@@ -1,5 +1,6 @@
 import traceback
 
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import fileManager, timeUtil
@@ -103,11 +104,10 @@ class DailyCompareReportTask(BaseSchedulerTask):
         if ReportSchedulerInfo.objects.filter(id=self.task_id).count() == 0:
             return
 
-        time_zone = config.TIME_ZONE.get('asia_taipei')
         time_format = config.TIME_FORMAT.get('db_time_format')
         next_date_time = self.scheduled_job.next_run_time
         next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
-        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, time_zone)
+        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, CURRENT_TIME_ZONE)
 
         task = ReportSchedulerInfo.objects.get(id=self.task_id)
         task.last_proceed_time = task.next_proceed_time

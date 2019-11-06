@@ -1,5 +1,5 @@
 import traceback
-
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.date_model.data_object.log_group import RulesetLogGroupObj
 from RulesetComparer.services import sync
 from RulesetComparer.utils.logger import *
@@ -78,11 +78,10 @@ class RulesetsSyncUpTask(BaseSchedulerTask):
         if RulesetSyncUpScheduler.objects.filter(id=self.task_id).count() == 0:
             return
 
-        time_zone = config.TIME_ZONE.get('asia_taipei')
         time_format = config.TIME_FORMAT.get('db_time_format')
         next_date_time = self.scheduled_job.next_run_time
         next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
-        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, time_zone)
+        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, CURRENT_TIME_ZONE)
 
         task = RulesetSyncUpScheduler.objects.get(id=self.task_id)
         RulesetSyncUpScheduler.objects.update_time(self.task_id,

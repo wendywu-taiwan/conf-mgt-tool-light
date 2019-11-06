@@ -1,4 +1,5 @@
 import ast
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.models import Country, MailContentType
 from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import config
@@ -40,27 +41,23 @@ class BaseReportSchedulerParser:
 
     @staticmethod
     def db_time_to_date_time(start_date_time):
-        time_zone = config.TIME_ZONE.get('asia_taipei')
-
         naive_local_time = datetime(start_date_time.year, start_date_time.month, start_date_time.day,
                                     start_date_time.hour, start_date_time.minute, start_date_time.second)
 
-        return timeUtil.utc_to_locale_time(naive_local_time, time_zone)
+        return timeUtil.utc_to_locale_time(naive_local_time, CURRENT_TIME_ZONE)
 
     @staticmethod
     def frontend_time_to_date_time(start_date_time):
-        time_zone = config.TIME_ZONE.get('asia_taipei')
         frontend_time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
 
         date_time = timeUtil.time_to_date_time(start_date_time, frontend_time_format)
-        return timeUtil.date_time_change_time_zone(date_time, time_zone)
+        return timeUtil.date_time_change_time_zone(date_time, CURRENT_TIME_ZONE)
 
     @staticmethod
     def frontend_time_to_utc_time(frontend_time):
-        time_zone = config.TIME_ZONE.get('asia_taipei')
         frontend_time_format = config.TIME_FORMAT.get('year_month_date_hour_minute_second')
         date_time = timeUtil.time_to_date_time(frontend_time, frontend_time_format)
-        utc_time = timeUtil.local_time_to_utc(date_time, time_zone)
+        utc_time = timeUtil.local_time_to_utc(date_time, CURRENT_TIME_ZONE)
         return utc_time
 
     def get_local_time_shift_days(self, local_date_time):
@@ -81,8 +78,7 @@ class BaseReportSchedulerParser:
 
     @staticmethod
     def get_utc_time(naive_local_time):
-        time_zone = config.TIME_ZONE.get('asia_taipei')
-        utc_time = timeUtil.local_time_to_utc(naive_local_time, time_zone)
+        utc_time = timeUtil.local_time_to_utc(naive_local_time, CURRENT_TIME_ZONE)
         return utc_time
 
     @staticmethod

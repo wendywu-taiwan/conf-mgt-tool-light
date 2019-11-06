@@ -1,6 +1,6 @@
 from RulesetComparer.utils import fileManager
-from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
+from common.properties.config import AUTH_DATA_PATH
 
 
 class AuthDataParser:
@@ -12,7 +12,7 @@ class AuthDataParser:
 
     def __init__(self, auth_type, environment_name, country_name):
         try:
-            file_path = settings.BASE_DIR + config.get_file_path("auth_data")
+            file_path = AUTH_DATA_PATH
             auth_data = fileManager.load_json_file(file_path)
             environment_data = auth_data.get(environment_name)
             account_data = environment_data.get(auth_type)

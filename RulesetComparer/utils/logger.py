@@ -1,4 +1,5 @@
 import logging, pytz, os.path
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from datetime import datetime
 from RulesetComparer.properties.config import *
 from RulesetComparer.utils import timeUtil
@@ -59,6 +60,5 @@ def print_log(log_class, level, msg, *args, **kwargs):
 
 def local_time(*args):
     utc_dt = datetime.utcnow()
-    time_zone = TIME_ZONE.get('asia_taipei')
-    converted = timeUtil.utc_to_locale_time(utc_dt, time_zone)
+    converted = timeUtil.utc_to_locale_time(utc_dt, CURRENT_TIME_ZONE)
     return converted.timetuple()

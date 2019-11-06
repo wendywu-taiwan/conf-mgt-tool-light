@@ -1,5 +1,5 @@
 import traceback
-
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.properties.config import *
 from RulesetComparer.utils.logger import error_log
 from RulesetComparer.utils.timeUtil import *
@@ -64,7 +64,7 @@ class RulesetLogGroupBuilder(BaseBuilder):
             if utc_date_time is None:
                 return None
 
-            time_zone = TIME_ZONE.get('asia_taipei')
+            time_zone = CURRENT_TIME_ZONE
             time_format = TIME_FORMAT.get('db_time_format')
 
             naive_time = get_naive_time(utc_date_time.year, utc_date_time.month, utc_date_time.day,

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from common.properties.region_setting import *
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -148,12 +149,13 @@ LOGIN_URL = '/accounts/login/'
 STATIC_URL = '/static/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/ConfigManageTool/admin_console/ruleset/'
-B2B_RULE_SET_CLIENT = 'http://%s/b2b/services/BRERuleSetAssignmentService_v1?wsdl'
 
 UNICODE_ENCODING = 'utf-8'
-
-COMPARE_RESULT_PATH = BASE_DIR + "/RulesetComparer/compare_result/%s"
 
 GIT_REMOTE_NAME = 'origin'
 GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
+
+# region instance setting
+CURRENT_REGION = REGION_NL
+CURRENT_TIME_ZONE = TIME_ZONE_SET.get(CURRENT_REGION)
