@@ -670,6 +670,16 @@
         "client": "ftp.audatex.cn"
       },
       {
+        "region": "CN",
+        "environment": "PROD",
+        "client": "ftp.audatex.cn"
+      },
+      {
+        "region": "CN",
+        "environment": "PROD2",
+        "client": "ftp.audatex.cn"
+      },
+      {
         "region": "SG",
         "environment": "INT1",
         "client": "ftp.audatex.sg"
@@ -687,6 +697,16 @@
       {
         "region": "SG",
         "environment": "CAE",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "SG",
+        "environment": "PROD",
+        "client": "ftp.audatex.sg"
+      },
+      {
+        "region": "SG",
+        "environment": "PROD2",
         "client": "ftp.audatex.sg"
       },
       {
@@ -755,7 +775,7 @@
         "update_time": "2019-9-1 17:50:00"
       },
       "ftp_server": {
-        "update_time": "2019-9-2 17:50:00"
+        "update_time": "2019-11-6 14:23:00"
       }
     }
   }
