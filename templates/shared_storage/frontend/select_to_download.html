@@ -70,69 +70,79 @@
                 </button>
             </div>
         </div>
-        <div id="filter_result_div" class="white_block_div">
-            <div id="filter_result_header_div" class="header_div row no-row-margin">
-                <p id="filter_result_title" class="header_result_title header-text">Filter Result</p>
-                <div class="download_button_div row no_row_margin">
-                    <div id="filter_result_download_selected_btn_div"
-                         class="download_selected_btn_div download-icon no-col-padding">
-                        <button id="filter_result_download_selected_btn"
-                                class="download_button_width btn btn-inverse btn-font-13"
-                                onclick="downloadFilterFiles()">Download(1)
-                        </button>
-                    </div>
-                    <div id="filter_result_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
-                        <button id="filter_result_select_all_btn" class="download_button_width btn btn-info btn-font-13"
-                                onclick="filteredFilesSelectAll()">Select All
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div id="filter_result_row_div">
-                <div id="filter_result_row_title_div" class="row_title_div row no-row-margin">
-                    <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
-                    <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
-                    <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
-                    <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size</div>
-                    <div id="modification_time_title_div"
-                         class="row_modification_time_width filter_result_row_title_text">
-                        Modification Time
+        <div class="gray_background">
+            <div id="filter_result_div" class="white_block_div">
+                <div id="filter_result_header_div" class="header_div row no-row-margin">
+                    <p id="filter_result_title" class="header_result_title header-text">Filter Result</p>
+                    <div class="download_button_div row no_row_margin">
+                        <div id="filter_result_download_selected_btn_div"
+                             class="download_selected_btn_div download-icon no-col-padding">
+                            <button id="filter_result_download_selected_btn"
+                                    class="download_button_width btn btn-inverse btn-font-13"
+                                    onclick="downloadFilterFiles()">Download(1)
+                            </button>
+                        </div>
+                        <div id="filter_result_select_all_btn_div"
+                             class="select_all_btn_div download-icon no-col-padding">
+                            <button id="filter_result_select_all_btn"
+                                    class="download_button_width btn btn-info btn-font-13"
+                                    onclick="filteredFilesSelectAll()">Select All
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="filter_result_row_data_div">
-                    {# after filter will response download_filter_result.html #}
+                <div id="filter_result_row_div">
+                    <div id="filter_result_row_title_div" class="row_title_div row no-row-margin">
+                        <div id="checkbox_title_div" class="row_checkbox_width filter_result_row_title_text"></div>
+                        <div id="file_icon_title_div" class="row_file_icon_width filter_result_row_title_text"></div>
+                        <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File
+                        </div>
+                        <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size
+                        </div>
+                        <div id="modification_time_title_div"
+                             class="row_modification_time_width filter_result_row_title_text">
+                            Modification Time
+                        </div>
+                    </div>
+                    <div id="filter_result_row_data_div">
+                        {# after filter will response download_filter_result.html #}
+                    </div>
                 </div>
             </div>
         </div>
-        <div id="file_list_div" class="white_block_div">
-            <div id="file_list_header_div" class="header_div row no-row-margin">
-                <p id="file_list_title" class="header_result_title header-text">File List</p>
-                <div class="download_button_div row no_row_margin">
-                    <div id="file_list_download_selected_btn_div"
-                         class="download_selected_btn_div download-icon no-col-padding">
-                        <button id="file_list_download_selected_btn"
-                                class="download_button_width btn btn-inverse btn-font-13"
-                                onclick="downloadListFiles()">Download(1)
-                        </button>
-                    </div>
-                    <div id="file_list_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
-                        <button id="file_list_select_all_btn" class="download_button_width btn btn-info btn-font-13"
-                                onclick="fileListSelectAll()">Select All
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div id="file_list_data_div">
-                <div id="file_list_row_title_div" class="row_title_div row no-row-margin">
-                    <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File</div>
-                    <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size</div>
-                    <div id="modification_time_title_div"
-                         class="row_modification_time_width filter_result_row_title_text">
-                        Modification Time
+        <div class="gray_background">
+            <div id="file_list_div" class="white_block_div">
+                <div id="file_list_header_div" class="header_div row no-row-margin">
+                    <p id="file_list_title" class="header_result_title header-text">File List</p>
+                    <div class="download_button_div row no_row_margin">
+                        <div id="file_list_download_selected_btn_div"
+                             class="download_selected_btn_div download-icon no-col-padding">
+                            <button id="file_list_download_selected_btn"
+                                    class="download_button_width btn btn-inverse btn-font-13"
+                                    onclick="downloadListFiles()">Download(1)
+                            </button>
+                        </div>
+                        <div id="file_list_select_all_btn_div" class="select_all_btn_div download-icon no-col-padding">
+                            <button id="file_list_select_all_btn" class="download_button_width btn btn-info btn-font-13"
+                                    onclick="fileListSelectAll()">Select All
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <div id="file_list_row_list_div">
-                    {# after filter will response download_file_list.html #}
+                <div id="file_list_data_div">
+                    <div id="file_list_row_title_div" class="row_title_div row no-row-margin">
+                        <div id="file_path_title_div" class="row_file_path_width filter_result_row_title_text">File
+                        </div>
+                        <div id="file_size_title_div" class=" row_file_size_width filter_result_row_title_text">Size
+                        </div>
+                        <div id="modification_time_title_div"
+                             class="row_modification_time_width filter_result_row_title_text">
+                            Modification Time
+                        </div>
+                    </div>
+                    <div id="file_list_row_list_div">
+                        {# after filter will response download_file_list.html #}
+                    </div>
                 </div>
             </div>
         </div>
