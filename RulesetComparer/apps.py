@@ -16,5 +16,5 @@ class RulesetcomparerConfig(AppConfig):
             init_data()
             from common.services.migrate_data import clear_data
             clear_data()
-            from RulesetComparer.services.services import restart_all_scheduler
+            from common.services.scheduler_services import restart_all_scheduler
             restart_all_scheduler()

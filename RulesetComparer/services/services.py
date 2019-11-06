@@ -134,23 +134,3 @@ def ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name):
     builder = DiffRulesetPageBuilder(parser.ruleset_name, BACKUP_ENVIRONMENT_NAME, parser.environment.name,
                                      comparer.get_diff_data())
     return builder.get_data()
-
-
-def restart_all_scheduler():
-    try:
-        # clear zip and ruleset file scheduler
-        clear_zip_ruleset_task = ClearRulesetArchivedFilesTask()
-        clear_ruleset_task = ClearRulesetFilesTask()
-        clear_compare_report_task = ClearCompareReportFilesTask()
-        info_log(None, "restart clear scheduler")
-        scheduler = CustomJobScheduler()
-        scheduler.add_hours_job_now(clear_ruleset_task.run_task, 24)
-        scheduler.add_hours_job_now(clear_zip_ruleset_task.run_task, 24)
-        scheduler.add_hours_job_now(clear_compare_report_task.run_task, 24)
-        info_log(None, "restart clear scheduler success")
-
-        report_scheduler.restart_schedulers()
-        sync_scheduler.restart_schedulers()
-    except BaseException as e:
-        error_log(traceback.format_exc())
-        raise e
