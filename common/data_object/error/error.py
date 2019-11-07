@@ -15,3 +15,8 @@ class B2BRulesetNotFoundError(Exception):
 class SharedStorageFolderNotFoundError(Exception):
     def __init__(self):
         super(SharedStorageFolderNotFoundError, self).__init__(FOLDER_NOT_EXIST_MESSAGE)
+
+
+class SharedStorageFTPServerConnectFailError(Exception):
+    def __init__(self):
+        super(SharedStorageFTPServerConnectFailError, self).__init__(FOLDER_NOT_EXIST_MESSAGE)

@@ -4,6 +4,7 @@ import json
 from django.template.loader import render_to_string
 
 from RulesetComparer.utils.mailSender import MailSender
+from common.data_object.error.error import SharedStorageFTPServerConnectFailError
 from permission.models import Environment
 from shared_storage.data_object.dir_root_object import DirRootObject
 from shared_storage.data_object.dir_node_diff_object import \
@@ -37,33 +38,32 @@ from shared_storage.utils.file_manager import load_file_content
 
 
 def get_active_region_list():
-    try:
-        region_id_list = FTPRegion.objects.filter(active=1).values_list("id", flat=True)
-        data = FTPRegionsBuilder(ids=region_id_list).get_data()
-        return data
-    except Exception as e:
-        raise e
+    region_id_list = FTPRegion.objects.filter(active=1).values_list("id", flat=True)
+    data = FTPRegionsBuilder(ids=region_id_list).get_data()
+    return data
 
 
 def get_region_environment_list(json_data):
-    try:
-        parser = SelectToCompareFilterEnvironmentParser(json_data)
-        environment_list = FTPServer.objects.filter(region__id=parser.region_id).values_list("environment_id",
-                                                                                             flat=True)
-        environments_json = EnvironmentsBuilder(ids=environment_list).get_data()
-        result_json = SelectToCompareFilterEnvironmentBuilder(parser.side, environments_json).get_data()
-        return result_json
-    except Exception as e:
-        raise e
+    parser = SelectToCompareFilterEnvironmentParser(json_data)
+    environment_list = FTPServer.objects.filter(region__id=parser.region_id).values_list("environment_id",
+                                                                                         flat=True)
+    environments_json = EnvironmentsBuilder(ids=environment_list).get_data()
+    result_json = SelectToCompareFilterEnvironmentBuilder(parser.side, environments_json).get_data()
+    return result_json
 
 
 def get_environment_dir_list(json_data):
     parser = SelectToCompareFilterFolderParser(json_data)
     environment = Environment.objects.get(id=parser.environment_id)
-    if environment.name == GIT_NAME:
-        dir_connect_obj = SharedStorageGitConnectObject(False)
-    else:
-        dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
+
+    try:
+        if environment.name == GIT_NAME:
+            dir_connect_obj = SharedStorageGitConnectObject(False)
+        else:
+            dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
+    except Exception:
+        error_log(traceback.format_exc())
+        raise SharedStorageFTPServerConnectFailError
 
     list_dir = dir_connect_obj.get_path_list_dir("")
     result_json = SelectToCompareFilterDirFolderBuilder(parser.side, list_dir).get_data()

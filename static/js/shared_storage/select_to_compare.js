@@ -70,11 +70,14 @@ filterEnvironments = function (side, regionId, postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let environmentDropDownDiv = document.getElementById(side + '_environment_dropdown_div');
-            environmentDropDownDiv.innerHTML = response;
-            initEnvironmentDropDownComponent();
+            successResponse(response, function () {
+
+                let environmentDropDownDiv = document.getElementById(side + '_environment_dropdown_div');
+                environmentDropDownDiv.innerHTML = response;
+                initEnvironmentDropDownComponent();
+            });
         }, function (response) {
-            console.log(response);
+            errorResponse(response);
         }
     );
 };
@@ -97,12 +100,13 @@ filterFolders = function (side, postUrl) {
     }
 
     doPOST(postUrl, post_body, function (response) {
-            let folderDropDownDiv = document.getElementById(side + '_folder_dropdown_div');
-            folderDropDownDiv.innerHTML = response;
-            initFolderDropDownComponent();
-            stopDialog();
+            successResponse(response, function () {
+                let folderDropDownDiv = document.getElementById(side + '_folder_dropdown_div');
+                folderDropDownDiv.innerHTML = response;
+                initFolderDropDownComponent();
+            });
         }, function (response) {
-            console.log(response);
+            errorResponse(response);
         }
     );
 };

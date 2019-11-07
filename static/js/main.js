@@ -67,6 +67,22 @@ function confirmDialog(text, confirmButtonText, onConfirmClick) {
     }, onConfirmClick);
 }
 
+function successResponse(response, func) {
+    let statusCode = response["status_code"];
+    if (statusCode == null || statusCode == 200) {
+        func();
+        stopDialog();
+    } else {
+        if (statusCode != 200 && statusCode != 208) {
+            showErrorDialog(response["message"])
+        }
+    }
+}
+
+function errorResponse(response) {
+    showErrorDialog(response["message"]);
+}
+
 
 function downloadZipFile(data, fileNameSuffix) {
     // transfer unicode data to characters
