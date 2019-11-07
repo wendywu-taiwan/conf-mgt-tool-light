@@ -1,5 +1,8 @@
+import traceback
+
 from RulesetComparer.properties.key import KEY_FOLDER_NAME, GIT_NAME
-from common.data_object.error.error import SharedStorageFolderNotFoundError
+from RulesetComparer.utils.logger import error_log
+from common.data_object.error.error import SharedStorageFolderNotFoundError, SharedStorageFTPServerConnectFailError
 from common.data_object.ftp_connect_object import SharedStorageConnectionObject
 from common.data_object.git_connect_object import SharedStorageGitConnectObject
 from common.data_object.json_builder.environment import EnvironmentsBuilder
@@ -40,19 +43,19 @@ def get_region_environment_list(json_data):
 
 
 def get_environment_dir_list(json_data):
+    parser = SelectToDownloadFilterFolderParser(json_data)
+    environment = Environment.objects.get(id=parser.environment_id)
     try:
-        parser = SelectToDownloadFilterFolderParser(json_data)
-        environment = Environment.objects.get(id=parser.environment_id)
         if environment.name == GIT_NAME:
             dir_connect_obj = SharedStorageGitConnectObject(False)
         else:
             dir_connect_obj = SharedStorageConnectionObject(parser.region_id, parser.environment_id, False)
-
-        list_dir = dir_connect_obj.get_path_list_dir("")
-        result_json = SelectToDownloadFilterDirFolderBuilder("folder", list_dir).get_data()
-        return result_json
-    except Exception as e:
-        raise e
+    except Exception:
+        error_log(traceback.format_exc())
+        raise SharedStorageFTPServerConnectFailError
+    list_dir = dir_connect_obj.get_path_list_dir("")
+    result_json = SelectToDownloadFilterDirFolderBuilder("folder", list_dir).get_data()
+    return result_json
 
 
 def filter_second_folder(json_data):

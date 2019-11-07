@@ -125,11 +125,13 @@ filterEnvironments = function (regionId, postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let environmentDropDownDiv = document.getElementById('environment_select_dropdown_div');
-            environmentDropDownDiv.innerHTML = response;
-            initEnvironmentDropDownComponent();
+            successResponse(response, function () {
+                let environmentDropDownDiv = document.getElementById('environment_select_dropdown_div');
+                environmentDropDownDiv.innerHTML = response;
+                initEnvironmentDropDownComponent();
+            });
         }, function (response) {
-            console.log(response);
+            errorResponse(response);
         }
     );
 };
@@ -142,12 +144,13 @@ filterFolders = function (postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let folderDropDownDiv = document.getElementById('folder_select_dropdown_div');
-            folderDropDownDiv.innerHTML = response;
-            initFolderDropDownComponent();
-            stopDialog();
+            successResponse(response, function () {
+                let folderDropDownDiv = document.getElementById('folder_select_dropdown_div');
+                folderDropDownDiv.innerHTML = response;
+                initFolderDropDownComponent();
+            });
         }, function (response) {
-            console.log(response);
+            errorResponse(response);
         }
     );
 };
@@ -161,12 +164,13 @@ filterModuleFolders = function (postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let folderDropDownDiv = document.getElementById('module_select_dropdown_div');
-            folderDropDownDiv.innerHTML = response;
-            initModuleFolderDropDownComponent();
-            stopDialog();
+            successResponse(response, function () {
+                let folderDropDownDiv = document.getElementById('module_select_dropdown_div');
+                folderDropDownDiv.innerHTML = response;
+                initModuleFolderDropDownComponent();
+            });
         }, function (response) {
-            console.log(response);
+            errorResponse(response);
         }
     );
 };
@@ -182,17 +186,12 @@ filterLatestVersionFolders = function (postUrl) {
     };
 
     doPOST(postUrl, post_body, function (response) {
-            let statusCode = response["status_code"];
-            if (statusCode == null) {
+            successResponse(response, function () {
                 refreshPartialHTML("latest_version_select_dropdown_div", response);
                 initLatestVersionFolderDropDownComponent();
-                stopDialog();
-            } else {
-                if (statusCode == 236)
-                    showErrorDialog(response["message"])
-            }
+            });
         }, function (response) {
-            showErrorDialog(response["message"]);
+            errorResponse(response);
         }
     );
 };

@@ -4,10 +4,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from RulesetComparer.utils.logger import error_log
 from common.data_object.error.error import PermissionDeniedError, B2BRulesetNotFoundError, \
-    SharedStorageFolderNotFoundError
+    SharedStorageFolderNotFoundError, SharedStorageFTPServerConnectFailError
 from common.data_object.error.message import PERMISSION_DENIED_MESSAGE, RULESET_NOT_FOUND_MESSAGE, \
-    FOLDER_NOT_EXIST_MESSAGE
-from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED, FOLDER_NOT_EXIST
+    FOLDER_NOT_EXIST_MESSAGE, CONNECT_TO_FTP_SERVER_FAIL_MESSAGE
+from common.data_object.error.status import RULESET_NOT_FOUND, PERMISSION_DENIED, FOLDER_NOT_EXIST, \
+    CANT_CONNECT_FTP_SERVER
 from common.data_object.json_builder.response import ResponseBuilder
 
 
@@ -29,6 +30,10 @@ def page_error_check(executor):
         return executor()
     except B2BRulesetNotFoundError:
         result = ResponseBuilder(status_code=RULESET_NOT_FOUND, message=RULESET_NOT_FOUND_MESSAGE).get_data()
+        return JsonResponse(result)
+    except SharedStorageFTPServerConnectFailError:
+        result = ResponseBuilder(status_code=CANT_CONNECT_FTP_SERVER,
+                                 message=CONNECT_TO_FTP_SERVER_FAIL_MESSAGE).get_data()
         return JsonResponse(result)
     except SharedStorageFolderNotFoundError:
         result = ResponseBuilder(status_code=FOLDER_NOT_EXIST, message=FOLDER_NOT_EXIST_MESSAGE).get_data()
