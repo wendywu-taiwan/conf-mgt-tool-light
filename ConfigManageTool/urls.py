@@ -19,16 +19,10 @@ from RulesetComparer import views
 from django.conf.urls import url, include
 from django.contrib import admin
 
-
-def url_for_regions():
-    service_add_region_name = 'configuration-management-tool-%s/'
-    return service_add_region_name % settings.CURRENT_REGION
-
-
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path(url_for_regions(), include('RulesetComparer.urls')),
-    path(url_for_regions(), include('permission.urls')),
-    path(url_for_regions(), include('shared_storage.urls')),
+    path('ConfigManageTool/', include('RulesetComparer.urls')),
+    path('ConfigManageTool/', include('permission.urls')),
+    path('ConfigManageTool/', include('shared_storage.urls')),
 ]
