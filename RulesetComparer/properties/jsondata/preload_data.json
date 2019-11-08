@@ -193,12 +193,12 @@
       {
         "full_name": "production2",
         "name": "PROD2",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "cae",
         "name": "CAE",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "ct",
@@ -215,7 +215,7 @@
         "name": "INT2",
         "active": 1
       },
-       {
+      {
         "full_name": "int3",
         "name": "INT3",
         "active": 0
@@ -589,7 +589,7 @@
       }
     ],
     "ftp_server": [
-       {
+      {
         "region": "GIT",
         "environment": "GIT",
         "client": ""
@@ -736,7 +736,7 @@
         "update_time": "2019-8-12 17:50:00"
       },
       "environment": {
-        "update_time": "2019-9-1 17:51:00"
+        "update_time": "2019-11-7 17:51:00"
       },
       "function": {
         "update_time": "2019-8-12 17:50:00"

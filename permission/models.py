@@ -45,6 +45,9 @@ class EnvironmentManager(models.Manager):
             environments.append(env)
         return environments
 
+    def enable_environments(self):
+        return self.filter(active=1).values_list("id", flat=True)
+
 
 class Environment(models.Model):
     id = models.AutoField(primary_key=True)

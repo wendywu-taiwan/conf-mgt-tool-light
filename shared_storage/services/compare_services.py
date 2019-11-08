@@ -45,8 +45,8 @@ def get_active_region_list():
 
 def get_region_environment_list(json_data):
     parser = SelectToCompareFilterEnvironmentParser(json_data)
-    environment_list = FTPServer.objects.filter(region__id=parser.region_id).values_list("environment_id",
-                                                                                         flat=True)
+    environment_list = FTPServer.objects.filter(region__id=parser.region_id, environment__active=1).values_list(
+        "environment_id", flat=True)
     environments_json = EnvironmentsBuilder(ids=environment_list).get_data()
     result_json = SelectToCompareFilterEnvironmentBuilder(parser.side, environments_json).get_data()
     return result_json
