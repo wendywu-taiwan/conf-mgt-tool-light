@@ -1,0 +1,20 @@
+#clock_picker_div {
+    width: 27%;
+}
+
+#clock_picker_right_span {
+    margin: auto;
+    padding: 3px;
+    border: 2px solid #049092;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #049092;
+    border-radius: 5px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+#clock_picker_icon_span {
+    color: white;
+}

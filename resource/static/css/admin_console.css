@@ -1,0 +1,462 @@
+html, body {
+    height: 100%;
+}
+
+#left_area {
+    width: 20%;
+    min-width: 20%;
+    background-color: #22345d;
+    box-shadow: 3px 0 20px 4px rgba(50, 50, 70, 0.35);
+    z-index: 2;
+}
+
+#right_area {
+    width: 80%;
+    height: 100%;
+    overflow: scroll;
+}
+
+#nav_bar_top_div {
+    width: 100%;
+    height: 40px;
+    background-color: white;
+    margin-left: 0px;
+    margin-right: 0px;
+    box-shadow: 0 8px 8px 0 rgba(50, 50, 50, .08);
+}
+
+#CMT_icon {
+    width: 80%;
+    margin: 20px;
+    margin-bottom: 30px;
+}
+
+#info {
+    margin-bottom: 30px;
+}
+
+#function_list {
+    background-color: #162850;
+    width: 100%;
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+
+#next_icon_block {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 20px;
+}
+
+#next_icon {
+    width: 24px;
+}
+
+#search_bar_input_block {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 70%;
+}
+
+#search_bar_input {
+    border: none;
+    height: 50px;
+}
+
+#content_area {
+    margin: 30px;
+}
+
+#server_log_container {
+    padding: 20px;
+    height: 100%;
+}
+
+#button_list {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 20px;
+}
+
+#log_content_area {
+    font-size: 16px;
+    height: 75%;
+    overflow: scroll;
+}
+
+#debug_log_btn_on_select {
+    background-color: #007bff;
+    color: white;
+}
+
+#info_log_btn_on_select {
+    background-color: #17a2b8;
+    color: white;
+}
+
+#error_log_btn_on_select {
+    background-color: #dc3545;
+    color: white;
+}
+
+#all_log_btn_on_select {
+    background-color: #6c757d;
+    color: white;
+}
+
+#task_list_container {
+    padding: 20px;
+    height: 100%;
+}
+
+#task_clock_icon {
+    width: 28px;
+    margin-right: 20px;
+}
+
+#task_clock_icon_div {
+    width: 5%;
+}
+
+#task_key_div {
+    width: 8%;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#task_environment_div {
+    width: 12%;
+}
+
+#base_env_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#compare_env_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+#task_status_div {
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+#task_status_in_progress {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #1abc9c;
+}
+
+#task_status_stop {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #f4817c;
+}
+
+#task_title_key {
+    width: 8%;
+}
+
+#task_title_environment {
+    width: 12%;
+}
+
+#task_title_country {
+    width: 18%;
+    margin-right: 3%;
+}
+
+#task_title_last_time {
+    width: 17%;
+}
+
+#task_title_next_time {
+    width: 17%;
+}
+
+#task_title_status {
+    width: 10%;
+}
+
+#task_action_div {
+    margin: auto;
+    margin-right: 10px;
+}
+
+#create_task_button_div {
+    margin-left: auto;
+}
+
+.country_list_div {
+    width: 18%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 3%;
+}
+
+.component_title {
+    margin-top: auto;
+    margin-bottom: auto;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.button_div {
+    text-align: center;
+    margin-right: 10px;
+}
+
+.button_div .btn {
+    border: solid 1px;
+    min-width: 100px;
+}
+
+.base_container {
+    background-color: #ecf0f4;
+    height: 100%;
+}
+
+.info_block {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.info_icon {
+    margin-right: 20px;
+}
+
+.info_icon_size {
+    width: 30px;
+}
+
+.info_margin_auto {
+    min-width: 35%;
+    margin: auto;
+}
+
+.info_text_block {
+
+}
+
+.info_title {
+    color: #55a8fd;
+    font-size: 14px;
+    font-family: sans-serif;
+    font-weight: 800;
+    margin: auto;
+    margin-left: 0px;
+}
+
+.info_content {
+    color: white;
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: 800;
+    margin: auto;
+    margin-left: 0px;
+}
+
+.function {
+    max-width: 100%;
+    margin-right: 0px;
+    margin-left: 0px;
+    padding-top: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.function_icon_div {
+    margin-right: 10%;
+}
+
+#recover_icon {
+    width: 26px;
+}
+
+.function_icon {
+    width: 24px;
+}
+
+.function_text {
+    color: white;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 800;
+}
+
+/*.vertical_align_middle {*/
+/*margin-top: auto;*/
+/*margin-bottom: auto;*/
+/*}*/
+
+.no_row_margin {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+/* admin console task list */
+.task_nation_flag {
+    width: 32px;
+}
+
+.scheduler_task {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.task_action_icon {
+    width: 24px;
+}
+
+.task_environment_icon {
+    width: 23px;
+    height: 26px;
+    margin-right: 10px;
+}
+
+.task_proceed_time_text {
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.task_divider {
+    height: 1px;
+    width: 98%;
+    margin: auto;
+    background-color: #eef0f2;
+}
+
+#task_list_container .title_div {
+    background: #eaeef0;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 50px;
+    padding-left: 15px;
+}
+
+#task_list_container .title_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #849aa4;
+}
+
+.task_proceed_time_div {
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 17%;
+}
+
+#task_edit_icon {
+    width: 22px;
+}
+
+#task_list_header_div {
+    margin-bottom: 15px;
+}
+
+.country_image_div {
+    width: 25%;
+    text-align: center;
+}
+
+.country_name_tips {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* end admin console task list */
+
+.country_check_box_group {
+    width: 15%;
+}
+
+.function_div {
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+#task_manager_div {
+    margin-top: 5%;
+}
+
+.manager_list_div {
+    padding-left: 30%;
+    padding-right: 20%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#recover_function_div {
+    margin-top: 5%;
+}
+
+#server_log_div {
+    margin-top: 10px;
+}
+
+#report_task_div {
+    margin-top: 10px;
+}
+
+#ruleset_log_div {
+    margin-top: 15px;
+}
+
+#auto_sync_task_div {
+    margin-top: 15px;
+}
+
+.sub_function_text {
+    color: #51a8fd;
+    font-size: 16px;
+    font-family: sans-serif;
+    font-weight: 800;
+}
+
+#login_info_div {
+    margin-left: auto;
+    margin-right: 3%;
+}
+
+#login_account_div {
+    font-size: 16px;
+    color: #22345d;
+    margin-right: 20px;
+}
+
+#dropdown_icon_span {
+    font-size: 12px;
+}
+
+#user_action_dropdown_div {
+    background-color: white;
+    font-size: 16px;
+}
+
+#user_action_dropdown_div a {
+    font-size: 16px;
+    margin: 5px;
+    color: #22345d;
+}
+
+/* end admin console create task */

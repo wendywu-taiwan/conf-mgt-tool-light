@@ -91,7 +91,7 @@ TEMPLATES = [
 ]
 DATE_INPUT_FORMATS = ["%Y/%m/%d %H:%M:%S"]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'resource/static')
 
 STATICFILES_DIRS = [
     # os.path.join(BASE_DIR, "static"),
@@ -146,7 +146,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 LOGIN_URL = '/accounts/login/'
-STATIC_URL = '/static/'
+# STATIC_URL = 'static/'
+STATIC_URL = '/dfg/static/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/ConfigManageTool/admin_console/ruleset/'
 
@@ -157,5 +158,8 @@ GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
 
 # region instance setting
-CURRENT_REGION = REGION_NL
-CURRENT_TIME_ZONE = TIME_ZONE_SET.get(CURRENT_REGION)
+CURRENT_REGION = os.environ.get()
+# .get('CURRENT_REGION')
+CURRENT_TIME_ZONE = os.environ.get('CURRENT_TIME_ZONE')
+# REGION_APAC
+# CURRENT_TIME_ZONE = TIME_ZONE_SET.get(CURRENT_REGION)

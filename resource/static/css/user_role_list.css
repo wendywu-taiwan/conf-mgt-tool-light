@@ -1,0 +1,79 @@
+#user_role_container {
+    padding-left: 10px;
+}
+
+.user_block_out_div {
+    width: 50%;
+    margin-bottom: 20px;
+}
+
+.user_role_block_div {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    border: solid 4px #44578b;
+}
+
+.title_text {
+    color: #1e3a84;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.edit_icon_div {
+    margin-left: auto;
+    margin-right: 10px;
+}
+
+.edit_icon {
+    width: 24px;
+    cursor: pointer;
+}
+
+.role_row {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.user_role_title_divider {
+    height: 3px;
+    width: 100%;
+    background: #314680eb;
+    border-radius: 8px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.content {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #1494ddb5;
+    font-family: inherit;
+}
+
+.user_role_block_width {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+}
+
+.environment_width {
+    width: 30%;
+}
+
+.country_width {
+    width: 35%;
+    text-align: center;
+}
+
+.role_width {
+    width: 35%;
+    text-align: right;
+}
+
+.hide_button_div {
+    display: none;
+}

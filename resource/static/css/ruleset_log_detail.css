@@ -1,0 +1,97 @@
+#ruleset_log_detail_container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+
+}
+
+#ruleset_detail_top_div {
+    width: 100%;
+}
+
+#log_detail_div {
+    width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+#log_status_div {
+    width: 30%;
+}
+
+.ruleset_detail_div {
+    margin-top: 30px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: none;
+}
+
+#exception_content {
+    font-size: 14px;
+    margin-left: auto;
+    color: #f37c7c;
+}
+
+.header_div {
+    margin-bottom: 20px;
+}
+
+#action_div {
+    margin-right: 20px;
+}
+
+#show_ruleset_div{
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.show_ruleset_div_width{
+    width: 33%;
+}
+
+.show_ruleset_button_width{
+    width:95%
+}
+
+.information_row {
+    margin-bottom: 20px;
+}
+
+.row_title_div {
+    font-weight: 600;
+    font-size: 15px;
+    color: #33495f;
+}
+
+.row_content_div {
+    font-size: 14px;
+    margin-left: auto;
+    color: #11a7ed;
+}
+
+.button_div {
+    margin-left: auto;
+}
+
+.ruleset_content_div {
+    background: black;
+    border-radius: 5px;
+    color: #c6c6c6;
+    font-size: 16px;
+}
+
+.div_content_level_1{
+    padding-left: 30px;
+    word-break: break-all;
+}
+
+.div_content_level_2{
+    padding-left: 60px;
+    word-break: break-all;
+}
+
+.div_content_level_3{
+    padding-left: 90px;
+    word-break: break-all;
+}

@@ -21,7 +21,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('ConfigManageTool/accounts/', include('django.contrib.auth.urls')),
     path('ConfigManageTool/', include('RulesetComparer.urls')),
     path('ConfigManageTool/', include('permission.urls')),
     path('ConfigManageTool/', include('shared_storage.urls')),
