@@ -148,10 +148,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-LOGIN_URL = '/accounts/login/'
+# LOGIN_URL = '/accounts/login/'
 # STATIC_URL = 'static/'
-LOGOUT_REDIRECT_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/ConfigManageTool/admin_console/ruleset/'
+# LOGOUT_REDIRECT_URL = '/accounts/login/'
+# LOGIN_REDIRECT_URL = '/ConfigManageTool/admin_console/ruleset/'
 
 UNICODE_ENCODING = 'utf-8'
 
@@ -160,6 +160,9 @@ GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
 
 # region instance setting
+LOGIN_URL = conf.URL_PRE_PATH + '/ConfigManageTool/accounts/login/'
+LOGOUT_REDIRECT_URL = conf.URL_PRE_PATH + '/ConfigManageTool/accounts/login/'
+LOGIN_REDIRECT_URL = conf.URL_PRE_PATH + '/ConfigManageTool/admin_console/ruleset/'
 STATIC_URL = conf.STATIC_URL
 CURRENT_TIME_ZONE = TIME_ZONE_SET.get(conf.CURRENT_REGION)
 URL_PRE_PATH = conf.URL_PRE_PATH
