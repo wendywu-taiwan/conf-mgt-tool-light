@@ -14,6 +14,8 @@ import os
 from common.properties.conf import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+from common.properties.region_setting import TIME_ZONE_SET
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -159,7 +161,7 @@ GIT_BRANCH_DEVELOP = 'develop'
 
 # region instance setting
 STATIC_URL = conf.STATIC_URL
-CURRENT_TIME_ZONE = conf.CURRENT_TIME_ZONE
+CURRENT_TIME_ZONE = TIME_ZONE_SET.get(conf.CURRENT_REGION)
 URL_PRE_PATH = conf.URL_PRE_PATH
 PRELOAD_DATA = conf.PRELOAD_DATA
 AUTH_DATA = conf.AUTH_DATA

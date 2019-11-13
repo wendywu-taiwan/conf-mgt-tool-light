@@ -1,3 +1,6 @@
+cd ..
+cd ..
+cd ..
 . venv/bin/activate
-cd ConfigManageTool
-nohup python manage.py runserver 00.0.0.0:8000 &
+python manage.py init_conf apac
+nohup python manage.py runserver 00.0.0.0:8080 &
