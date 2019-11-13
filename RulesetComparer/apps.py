@@ -1,6 +1,5 @@
 import os, sys
 from django.apps import AppConfig
-from RulesetComparer.utils.logger import *
 
 
 class RulesetcomparerConfig(AppConfig):
