@@ -15,14 +15,18 @@ Including another URLconf
 """
 from django.urls import path
 from ConfigManageTool import settings
-from RulesetComparer import views
 from django.conf.urls import url, include
 from django.contrib import admin
 
+
+def add_url_prefix():
+    return settings.URL_PRE_PATH + "ConfigManageTool/"
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('ConfigManageTool/accounts/', include('django.contrib.auth.urls')),
-    path('ConfigManageTool/', include('RulesetComparer.urls')),
-    path('ConfigManageTool/', include('permission.urls')),
-    path('ConfigManageTool/', include('shared_storage.urls')),
+    path(add_url_prefix() + 'accounts/', include('django.contrib.auth.urls')),
+    path(add_url_prefix(), include('RulesetComparer.urls')),
+    path(add_url_prefix(), include('permission.urls')),
+    path(add_url_prefix(), include('shared_storage.urls')),
 ]

@@ -2,6 +2,7 @@
 #account-base-container {
     height: 100%;
     width: 100%;
+    background-image: url("../icons/background.png");
     background-size: auto 100%;
 }
 

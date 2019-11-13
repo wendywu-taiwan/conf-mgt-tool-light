@@ -102,5 +102,7 @@
     $('#user_action_dropdown_div a').on('click', function () {
         self.location = $(this).attr('href');
     });
+
+    initLoadingGIF("{% static '/icons/loading.gif' %}");
 </script>
 </html>

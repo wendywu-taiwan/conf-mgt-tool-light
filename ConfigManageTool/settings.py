@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from common.properties.region_setting import *
+from common.properties.conf import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'shared_storage',
     'RulesetComparer',
+    'command',
     'common',
     'permission',
     'zeep',
@@ -147,7 +148,6 @@ USE_TZ = True
 
 LOGIN_URL = '/accounts/login/'
 # STATIC_URL = 'static/'
-STATIC_URL = '/dfg/static/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/ConfigManageTool/admin_console/ruleset/'
 
@@ -158,8 +158,8 @@ GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
 
 # region instance setting
-CURRENT_REGION = os.environ.get()
-# .get('CURRENT_REGION')
-CURRENT_TIME_ZONE = os.environ.get('CURRENT_TIME_ZONE')
-# REGION_APAC
-# CURRENT_TIME_ZONE = TIME_ZONE_SET.get(CURRENT_REGION)
+STATIC_URL = conf.STATIC_URL
+CURRENT_TIME_ZONE = conf.CURRENT_TIME_ZONE
+URL_PRE_PATH = conf.URL_PRE_PATH
+PRELOAD_DATA = conf.PRELOAD_DATA
+AUTH_DATA = conf.AUTH_DATA

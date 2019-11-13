@@ -16,7 +16,7 @@ function showWaitingDialog() {
 function showDialog(title) {
     swal({
         title: title,
-        imageUrl: "/static/icons/loading.gif",
+        imageUrl: "../static/icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
         showCancelButton: false,

@@ -1,9 +1,15 @@
 let DROPDOWN_OPTION_SELECT = "Select";
+let loadingGIF;
 
 $(function () {
     let csrftoken = $('input[name="csrfmiddlewaretoken"]').val();
-    setToken(csrftoken);
+    let loadingGif =
+        setToken(csrftoken);
 });
+
+function initLoadingGIF(url) {
+    loadingGIF = url;
+}
 
 function stopDialog() {
     swal.close();
@@ -16,7 +22,8 @@ function showWaitingDialog() {
 function showDialog(title) {
     swal({
         title: title,
-        imageUrl: "/static/icons/loading.gif",
+        imageUrl: loadingGIF,
+        // imageUrl: "../icons/loading.gif",
         closeOnConfirm: false,
         closeOnCancel: false,
         showCancelButton: false,
