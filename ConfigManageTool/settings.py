@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-from common.properties.conf import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from common.properties.region_setting import TIME_ZONE_SET
@@ -159,9 +158,14 @@ GIT_REMOTE_NAME = 'origin'
 GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
 
-# region instance setting
-STATIC_URL = conf.STATIC_URL
-CURRENT_TIME_ZONE = TIME_ZONE_SET.get(conf.CURRENT_REGION)
-URL_PRE_PATH = conf.URL_PRE_PATH
-PRELOAD_DATA = conf.PRELOAD_DATA
-AUTH_DATA = conf.AUTH_DATA
+try:
+    from common.properties.conf import conf
+
+    # region instance setting
+    STATIC_URL = conf.STATIC_URL
+    CURRENT_TIME_ZONE = TIME_ZONE_SET.get(conf.CURRENT_REGION)
+    URL_PRE_PATH = conf.URL_PRE_PATH
+    PRELOAD_DATA = conf.PRELOAD_DATA
+    AUTH_DATA = conf.AUTH_DATA
+except ImportError:
+    pass
