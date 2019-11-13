@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+from common.properties.conf import conf
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from common.properties.region_setting import TIME_ZONE_SET
