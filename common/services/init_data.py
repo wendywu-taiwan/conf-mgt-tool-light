@@ -2,7 +2,7 @@ import traceback
 from RulesetComparer.utils import fileManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
-from common.properties.config import PRELOAD_DATA_PATH
+from common.properties.config import PRELOAD_DATA_PATH, USER_ROLE_PERMISSION_DATA_PATH
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
     RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPRegion, FTPClient, FTPServer
 from common.models import DataUpdateTime, FrequencyType
@@ -413,7 +413,7 @@ def init_data():
         role_function_permission_data = fileManager.load_json_file(role_function_permission_data_path)
 
         # load user role permission data
-        user_role_permission_data_path = settings.BASE_DIR + config.get_file_path("user_role_permission_data")
+        user_role_permission_data_path = USER_ROLE_PERMISSION_DATA_PATH
         user_role_permission_data = fileManager.load_json_file(user_role_permission_data_path)
 
         for key in INIT_DATA_ARRAY:
