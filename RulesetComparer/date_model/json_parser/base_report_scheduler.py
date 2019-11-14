@@ -5,6 +5,9 @@ from RulesetComparer.utils.logger import *
 from RulesetComparer.properties import config
 from datetime import timedelta
 
+from RulesetComparer.utils.timeUtil import change_time_zone, get_naive_time_by_time
+from common.properties.region_setting import TIME_ZONE_SERVER
+
 
 class BaseReportSchedulerParser:
     @staticmethod
@@ -62,7 +65,6 @@ class BaseReportSchedulerParser:
 
     def get_local_time_shift_days(self, local_date_time):
         current_date_time = timeUtil.get_current_date_time()
-
         result_time = local_date_time
         # compare local time and current time
         if local_date_time < current_date_time:
@@ -72,8 +74,14 @@ class BaseReportSchedulerParser:
             if not self.local_date_time_bigger(local_date_time, current_date_time):
                 result_time = result_time + timedelta(days=1)
 
-        naive_result_time = datetime(result_time.year, result_time.month, result_time.day,
-                                     result_time.hour, result_time.minute, result_time.second)
+        naive_result_time = get_naive_time_by_time(result_time)
+
+        current_time_zone = settings.CURRENT_TIME_ZONE
+        if current_time_zone != TIME_ZONE_SERVER:
+            result_time = change_time_zone(naive_result_time, current_time_zone, TIME_ZONE_SERVER)
+
+        naive_result_time = get_naive_time_by_time(result_time)
+
         return naive_result_time
 
     @staticmethod
