@@ -78,15 +78,7 @@ class BaseReportSchedulerParser:
             if not self.local_date_time_bigger(local_date_time, current_date_time):
                 result_time = result_time + timedelta(days=1)
 
-        naive_result_time = get_naive_time_by_time(result_time)
-
-        current_time_zone = settings.CURRENT_TIME_ZONE
-        if current_time_zone != TIME_ZONE_SERVER:
-            result_time = change_time_zone(naive_result_time, current_time_zone, TIME_ZONE_SERVER)
-
-        naive_result_time = get_naive_time_by_time(result_time)
-
-        return naive_result_time
+        return get_naive_time_by_time(result_time)
 
     @staticmethod
     def get_utc_time(naive_local_time):
