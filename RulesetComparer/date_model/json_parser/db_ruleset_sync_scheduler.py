@@ -7,7 +7,7 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
 
     def __init__(self, scheduler, country_list):
         try:
-            BaseReportSchedulerParser.__init__(self)
+            BaseReportSchedulerParser.__init__(self, scheduler.next_proceed_time)
             self.task_id = scheduler.id
             self.source_environment_id = scheduler.source_environment.id
             self.source_environment = scheduler.source_environment
@@ -22,7 +22,7 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.interval = scheduler.interval
             self.enable = self.parse_int_to_boolean(scheduler.enable)
             # time with timezone setting for task running
-            self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
+            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:

@@ -10,6 +10,10 @@ from common.properties.region_setting import TIME_ZONE_SERVER
 
 
 class BaseReportSchedulerParser:
+    def __init__(self, local_json_time):
+        self.local_run_time = self.get_local_time_shift_days(local_json_time)
+        self.job_run_time = self.get_job_run_time(self.local_run_time)
+
     @staticmethod
     def parse_country_id_list(country_id_list):
         country_list = list()
@@ -88,6 +92,16 @@ class BaseReportSchedulerParser:
     def get_utc_time(naive_local_time):
         utc_time = timeUtil.local_time_to_utc(naive_local_time, CURRENT_TIME_ZONE)
         return utc_time
+
+    @staticmethod
+    def get_job_run_time(naive_local_time):
+        result_time = naive_local_time
+        current_time_zone = settings.CURRENT_TIME_ZONE
+        if current_time_zone != TIME_ZONE_SERVER:
+            result_time = change_time_zone(naive_local_time, current_time_zone, TIME_ZONE_SERVER)
+
+        naive_result_time = get_naive_time_by_time(result_time)
+        return naive_result_time
 
     @staticmethod
     def local_date_time_bigger(local_date_time, current_date_time):

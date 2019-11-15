@@ -10,7 +10,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
 
     def __init__(self, scheduler, country_list, mail_content_type_list):
         try:
-            BaseReportSchedulerParser.__init__(self)
+            BaseReportSchedulerParser.__init__(self, scheduler.next_proceed_time)
             self.task_id = scheduler.id
             self.base_env_id = scheduler.base_environment.id
             self.compare_env_id = scheduler.compare_environment.id
@@ -20,7 +20,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.mail_list = self.get_mail_list(scheduler.mail_list)
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
-            self.local_time = self.get_local_time_shift_days(scheduler.next_proceed_time)
+            self.local_time = self.local_run_time
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:
             raise e

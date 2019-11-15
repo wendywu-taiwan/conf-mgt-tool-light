@@ -11,7 +11,7 @@ from common.data_object.error.error import PermissionDeniedError
 class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionParser):
     def __init__(self, json_data, user):
         try:
-            BaseReportSchedulerParser.__init__(self)
+            BaseReportSchedulerParser.__init__(self, json_data.get("next_proceed_time"))
             self.user = user
             self.creator = user
             self.editor = user
@@ -32,7 +32,7 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionPars
             self.created_time = self.frontend_time_to_utc_time(json_data.get("created_time"))
             self.updated_time = self.frontend_time_to_utc_time(json_data.get("updated_time"))
             # time with timezone setting for task running
-            self.local_time = self.get_local_time_shift_days(json_data.get("next_proceed_time"))
+            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
             PermissionParser.__init__(self)
