@@ -55,8 +55,7 @@ class ReportSchedulerInfoBuilder(AdminConsoleBaseBuilder):
             time_zone = CURRENT_TIME_ZONE
             time_format = config.TIME_FORMAT.get('db_time_format')
 
-            naive_time = timeUtil.get_naive_time(utc_date_time.year, utc_date_time.month, utc_date_time.day,
-                                                 utc_date_time.hour, utc_date_time.minute, utc_date_time.second)
+            naive_time = timeUtil.get_naive_time_by_time(utc_date_time)
 
             local_date_time = timeUtil.utc_to_locale_time(naive_time, time_zone)
             str_time = timeUtil.date_time_to_time(local_date_time, time_format)

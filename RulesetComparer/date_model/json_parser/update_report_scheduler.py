@@ -14,8 +14,6 @@ class UpdateReportSchedulerTaskParser(BaseReportSchedulerParser):
             self.mail_content_type_list = self.parse_mail_content_type_list(json_data.get("mail_content_type_list"))
             self.mail_list = json_data.get("mail_list")
             self.interval_hour = int(json_data.get("interval_hour"))
-            # time with timezone setting for task running
-            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
             self.enable = key.STATUS_ENABLE

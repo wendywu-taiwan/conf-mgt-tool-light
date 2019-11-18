@@ -20,7 +20,6 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.mail_list = self.get_mail_list(scheduler.mail_list)
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
-            self.local_time = self.local_run_time
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:
             raise e

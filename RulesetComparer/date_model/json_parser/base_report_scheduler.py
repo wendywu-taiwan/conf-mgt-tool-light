@@ -11,8 +11,8 @@ from common.properties.region_setting import TIME_ZONE_SERVER
 
 class BaseReportSchedulerParser:
     def __init__(self, local_json_time):
-        self.local_run_time = self.get_local_time_shift_days(local_json_time)
-        self.job_run_time = self.get_job_run_time(self.local_run_time)
+        # time with timezone setting for task running
+        self.local_time = self.get_local_time_shift_days(local_json_time)
 
     @staticmethod
     def parse_country_id_list(country_id_list):

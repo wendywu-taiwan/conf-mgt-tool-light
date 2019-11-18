@@ -31,8 +31,6 @@ class CreateRulesetSyncSchedulerParser(BaseReportSchedulerParser, PermissionPars
             self.interval = int(json_data.get("interval"))
             self.created_time = self.frontend_time_to_utc_time(json_data.get("created_time"))
             self.updated_time = self.frontend_time_to_utc_time(json_data.get("updated_time"))
-            # time with timezone setting for task running
-            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
             PermissionParser.__init__(self)

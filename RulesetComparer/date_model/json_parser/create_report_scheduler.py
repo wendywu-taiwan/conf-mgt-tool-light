@@ -8,7 +8,7 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParse
 
     def __init__(self, json_data, user):
         try:
-            BaseReportSchedulerParser.__init__(self,json_data.get("start_date_time"))
+            BaseReportSchedulerParser.__init__(self, json_data.get("start_date_time"))
             self.user = user
             self.task_id = json_data.get("id")
             self.base_env_id = json_data.get("base_environment_id")
@@ -20,8 +20,6 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParse
             self.mail_list = json_data.get("mail_list")
             self.frequency_type = FrequencyType.objects.get(id=json_data.get("frequency_type"))
             self.interval = int(json_data.get("interval"))
-            # time with timezone setting for task running
-            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
             PermissionParser.__init__(self)

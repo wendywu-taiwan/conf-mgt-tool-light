@@ -21,8 +21,6 @@ class DBRulesetSyncSchedulerParser(BaseReportSchedulerParser):
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
             self.enable = self.parse_int_to_boolean(scheduler.enable)
-            # time with timezone setting for task running
-            self.local_time = self.local_run_time
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:

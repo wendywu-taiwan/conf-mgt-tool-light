@@ -1,6 +1,7 @@
 from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
+from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.utils import timeUtil
 
 executors = {
@@ -15,7 +16,7 @@ job_defaults = {
 
 class CustomJobScheduler:
     def __init__(self):
-        self.scheduler = BackgroundScheduler(executors=executors, job_defaults=job_defaults, timezone="Asia/Taipei")
+        self.scheduler = BackgroundScheduler(executors=executors, job_defaults=job_defaults, timezone=CURRENT_TIME_ZONE)
         self.scheduler.start()
 
     def add_months_job(self, execute_func, month_interval, start_date):
