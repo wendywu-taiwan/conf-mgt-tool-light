@@ -5,6 +5,7 @@ import shutil
 import glob
 import json
 import zipfile
+import zlib
 import codecs
 from django.conf import settings
 from codecs import open
@@ -148,7 +149,7 @@ def archive_file(source_path, dst_path, dst_file):
         for filename in files:
             absname = os.path.abspath(os.path.join(dirname, filename))
             print("archive_file, resource path :" + absname)
-            zip_handler.write(absname)
+            zip_handler.write(absname,compress_type=get_compress_type())
     zip_handler.close()
 
 
@@ -166,9 +167,16 @@ def archive_file_with_arcname(source_path, dst_path, dst_file, arcname_prefix=No
             else:
                 arcname = absname[len(abs_src) + 1:]
             print("archive_file, resource path :" + absname)
-            zip_handler.write(absname, arcname)
+            zip_handler.write(absname, arcname, compress_type=get_compress_type())
     zip_handler.close()
 
+
+def get_compress_type():
+    try:
+        mode = zipfile.ZIP_DEFLATED
+    except:
+        mode = zipfile.ZIP_STORED
+    return mode
 
 def load_file_with_setting(file_name, mode, format):
     fp = codecs.open(file_name, mode, format)
