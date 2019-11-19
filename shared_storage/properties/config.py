@@ -26,151 +26,6 @@ COMPARE_TYPE_BLACK_LIST = {
     "pdf"
 }
 
-COUNTRY_MODULE_MAP = {
-    "tw": [
-        "audacx",
-        "audamobile",
-        "audawatch",
-        "bre",
-        "business",
-        "config",
-        "customerportal",
-        "dictionary",
-        "membersearchindex",
-        "onepad",
-        "partnershipsearchindex",
-        "searchtree",
-        "template",
-        "vin",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "sg": [
-        "audacx",
-        "bre",
-        "config",
-        "membersearchindex",
-        "searchtree",
-        "template",
-        "webpad",
-        "webresources",
-    ],
-    "my": [
-        "audacx",
-        "bre",
-        "business",
-        "config",
-        "licenseplateformats",
-        "membersearchindex",
-        "onepad",
-        "partssearchindex",
-        "searchtree",
-        "suppliersdata",
-        "template",
-        "vin",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "kr": [
-        "audacx",
-        "audamobile",
-        "audawatch",
-        "axr",
-        "bre",
-        "business",
-        "config",
-        "fonts",
-        "idbc",
-        "membersearchindex",
-        "onepad",
-        "dictionary",
-        "partMapping",
-        "searchtree",
-        "template",
-        "vin",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "jp": [
-        "bre",
-        "config",
-        "fonts",
-        "membersearchindex",
-        "partsinformation",
-        "searchtree",
-        "template",
-        "webpad",
-        "webresources",
-    ],
-    "id": [
-        "audacx",
-        "bre",
-        "business",
-        "config",
-        "customreports",
-        "dictionary",
-        "onepad",
-        "searchtree",
-        "template",
-        "vin",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "hk": [
-        "audacx",
-        "audamobile",
-        "axr",
-        "bre",
-        "business",
-        "config",
-        "dictionary",
-        "membersearchindex",
-        "onepad",
-        "rss",
-        "searchtree",
-        "suppliersdata",
-        "template",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "cn": [
-        "audacx",
-        "audamobile",
-        "audawatch",
-        "axr",
-        "bre",
-        "business",
-        "config",
-        "customerportal",
-        "dictionary",
-        "fonts",
-        "h2sdfcheck",
-        "idbc",
-        "membersearchindex",
-        "onepad",
-        "partsinformation",
-        "searchtree",
-        "template",
-        "vin",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ],
-    "other": [
-        "audacx",
-        "bre",
-        "template",
-        "webpad",
-        "webresources",
-        "xsltStylesheets"
-    ]
-}
-
 FILTER_MODULE_FOLDER_MAP = {
     "tw": [
         "audacx",
@@ -301,7 +156,8 @@ FILTER_MODULE_FOLDER_MAP = {
 }
 
 LATEST_VERSION_GRAND_PARENT_FOLDER = [
-    "/axr"
+    "/axr",
+    "/h2sdfcheck"
 ]
 
 LATEST_VERSION_PARENT_FOLDER = [
@@ -325,7 +181,24 @@ LATEST_VERSION_PARENT_FOLDER = [
     "/vin",
     "/webpad",
     "/webresources",
-    "/xsltStylesheets"
+    "/xsltStylesheets",
+    "/anonymize",
+    "/audainsight",
+    "/crctranslation",
+    "/gotimedriver",
+    "/h2sdfcheck/configuration",
+    "/h2sdfcheck/translate",
+    "/jexlscript",
+    "/licenseplateformats",
+    "/lis",
+    "/lisdc",
+    "/mrs",
+    "/rci",
+    "/rss",
+    "/svisupport",
+    "/temporaryfields",
+    "/thatcham",
+    "/vhcsupport"
 ]
 
 FILTER_MODULE_FOLDER = [

@@ -75,13 +75,17 @@ def compare_shared_storage_folder(left_region_id, left_environment_id, left_fold
     try:
         # json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036302886634.json")
         only_last_version = True
-        apply_filter_folders = True
         left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
         right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
         root_hash_key = hash(left_root_obj)
         left_root_obj.update_root_hash_key(root_hash_key)
         right_root_obj.update_root_hash_key(root_hash_key)
         info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
+
+        if left_root_obj.filter_modules is None:
+            apply_filter_folders = True
+        else:
+            apply_filter_folders = False
 
         if apply_filter_folders and only_last_version:
             dir_diff_obj = LatestVersionApplyObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,

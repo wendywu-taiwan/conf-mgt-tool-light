@@ -15,7 +15,7 @@ from shared_storage.data_object.json_parser.select_to_download_parser import Sel
 from shared_storage.data_object.dir_node_parse_object import DirNodeParseFilteredObject
 from shared_storage.data_object.json_builder.select_to_download_filterd_files_builder import \
     SelectToDownloadFilteredFilesBuilder
-from shared_storage.properties.config import COUNTRY_MODULE_MAP, FILTER_MODULE_FOLDER
+from shared_storage.properties.config import FILTER_MODULE_FOLDER
 from shared_storage.data_object.json_parser.filter_environment import \
     SelectToDownloadFilterEnvironmentParser
 from shared_storage.data_object.json_builder.filter_environment import \
