@@ -9,7 +9,7 @@
         <div id="header_div" class="row no-row-margin">
             <div class="component_title">TASK</div>
             <div id="create_task_button_div">
-                <a href="{% url 'RulesetComparer:sync-scheduler-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
+                <a onclick="createSchedulerPage()" class="link-btn btn btn-block btn-lg btn-primary">Create</a>
             </div>
         </div>
         <div id="title_div" class="row no-row-margin">
@@ -110,73 +110,85 @@
             {% endfor %}
         </div>
     </div>
-    <script>
-        function deleteScheduler(task_id) {
-            warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
-                function () {
-                    showWaitingDialog();
+        <script>
+            function deleteScheduler(task_id) {
+                warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
+                    function () {
+                        showWaitingDialog();
 
-                    let post_body = {
-                        "id": task_id
-                    };
+                        let post_body = {
+                            "id": task_id
+                        };
 
-                    doPOST("{% url 'RulesetComparer:delete-rulesets-sync-job' %}", post_body, function (response) {
-                        let statusCode = response["status_code"];
-                        let message = response["message"];
+                        doPOST("{% url 'RulesetComparer:delete-rulesets-sync-job' %}", post_body, function (response) {
+                            let statusCode = response["status_code"];
+                            let message = response["message"];
 
-                        if (response == null || statusCode != 200) {
-                            showErrorDialog(message);
-                        } else {
-                            successDialog("delete task success", function () {
-                                console.log(response);
-                                window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
-                            });
-                        }
-                    }, function (response) {
-                        console.log(response);
-                        showErrorDialog("delete task fail")
+                            if (response == null || statusCode != 200) {
+                                showErrorDialog(message);
+                            } else {
+                                successDialog("delete task success", function () {
+                                    console.log(response);
+                                    window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                                });
+                            }
+                        }, function (response) {
+                            console.log(response);
+                            showErrorDialog("delete task fail")
+                        });
+                    })
+            }
+
+            function stopScheduler(taskId) {
+                warningDialog("stop scheduler?", "the scheduler will stop auto sync rulesets", "Stop", function () {
+                    postUpdateSchedulerStatus(taskId, false);
+                });
+            }
+
+            function restartScheduler(taskId) {
+                warningDialog("restart scheduler?", "the scheduler will start auto sync rulesets", "Restart", function () {
+                    postUpdateSchedulerStatus(taskId, true);
+                });
+            }
+
+            function postUpdateSchedulerStatus(task_id, status) {
+                showWaitingDialog();
+
+                let post_body = {
+                    "task_id": task_id,
+                    "enable": status
+                };
+
+                doPOST("{% url 'RulesetComparer:update-rulesets-sync-job-status' %}", post_body, function (response) {
+                    let statusCode = response["status_code"];
+                    let message = response["message"];
+
+                    if (response == null || statusCode != 200) {
+                        showErrorDialog(message);
+                    } else {
+                        successDialog("update scheduler success", function () {
+                            console.log(response);
+                            window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                        });
+                    }
+                }, function (response) {
+                    console.log(response);
+                    showErrorDialog("update scheduler fail")
+                });
+            }
+
+            function createSchedulerPage() {
+                showWaitingDialog();
+
+                doGET("{% url 'RulesetComparer:sync-scheduler-create' %}", function (response) {
+                    successResponse(response, function () {
+                        window.location = "{% url 'RulesetComparer:sync-scheduler-create' %}";
                     });
-                })
-        }
+                }, function (response) {
+                    errorResponse(response);
+                });
+            }
 
-        function stopScheduler(taskId) {
-            warningDialog("stop scheduler?", "the scheduler will stop auto sync rulesets", "Stop", function () {
-                postUpdateSchedulerStatus(taskId, false);
-            });
-        }
-
-        function restartScheduler(taskId) {
-            warningDialog("restart scheduler?", "the scheduler will start auto sync rulesets", "Restart", function () {
-                postUpdateSchedulerStatus(taskId, true);
-            });
-        }
-
-        function postUpdateSchedulerStatus(task_id, status) {
-            showWaitingDialog();
-
-            let post_body = {
-                "task_id": task_id,
-                "enable": status
-            };
-
-            doPOST("{% url 'RulesetComparer:update-rulesets-sync-job-status' %}", post_body, function (response) {
-                let statusCode = response["status_code"];
-                let message = response["message"];
-
-                if (response == null || statusCode != 200) {
-                    showErrorDialog(message);
-                } else {
-                    successDialog("update scheduler success", function () {
-                        console.log(response);
-                        window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
-                    });
-                }
-            }, function (response) {
-                console.log(response);
-                showErrorDialog("update scheduler fail")
-            });
-        }
-
-    </script>
+        </script>
 
 {% endblock %}

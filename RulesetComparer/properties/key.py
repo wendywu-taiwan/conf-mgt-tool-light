@@ -313,6 +313,7 @@ PROD_NAME = "PROD"
 GIT_NAME = "GIT"
 
 # module_key
+KEY_M_SHARED_STORAGE = "shared_storage"
 KEY_M_RULESET = "ruleset"
 KEY_M_SETTING = "setting"
 

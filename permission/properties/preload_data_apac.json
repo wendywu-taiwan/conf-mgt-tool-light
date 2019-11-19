@@ -316,6 +316,10 @@
     ],
     "module": [
       {
+        "name": "shared_storage",
+        "display_name": "Shared Storage"
+      },
+      {
         "name": "ruleset",
         "display_name": "Ruleset"
       },
@@ -704,6 +708,20 @@
         "client": "ftp.audatex.com.au"
       }
     ],
+    "environment_auto_sync_permission": [
+      {
+        "module_name": "ruleset",
+        "environment_name": "GIT",
+        "sync_from_environment": 1,
+        "sync_to_environment": 0
+      },
+       {
+        "module_name": "ruleset",
+        "environment_name": "INT2",
+        "sync_from_environment": 0,
+        "sync_to_environment": 1
+      }
+    ],
     "update_time": {
       "auth_user": {
         "update_time": "2019-11-13 18:10:00"
@@ -721,7 +739,7 @@
         "update_time": "2019-11-13 17:50:00"
       },
       "module": {
-        "update_time": "2019-11-13 17:50:00"
+        "update_time": "2019-11-18 17:50:00"
       },
       "role_type": {
         "update_time": "2019-11-13 17:50:00"
@@ -755,6 +773,9 @@
       },
       "ftp_server": {
         "update_time": "2019-11-13 14:23:00"
+      },
+      "environment_auto_sync_permission":{
+        "update_time": "2019-11-18 17:50:00"
       }
     }
   }

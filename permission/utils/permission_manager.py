@@ -1,6 +1,7 @@
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from common.data_object.error.error import PermissionDeniedError
-from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission, Function
+from permission.models import RolePermission, RoleFunctionPermission, UserRolePermission, Function, Module, \
+    EnvironmentAutoSyncPermission
 from django.contrib.auth.models import User
 from RulesetComparer.properties.key import *
 
@@ -17,14 +18,32 @@ def check_function_visibility(request, function_key):
         raise PermissionDeniedError()
 
 
+def enable_sync_from_environments(module_name):
+    module = Module.objects.get(name=module_name)
+    environment_list = EnvironmentAutoSyncPermission.objects.filter(module=module, sync_from_environment=1,
+                                                                    environment__active=1).values_list("environment_id",
+                                                                                                       flat=True)
+    return environment_list
+
+
+def enable_sync_to_environments(module_name):
+    module = Module.objects.get(name=module_name)
+    environment_list = EnvironmentAutoSyncPermission.objects.filter(module=module, sync_to_environment=1,
+                                                                    environment__active=1).values_list("environment_id",
+                                                                                                       flat=True)
+    return environment_list
+
+
 def enable_environments(user_id, function):
     user = User.objects.get(id=user_id)
     function = Function.objects.get(name=function)
     role_permission_list = UserRolePermission.objects.filter(user=user).values_list("role_permission_id", flat=True)
     role_permission_list = RoleFunctionPermission.objects.filter(function_id=function.id, visible=1,
-                                                                 role_permission__in=role_permission_list).values_list("role_permission_id", flat=True)
+                                                                 role_permission__in=role_permission_list).values_list(
+        "role_permission_id", flat=True)
     enable_environments_ids = RolePermission.objects.filter(id__in=role_permission_list,
-                                                            environment__active=1).values_list("environment_id", flat=True).distinct()
+                                                            environment__active=1).values_list("environment_id",
+                                                                                               flat=True).distinct()
     return enable_environments_ids
 
 

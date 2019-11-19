@@ -4,7 +4,8 @@ from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from common.properties.config import PRELOAD_DATA_PATH, USER_ROLE_PERMISSION_DATA_PATH
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
-    RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPRegion, FTPClient, FTPServer
+    RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPRegion, FTPClient, FTPServer, \
+    EnvironmentAutoSyncPermission
 from common.models import DataUpdateTime, FrequencyType
 from RulesetComparer.models import MailContentType, RulesetAction
 from django.contrib.auth.models import User
@@ -33,6 +34,8 @@ KEY_FREQUENCY_TYPE = "frequency_type"
 KEY_FTP_REGION = "ftp_region"
 KEY_FTP_CLIENT = "ftp_client"
 KEY_FTP_SERVER = "ftp_server"
+
+KEY_ENVIRONMENT_AUTO_SYNC_PERMISSION = "environment_auto_sync_permission"
 
 
 def init_auth_user_data(auth_user_data):
@@ -372,6 +375,27 @@ def init_ftp_server(data):
     return True
 
 
+def init_environment_auto_sync_permission(data):
+    for permission in data:
+        module_name = permission.get("module_name")
+        environment_name = permission.get("environment_name")
+        sync_from_environment = permission.get("sync_from_environment")
+        sync_to_environment = permission.get("sync_to_environment")
+
+        environment = Environment.objects.get(name=environment_name)
+        module = Module.objects.get(name=module_name)
+
+        if EnvironmentAutoSyncPermission.objects.filter(module=module, environment=environment).exists():
+            EnvironmentAutoSyncPermission.objects.filter(module=module, environment=environment).update(
+                sync_from_environment=sync_from_environment, sync_to_environment=sync_to_environment)
+        else:
+            EnvironmentAutoSyncPermission.objects.create(module=module, environment=environment,
+                                                         sync_from_environment=sync_from_environment,
+                                                         sync_to_environment=sync_to_environment)
+    info_log(LOG_CLASS, "init environment auto sync permission data success")
+    return True
+
+
 operator = {
     KEY_AUTH_USER: init_auth_user_data,
     KEY_ENVIRONMENT: init_environment_data,
@@ -391,14 +415,15 @@ operator = {
     KEY_FREQUENCY_TYPE: init_frequency_type,
     KEY_FTP_REGION: init_ftp_region,
     KEY_FTP_CLIENT: init_ftp_client,
-    KEY_FTP_SERVER: init_ftp_server
+    KEY_FTP_SERVER: init_ftp_server,
+    KEY_ENVIRONMENT_AUTO_SYNC_PERMISSION: init_environment_auto_sync_permission
 }
 
 INIT_DATA_ARRAY = [KEY_AUTH_USER, KEY_ENVIRONMENT, KEY_COUNTRY,
                    KEY_MODULE, KEY_FUNCTION, KEY_ROLE_TYPE, KEY_ROLE_PERMISSION,
                    KEY_DATA_CENTER, KEY_B2B_SERVICE, KEY_B2B_CLIENT,
                    KEY_B2B_SERVER, KEY_MAIL_CONTENT_TYPE, KEY_RULESET_ACTION, KEY_FREQUENCY_TYPE,
-                   KEY_FTP_REGION, KEY_FTP_CLIENT, KEY_FTP_SERVER]
+                   KEY_FTP_REGION, KEY_FTP_CLIENT, KEY_FTP_SERVER, KEY_ENVIRONMENT_AUTO_SYNC_PERMISSION]
 
 
 def init_data():

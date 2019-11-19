@@ -354,3 +354,18 @@ class FTPServerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FTPServer, FTPServerAdmin)
+
+
+class EnvironmentAutoSyncPermission(models.Model):
+    id = models.AutoField(primary_key=True)
+    module = models.ForeignKey(Module, related_name="auto_sync_permission_module", on_delete=models.PROTECT)
+    environment = models.ForeignKey(Environment, related_name="auto_sync_permission_environment", on_delete=models.PROTECT)
+    sync_from_environment = models.IntegerField(default=0)
+    sync_to_environment = models.IntegerField(default=0)
+
+
+class EnvironmentAutoSyncPermissionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'module', 'environment', 'sync_from_environment', 'sync_to_environment')
+
+
+admin.site.register(EnvironmentAutoSyncPermission, EnvironmentAutoSyncPermissionAdmin)

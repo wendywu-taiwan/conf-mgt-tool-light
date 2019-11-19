@@ -419,6 +419,10 @@ html, body {
     background-color: #34619b;
 }
 
+.link-btn{
+    color: white!important;
+}
+
 .border_color_green {
     border-color: #049092;
 }

@@ -10,13 +10,13 @@ from RulesetComparer.properties.key import *
 
 class SyncSchedulerUpdatePageBuilder(SyncSchedulerCreatePageBuilder):
 
-    def __init__(self, user, scheduler_id):
+    def __init__(self, user, scheduler_id, sync_from_environments, sync_to_environments):
         self.scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
-        SyncSchedulerCreatePageBuilder.__init__(self, user)
+        SyncSchedulerCreatePageBuilder.__init__(self, user, sync_from_environments, sync_to_environments)
 
     def __generate_data__(self):
-        self.result_dict[SOURCE_ENVIRONMENT] = EnvironmentsBuilder(environments=[self.git_environment]).get_data()
-        self.result_dict[TARGET_ENVIRONMENT] = EnvironmentsBuilder(environments=[self.int2_environment]).get_data()
+        self.result_dict[SOURCE_ENVIRONMENT] = EnvironmentsBuilder(ids=self.sync_from_environments).get_data()
+        self.result_dict[TARGET_ENVIRONMENT] = EnvironmentsBuilder(ids=self.sync_to_environments).get_data()
         self.result_dict[ENVIRONMENT_SELECT_COUNTRY] = CountriesBuilder(countries=self.countries).get_data()
         self.result_dict[ACTION_LIST] = self.action_list
         self.result_dict[KEY_FREQUENCY_TYPES] = FrequencyTypesBuilder(FrequencyType.objects.all()).get_data()

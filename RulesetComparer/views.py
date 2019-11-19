@@ -19,7 +19,7 @@ from RulesetComparer.date_model.json_builder.sync_scheduler_update_page import S
 from permission.utils.page_visibility import *
 from permission.utils.permission_manager import enable_environments, enable_countries
 from common.utils.utility import get_union, contains
-from common.data_object.error.error import PermissionDeniedError
+from common.data_object.error.error import PermissionDeniedError, NoAvailableDataError
 from common.data_object.error.status import *
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Module, RulesetSyncUpScheduler
@@ -36,7 +36,8 @@ from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import Rules
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
 from RulesetComparer.date_model.json_builder.admin_console_info import AdminConsoleInfoBuilder
 
-from permission.utils.permission_manager import check_function_visibility, enable_environments_data
+from permission.utils.permission_manager import check_function_visibility, enable_environments_data, \
+    enable_sync_from_environments, enable_sync_to_environments
 from RulesetComparer.services.services import *
 from RulesetComparer.services.report_scheduler import *
 
@@ -139,18 +140,25 @@ def admin_console_sync_scheduler_create_page(request):
     def check_visibility():
         check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
         enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
-        git_environment = Environment.objects.get(name=GIT_NAME)
-        int2_environment = Environment.objects.get(name=INT2_NAME)
+        sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
+        sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
         # check data visibility
-        if not contains(enable_environment_list, int2_environment.id) or \
-                not contains(enable_environment_list, git_environment.id):
+        if len(sync_from_environment_list) == 0 and len(sync_to_environment_list) == 0:
+            raise NoAvailableDataError
+        if len(get_union(enable_environment_list, sync_from_environment_list)) == 0 or \
+                len(get_union(enable_environment_list, sync_to_environment_list)) == 0:
             raise PermissionDeniedError
 
     def get_visible_data():
-        pass
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
+        sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
+        enable_sync_from_env_list = list(set(enable_environment_list).intersection(set(sync_from_environment_list)))
+        enable_sync_to_env_list = list(set(enable_environment_list).intersection(set(sync_to_environment_list)))
+        return [enable_sync_from_env_list, enable_sync_to_env_list]
 
     def after_check(visible_data):
-        data = SyncSchedulerCreatePageBuilder(request.user).get_data()
+        data = SyncSchedulerCreatePageBuilder(request.user, visible_data[0], visible_data[1]).get_data()
         return render(request, "sync_scheduler_create.html", data)
 
     return page_permission_check(request, check_visibility, get_visible_data, after_check)
@@ -168,10 +176,15 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
                                           KEY_F_AUTO_SYNC_TASK)
 
     def get_visible_data():
-        pass
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
+        sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
+        enable_sync_from_env_list = list(set(enable_environment_list).intersection(set(sync_from_environment_list)))
+        enable_sync_to_env_list = list(set(enable_environment_list).intersection(set(sync_to_environment_list)))
+        return [enable_sync_from_env_list, enable_sync_to_env_list]
 
     def after_check(visible_data):
-        data = SyncSchedulerUpdatePageBuilder(request.user, scheduler_id).get_data()
+        data = SyncSchedulerUpdatePageBuilder(request.user, scheduler_id, visible_data[0], visible_data[1]).get_data()
         return render(request, "sync_scheduler_update.html", data)
 
     return page_permission_check(request, check_visibility, get_visible_data, after_check)
