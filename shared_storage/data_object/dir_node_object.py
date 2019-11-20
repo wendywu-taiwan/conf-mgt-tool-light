@@ -1,3 +1,5 @@
+from paramiko import SFTPError
+
 from shared_storage.data_object.json_builder.file_detail_builder import FileDetailBuilder
 from shared_storage.data_object.node_object import NodeObject
 from RulesetComparer.utils.logger import *
@@ -22,6 +24,8 @@ class DirNodeObject:
             for entry in entry_list:
                 self.parse_child_node(index, entry)
                 index = index + 1
+        except SFTPError:
+            info_log(self.LOG_CLASS, "Not a directory: " + self.parent_node_add.path)
         except Exception as e:
             raise e
 

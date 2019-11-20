@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+from RulesetComparer.utils.stringFilter import folder_filter
 from common.data_object.diff_file_type_object import DiffFileTypeObject
 from shared_storage.data_object.node_object import NodeObject
 from shared_storage.data_object.dir_node_object import DirNodeObject, DirNodeLatestVersionObject, \
@@ -252,10 +253,10 @@ class DirNodeDiffLatestVersionParentObject(DirNodeBaseObject):
             node_add, node_remove = self.parse_environment_only_child_node(name, entry_map, opposite_entry_map,
                                                                            parent_node_add, parent_node_remove)
 
-            if any(x in node_add.path for x in LATEST_VERSION_PARENT_FOLDER):
+            if folder_filter(self.left_node.name, node_add.path, LATEST_VERSION_PARENT_FOLDER):
                 child_node_obj = DirNodeLatestVersionObject(dir_connect_obj, node_add, node_remove)
                 child_node_obj.parse_child_nodes()
-            elif any(x in node_add.path for x in LATEST_VERSION_GRAND_PARENT_FOLDER):
+            elif folder_filter(self.left_node.name, node_add.path, LATEST_VERSION_GRAND_PARENT_FOLDER):
                 child_node_obj = DirNodeLatestVersionParentObject(dir_connect_obj, node_add, node_remove)
                 child_node_obj.parse_child_nodes()
             else:
@@ -266,7 +267,7 @@ class DirNodeDiffLatestVersionParentObject(DirNodeBaseObject):
         for name in self.union:
             left_node, right_node = self.parse_union_child_node(name)
 
-            if any(x in left_node.path for x in LATEST_VERSION_PARENT_FOLDER):
+            if folder_filter(self.left_node.name, left_node.path, LATEST_VERSION_PARENT_FOLDER):
                 left_latest_version = self.left_dir_connect_obj.get_latest_version(left_node.path)
                 right_latest_version = self.right_dir_connect_obj.get_latest_version(right_node.path)
                 info_log(self.LOG_CLASS, "left_latest_version:" + str(left_latest_version))
@@ -274,7 +275,7 @@ class DirNodeDiffLatestVersionParentObject(DirNodeBaseObject):
                 diff_obj = DirNodeDiffLatestVersionObject(self.left_dir_connect_obj, self.right_dir_connect_obj,
                                                           left_node, right_node,
                                                           [left_latest_version], [right_latest_version])
-            elif any(x in left_node.path for x in LATEST_VERSION_GRAND_PARENT_FOLDER):
+            elif folder_filter(self.left_node.name, left_node.path, LATEST_VERSION_GRAND_PARENT_FOLDER):
                 diff_obj = DirNodeDiffLatestVersionParentObject(self.left_dir_connect_obj, self.right_dir_connect_obj,
                                                                 left_node, right_node)
             else:

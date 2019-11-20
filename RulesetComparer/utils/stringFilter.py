@@ -29,3 +29,16 @@ def string_filter(string, filter_keys):
             break
 
     return match
+
+
+def folder_filter(country, folder_path, filter_keys):
+    folder_path = folder_path.strip()
+    folder_path = folder_path.lower()
+
+    for key in filter_keys:
+        full_path = "/" + country + key
+        full_path = full_path.strip()
+        full_path = full_path.lower()
+        if folder_path == full_path:
+            return True
+    return False
