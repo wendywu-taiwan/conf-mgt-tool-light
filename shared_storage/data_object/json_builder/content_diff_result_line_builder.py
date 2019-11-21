@@ -1,3 +1,4 @@
+from RulesetComparer.utils.logger import error_log
 from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.config import *
 
@@ -70,7 +71,10 @@ class ContentDiffLineResultBuilder(BaseBuilder):
                     self.result_list.append(self.build_line_object(KEY_CONTEXT, split_str_list2[0], index))
                     index = index + 1
 
-                self.result_list.append(self.build_line_object(result_type, split_str_list2[1], index))
+                try:
+                    self.result_list.append(self.build_line_object(result_type, split_str_list2[1], index))
+                except IndexError:
+                    error_log("index out of range, line text: " + diff_line_str)
 
             index = index + 1
         self.result_list.sort(key=lambda x: x.get(KEY_INDEX), reverse=False)

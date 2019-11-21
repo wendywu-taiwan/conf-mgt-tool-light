@@ -3,7 +3,7 @@ from common.data_object.json_builder.key_content_diff_result import KeyContentDi
 from common.data_object.key_content_diff_object import KeyContentDiffObject
 from shared_storage.data_object.json_builder.content_diff_result_builder import ContentDiffResultBuilder
 from shared_storage.data_object.json_builder.file_detail_builder import FileDetailBuilder
-from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
+from shared_storage.properties.config import COMPARE_TYPE_WHITE_LIST
 from shared_storage.utils.file_manager import save_file_diff_json, save_file_detail_json
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.fileManager import get_file_md5_from_file
@@ -22,13 +22,13 @@ class DiffFileTypeObject:
         self.node_hash_key = str(node_hash_key)
 
     def diff_file(self):
-        if self.file_type in COMPARE_TYPE_BLACK_LIST:
-            return self.diff_file_md5()
-        else:
+        if self.file_type in COMPARE_TYPE_WHITE_LIST:
             if self.file_type == KEY_PROPERTIES:
                 return self.diff_properties_file()
             else:
                 return self.diff_string_content_file()
+        else:
+            return self.diff_file_md5()
 
     def diff_file_md5(self):
         left_md5 = get_file_md5_from_file(self.left_file_object.file_content_bytes)

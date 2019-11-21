@@ -24,6 +24,8 @@ class DirNodeObject:
             for entry in entry_list:
                 self.parse_child_node(index, entry)
                 index = index + 1
+        except NotADirectoryError:
+            info_log(self.LOG_CLASS, "Not a directory: " + self.parent_node_add.path)
         except SFTPError:
             info_log(self.LOG_CLASS, "Not a directory: " + self.parent_node_add.path)
         except Exception as e:

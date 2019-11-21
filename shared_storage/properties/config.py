@@ -23,7 +23,26 @@ COMPARE_TYPE_BLACK_LIST = {
     "gif",
     "dic",
     "pal",
-    "pdf"
+    "pdf",
+    "zip",
+    "rar",
+    "tgz",
+    "tar",
+    "lpu",
+}
+
+COMPARE_TYPE_WHITE_LIST = {
+    "yaml",
+    "csv",
+    "properties",
+    "json",
+    "txt",
+    "xml",
+    "xsl",
+    "XML",
+    "css",
+    "xslt",
+
 }
 
 FILTER_MODULE_FOLDER_MAP = {

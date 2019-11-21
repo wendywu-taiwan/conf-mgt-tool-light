@@ -9,7 +9,7 @@ from common.data_object.error.status import NOT_SUPPORT_PREVIEW, SUCCESS_NO_DATA
 from common.data_object.json_builder.response import ResponseBuilder
 from common.utils.utility import get_post_request_json
 from common.views import page_error_check, action_error_check
-from shared_storage.properties.config import COMPARE_TYPE_BLACK_LIST
+from shared_storage.properties.config import COMPARE_TYPE_WHITE_LIST
 from shared_storage.services import compare_services, download_services
 
 from shared_storage.data_object.json_builder.bind_file_diff_result_builder import BindFolderFileDiffResultBuilder
@@ -73,7 +73,7 @@ def select_to_compare_result_page(request, root_key):
 
 def select_to_compare_file_diff_page(request, root_key, node_key, type):
     def after_check():
-        if type in COMPARE_TYPE_BLACK_LIST:
+        if type not in COMPARE_TYPE_WHITE_LIST:
             result = ResponseBuilder(status_code=NOT_SUPPORT_PREVIEW).get_data()
             return JsonResponse(result)
         else:
@@ -90,7 +90,7 @@ def select_to_compare_file_diff_page(request, root_key, node_key, type):
 
 def select_to_compare_file_detail_page(request, side, root_key, node_key, diff_result, file_type):
     def after_check():
-        if file_type in COMPARE_TYPE_BLACK_LIST:
+        if file_type not in COMPARE_TYPE_WHITE_LIST:
             result = ResponseBuilder(status_code=NOT_SUPPORT_PREVIEW).get_data()
             return JsonResponse(result)
 
