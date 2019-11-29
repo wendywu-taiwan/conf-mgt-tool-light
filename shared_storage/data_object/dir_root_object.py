@@ -21,10 +21,10 @@ class DirRootObject:
 
     def parse_dir_connect_object(self):
         if self.environment.name == GIT_NAME:
-            self.dir_connect_obj = SharedStorageGitConnectObject(self.only_last_version)
+            self.dir_connect_obj = SharedStorageGitConnectObject(self.only_last_version, self.folder)
         else:
             self.dir_connect_obj = SharedStorageConnectionObject(self.region_id, self.environment.id,
-                                                                 self.only_last_version)
+                                                                 self.only_last_version, self.folder)
 
     def update_root_hash_key(self, root_hash_key):
         self.dir_connect_obj.set_root_hash_key(root_hash_key)

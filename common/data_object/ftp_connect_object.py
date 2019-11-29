@@ -11,13 +11,14 @@ from common.data_object.dir_connect_object import DirConnectObject
 class FTPConnectionObject(DirConnectObject):
     LOG_CLASS = "FTPConnectionObject"
 
-    def __init__(self, host, port, account, password):
+    def __init__(self, host, port, account, password, root_folder=None):
         try:
             super().__init__()
             self.host = host
             self.port = port
             self.account = account
             self.password = password
+            self.root_folder = root_folder
             self.sftp = None
             self.connect()
         except Exception as e:
@@ -61,7 +62,7 @@ class FTPConnectionObject(DirConnectObject):
 class SharedStorageConnectionObject(FTPConnectionObject):
     LOG_CLASS = "SharedStorageConnectionObject"
 
-    def __init__(self, region_id, environment_id, only_last_version):
+    def __init__(self, region_id, environment_id, only_last_version, root_folder=None):
         ftp_region = FTPRegion.objects.get(id=region_id)
         environment = Environment.objects.get(id=environment_id)
         ftp_server = FTPServer.objects.get(region=ftp_region, environment=environment)
@@ -69,8 +70,7 @@ class SharedStorageConnectionObject(FTPConnectionObject):
 
         auth_data = FTPAuthDataParser(ftp_server.environment.name, ftp_server.region.name)
         FTPConnectionObject.__init__(self, ftp_server.client.url, ftp_server.client.port,
-                                     auth_data.get_account(),
-                                     auth_data.get_password())
+                                     auth_data.get_account(), auth_data.get_password(), root_folder)
 
     def set_root_hash_key(self, root_hash_key):
         super().set_root_hash_key(root_hash_key)

@@ -11,7 +11,7 @@ from shared_storage.properties.config import *
 class SharedStorageGitConnectObject(DirConnectObject):
     LOG_CLASS = "SharedStorageGitConnectObject"
 
-    def __init__(self, only_last_version, branch=None):
+    def __init__(self, only_last_version, root_folder=None, branch=None):
         try:
             super().__init__()
             self.git_path = GIT_SHARE_STORAGE_ROOT
@@ -20,6 +20,7 @@ class SharedStorageGitConnectObject(DirConnectObject):
             self.environment = Environment.objects.get(name=GIT_NAME)
             self.only_last_version = only_last_version
             self.git_manager = GitManager(self.git_path, self.branch)
+            self.root_folder = root_folder
             self.connect()
         except Exception as e:
             raise e
