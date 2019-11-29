@@ -1,4 +1,6 @@
 import pysftp
+
+from RulesetComparer.utils.logger import info_log
 from permission.models import FTPRegion, FTPServer, Environment, Country
 from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
@@ -31,15 +33,29 @@ class FTPConnectionObject(DirConnectObject):
         self.sftp.close()
 
     def get_path_list_dir(self, path):
-        self.sftp.cwd(path)
-        return self.sftp.listdir_attr()
+        try:
+            self.sftp.cwd(path)
+            return self.sftp.listdir_attr()
+        except OSError:
+            info_log(self.LOG_CLASS, "FTP reconnect, get_path_list_dir: " + path)
+            self.connect()
+            return self.get_path_list_dir(path)
 
     def get_path_file(self, file_path, save_path):
-        self.sftp.get(file_path, localpath=save_path)
-        f = open(save_path, 'r')
-        file_content = f.read().strip()
-        f.close()
-        return file_content
+        try:
+            self.sftp.get(file_path, localpath=save_path)
+            f = open(save_path, 'r', encoding='utf-8')
+            file_content = f.read()
+            file_content = file_content.encode('utf-8').decode('utf-8-sig')
+            file_content = file_content.strip()
+            f.close()
+            return file_content
+        except FileNotFoundError as e:
+            raise e
+        except OSError:
+            info_log(self.LOG_CLASS, "FTP reconnect, get_path_file: " + file_path)
+            self.connect()
+            return self.get_path_file(file_path, save_path)
 
 
 class SharedStorageConnectionObject(FTPConnectionObject):
