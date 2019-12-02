@@ -6,6 +6,7 @@ from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
 from RulesetComparer.utils.fileManager import load_path_file
 from common.data_object.dir_connect_object import DirConnectObject
+from common.data_object.error.message import no_such_file
 
 
 class FTPConnectionObject(DirConnectObject):
@@ -37,7 +38,11 @@ class FTPConnectionObject(DirConnectObject):
         try:
             self.sftp.cwd(path)
             return self.sftp.listdir_attr()
-        except OSError:
+        except FileNotFoundError as e:
+            if no_such_file(e):
+                raise e
+        except OSError as e:
+            info_log(self.LOG_CLASS, "FTP reconnect, OESError: " + e)
             info_log(self.LOG_CLASS, "FTP reconnect, get_path_list_dir: " + path)
             self.connect()
             return self.get_path_list_dir(path)
@@ -52,8 +57,10 @@ class FTPConnectionObject(DirConnectObject):
             f.close()
             return file_content
         except FileNotFoundError as e:
-            raise e
-        except OSError:
+            if no_such_file(e):
+                raise e
+        except OSError as e:
+            info_log(self.LOG_CLASS, "FTP reconnect, OESError: " + e)
             info_log(self.LOG_CLASS, "FTP reconnect, get_path_file: " + file_path)
             self.connect()
             return self.get_path_file(file_path, save_path)
