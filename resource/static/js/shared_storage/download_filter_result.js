@@ -21,12 +21,7 @@ function filteredFilesSelectAll() {
     }
 }
 
-function onClickCheckbox(inputItem, filePath) {
-    if (inputItem.checked) {
-        selectFilePathArray.push(filePath);
-    } else {
-        selectFilePathArray = arrayRemove(selectFilePathArray, filePath);
-    }
+function onClickCheckbox() {
     checkFilterResultDownloadBtnVisibility();
     checkFilterResultSelectAllBtnStatus();
 }

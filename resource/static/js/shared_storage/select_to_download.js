@@ -261,6 +261,7 @@ getFilesList = function (postUrl, postBody) {
                 }
                 filterResultDiv.style.display = 'none';
                 fileListDiv.style.display = 'block';
+                checkFileListButtonStatus();
             });
         }, function (response) {
             console.log(response);
