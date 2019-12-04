@@ -33,7 +33,6 @@ COMPARE_TYPE_BLACK_LIST = {
 
 COMPARE_TYPE_WHITE_LIST = {
     "yaml",
-    "csv",
     "properties",
     "json",
     "txt",

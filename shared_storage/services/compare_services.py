@@ -83,9 +83,9 @@ def compare_shared_storage_folder(left_region_id, left_environment_id, left_fold
         info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
 
         if left_root_obj.filter_modules is None:
-            apply_filter_folders = True
-        else:
             apply_filter_folders = False
+        else:
+            apply_filter_folders = True
 
         if apply_filter_folders and only_last_version:
             dir_diff_obj = LatestVersionApplyObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
