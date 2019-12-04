@@ -312,6 +312,12 @@
         "display_name": "Recovery",
         "icon_file_name": "task_manage_white.png",
         "module_name": "ruleset"
+      },
+      {
+        "name": "report_task",
+        "display_name": "ReportTask",
+        "icon_file_name": "task_manage_white.png",
+        "module_name": "shared_storage"
       }
     ],
     "module": [
@@ -715,7 +721,7 @@
         "sync_from_environment": 1,
         "sync_to_environment": 0
       },
-       {
+      {
         "module_name": "ruleset",
         "environment_name": "INT2",
         "sync_from_environment": 0,
@@ -736,7 +742,7 @@
         "update_time": "2019-11-13 17:51:00"
       },
       "function": {
-        "update_time": "2019-11-13 17:50:00"
+        "update_time": "2019-12-02 17:50:00"
       },
       "module": {
         "update_time": "2019-11-18 17:50:00"
@@ -774,7 +780,7 @@
       "ftp_server": {
         "update_time": "2019-11-13 14:23:00"
       },
-      "environment_auto_sync_permission":{
+      "environment_auto_sync_permission": {
         "update_time": "2019-11-18 17:50:00"
       }
     }

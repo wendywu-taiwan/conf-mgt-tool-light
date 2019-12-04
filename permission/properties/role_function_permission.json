@@ -178,6 +178,61 @@
               ]
             }
           ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -353,6 +408,61 @@
                 },
                 {
                   "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
                   "visible": "true",
                   "editable": "true"
                 }
@@ -540,6 +650,61 @@
               ]
             }
           ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -715,6 +880,61 @@
                 },
                 {
                   "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
                   "visible": "true",
                   "editable": "true"
                 }
@@ -902,6 +1122,61 @@
               ]
             }
           ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1077,6 +1352,61 @@
                 },
                 {
                   "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
                   "visible": "true",
                   "editable": "true"
                 }
@@ -1264,6 +1594,61 @@
               ]
             }
           ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -1445,13 +1830,68 @@
               ]
             }
           ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
   ],
   "update_time": {
     "role_function_permission": {
-      "update_time": "2019-8-19 18:10:00"
+      "update_time": "2019-12-02 18:10:00"
     }
   }
 }
