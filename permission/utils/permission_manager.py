@@ -86,6 +86,17 @@ def check_function_enable(user_id, function_id):
         return True
 
 
+def check_function_editable(user_id, function_id):
+    user = User.objects.get(id=user_id)
+    role_permission_list = UserRolePermission.objects.filter(user=user).values_list("role_permission_id", flat=True)
+    count = RoleFunctionPermission.objects.filter(role_permission_id__in=role_permission_list,
+                                                  function_id=function_id, editable=1).count()
+    if count == 0:
+        return False
+    else:
+        return True
+
+
 def is_visible(user_id, environment_id, country_id, function_id):
     return is_enable(user_id, environment_id, country_id, function_id, VISIBLE)
 

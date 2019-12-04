@@ -1,34 +1,24 @@
-import ast
-from datetime import datetime
-
-from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
-from RulesetComparer.properties import config
-from RulesetComparer.utils import timeUtil
+from common.data_object.json_parser.base_report_scheduler import BaseReportSchedulerParser
 
 
 class DBReportSchedulerParser(BaseReportSchedulerParser):
 
-    def __init__(self, scheduler, country_list, mail_content_type_list):
+    def __init__(self, scheduler):
         try:
             BaseReportSchedulerParser.__init__(self, scheduler.next_proceed_time)
             self.task_id = scheduler.id
-            self.base_env_id = scheduler.base_environment.id
-            self.compare_env_id = scheduler.compare_environment.id
-            self.module_id = scheduler.module.id
-            self.country_list = self.parse_country(country_list)
-            self.mail_content_type_list = self.parse_db_mail_content_type(mail_content_type_list)
+            self.left_data_center_id = scheduler.left_data_center.id
+            self.right_data_center_id = scheduler.right_data_center.id
+            self.left_environment_id = scheduler.left_environment.id
+            self.right_environment_id = scheduler.right_environment.id
+            self.left_folder = scheduler.left_folder
+            self.right_folder = scheduler.right_folder
             self.mail_list = self.get_mail_list(scheduler.mail_list)
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
             self.utc_time = self.get_utc_time(self.local_time)
         except BaseException as e:
             raise e
-
-    def parse_country(self, country_id_list):
-        return super().parse_country(country_id_list)
-
-    def parse_db_mail_content_type(self, mail_content_type_list):
-        return super().parse_db_mail_content_type(mail_content_type_list)
 
     @staticmethod
     def db_time_to_date_time(start_date_time):
