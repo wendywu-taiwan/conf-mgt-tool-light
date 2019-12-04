@@ -1,9 +1,8 @@
 import traceback
 import ast
 
-from ConfigManageTool.settings import CURRENT_TIME_ZONE
 from RulesetComparer.properties import config
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.utils.logger import *
 from common.data_object.json_builder.environment import EnvironmentBuilder
 from common.data_object.json_builder.country import CountryBuilder
@@ -11,11 +10,11 @@ from common.data_object.json_builder.user import UserBuilder
 from common.data_object.json_builder.frequency_type import FrequencyTypeBuilder
 
 
-class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):
+class RulesetSyncSchedulerBuilder(AdminConsoleRulesetBuilder):
 
     def __init__(self, user, scheduler):
         self.scheduler = scheduler
-        AdminConsoleBaseBuilder.__init__(self, user)
+        AdminConsoleRulesetBuilder.__init__(self, user)
 
     def __generate_data__(self):
         try:
@@ -79,11 +78,11 @@ class RulesetSyncSchedulerBuilder(AdminConsoleBaseBuilder):
             raise e
 
 
-class RulesetSyncSchedulersBuilder(AdminConsoleBaseBuilder):
+class RulesetSyncSchedulersBuilder(AdminConsoleRulesetBuilder):
 
     def __init__(self, user, schedulers):
         self.schedulers = schedulers
-        AdminConsoleBaseBuilder.__init__(self, user)
+        AdminConsoleRulesetBuilder.__init__(self, user)
 
     def __generate_data__(self):
         array = []

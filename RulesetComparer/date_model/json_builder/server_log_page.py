@@ -1,11 +1,11 @@
 import re
 
 from ConfigManageTool import settings
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.utils.fileManager import *
 
 
-class ServerLogPageBuilder(AdminConsoleBaseBuilder):
+class ServerLogPageBuilder(AdminConsoleRulesetBuilder):
     def __init__(self, user, log_type):
         if log_type is None:
             self.log_type = DEFAULT_LOG_TYPE
@@ -13,7 +13,7 @@ class ServerLogPageBuilder(AdminConsoleBaseBuilder):
             self.log_type = log_type
         self.log_file_name = ""
         self.file_content = ""
-        AdminConsoleBaseBuilder.__init__(self, user)
+        AdminConsoleRulesetBuilder.__init__(self, user)
 
     def __generate_data__(self):
         self.result_dict[LOG_TYPE_KEY] = self.log_type

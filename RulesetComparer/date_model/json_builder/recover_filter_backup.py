@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from common.data_object.json_builder.base import BaseBuilder
 from RulesetComparer.properties.config import *
 from RulesetComparer.utils.stringFilter import *
@@ -32,11 +32,11 @@ class RecoverFilterBackupObjBuilder(BaseBuilder):
         return rulesets_array
 
 
-class RecoverFilterBackupResultBuilder(AdminConsoleBaseBuilder):
+class RecoverFilterBackupResultBuilder(AdminConsoleRulesetBuilder):
     def __init__(self, user, log_group_list, log_list):
         self.log_group_list = log_group_list
         self.log_list = log_list
-        AdminConsoleBaseBuilder.__init__(self, user)
+        AdminConsoleRulesetBuilder.__init__(self, user)
 
     def __generate_data__(self):
         self.result_dict[KEY_RULESET_LOG_GROUPS] = self.log_group_list

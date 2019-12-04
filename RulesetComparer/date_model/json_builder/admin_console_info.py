@@ -6,9 +6,6 @@ class AdminConsoleInfoBuilder(NavigationInfoBuilder):
 
     def __init__(self, user):
         self.user = user
-        if user is None:
-            return
-
         NavigationInfoBuilder.__init__(self, user, KEY_M_RULESET)
 
     def __generate_data__(self):

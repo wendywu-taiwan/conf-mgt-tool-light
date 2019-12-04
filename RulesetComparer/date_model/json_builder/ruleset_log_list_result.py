@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.models import RulesetLogGroup
 from common.data_object.json_builder.user import UserBuilder
 from common.data_object.json_builder.environment import EnvironmentBuilder
@@ -7,15 +7,15 @@ from permission.models import Country
 from permission.utils.permission_manager import *
 
 
-class RulesetLogListResultBuilder(AdminConsoleBaseBuilder):
+class RulesetLogListResultBuilder(AdminConsoleRulesetBuilder):
     def __init__(self, user, parser, ruleset_log_list):
         try:
             self.user = user
             self.parser = parser
             self.ruleset_log_list = ruleset_log_list
-            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG)
+            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG, KEY_M_RULESET)
 
-            AdminConsoleBaseBuilder.__init__(self, user)
+            AdminConsoleRulesetBuilder.__init__(self, user)
         except Exception as e:
             raise e
 

@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.utils.timeUtil import get_frontend_format_time
 from RulesetComparer.models import RulesetLogGroup, RulesetAction
 from RulesetComparer.date_model.json_builder.ruleset_log_group import RulesetLogGroupBuilder
@@ -6,7 +6,7 @@ from RulesetComparer.date_model.json_builder.ruleset_action import RulesetAction
 from permission.utils.permission_manager import *
 
 
-class RulesetLogBuilder(AdminConsoleBaseBuilder):
+class RulesetLogBuilder(AdminConsoleRulesetBuilder):
     AUTHOR_TASK_MANAGER = "Task Manager"
 
     def __init__(self, user, data):
@@ -23,7 +23,7 @@ class RulesetLogBuilder(AdminConsoleBaseBuilder):
             self.exception = data.get(KEY_EXCEPTION)
             self.update_time = get_frontend_format_time(self.data.get(KEY_UPDATE_TIME))
             self.backup_key = self.data.get(KEY_BACKUP_KEY)
-            AdminConsoleBaseBuilder.__init__(self, user)
+            AdminConsoleRulesetBuilder.__init__(self, user)
         except Exception as e:
             raise e
 

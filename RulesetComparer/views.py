@@ -29,8 +29,8 @@ from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import ModuleSerializer
 from RulesetComparer.services import services, sync, recover, log
 from RulesetComparer.utils.mailSender import MailSender
-from RulesetComparer.date_model.json_builder.report_scheduler_info import ReportSchedulerInfoBuilder, \
-    ReportSchedulersBuilder
+from RulesetComparer.date_model.json_builder.report_scheduler_info import RulesetReportSchedulerBuilder, \
+    RulesetReportSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder, \
     RulesetSyncSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_download_page import RulesetDownloadPageBuilder
@@ -53,13 +53,13 @@ def admin_console_page(request):
 @login_required
 def admin_console_server_log_page(request, log_type=None):
     def check_visibility():
-        check_function_visibility(request, KEY_F_SERVER_LOG)
+        check_function_visibility(request, KEY_F_SERVER_LOG, KEY_M_RULESET)
 
     def get_visible_data():
         pass
 
     def after_check(visible_data):
-        check_function_visibility(request, KEY_F_SERVER_LOG)
+        check_function_visibility(request, KEY_F_SERVER_LOG, KEY_M_RULESET)
         data = server_log_page(request.user, log_type)
         return render(request, "server_log.html", data)
 
@@ -69,13 +69,13 @@ def admin_console_server_log_page(request, log_type=None):
 @login_required
 def admin_console_report_scheduler_list_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_REPORT_TASK)
+        check_function_visibility(request, KEY_F_REPORT_TASK, KEY_M_RULESET)
 
     def get_visible_data():
-        return ReportSchedulerInfo.objects.get_visible_schedulers(request.user.id)
+        return ReportSchedulerInfo.objects.get_visible_schedulers(request.user.id, KEY_M_RULESET)
 
     def after_check(visible_data):
-        data = ReportSchedulersBuilder(request.user, visible_data).get_data()
+        data = RulesetReportSchedulersBuilder(request.user, visible_data).get_data()
         return render(request, "scheduler_list.html", data)
 
     return page_permission_check(request, check_visibility, get_visible_data, after_check)
@@ -84,10 +84,10 @@ def admin_console_report_scheduler_list_page(request):
 @login_required
 def admin_console_report_scheduler_create_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_REPORT_TASK)
+        check_function_visibility(request, KEY_F_REPORT_TASK, KEY_M_RULESET)
 
     def get_visible_data():
-        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK)
+        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK, KEY_M_RULESET)
         return environments
 
     def after_check(visible_data):
@@ -100,16 +100,17 @@ def admin_console_report_scheduler_create_page(request):
 @login_required
 def admin_console_report_scheduler_update_page(request, scheduler_id):
     def check_visibility():
-        check_function_visibility(request, KEY_F_REPORT_TASK)
+        check_function_visibility(request, KEY_F_REPORT_TASK, KEY_M_RULESET)
         scheduler = ReportSchedulerInfo.objects.get(id=scheduler_id)
         check_scheduler_detail_visibility(request.user.id,
                                           scheduler.base_environment.id,
                                           scheduler.compare_environment.id,
                                           scheduler.country_list.all(),
-                                          KEY_F_REPORT_TASK)
+                                          KEY_F_REPORT_TASK,
+                                          KEY_M_RULESET)
 
     def get_visible_data():
-        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK)
+        environments = enable_environments_data(request.user.id, KEY_F_REPORT_TASK, KEY_M_RULESET)
         return environments
 
     def after_check(visible_data):
@@ -122,10 +123,10 @@ def admin_console_report_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_sync_scheduler_list_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
+        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
 
     def get_visible_data():
-        environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
         return RulesetSyncUpScheduler.objects.filter_environments_and_countries(request.user.id, environment_list)
 
     def after_check(visible_data):
@@ -138,8 +139,8 @@ def admin_console_sync_scheduler_list_page(request):
 @login_required
 def admin_console_sync_scheduler_create_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
-        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
         sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
         sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
         # check data visibility
@@ -150,7 +151,7 @@ def admin_console_sync_scheduler_create_page(request):
             raise PermissionDeniedError
 
     def get_visible_data():
-        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
         sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
         sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
         enable_sync_from_env_list = list(set(enable_environment_list).intersection(set(sync_from_environment_list)))
@@ -167,16 +168,17 @@ def admin_console_sync_scheduler_create_page(request):
 @login_required
 def admin_console_sync_scheduler_update_page(request, scheduler_id):
     def check_visibility():
-        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK)
+        check_function_visibility(request, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
         scheduler = RulesetSyncUpScheduler.objects.get(id=scheduler_id)
         check_scheduler_detail_visibility(request.user.id,
                                           scheduler.source_environment.id,
                                           scheduler.target_environment.id,
                                           scheduler.country_list.all(),
-                                          KEY_F_AUTO_SYNC_TASK)
+                                          KEY_F_AUTO_SYNC_TASK,
+                                          KEY_M_RULESET)
 
     def get_visible_data():
-        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_AUTO_SYNC_TASK, KEY_M_RULESET)
         sync_from_environment_list = enable_sync_from_environments(KEY_M_RULESET)
         sync_to_environment_list = enable_sync_to_environments(KEY_M_RULESET)
         enable_sync_from_env_list = list(set(enable_environment_list).intersection(set(sync_from_environment_list)))
@@ -193,11 +195,11 @@ def admin_console_sync_scheduler_update_page(request, scheduler_id):
 @login_required
 def admin_console_recover_ruleset_filtered_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RECOVERY)
+        check_function_visibility(request, KEY_F_RECOVERY, KEY_M_RULESET)
 
     def get_visible_data():
         environment_list = recover.filter_environment()
-        enable_environment_list = enable_environments(request.user.id, KEY_F_RECOVERY)
+        enable_environment_list = enable_environments(request.user.id, KEY_F_RECOVERY, KEY_M_RULESET)
         union_list = get_union(environment_list, enable_environment_list)
         return union_list
 
@@ -211,7 +213,7 @@ def admin_console_recover_ruleset_filtered_page(request):
 @login_required
 def admin_console_recover_ruleset_filtered_environment_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RECOVERY)
+        check_function_visibility(request, KEY_F_RECOVERY, KEY_M_RULESET)
 
     def get_visible_data():
         request_json = get_post_request_json(request)
@@ -231,7 +233,7 @@ def admin_console_recover_ruleset_filtered_environment_page(request):
 @login_required
 def admin_console_recover_ruleset_backup_list_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RECOVERY)
+        check_function_visibility(request, KEY_F_RECOVERY, KEY_M_RULESET)
 
     def get_visible_data():
         pass
@@ -248,7 +250,7 @@ def admin_console_recover_ruleset_backup_list_page(request):
 @login_required
 def admin_console_ruleset_log_list_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RULESET_LOG)
+        check_function_visibility(request, KEY_F_RULESET_LOG, KEY_M_RULESET)
 
     def get_visible_data():
         pass
@@ -265,7 +267,7 @@ def admin_console_ruleset_log_list_page(request):
 @login_required
 def admin_console_ruleset_log_list_filter_page(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RULESET_LOG)
+        check_function_visibility(request, KEY_F_RULESET_LOG, KEY_M_RULESET)
 
     def get_visible_data():
         pass
@@ -282,7 +284,7 @@ def admin_console_ruleset_log_list_filter_page(request):
 @login_required
 def admin_console_ruleset_log_list_page_change(request):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RULESET_LOG)
+        check_function_visibility(request, KEY_F_RULESET_LOG, KEY_M_RULESET)
 
     def get_visible_data():
         pass
@@ -298,7 +300,7 @@ def admin_console_ruleset_log_list_page_change(request):
 @login_required
 def admin_console_ruleset_log_detail_page(request, log_id):
     def check_visibility():
-        check_function_visibility(request, KEY_F_RULESET_LOG)
+        check_function_visibility(request, KEY_F_RULESET_LOG, KEY_M_RULESET)
         check_ruleset_log_detail_visibility(request.user.id, log_id)
 
     def get_visible_data():
@@ -509,7 +511,7 @@ def apply_ruleset_to_server(request):
 def get_rulesets_report_job(request, scheduler_id):
     def after_check():
         scheduler_info = ReportSchedulerInfo.objects.get(id=scheduler_id)
-        scheduler_data = ReportSchedulerInfoBuilder(request.user, scheduler_info).get_data()
+        scheduler_data = RulesetReportSchedulerBuilder(request.user, scheduler_info).get_data()
         result = ResponseBuilder(data=scheduler_data).get_data()
         response = JsonResponse(data=result)
         return response
@@ -522,7 +524,7 @@ def get_rulesets_report_jobs(request):
         schedulers = report_scheduler.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
-            data_builder = ReportSchedulerInfoBuilder(request.user, scheduler)
+            data_builder = RulesetReportSchedulerBuilder(request.user, scheduler)
             data_list.append(data_builder.get_data())
         result = ResponseBuilder(data=data_list).get_data()
         return JsonResponse(data=result)
@@ -535,7 +537,7 @@ def create_ruleset_report_job(request):
         request_json = get_post_request_json(request)
         info_log("API", "create report job scheduler, request json =" + str(request_json))
         scheduler_info = report_scheduler.create_scheduler(request_json, request.user)
-        info_data = ReportSchedulerInfoBuilder(request.user, scheduler_info).get_data()
+        info_data = RulesetReportSchedulerBuilder(request.user, scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
 
@@ -547,7 +549,7 @@ def update_ruleset_report_job(request):
         request_json = get_post_request_json(request)
         info_log("API", "update report job scheduler, request json =" + str(request_json))
         scheduler_info = report_scheduler.update_report_scheduler(request_json, request.user)
-        info_data = ReportSchedulerInfoBuilder(request.user, scheduler_info).get_data()
+        info_data = RulesetReportSchedulerBuilder(request.user, scheduler_info).get_data()
         result = ResponseBuilder(data=info_data).get_data()
         return JsonResponse(data=result)
 
@@ -558,7 +560,7 @@ def update_rulesets_report_status(request):
     def after_check():
         request_json = get_post_request_json(request)
         scheduler = report_scheduler.update_scheduler_status(request_json, request.user)
-        data = ReportSchedulerInfoBuilder(request.user, scheduler).get_data()
+        data = RulesetReportSchedulerBuilder(request.user, scheduler).get_data()
         result = ResponseBuilder(data=data).get_data()
         return JsonResponse(data=result)
 

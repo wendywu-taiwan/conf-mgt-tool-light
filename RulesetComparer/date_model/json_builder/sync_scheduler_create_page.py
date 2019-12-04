@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleBaseBuilder
+from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from common.data_object.json_builder.country import CountriesBuilder
 from common.data_object.json_builder.environment import EnvironmentsBuilder
 from common.data_object.json_builder.frequency_type import FrequencyTypesBuilder
@@ -8,7 +8,7 @@ from RulesetComparer.properties.key import *
 from RulesetComparer.properties.config import RULESET_SYNC_UP_ACTION
 
 
-class SyncSchedulerCreatePageBuilder(AdminConsoleBaseBuilder):
+class SyncSchedulerCreatePageBuilder(AdminConsoleRulesetBuilder):
 
     def __init__(self, user, sync_from_environments, sync_to_environments):
         self.git_environment = Environment.objects.get(name=GIT_NAME)
@@ -18,7 +18,7 @@ class SyncSchedulerCreatePageBuilder(AdminConsoleBaseBuilder):
         self.frequency_types = FrequencyType.objects.all()
         self.sync_from_environments = sync_from_environments
         self.sync_to_environments = sync_to_environments
-        AdminConsoleBaseBuilder.__init__(self, user)
+        AdminConsoleRulesetBuilder.__init__(self, user)
 
     def __generate_data__(self):
         self.result_dict[SOURCE_ENVIRONMENT] = EnvironmentsBuilder(ids=self.sync_from_environments).get_data()
