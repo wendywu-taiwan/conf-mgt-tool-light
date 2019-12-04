@@ -83,16 +83,18 @@ class ReportSchedulerInfoManager(models.Manager):
         task.save()
         return task
 
-    def get_visible_schedulers(self, user_id):
-        enable_environment_ids = enable_environments(user_id, KEY_F_REPORT_TASK)
+    def get_visible_schedulers(self, user_id, module):
+        enable_environment_ids = enable_environments(user_id, KEY_F_REPORT_TASK, module)
         query = Q()
+        query.add(Q(module__name=module), Q.AND)
+
         for environment_id in enable_environment_ids:
             sub_query = Q()
             country_ids = enable_countries(user_id, environment_id)
             sub_query.add(Q(base_environment__in=enable_environment_ids), Q.AND)
             sub_query.add(Q(compare_environment__in=enable_environment_ids), Q.AND)
             sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
-            query.add(sub_query, Q.OR)
+            query.add(sub_query, Q.AND)
 
         scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
         array = []

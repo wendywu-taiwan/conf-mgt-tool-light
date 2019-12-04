@@ -12,9 +12,9 @@ LOG_CLASS = "permission_manager"
 FUNCTIONS = [KEY_F_SERVER_LOG, KEY_F_RULESET_LOG, KEY_F_REPORT_TASK, KEY_F_AUTO_SYNC_TASK, KEY_F_RECOVERY]
 
 
-def check_function_visibility(request, function_key):
-    function = Function.objects.get(name=function_key)
-    if not check_function_enable(request.user.id, function.id):
+def check_function_visibility(request, function_key, module_key):
+    function_id_list = Function.objects.filter(name=function_key, module__name=module_key).values_list("id", flat=True)
+    if not check_function_enable(request.user.id, function_id_list[0]):
         raise PermissionDeniedError()
 
 
@@ -34,11 +34,11 @@ def enable_sync_to_environments(module_name):
     return environment_list
 
 
-def enable_environments(user_id, function):
+def enable_environments(user_id, function_key, module_key):
     user = User.objects.get(id=user_id)
-    function = Function.objects.get(name=function)
+    function_id_list = Function.objects.filter(name=function_key, module__name=module_key).values_list("id", flat=True)
     role_permission_list = UserRolePermission.objects.filter(user=user).values_list("role_permission_id", flat=True)
-    role_permission_list = RoleFunctionPermission.objects.filter(function_id=function.id, visible=1,
+    role_permission_list = RoleFunctionPermission.objects.filter(function_id=function_id_list[0], visible=1,
                                                                  role_permission__in=role_permission_list).values_list(
         "role_permission_id", flat=True)
     enable_environments_ids = RolePermission.objects.filter(id__in=role_permission_list,
@@ -47,8 +47,8 @@ def enable_environments(user_id, function):
     return enable_environments_ids
 
 
-def enable_environments_data(user_id, function):
-    enable_environment_ids = enable_environments(user_id, function)
+def enable_environments_data(user_id, function_key, module_key):
+    enable_environment_ids = enable_environments(user_id, function_key, module_key)
     environment_data = EnvironmentsBuilder(ids=enable_environment_ids).get_data()
     return environment_data
 

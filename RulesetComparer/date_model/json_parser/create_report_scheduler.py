@@ -46,7 +46,7 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParse
         return super().local_date_time_bigger(local_date_time, current_date_time)
 
     def check_permission(self):
-        function_id = Function.objects.get(name=KEY_F_REPORT_TASK).id
+        function_id = Function.objects.get(name=KEY_F_REPORT_TASK, module__name=KEY_M_RULESET).id
 
         for country_id in self.country_list:
             is_base_editable = is_editable(self.user.id, self.base_env_id, country_id, function_id)

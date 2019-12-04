@@ -24,7 +24,7 @@ class RecoverRulesetsParser(BaseApplyRulesetParser, PermissionParser):
         self.ruleset_path = get_backup_path_server_version(self.backup_key)
 
     def check_permission(self):
-        function_id = Function.objects.get(name=KEY_F_RECOVERY).id
+        function_id = Function.objects.get(name=KEY_F_RECOVERY, module__name=KEY_M_RULESET).id
         target_env_id = self.target_environment.id
         country_id = self.country.id
 

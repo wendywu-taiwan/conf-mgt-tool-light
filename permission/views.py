@@ -30,7 +30,7 @@ def permission_check(request, executor):
 @login_required
 def permission_index_page(request):
     def after_check():
-        check_function_visibility(request, KEY_F_USER_ROLE)
+        check_function_visibility(request, KEY_F_USER_ROLE, KEY_M_SETTING)
         data = {KEY_NAVIGATION_INFO: SettingInfoBuilder(request.user).get_data()}
         return render(request, "setting_base.html", data)
 
@@ -40,7 +40,7 @@ def permission_index_page(request):
 @login_required
 def setting_user_role_list_page(request):
     def after_check():
-        check_function_visibility(request, KEY_F_USER_ROLE)
+        check_function_visibility(request, KEY_F_USER_ROLE, KEY_M_SETTING)
         data = get_user_role_list(request.user)
         return render(request, "user_role_list.html", data)
 
@@ -50,7 +50,7 @@ def setting_user_role_list_page(request):
 @login_required
 def setting_user_role_edit_page(request, user_id):
     def after_check():
-        check_function_visibility(request, KEY_F_USER_ROLE)
+        check_function_visibility(request, KEY_F_USER_ROLE, KEY_M_SETTING)
         data = get_user_role_edit(request.user, user_id)
         return render(request, "user_role_edit.html", data)
 
@@ -60,7 +60,7 @@ def setting_user_role_edit_page(request, user_id):
 @login_required
 def edit_user_role(request):
     def after_check():
-        check_function_visibility(request, KEY_F_USER_ROLE)
+        check_function_visibility(request, KEY_F_USER_ROLE, KEY_M_SETTING)
         json_data = get_post_request_json(request)
         edit_user_role_data(json_data)
         result = ResponseBuilder().get_data()
@@ -72,7 +72,7 @@ def edit_user_role(request):
 @login_required
 def setting_role_permission_list_page(request):
     def after_check():
-        check_function_visibility(request, KEY_F_ROLE_PERMISSION)
+        check_function_visibility(request, KEY_F_ROLE_PERMISSION, KEY_M_SETTING)
         data = get_role_permission_list(request.user)
         return render(request, "role_permission_list.html", data)
 
@@ -82,7 +82,7 @@ def setting_role_permission_list_page(request):
 @login_required
 def setting_role_permission_edit_page(request, environment_id):
     def after_check():
-        check_function_visibility(request, KEY_F_ROLE_PERMISSION)
+        check_function_visibility(request, KEY_F_ROLE_PERMISSION, KEY_M_SETTING)
         data = get_role_permission_edit(request.user, environment_id)
         return render(request, "role_permission_edit.html", data)
 
@@ -92,7 +92,7 @@ def setting_role_permission_edit_page(request, environment_id):
 @login_required
 def edit_role_permission(request):
     def after_check():
-        check_function_visibility(request, KEY_F_ROLE_PERMISSION)
+        check_function_visibility(request, KEY_F_ROLE_PERMISSION, KEY_M_SETTING)
         json_data = get_post_request_json(request)
         edit_role_permission_data(json_data)
         result = ResponseBuilder().get_data()

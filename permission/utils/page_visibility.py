@@ -8,8 +8,8 @@ from common.utils.utility import *
 from permission.models import UserRolePermission, RoleFunctionPermission, Function
 
 
-def check_scheduler_detail_visibility(user_id, env_a_id, env_b_id, country_ids, function_key):
-    function_id = Function.objects.get(name=function_key).id
+def check_scheduler_detail_visibility(user_id, env_a_id, env_b_id, country_ids, function_key, module_key):
+    function_id = Function.objects.get(name=function_key, module__name=module_key).id
     user_roles = UserRolePermission.objects.filter(user_id=user_id).values_list("role_permission_id", flat=True)
 
     query = Q()
@@ -31,7 +31,7 @@ def check_scheduler_detail_visibility(user_id, env_a_id, env_b_id, country_ids, 
 
 
 def check_ruleset_log_detail_visibility(user_id, log_id):
-    function_id = Function.objects.get(name=KEY_F_RULESET_LOG).id
+    function_id = Function.objects.get(name=KEY_F_RULESET_LOG, module__name=KEY_M_RULESET).id
     user_roles = UserRolePermission.objects.filter(user_id=user_id).values_list("role_permission_id", flat=True)
     log = RulesetLog.objects.get_ruleset_log(log_id)
     ruleset_log_group = RulesetLogGroup.objects.get(id=log.get(KEY_RULESET_LOG_GROUP_ID))
@@ -52,5 +52,3 @@ def check_ruleset_log_detail_visibility(user_id, log_id):
 
     if len(get_union(user_roles, a_visible_roles)) == 0 or len(get_union(user_roles, b_visible_roles)) == 0:
         raise PermissionDeniedError()
-
-

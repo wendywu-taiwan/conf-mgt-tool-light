@@ -31,7 +31,7 @@ class GetRulesetLogListParser:
                 self.limit = json_data.get("limit")
 
             self.user = user
-            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG)
+            self.enable_environment_ids = enable_environments(self.user.id, KEY_F_RULESET_LOG, KEY_M_RULESET)
             self.new_filter = new_filter
 
             self.order_descend = self.is_descend_order()
