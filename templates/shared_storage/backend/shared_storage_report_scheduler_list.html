@@ -1,80 +1,106 @@
-{% extends "admin_console_base.html" %}
+{% extends "shared_storage_admin_console_base.html" %}
 {% load static from staticfiles %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-report-scheduler-list.css' %}" rel="stylesheet">
+    <script src="{% static '/js/shared_storage/download_file_component.js' %}"></script>
+{% endblock %}
 {% block content %}
     <div id="task_list_container" class="custom_container admin_console_block_background">
         <div id="task_list_header_div" class="row no_row_margin">
             <div class="component_title">TASK</div>
             <div id="create_task_button_div">
-                <a href="{% url 'RulesetComparer:task-create' %}" class="btn btn-block btn-lg btn-primary">Create</a>
+                <a href="{% url 'shared_storage:report-scheduler-create-page' %}"
+                   class="btn btn-block btn-lg btn-primary">Create</a>
             </div>
         </div>
         <div class="title_div row">
-            <div id="task_title_key" class="title_text vertical_align_middle">
+            <div class="key_div_width title_text vertical_align_middle">
                 ID
             </div>
-            <div id="task_title_environment" class="title_text vertical_align_middle">
+            <div class="data_center_div_width title_text vertical_align_middle">
+                Data Center
+            </div>
+            <div class="environment_div_width title_text vertical_align_middle">
                 Environment
             </div>
-            <div id="task_title_country" class="title_text vertical_align_middle">
-                Countries
+            <div class="folder_div_width title_text vertical_align_middle">
+                Folder
             </div>
-            <div id="task_title_last_time" class="title_text vertical_align_middle">
+            <div class="time_div_width title_text vertical_align_middle">
                 Last Proceed Time
             </div>
-            <div id="task_title_next_time" class="title_text vertical_align_middle">
+            <div class="time_div_width title_text vertical_align_middle">
                 Next Proceed Time
             </div>
-            <div id="task_title_status" class="title_text vertical_align_middle">
+            <div class="status_div_width title_text vertical_align_middle">
                 Status
             </div>
-            <div id="task_title_action" class="title_text vertical_align_middle">
+            <div class="title_text vertical_align_middle">
             </div>
         </div>
 
         {% for task in data %}
             <div class="scheduler_task row">
-                <div id="task_key_div" class="vertical_align_middle">{{ task.task_id }}</div>
-                <div id="task_environment_div" class="vertical_align_middle">
-                    <div id="base_env_div" class="row">
-                        <img class="task_environment_icon" src="{% static '/icons/scheduler_environment.png' %}">
+                <div class="key_div_width vertical_align_middle">{{ task.task_id }}</div>
+                <div id="task_data_center_div" class="data_center_div_width vertical_align_middle">
+                    <div id="left_data_center_div" class="row no-row-margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_data_center.png' %}">
                         <div class="environment_text vertical_align_middle">
-                            {{ task.base_environment.name }}
+                            {{ task.left_data_center.name }}
                         </div>
                     </div>
-                    <div id="compare_env_div" class="row">
-                        <img class="task_environment_icon" src="{% static '/icons/scheduler_environment.png' %}">
+                    <div id="right_data_center_div" class="row no-row-margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_data_center.png' %}">
                         <div class="environment_text vertical_align_middle">
-                            {{ task.compare_environment.name }}
+                            {{ task.right_data_center.name }}
                         </div>
                     </div>
 
                 </div>
-                <div class="country_list_div">
-                    <div class="row no_row_margin">
-                        {% for country in task.country_list %}
-                            <div class="country_image_div">
-                                <img class="task_nation_flag"
-                                     src="{% static '/icons/national_flag/'|add:country.icon_file_name %}">
-                                <div class="country_name_tips">{{ country.name }}</div>
-                            </div>
-                        {% endfor %}
+                <div class="environment_div_width vertical_align_middle">
+                    <div id="base_env_div" class="row no-row-margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_environment.png' %}">
+                        <div class="environment_text vertical_align_middle">
+                            {{ task.left_environment.name }}
+                        </div>
+                    </div>
+                    <div id="compare_env_div" class="row no-row-margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_environment.png' %}">
+                        <div class="environment_text vertical_align_middle">
+                            {{ task.right_environment.name }}
+                        </div>
+                    </div>
+
+                </div>
+                <div class="folder_div_width">
+                    <div id="left_folder_div" class="row no_row_margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_folder.png' %}">
+                        <div class="environment_text vertical_align_middle">
+                            {{ task.left_folder }}
+                        </div>
+                    </div>
+                    <div id="right_folder_div" class="row no_row_margin">
+                        <img class="task_icon" src="{% static '/icons/scheduler_folder.png' %}">
+                        <div class="environment_text vertical_align_middle">
+                            {{ task.right_folder }}
+                        </div>
                     </div>
                 </div>
-                <div id="task_last_proceed_time_div" class="task_proceed_time_div">
+                <div class="time_div_width vertical_align_middle">
                     <div id="last_proceed_time" class="vertical_align_middle">
                         <div class="task_proceed_time_text">
                             {{ task.last_proceed_time }}
                         </div>
                     </div>
                 </div>
-                <div id="task_next_proceed_time_div" class="task_proceed_time_div">
+                <div class="time_div_width vertical_align_middle">
                     <div id="next_proceed_time" class="vertical_align_middle">
                         <div class="task_proceed_time_text">
                             {{ task.next_proceed_time }}
                         </div>
                     </div>
                 </div>
-                <div id="task_status_div">
+                <div class="status_div_width vertical_align_middle">
                     {% if task.enable %}
                         <div id="task_status_in_progress" class="cursor_pointer"
                              onclick="stopScheduler('{{ task.task_id }}')">Running
@@ -87,7 +113,7 @@
                 </div>
                 <div id="task_action_div" class="row no_row_margin">
                     <div>
-                        <a href="{% url 'RulesetComparer:task-update' task.task_id %}" class="btn">
+                        <a href="{% url 'shared_storage:report-scheduler-update-page' task.task_id %}" class="btn">
                             <img class="task_action_icon" src="{% static '/icons/scheduler_edit.png' %}">
                         </a>
                     </div>
@@ -121,7 +147,7 @@
                             showErrorDialog(message);
                         } else {
                             successDialog("delete task success", function () {
-                                window.location = "{% url 'RulesetComparer:report-scheduler-list' %}";
+                                window.location = "{% url 'shared_storage:report-scheduler-list-page' %}";
                             });
                         }
                     }, function (response) {
@@ -160,7 +186,7 @@
                 } else {
                     successDialog("update scheduler success", function () {
                         console.log(response);
-                        window.location = "{% url 'RulesetComparer:report-scheduler-list' %}";
+                        window.location = "{% url 'shared_storage:report-scheduler-list-page' %}";
                     });
                 }
             }, function (response) {
