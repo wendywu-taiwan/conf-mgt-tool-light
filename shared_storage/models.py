@@ -64,15 +64,10 @@ class SharedStorageReportSchedulerManager(models.Manager):
     def get_visible_schedulers(self, user_id):
         enable_environment_ids = enable_environments(user_id, KEY_F_REPORT_TASK, KEY_M_SHARED_STORAGE)
         query = Q()
-        query.add(Q(module__name=KEY_M_SHARED_STORAGE), Q.AND)
-
-        for environment_id in enable_environment_ids:
-            sub_query = Q()
-            country_ids = enable_countries(user_id, environment_id)
-            sub_query.add(Q(base_environment__in=enable_environment_ids), Q.AND)
-            sub_query.add(Q(compare_environment__in=enable_environment_ids), Q.AND)
-            sub_query.add(Q(country_list__country__id__in=country_ids), Q.AND)
-            query.add(sub_query, Q.AND)
+        sub_query = Q()
+        sub_query.add(Q(left_environment__in=enable_environment_ids), Q.AND)
+        sub_query.add(Q(right_environment__in=enable_environment_ids), Q.AND)
+        query.add(sub_query, Q.AND)
 
         scheduler_ids = self.filter(query).values_list("id", flat=True).distinct().order_by("id")
         array = []
@@ -84,18 +79,18 @@ class SharedStorageReportSchedulerManager(models.Manager):
 
 class SharedStorageReportScheduler(models.Model):
     id = models.AutoField(primary_key=True)
-    left_data_center = models.ForeignKey(FTPRegion, related_name='report_task_left_data_center_id',
+    left_data_center = models.ForeignKey(FTPRegion, related_name='s_report_scheduler_left_data_center_id',
                                          on_delete=models.PROTECT)
-    right_data_center = models.ForeignKey(FTPRegion, related_name='report_task_right_data_center_id',
+    right_data_center = models.ForeignKey(FTPRegion, related_name='s_report_scheduler_right_data_center_id',
                                           on_delete=models.PROTECT)
-    left_environment = models.ForeignKey(Environment, related_name='report_task_left_environment_id',
+    left_environment = models.ForeignKey(Environment, related_name='s_report_scheduler_left_environment_id',
                                          on_delete=models.PROTECT)
-    right_environment = models.ForeignKey(Environment, related_name='report_task_right_environment_id',
+    right_environment = models.ForeignKey(Environment, related_name='s_report_scheduler_right_environment_id',
                                           on_delete=models.PROTECT)
     left_folder = models.TextField()
     right_folder = models.TextField()
     mail_list = models.TextField()
-    frequency_type = models.ForeignKey(FrequencyType, related_name='report_scheduler_frequency_type',
+    frequency_type = models.ForeignKey(FrequencyType, related_name='s_report_scheduler_frequency_type',
                                        on_delete=models.PROTECT, null=True)
     interval = models.IntegerField()
     last_proceed_time = models.DateTimeField(null=True)

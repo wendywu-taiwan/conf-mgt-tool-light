@@ -139,7 +139,7 @@
                         "id": task_id
                     };
 
-                    doPOST("{% url 'RulesetComparer:delete-scheduler' %}", post_body, function (response) {
+                    doPOST("{% url 'shared_storage:delete-report-scheduler' %}", post_body, function (response) {
                         let statusCode = response["status_code"];
                         let message = response["message"];
 
@@ -177,7 +177,7 @@
                 "enable": status
             };
 
-            doPOST("{% url 'RulesetComparer:update-rulesets-report-job-status' %}", post_body, function (response) {
+            doPOST("{% url 'shared_storage:update-report-scheduler-status' %}", post_body, function (response) {
                 let statusCode = response["status_code"];
                 let message = response["message"];
 

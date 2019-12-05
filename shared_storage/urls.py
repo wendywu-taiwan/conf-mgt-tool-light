@@ -40,8 +40,27 @@ filter_pattern = [
          name="download-filter-latest-version-folder"),
 ]
 
+admin_console_pattern = [
+    path('', views.admin_console_page, name="admin-console-index"),
+    path('report/scheduler/list', views.admin_console_report_scheduler_list_page, name="report-scheduler-list-page"),
+    path('report/scheduler/create', views.admin_console_report_scheduler_create_page,
+         name="report-scheduler-create-page"),
+    path('report/scheduler/update/<int:scheduler_id>', views.admin_console_report_scheduler_update_page,
+         name="report-scheduler-update-page"),
+]
+
+admin_console_report_api_pattern = [
+    path('create', views.create_report_scheduler_job, name="create-report-scheduler"),
+    path('update', views.update_report_scheduler_job, name="update-report-scheduler"),
+    path('delete', views.delete_report_scheduler_job, name="delete-report-scheduler"),
+    path('update_status', views.update_report_scheduler_status, name="update-report-scheduler-status"),
+]
+
 urlpatterns = [
     path('shared_storage/compare/', include(compare_pattern)),
     path('shared_storage/download/', include(download_pattern)),
     path('shared_storage/filter/', include(filter_pattern)),
+    path('shared_storage/report/scheduler/', include(admin_console_report_api_pattern)),
+    path('admin_console/shared_storage/', include(admin_console_pattern)),
+
 ]
