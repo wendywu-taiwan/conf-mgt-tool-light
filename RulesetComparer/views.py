@@ -29,7 +29,7 @@ from RulesetComparer.properties import key as key
 from RulesetComparer.serializers.serializers import ModuleSerializer
 from RulesetComparer.services import services, sync, recover, log
 from RulesetComparer.utils.mailSender import MailSender
-from RulesetComparer.date_model.json_builder.report_scheduler_info import RulesetReportSchedulerBuilder, \
+from RulesetComparer.date_model.json_builder.ruleset_report_scheduler import RulesetReportSchedulerBuilder, \
     RulesetReportSchedulersBuilder
 from RulesetComparer.date_model.json_builder.ruleset_sync_scheduler import RulesetSyncSchedulerBuilder, \
     RulesetSyncSchedulersBuilder

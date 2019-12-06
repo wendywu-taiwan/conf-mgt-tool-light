@@ -1,4 +1,4 @@
-from RulesetComparer.date_model.json_builder.report_scheduler_info import RulesetReportSchedulerBuilder
+from RulesetComparer.date_model.json_builder.ruleset_report_scheduler import RulesetReportSchedulerBuilder
 from RulesetComparer.utils.logger import *
 from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.date_model.json_builder.mail_content_type import MailContentTypesBuilder
