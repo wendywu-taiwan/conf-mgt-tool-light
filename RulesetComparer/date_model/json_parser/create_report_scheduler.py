@@ -1,10 +1,10 @@
-from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
 from permission.utils.permission_manager import *
 from common.models import FrequencyType
+from common.data_object.json_parser.base_report_scheduler import BaseReportSchedulerParser
 
 
-class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParser):
+class CreateReportSchedulerParser(BaseReportSchedulerParser, PermissionParser):
 
     def __init__(self, json_data, user):
         try:
@@ -13,8 +13,8 @@ class CreateReportSchedulerTaskParser(BaseReportSchedulerParser, PermissionParse
             self.task_id = json_data.get("id")
             self.base_env_id = json_data.get("base_environment_id")
             self.compare_env_id = json_data.get("compare_environment_id")
-            self.module_id = json_data.get("module_id")
-            self.module_id = 1
+            self.module = Module.objects.get(name=KEY_M_RULESET)
+            self.module_id = self.module.id
             self.country_list = self.parse_country_id_list(json_data.get("country_list"))
             self.mail_content_type_list = self.parse_mail_content_type_list(json_data.get("mail_content_type_list"))
             self.mail_list = json_data.get("mail_list")

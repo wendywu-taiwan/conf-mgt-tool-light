@@ -1,0 +1,116 @@
+{% extends "shared_storage_admin_console_base.html" %}
+{% load static from staticfiles %}
+{% block resource %}
+    <link href="{% static '/css/shared_storage/shared-storage-report-scheduler-create.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="{% static '/js/shared_storage/shared_storage_report_scheduler_create.js' %}"></script>
+    <script src="{% static '/js/shared_storage/select_to_compare.js' %}"></script>
+
+{% endblock %}
+
+{% block content %}
+    <div id="create_report_task_container" class="custom_container admin_console_block_background">
+        <div id="header_div" class="row">
+            <div class="page_title_div">CREATE TASK</div>
+            <div id="action_button_div" class="row no_row_margin">
+                <div id="create_button_div">
+                    <a id="create_btn" class="btn btn-block btn-lg btn-warning" onclick="createBtnOnClick()">SAVE
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="row no-row-margin">
+            <div id="left_data_div">
+                <div id="left_region_dropdown_div" class="dropdown-block">
+                    <div class="drop_down_label_text" for="select_country">Left Data Center :</div>
+                    <div id="left_select_region" class="custom-btn-group-1 btn-group">
+                        <button id="left_select_region_btn"
+                                class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+                                type="button" data-toggle="dropdown">
+                            Select
+                        </button>
+                        <ul id="left_select_region_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for region in regions %}
+                                <li value="{{ region.id }}"><a href="#">{{ region.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="left_environment_dropdown_div" class="dropdown-block">
+                    {% with type="environment" side="left" title="Left Environment :" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+                <div id="left_folder_dropdown_div" class="dropdown-block">
+                    {% with type="folder" side="left" title="Left Folder :" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div id="right_data_div">
+                <div id="right_region_dropdown_div" class="dropdown-block">
+                    <div class="drop_down_label_text" for="select_country">Right Data Center :</div>
+                    <div id="right_select_region" class="custom-btn-group-1 btn-group">
+                        <button id="right_select_region_btn"
+                                class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
+                                type="button" data-toggle="dropdown">
+                            Select
+                        </button>
+                        <ul id="right_select_region_list" class="dropdown-limit dropdown-menu dropdown-menu-inverse"
+                            role="menu">
+                            {% for region in regions %}
+                                <li value="{{ region.id }}"><a href="#">{{ region.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div id="right_environment_dropdown_div" class="dropdown-block">
+                    {% with type="environment" side="right" title="Right Environment :" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+                <div id="right_folder_dropdown_div" class="dropdown-block">
+                    {% with type="folder" side="right" title="Right Folder :" data="" %}
+                        {% include 'select_to_compare_dropdown.html' %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+
+        <div id="time_select_group_div" class="row no_row_margin">
+            {% include 'date_time_picker.html' %}
+        </div>
+        <div id="repeat_frequency_div">
+            {% include 'repeat_frequency_row.html' %}
+        </div>
+
+        <div id="mail_receiver_list_div">
+            <div class="block_title_div">Receivers :</div>
+            <div>
+                <div id="mail_receiver_input_div" class="tagsinput-primary">
+                    <input id="mail_receiver_input" name="tagsinput" class="tagsinput" data-role="tagsinput"
+                           placeholder="enter email..."
+                           style="display: none;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        init("{% url 'shared_storage:create-report-scheduler' %}",
+            "{% url 'shared_storage:report-scheduler-list-page' %}");
+        createBtnOnClick = function () {
+            createTask();
+        };
+        onRegionSelected = function (side, regionId) {
+            filterEnvironments(side, regionId, "{% url 'shared_storage:compare-filter-region-environments' %}");
+        };
+        onEnvironmentSelected = function (side) {
+            filterFolders(side, "{% url 'shared_storage:compare-filter-environment-folders' %}");
+        };
+
+    </script>
+{% endblock %}

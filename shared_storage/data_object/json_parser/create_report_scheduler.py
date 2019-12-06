@@ -4,8 +4,9 @@ from common.data_object.json_parser.base_report_scheduler import BaseReportSched
 
 class CreateReportSchedulerParser(BaseReportSchedulerParser):
 
-    def __init__(self, json_data):
+    def __init__(self, json_data, host):
         BaseReportSchedulerParser.__init__(self, json_data.get("start_date_time"))
+        self.request_host = host
         self.task_id = json_data.get("id")
         self.left_data_center_id = json_data.get("left_data_center_id")
         self.right_data_center_id = json_data.get("right_data_center_id")
