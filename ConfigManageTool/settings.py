@@ -160,11 +160,12 @@ GIT_BRANCH_MASTER = 'master'
 GIT_BRANCH_DEVELOP = 'develop'
 
 # region instance setting
+CURRENT_REGION = conf.CURRENT_REGION
 LOGIN_URL = "/" + conf.URL_PRE_PATH + 'ConfigManageTool/accounts/login/'
 LOGOUT_REDIRECT_URL = "/" + conf.URL_PRE_PATH + 'ConfigManageTool/accounts/login/'
 LOGIN_REDIRECT_URL = "/" + conf.URL_PRE_PATH + 'ConfigManageTool/admin_console/ruleset/'
 STATIC_URL = conf.STATIC_URL
-CURRENT_TIME_ZONE = TIME_ZONE_SET.get(conf.CURRENT_REGION)
+CURRENT_TIME_ZONE = TIME_ZONE_SET.get(CURRENT_REGION)
 URL_PRE_PATH = conf.URL_PRE_PATH
 PRELOAD_DATA = conf.PRELOAD_DATA
 AUTH_DATA = conf.AUTH_DATA

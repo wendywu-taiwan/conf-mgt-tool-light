@@ -1,37 +1,32 @@
 import traceback
 from shutil import copyfile
-from ConfigManageTool.settings import CURRENT_TIME_ZONE
+
+from RulesetComparer.models import ReportSchedulerInfo
+from common.task.daily_report import DailyReportTask
 from RulesetComparer.task.compare_ruleset_list import CompareRuleListTask
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils import fileManager, timeUtil
 from RulesetComparer.utils.mailSender import MailSender
 from RulesetComparer.properties import config
 from django.template.loader import render_to_string
-from RulesetComparer.models import Environment, ReportSchedulerInfo
 from RulesetComparer.date_model.json_builder.compare_report_info import CompareReportInfoBuilder
-from RulesetComparer.task.base_scheduler import BaseSchedulerTask
 from common.properties.config import RULESET_ZIP_PATH, RULESET_ZIP_FILE_PATH, \
     RULESET_COMPARE_RESULT_ZIP_RESOURCE, RULESET_COMPARE_RESULT_HTML, RULESET_COMPARE_RESULT_FOLDER_PATH
 from RulesetComparer.utils.fileManager import create_folder, archive_file_with_arcname, clear_folder
+from permission.models import Environment
 
 
-class DailyCompareReportTask(BaseSchedulerTask):
+class RulesetDailyReportTask(DailyReportTask):
 
     def __init__(self, parser):
-        BaseSchedulerTask.__init__(self)
-        self.logger = "DailyCompareReportTask(%s)" % parser.task_id
-        self.task_id = parser.task_id
+        self.logger = "RulesetDailyReportTask(%s)" % parser.task_id
         self.base_env = Environment.objects.get(id=parser.base_env_id)
         self.compare_env = Environment.objects.get(id=parser.compare_env_id)
         self.country_list = parser.country_list
         self.mail_content_type_list = parser.mail_content_type_list
-        self.mail_list = parser.mail_list
-        self.file_name_list = list()
-        self.mail_sender = None
-        self.info_builder = None
+        DailyReportTask.__init__(self, parser, ReportSchedulerInfo)
 
     def set_scheduled_job(self, scheduled_job):
-        info_log(self.logger, "set scheduled job:" + str(scheduled_job.id))
         super().set_scheduled_job(scheduled_job)
 
     def run_task(self):
@@ -64,7 +59,8 @@ class DailyCompareReportTask(BaseSchedulerTask):
                     create_folder(copy_path)
 
                     resource_full_path = RULESET_COMPARE_RESULT_HTML % task.compare_hash_key
-                    copy_full_path = RULESET_COMPARE_RESULT_ZIP_RESOURCE % (task.compare_hash_key, task.compare_hash_key)
+                    copy_full_path = RULESET_COMPARE_RESULT_ZIP_RESOURCE % (
+                        task.compare_hash_key, task.compare_hash_key)
                     copyfile(resource_full_path, copy_full_path)
 
                     # archive single folder report
@@ -85,50 +81,16 @@ class DailyCompareReportTask(BaseSchedulerTask):
                 error_log(traceback.format_exc())
 
     def task_enable(self):
-        task = ReportSchedulerInfo.objects.get(id=self.task_id)
-        if task.enable == 1:
-            return True
-        else:
-            return False
+        return super().task_enable()
 
     def task_exist(self):
-        task_count = ReportSchedulerInfo.objects.filter(id=self.task_id).count()
-        if task_count == 0:
-            return False
-        else:
-            return True
+        return super().task_exist()
 
     def has_new_job(self):
-        try:
-            task = ReportSchedulerInfo.objects.get(id=self.task_id)
-            db_job_id = task.job_id
-            current_job_id = self.scheduled_job.id
-            info_log(self.logger, "db_job_id: " + str(db_job_id))
-            info_log(self.logger, "current_job_id: " + str(current_job_id))
-            if db_job_id == current_job_id:
-                return False
-            else:
-                return True
-        except Exception as e:
-            error_log(traceback.format_exc())
-            error_log(e)
-            raise e
+        return super().has_new_job()
 
     def update_next_run_time(self):
-        if ReportSchedulerInfo.objects.filter(id=self.task_id).count() == 0:
-            return
-
-        time_format = config.TIME_FORMAT.get('db_time_format')
-        next_date_time = self.scheduled_job.next_run_time
-        next_proceed_time = timeUtil.date_time_change_format(next_date_time, time_format)
-        utc_next_proceed_time = timeUtil.local_time_to_utc(next_proceed_time, CURRENT_TIME_ZONE)
-
-        task = ReportSchedulerInfo.objects.get(id=self.task_id)
-        task.last_proceed_time = task.next_proceed_time
-        task.next_proceed_time = utc_next_proceed_time
-
-        task.save()
-        info_log(self.logger, "update_next_run_time : %s" % next_date_time)
+        super().update_next_run_time()
 
     def on_task_success(self):
         pass

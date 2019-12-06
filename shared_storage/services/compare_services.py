@@ -71,16 +71,18 @@ def get_environment_dir_list(json_data):
 
 
 def compare_shared_storage_folder(left_region_id, left_environment_id, left_folder,
-                                  right_region_id, right_environment_id, right_folder):
+                                  right_region_id, right_environment_id, right_folder,
+                                  send_mail, request_host=None):
     try:
         # json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036302886634.json")
         only_last_version = True
         left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
         right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
+
         root_hash_key = hash(left_root_obj)
         left_root_obj.update_root_hash_key(root_hash_key)
         right_root_obj.update_root_hash_key(root_hash_key)
-        info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
+        info_log("service", "compare_shared_storage_folder compare_key:" + str(root_hash_key))
 
         if left_root_obj.filter_modules is None:
             apply_filter_folders = False
@@ -103,53 +105,19 @@ def compare_shared_storage_folder(left_region_id, left_environment_id, left_fold
                                              left_root_obj.node_object, right_root_obj.node_object)
         dir_diff_obj.diff()
         json_data = CountryLevelDiffResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
+        save_compare_result_page_json(json_data, root_hash_key)
+        info_log("service", "compare_shared_storage_folder done")
 
-        file_path = COMPARE_RESULT_PATH + "%s.%s" % (root_hash_key, KEY_JSON)
-        save_file(file_path, json.dumps(json_data))
-        info_log("service", "diff_country_level done")
-        return json_data
+        if not send_mail:
+            return json_data
+        else:
+            mail_data = CountryLevelDiffMailResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
+            mail_data[KEY_REQUEST_HOST] = request_host
+            mail_data[KEY_URL_REGIONAL_TAG] = settings.CURRENT_REGION
+            save_compare_result_mail_json(mail_data, root_hash_key)
+            return mail_data
     except Exception as e:
         raise e
-
-
-def compare_shared_storage_folder_mail_result(request, left_region_id, left_environment_id, left_folder,
-                                              right_region_id, right_environment_id, right_folder):
-    # json_data = load_json_file(COMPARE_RESULT_MAIL_PATH + "-18446744073156788648.json")
-    only_last_version = True
-    apply_filter_folders = True
-    left_root_obj = DirRootObject(left_region_id, left_environment_id, left_folder, only_last_version)
-    right_root_obj = DirRootObject(right_region_id, right_environment_id, right_folder, only_last_version)
-    root_hash_key = hash(left_root_obj)
-    left_root_obj.update_root_hash_key(root_hash_key)
-    right_root_obj.update_root_hash_key(root_hash_key)
-    info_log("service", "diff_country_level compare_key:" + str(root_hash_key))
-
-    if apply_filter_folders and only_last_version:
-        dir_diff_obj = LatestVersionApplyObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-                                                left_root_obj.node_object, right_root_obj.node_object,
-                                                left_root_obj.filter_modules, right_root_obj.filter_modules)
-    elif apply_filter_folders:
-        dir_diff_obj = FilteredApplyObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-                                           left_root_obj.node_object, right_root_obj.node_object,
-                                           left_root_obj.filter_modules, right_root_obj.filter_modules)
-    elif only_last_version:
-        dir_diff_obj = LatestVersionObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-                                           left_root_obj.node_object, right_root_obj.node_object)
-    else:
-        dir_diff_obj = DirNodeDiffObject(left_root_obj.dir_connect_obj, right_root_obj.dir_connect_obj,
-                                         left_root_obj.node_object, right_root_obj.node_object)
-    dir_diff_obj.diff()
-
-    page_data = CountryLevelDiffResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
-
-    mail_data = CountryLevelDiffMailResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
-    mail_data[KEY_REQUEST_HOST] = request.get_host()
-
-    save_compare_result_page_json(page_data, root_hash_key)
-    save_compare_result_mail_json(mail_data, root_hash_key)
-
-    info_log("service", "diff_country_level done")
-    return mail_data
 
 
 def send_shared_storage_compare_result_mail(json, mail_list=None):
@@ -176,6 +144,7 @@ def send_shared_storage_compare_result_mail(json, mail_list=None):
     mail_sender.compose_msg(subject, None, html_content)
     mail_sender.send()
     mail_sender.quit()
+    info_log("service", "send_shared_storage_compare_result_mail done")
 
 
 def save_compare_result_page_json(json_data, root_hash_key):
