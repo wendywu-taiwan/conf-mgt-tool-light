@@ -99,9 +99,16 @@
                         <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
                             Password</a>
                     </li>
+                    {% if navigation_info.module_data.ruleset.visible == 1 %}
+                        <li>
+                            <a href="{% url 'RulesetComparer:ruleset-admin-console-index' %}" id="ruleset_module_link"
+                               class="dropdown-item">
+                                Ruleset</a>
+                        </li>
+                    {% endif %}
                     {% if navigation_info.module_data.setting.visible == 1 %}
                         <li>
-                            <a href="{% url 'permission:permission-index' %}" id="reset_password_link"
+                            <a href="{% url 'permission:permission-index' %}" id="setting_module_link"
                                class="dropdown-item">
                                 Settings</a>
                         </li>

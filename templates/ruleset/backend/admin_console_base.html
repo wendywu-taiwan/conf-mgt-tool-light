@@ -119,9 +119,16 @@
                         <a href="{% url 'password_change' %}" id="reset_password_link" class="dropdown-item">Reset
                             Password</a>
                     </li>
+                    {% if navigation_info.module_data.shared_storage.visible == 1 %}
+                        <li>
+                            <a href="{% url 'shared_storage:admin-console-index' %}" id="shared_storage_module_link"
+                               class="dropdown-item">
+                                Shared Storage</a>
+                        </li>
+                    {% endif %}
                     {% if navigation_info.module_data.setting.visible == 1 %}
                         <li>
-                            <a href="{% url 'permission:permission-index' %}" id="reset_password_link"
+                            <a href="{% url 'permission:permission-index' %}" id="setting_module_link"
                                class="dropdown-item">
                                 Settings</a>
                         </li>
