@@ -20,8 +20,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
         except BaseException as e:
             raise e
 
-    @staticmethod
-    def db_time_to_date_time(start_date_time):
+    def db_time_to_date_time(self, start_date_time):
         return super().db_time_to_date_time(start_date_time)
 
     def get_utc_time(self, naive_local_time):

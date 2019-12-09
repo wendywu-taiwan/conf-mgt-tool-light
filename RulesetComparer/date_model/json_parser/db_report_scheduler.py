@@ -30,8 +30,7 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
     def parse_db_mail_content_type(self, mail_content_type_list):
         return super().parse_db_mail_content_type(mail_content_type_list)
 
-    @staticmethod
-    def db_time_to_date_time(start_date_time):
+    def db_time_to_date_time(self, start_date_time):
         return super().db_time_to_date_time(start_date_time)
 
     def get_utc_time(self, naive_local_time):
