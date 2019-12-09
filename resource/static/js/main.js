@@ -187,6 +187,10 @@ function resetDropdown(id) {
     $("#" + id + ":first-child").val("");
 }
 
+function setDropdown(id, value, text) {
+    $("#" + id + ":first-child").text(text);
+    $("#" + id + ":first-child").val(value);
+}
 
 openNewPage = function (url) {
     showWaitingDialog();

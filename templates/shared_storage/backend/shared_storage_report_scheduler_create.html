@@ -6,7 +6,9 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static '/js/shared_storage/shared_storage_report_scheduler_create.js' %}"></script>
-    <script src="{% static '/js/shared_storage/select_to_compare.js' %}"></script>
+    <script src="{% static '/js/component/compare_region_dropdowns.js' %}"></script>
+    <script src="{% static '/js/component/compare_environment_dropdowns.js' %}"></script>
+    <script src="{% static '/js/component/compare_folder_dropdowns.js' %}"></script>
 
 {% endblock %}
 
@@ -24,7 +26,7 @@
         <div class="row no-row-margin">
             <div id="left_data_div">
                 <div id="left_region_dropdown_div" class="dropdown-block">
-                    <div class="drop_down_label_text" for="select_country">Left Data Center :</div>
+                    <div class="drop_down_label_text" for="select_country">Data Center</div>
                     <div id="left_select_region" class="custom-btn-group-1 btn-group">
                         <button id="left_select_region_btn"
                                 class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
@@ -40,19 +42,19 @@
                     </div>
                 </div>
                 <div id="left_environment_dropdown_div" class="dropdown-block">
-                    {% with type="environment" side="left" title="Left Environment :" data="" %}
+                    {% with type="environment" side="left" title="Environment" data="" %}
                         {% include 'select_to_compare_dropdown.html' %}
                     {% endwith %}
                 </div>
                 <div id="left_folder_dropdown_div" class="dropdown-block">
-                    {% with type="folder" side="left" title="Left Folder :" data="" %}
+                    {% with type="folder" side="left" title="Folder" data="" %}
                         {% include 'select_to_compare_dropdown.html' %}
                     {% endwith %}
                 </div>
             </div>
             <div id="right_data_div">
                 <div id="right_region_dropdown_div" class="dropdown-block">
-                    <div class="drop_down_label_text" for="select_country">Right Data Center :</div>
+                    <div class="drop_down_label_text" for="select_country">Data Center</div>
                     <div id="right_select_region" class="custom-btn-group-1 btn-group">
                         <button id="right_select_region_btn"
                                 class="drop_down_button_width custom-dropdown-btn-1 btn btn-inverse dropdown-toggle"
@@ -68,12 +70,12 @@
                     </div>
                 </div>
                 <div id="right_environment_dropdown_div" class="dropdown-block">
-                    {% with type="environment" side="right" title="Right Environment :" data="" %}
+                    {% with type="environment" side="right" title="Environment" data="" %}
                         {% include 'select_to_compare_dropdown.html' %}
                     {% endwith %}
                 </div>
                 <div id="right_folder_dropdown_div" class="dropdown-block">
-                    {% with type="folder" side="right" title="Right Folder :" data="" %}
+                    {% with type="folder" side="right" title="Folder" data="" %}
                         {% include 'select_to_compare_dropdown.html' %}
                     {% endwith %}
                 </div>
@@ -102,14 +104,12 @@
     <script>
         init("{% url 'shared_storage:create-report-scheduler' %}",
             "{% url 'shared_storage:report-scheduler-list-page' %}");
+
+        setFilterEnvironmentUrl("{% url 'shared_storage:compare-filter-region-environments' %}");
+        setFilterFolderUrl("{% url 'shared_storage:compare-filter-environment-folders' %}");
+
         createBtnOnClick = function () {
             createTask();
-        };
-        onRegionSelected = function (side, regionId) {
-            filterEnvironments(side, regionId, "{% url 'shared_storage:compare-filter-region-environments' %}");
-        };
-        onEnvironmentSelected = function (side) {
-            filterFolders(side, "{% url 'shared_storage:compare-filter-environment-folders' %}");
         };
 
     </script>

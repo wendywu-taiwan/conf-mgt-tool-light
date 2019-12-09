@@ -3,11 +3,10 @@ $(function () {
 });
 
 
-let baseEnvId, compareEnvId, interval, startDateTime, frequencyType;
+let interval, startDateTime, frequencyType;
 let countryList = [];
 let mailList = [];
-let mailContentTypeList = [];
-let moduleId, postUrl, taskListUrl;
+let postUrl, taskListUrl;
 
 function init(post_url, list_url) {
     postUrl = post_url;
@@ -23,10 +22,10 @@ createTask = function () {
     let post_body = {
         "left_data_center_id": leftRegionId,
         "right_data_center_id": rightRegionId,
-        "left_environment_id":leftEnvId,
-        "right_environment_id":rightEnvId,
-        "left_folder":leftFolder,
-        "right_folder":rightFolder,
+        "left_environment_id": leftEnvId,
+        "right_environment_id": rightEnvId,
+        "left_folder": leftFolder,
+        "right_folder": rightFolder,
         "mail_list": mailList,
         "frequency_type": frequencyType,
         "interval": interval,
@@ -59,11 +58,12 @@ updateTask = function (task_id) {
 
     let post_body = {
         "id": task_id,
-        "base_environment_id": baseEnvId,
-        "compare_environment_id": compareEnvId,
-        "module_id": moduleId,
-        "country_list": countryList,
-        "mail_content_type_list": mailContentTypeList,
+        "left_data_center_id": leftRegionId,
+        "right_data_center_id": rightRegionId,
+        "left_environment_id": leftEnvId,
+        "right_environment_id": rightEnvId,
+        "left_folder": leftFolder,
+        "right_folder": rightFolder,
         "mail_list": mailList,
         "frequency_type": frequencyType,
         "interval": interval,
