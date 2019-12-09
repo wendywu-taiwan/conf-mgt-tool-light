@@ -5,6 +5,9 @@
     <link href="{% static '/css/shared_storage/select-to-compare.css' %}" rel="stylesheet">
     <script src="{% static '/js/shared_storage/select_to_compare.js' %}"></script>
     <link href="{% static '/css/shared_storage/shared-storage-folder-compare-result.css' %}" rel="stylesheet">
+    <script src="{% static '/js/component/compare_region_dropdowns.js' %}"></script>
+    <script src="{% static '/js/component/compare_environment_dropdowns.js' %}"></script>
+    <script src="{% static '/js/component/compare_folder_dropdowns.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -85,12 +88,8 @@
         </form>
     </div>
     <script>
-        onRegionSelected = function (side, regionId) {
-            filterEnvironments(side, regionId, "{% url 'shared_storage:compare-filter-region-environments' %}");
-        };
-        onEnvironmentSelected = function (side) {
-            filterFolders(side, "{% url 'shared_storage:compare-filter-environment-folders' %}");
-        };
+        setFilterEnvironmentUrl("{% url 'shared_storage:compare-filter-region-environments' %}");
+        setFilterFolderUrl("{% url 'shared_storage:compare-filter-environment-folders' %}");
     </script>
 {% endblock %}
 

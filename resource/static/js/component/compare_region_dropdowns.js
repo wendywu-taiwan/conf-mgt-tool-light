@@ -59,6 +59,7 @@ filterEnvironments = function (side, regionId) {
 };
 
 filterEnvironmentsWithHandler = function (side, regionId, success, failure) {
+    showWaitingDialog();
     let post_body = {
         "side": side,
         "region_id": regionId
