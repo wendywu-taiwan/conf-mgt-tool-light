@@ -50,6 +50,7 @@ admin_console_pattern = [
 ]
 
 admin_console_report_api_pattern = [
+    path('run', views.run_report_scheduler_job, name="run-report-scheduler"),
     path('create', views.create_report_scheduler_job, name="create-report-scheduler"),
     path('update', views.update_report_scheduler_job, name="update-report-scheduler"),
     path('delete', views.delete_report_scheduler_job, name="delete-report-scheduler"),

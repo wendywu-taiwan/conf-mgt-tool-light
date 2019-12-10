@@ -1,13 +1,16 @@
+import traceback
+
 from ConfigManageTool.settings import CURRENT_REGION
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from permission.data_object.permission_checker import SharedStorageReportPermissionChecker
-from RulesetComparer.utils.logger import info_log
+from RulesetComparer.utils.logger import info_log, error_log
 from RulesetComparer.properties.key import KEY_DAYS, KEY_WEEKS
 from shared_storage.models import SharedStorageReportScheduler
 from shared_storage.data_object.json_parser.create_report_scheduler import CreateReportSchedulerParser
 from shared_storage.data_object.json_parser.delete_report_scheduler import DeleteReportSchedulerParser
 from shared_storage.data_object.json_parser.update_report_scheduler_status import UpdateReportSchedulerStatusParser
 from shared_storage.data_object.json_parser.db_report_scheduler import DBReportSchedulerParser
+from shared_storage.services import compare_services
 from shared_storage.task.shared_storage_daily_report import SharedStorageDailyReportTask
 
 LOG_CLASS = "SharedStorageReportSchedulerService"
@@ -29,6 +32,26 @@ def restart_schedulers():
 def get_schedulers():
     schedulers = SharedStorageReportScheduler.objects.all()
     return schedulers
+
+
+def run_scheduler_now(json_data, user):
+    try:
+        SharedStorageReportPermissionChecker(user)
+        scheduler = SharedStorageReportScheduler.objects.get(id=json_data.get("id"))
+        parser = DBReportSchedulerParser(scheduler)
+        result_json = compare_services.compare_shared_storage_folder(parser.left_data_center_id,
+                                                                     parser.left_environment_id,
+                                                                     parser.left_folder,
+                                                                     parser.right_data_center_id,
+                                                                     parser.right_environment_id,
+                                                                     parser.right_folder,
+                                                                     True,
+                                                                     parser.regional_tag,
+                                                                     parser.request_host)
+        compare_services.send_shared_storage_compare_result_mail(result_json, parser.mail_list)
+    except Exception as e:
+        error_log(e)
+        error_log(traceback.format_exc())
 
 
 def create_scheduler(json_data, user, host):

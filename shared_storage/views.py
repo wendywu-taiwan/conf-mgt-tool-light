@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 
 from ConfigManageTool.settings import CURRENT_REGION
+from RulesetComparer.utils.threadManager import run_in_background
 from shared_storage.data_object.json_builder.report_scheduler_create_page import ReportSchedulerCreatePageBuilder
 from shared_storage.data_object.json_builder.shared_storage_report_scheduler import SharedStorageSchedulersBuilder, \
     SharedStorageReportSchedulerBuilder
@@ -279,6 +280,17 @@ def send_compare_result_mail(request):
         compare_services.send_shared_storage_compare_result_mail(result_json)
 
     return page_error_check(after_check)
+
+
+def run_report_scheduler_job(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        info_log(KEY_M_SHARED_STORAGE, "run report scheduler, scheduler id =" + str(request_json))
+        run_in_background(report_scheduler_services.run_scheduler_now, request_json, request.user)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+
+    return action_permission_check(request, after_check)
 
 
 def create_report_scheduler_job(request):
