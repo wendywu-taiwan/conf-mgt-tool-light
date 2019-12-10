@@ -4,7 +4,7 @@ from common.models import FrequencyType
 from common.data_object.json_parser.base_report_scheduler import BaseReportSchedulerParser
 
 
-class CreateReportSchedulerParser(BaseReportSchedulerParser, PermissionParser):
+class CreateReportSchedulerParser(BaseReportSchedulerParser):
 
     def __init__(self, json_data, user):
         try:
@@ -22,7 +22,6 @@ class CreateReportSchedulerParser(BaseReportSchedulerParser, PermissionParser):
             self.interval = int(json_data.get("interval"))
             # utc time for saving to database
             self.utc_time = self.get_utc_time(self.local_time)
-            PermissionParser.__init__(self)
         except BaseException as e:
             raise e
 
@@ -44,13 +43,3 @@ class CreateReportSchedulerParser(BaseReportSchedulerParser, PermissionParser):
 
     def local_date_time_bigger(self, local_date_time, current_date_time):
         return super().local_date_time_bigger(local_date_time, current_date_time)
-
-    def check_permission(self):
-        function_id = Function.objects.get(name=KEY_F_REPORT_TASK, module__name=KEY_M_RULESET).id
-
-        for country_id in self.country_list:
-            is_base_editable = is_editable(self.user.id, self.base_env_id, country_id, function_id)
-            is_target_editable = is_editable(self.user.id, self.compare_env_id, country_id, function_id)
-
-            if is_base_editable is False or is_target_editable is False:
-                raise PermissionDeniedError()

@@ -1,26 +1,23 @@
 from RulesetComparer.date_model.json_parser.permission import PermissionParser
 from RulesetComparer.models import ReportSchedulerInfo
+from permission.models import Country
 from permission.utils.permission_manager import *
 from common.data_object.error.error import PermissionDeniedError
 
 
-class DeleteReportSchedulerParser(PermissionParser):
+class DeleteReportSchedulerParser():
     def __init__(self, json_data, user):
-        try:
-            self.user = user
-            self.task_id = json_data.get("id")
-            self.task = ReportSchedulerInfo.objects.get(id=self.task_id)
-            PermissionParser.__init__(self)
-        except Exception as e:
-            raise e
+        self.user = user
+        self.task_id = json_data.get("id")
+        self.scheduler = ReportSchedulerInfo.objects.get(id=self.task_id)
+        self.country_id_list = self.parse_country_list(self.scheduler.country_list.values(KEY_ID))
+        self.base_env_id = self.scheduler.base_environment.id
+        self.compare_env_id = self.scheduler.compare_environment.id
 
-    def check_permission(self):
-        function_id = Function.objects.get(name=KEY_F_REPORT_TASK, module__name=KEY_M_RULESET).id
-
-        for country_id_obj in self.task.country_list.values(KEY_ID):
-            country_id = country_id_obj.get(KEY_ID)
-            is_base_editable = is_editable(self.user.id, self.task.base_environment.id, country_id, function_id)
-            is_target_editable = is_editable(self.user.id, self.task.compare_environment.id, country_id, function_id)
-
-            if is_base_editable is False or is_target_editable is False:
-                raise PermissionDeniedError()
+    @staticmethod
+    def parse_country_list(country_id_list):
+        country_list = list()
+        for country_id_map in country_id_list:
+            country = Country.objects.get(id=country_id_map['id'])
+            country_list.append(country)
+        return country_list

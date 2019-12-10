@@ -1,1 +1,2 @@
 ARCHIVE_FOLDER_FORMAT = '%Y%m%d_%H%M%S'
+YEAR_MONTH_DATE = '%Y/%m/%d'

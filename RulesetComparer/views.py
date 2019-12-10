@@ -532,6 +532,16 @@ def get_rulesets_report_jobs(request):
     return action_error_check(after_check)
 
 
+def run_ruleset_report_job(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        run_in_background(report_scheduler.run_scheduler_now, request_json, request.user)
+        result = ResponseBuilder().get_data()
+        return JsonResponse(data=result)
+
+    return action_permission_check(request, after_check)
+
+
 def create_ruleset_report_job(request):
     def after_check():
         request_json = get_post_request_json(request)
@@ -583,7 +593,7 @@ def get_rulesets_sync_jobs(request):
         schedulers = sync_scheduler.get_schedulers()
         data_list = list()
         for scheduler in schedulers:
-            data_builder = RulesetSyncSchedulerBuilder(scheduler)
+            data_builder = RulesetSyncSchedulerBuilder(request.user, scheduler)
             data_list.append(data_builder.get_data())
 
         result = ResponseBuilder(data=data_list).get_data()

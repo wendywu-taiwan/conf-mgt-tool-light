@@ -1,9 +1,4 @@
-import ast
-from datetime import datetime
-
 from RulesetComparer.date_model.json_parser.base_report_scheduler import BaseReportSchedulerParser
-from RulesetComparer.properties import config
-from RulesetComparer.utils import timeUtil
 
 
 class DBReportSchedulerParser(BaseReportSchedulerParser):

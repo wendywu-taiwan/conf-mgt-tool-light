@@ -87,6 +87,11 @@
                 </div>
                 <div id="task_action_div" class="row no_row_margin">
                     <div>
+                        <a onclick="runScheduler('{{ task.task_id }}')" class="btn">
+                            <img class="task_action_icon" src="{% static '/icons/play-button.png' %}">
+                        </a>
+                    </div>
+                    <div>
                         <a href="{% url 'RulesetComparer:task-update' task.task_id %}" class="btn">
                             <img class="task_action_icon" src="{% static '/icons/scheduler_edit.png' %}">
                         </a>
@@ -103,6 +108,27 @@
 
     </div>
     <script>
+        function runScheduler(task_id) {
+            showWaitingDialog();
+
+            let post_body = {
+                "id": task_id
+            };
+
+            doPOST("{% url 'RulesetComparer:run-report-scheduler' %}", post_body, function (response) {
+                let statusCode = response["status_code"];
+                let message = response["message"];
+
+                if (response == null || statusCode != 200) {
+                    showErrorDialog(message);
+                } else {
+                    successDialog("run scheduler success");
+                }
+            }, function (response) {
+                errorResponse(response)
+            });
+        }
+
         function deleteScheduler(task_id) {
             warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
                 function () {
