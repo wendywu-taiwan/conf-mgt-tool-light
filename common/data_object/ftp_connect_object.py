@@ -1,6 +1,7 @@
 import pysftp
+import socket
 
-from RulesetComparer.utils.logger import info_log
+from RulesetComparer.utils.logger import info_log, error_log
 from permission.models import FTPRegion, FTPServer, Environment, Country
 from shared_storage.properties.config import COMPARE_FILE_PATH
 from RulesetComparer.date_model.json_parser.auth_data import FTPAuthDataParser
@@ -41,8 +42,7 @@ class FTPConnectionObject(DirConnectObject):
         except FileNotFoundError as e:
             if no_such_file(e):
                 raise e
-        except OSError as e:
-            info_log(self.LOG_CLASS, "FTP reconnect, OESError: " + e)
+        except socket.error:
             info_log(self.LOG_CLASS, "FTP reconnect, get_path_list_dir: " + path)
             self.connect()
             return self.get_path_list_dir(path)
@@ -59,8 +59,7 @@ class FTPConnectionObject(DirConnectObject):
         except FileNotFoundError as e:
             if no_such_file(e):
                 raise e
-        except OSError as e:
-            info_log(self.LOG_CLASS, "FTP reconnect, OESError: " + e)
+        except socket.error:
             info_log(self.LOG_CLASS, "FTP reconnect, get_path_file: " + file_path)
             self.connect()
             return self.get_path_file(file_path, save_path)
@@ -89,10 +88,13 @@ class SharedStorageConnectionObject(FTPConnectionObject):
         return super().get_path_file(file_path, save_path)
 
     def get_latest_version(self, node_path):
-        tmp_file = 'lastversion.dat'
-        last_version_path = node_path + "/" + tmp_file
-        last_version = self.get_path_file(last_version_path, COMPARE_FILE_PATH + tmp_file)
-        return last_version
+        entries = self.get_path_list_dir(node_path)
+        for entry in entries:
+            if entry.filename.lower() == 'lastversion.dat':
+                last_version_path = node_path + "/" + entry.filename
+                last_version = self.get_path_file(last_version_path, COMPARE_FILE_PATH + 'lastversion.dat')
+                return last_version
+        error_log("can't find lastversion.dat file")
 
     def get_file_contents(self, file_load_object):
         self.sftp.get(file_load_object.file_path, localpath=file_load_object.local_path)
