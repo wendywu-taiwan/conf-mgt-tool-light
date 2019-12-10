@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse, Http404
 
+from ConfigManageTool.settings import CURRENT_REGION
 from shared_storage.data_object.json_builder.report_scheduler_create_page import ReportSchedulerCreatePageBuilder
 from shared_storage.data_object.json_builder.shared_storage_report_scheduler import SharedStorageSchedulersBuilder, \
     SharedStorageReportSchedulerBuilder
@@ -273,8 +274,8 @@ def send_compare_result_mail(request):
         right_folder = "kr"
         result_json = compare_services.compare_shared_storage_folder(left_region_id, left_environment_id, left_folder,
                                                                      right_region_id, right_environment_id,
-                                                                     right_folder,
-                                                                     True, request.get_host())
+                                                                     right_folder, True, CURRENT_REGION,
+                                                                     request.get_host())
         compare_services.send_shared_storage_compare_result_mail(result_json)
 
     return page_error_check(after_check)

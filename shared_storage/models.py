@@ -4,13 +4,14 @@ from django.contrib import admin
 
 from common.models import FrequencyType
 from permission.models import FTPRegion, Environment, Module
-from permission.utils.permission_manager import enable_environments, enable_countries
+from permission.utils.permission_manager import enable_environments
 from RulesetComparer.properties.key import KEY_M_SHARED_STORAGE, KEY_F_REPORT_TASK
 
 
 class SharedStorageReportSchedulerManager(models.Manager):
     def create_task(self, left_data_center_id, right_data_center_id, left_environment_id, right_environment_id,
-                    left_folder, right_folder, mail_list_str, frequency_type, interval, next_proceed_time):
+                    left_folder, right_folder, mail_list_str, frequency_type, interval, next_proceed_time,
+                    request_host, regional_tag):
         task = self.create(left_data_center_id=left_data_center_id,
                            right_data_center_id=right_data_center_id,
                            left_environment_id=left_environment_id,
@@ -22,7 +23,9 @@ class SharedStorageReportSchedulerManager(models.Manager):
                            interval=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
-                           enable=1)
+                           enable=1,
+                           request_host=request_host,
+                           regional_tag=regional_tag)
         return task
 
     def update_task(self, task_id, left_data_center_id, right_data_center_id, left_environment_id, right_environment_id,
@@ -97,6 +100,8 @@ class SharedStorageReportScheduler(models.Model):
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField()
+    request_host = models.CharField(max_length=128, null=True)
+    regional_tag = models.CharField(max_length=128, null=True)
 
     objects = SharedStorageReportSchedulerManager()
 

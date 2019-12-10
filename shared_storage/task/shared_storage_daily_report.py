@@ -28,7 +28,9 @@ class SharedStorageDailyReportTask(DailyReportTask):
                                                                      self.parser.right_data_center_id,
                                                                      self.parser.right_environment_id,
                                                                      self.parser.right_folder,
-                                                                     True, self.parser.request_host)
+                                                                     True,
+                                                                     self.parser.regional_tag,
+                                                                     self.parser.request_host)
         compare_services.send_shared_storage_compare_result_mail(result_json, self.parser.mail_list)
 
     def task_enable(self):

@@ -1,3 +1,4 @@
+from ConfigManageTool.settings import CURRENT_REGION
 from RulesetComparer.utils.customJobScheduler import CustomJobScheduler
 from permission.data_object.permission_checker import SharedStorageReportPermissionChecker
 from RulesetComparer.utils.logger import info_log
@@ -40,7 +41,9 @@ def create_scheduler(json_data, user, host):
                                                                  parser.left_folder, parser.right_folder,
                                                                  parser.mail_list,
                                                                  parser.frequency_type, parser.interval,
-                                                                 parser.utc_time)
+                                                                 parser.utc_time,
+                                                                 parser.request_host,
+                                                                 parser.regional_tag)
 
     parser.task_id = scheduler.id
     add_task_to_scheduler(parser)

@@ -72,7 +72,7 @@ def get_environment_dir_list(json_data):
 
 def compare_shared_storage_folder(left_region_id, left_environment_id, left_folder,
                                   right_region_id, right_environment_id, right_folder,
-                                  send_mail, request_host=None):
+                                  send_mail, regional_tag=None, request_host=None):
     try:
         # json_data = load_json_file(COMPARE_RESULT_PATH + "-9223372036302886634.json")
         only_last_version = True
@@ -113,7 +113,7 @@ def compare_shared_storage_folder(left_region_id, left_environment_id, left_fold
         else:
             mail_data = CountryLevelDiffMailResultBuilder(left_root_obj, right_root_obj, root_hash_key).get_data()
             mail_data[KEY_REQUEST_HOST] = request_host
-            mail_data[KEY_URL_REGIONAL_TAG] = settings.CURRENT_REGION
+            mail_data[KEY_URL_REGIONAL_TAG] = regional_tag
             save_compare_result_mail_json(mail_data, root_hash_key)
             return mail_data
     except Exception as e:

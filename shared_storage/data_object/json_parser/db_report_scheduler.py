@@ -17,6 +17,8 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
             self.utc_time = self.get_utc_time(self.local_time)
+            self.request_host = scheduler.request_host
+            self.regional_tag = scheduler.regional_tag
         except BaseException as e:
             raise e
 
