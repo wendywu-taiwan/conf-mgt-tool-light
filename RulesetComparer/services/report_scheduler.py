@@ -1,5 +1,5 @@
-from RulesetComparer.task.daily_compare_report import DailyCompareReportTask
-from RulesetComparer.date_model.json_parser.create_report_scheduler import CreateReportSchedulerTaskParser
+from RulesetComparer.task.ruleset_daily_report import RulesetDailyReportTask
+from RulesetComparer.date_model.json_parser.create_report_scheduler import CreateReportSchedulerParser
 from RulesetComparer.date_model.json_parser.db_report_scheduler import DBReportSchedulerParser
 from RulesetComparer.date_model.json_parser.delete_report_scheduler import DeleteReportSchedulerParser
 from RulesetComparer.date_model.json_parser.update_report_scheduler_status import UpdateReportSchedulerStatusParser
@@ -38,7 +38,7 @@ def get_schedulers():
 
 def create_scheduler(json_data, user):
     try:
-        parser = CreateReportSchedulerTaskParser(json_data, user)
+        parser = CreateReportSchedulerParser(json_data, user)
         report_scheduler = ReportSchedulerInfo.objects.create_task(parser.base_env_id,
                                                                    parser.compare_env_id,
                                                                    parser.module_id,
@@ -58,7 +58,7 @@ def create_scheduler(json_data, user):
 
 def update_report_scheduler(json_data, user):
     try:
-        parser = CreateReportSchedulerTaskParser(json_data, user)
+        parser = CreateReportSchedulerParser(json_data, user)
         report_scheduler = ReportSchedulerInfo.objects.update_task(parser.task_id,
                                                                    parser.base_env_id,
                                                                    parser.compare_env_id,
@@ -83,7 +83,7 @@ def delete_scheduler(json_data, user):
 
 
 def add_task_to_scheduler(parser):
-    task = DailyCompareReportTask(parser)
+    task = RulesetDailyReportTask(parser)
     scheduler = CustomJobScheduler()
     if parser.frequency_type.interval_type == KEY_DAYS:
         job = scheduler.add_days_job(task.run_task, parser.interval, parser.local_time)
