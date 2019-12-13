@@ -1,0 +1,13 @@
+{% if data_list|length > 0 %}
+    <div class="highlight_data_value">
+        {% for line_object in data_list %}
+            {% if forloop.last %}
+                <div class="modify_line_text_div">{% for object in line_object.row %}{% if object.type == "context" %}{{ object.row }}{% else %}<mark class="yellow">{{ object.row }}</mark>{% endif %}{% endfor %}</div>
+            {% else %}
+                <div class="modify_line_text_div">{% for object in line_object.row %}{% if object.type == "context" %}{{ object.row }}{% else %}<mark class="yellow">{{ object.row }}</mark>{% endif %}{% if forloop.last %},{% endif %}{% endfor %}</div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="rule_data_value"></div>
+{% endif %}

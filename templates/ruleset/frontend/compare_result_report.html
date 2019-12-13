@@ -21,6 +21,11 @@
             crossorigin="anonymous"></script>
     <style>
         @media screen and (min-width: 1320px) {
+            .no-row-margin {
+                margin-left: 0px;
+                margin-right: 0px;
+            }
+
             .custom-row {
                 display: flex;
                 flex-wrap: wrap;
@@ -498,7 +503,6 @@
 
             .modify_rule_list .highlight_data_value {
                 border-radius: 8px;
-                background-color: #f9ba052b;
                 width: 37%;
                 font-size: 15px;
                 font-family: inherit;
@@ -510,12 +514,27 @@
                 word-wrap: break-word;
             }
 
+            .modify_line_text_div {
+                max-width: 100%;
+                word-wrap: break-word;
+                display: inline-block;
+            }
+
+            .highlight_data_value mark {
+                background: #ffdf54cc !important;
+            }
+
             .modify_rule_list .divider_line {
                 margin-left: 18%;
             }
         }
 
         @media screen and (max-width: 1320px) {
+            .no-row-margin {
+                margin-left: 0px;
+                margin-right: 0px;
+            }
+
             .custom-row {
                 display: flex;
                 flex-wrap: wrap;
@@ -995,7 +1014,6 @@
 
             .modify_rule_list .highlight_data_value {
                 border-radius: 8px;
-                background-color: #f9ba052b;
                 width: 35%;
                 font-size: 15px;
                 font-family: inherit;
@@ -1005,6 +1023,16 @@
                 margin-left: 2.5%;
                 text-align: left;
                 word-wrap: break-word;
+            }
+
+            .modify_line_text_div {
+                max-width: 100%;
+                word-wrap: break-word;
+                display: inline-block;
+            }
+
+            .highlight_data_value mark {
+                background: #ffdf54cc !important;
             }
 
             .modify_rule_list .divider_line {
@@ -1486,7 +1514,7 @@
                     <div class="modify_end_divider"></div>
                 {% endfor %}
 
-                <!-- parse rule in modify modify list -->
+                <!-- parse rule in modify list -->
                 {% for data in diff_data|get_map_modify_array:data.name %}
                     <div class="row rule_data_line">
                         <div class="rule_data_title">
@@ -1558,24 +1586,39 @@
                     </div>
                     <div class="row rule_data_line">
                         <div class="rule_data_title">Rule Value</div>
-                        {% if data.base_value %}
-                            <div class="highlight_data_value">
-                                {% for value in data.base_value %}
-                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="rule_data_value"></div>
-                        {% endif %}
-                        {% if data.compare_value %}
-                            <div class="highlight_data_value">
-                                {% for value in data.compare_value %}
-                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="rule_data_value"></div>
-                        {% endif %}
+                        {% with data_list=data.base_value %}
+                            {% include 'report_different_rule_data.html' %}
+                        {% endwith %}
+                        {% with data_list=data.compare_value %}
+                            {% include 'report_different_rule_data.html' %}
+                        {% endwith %}
+                        {##}
+                        {#                        {% if data.base_value|length > 0 %}#}
+                        {#                            <div class="highlight_data_value">#}
+                        {#                                {% for value_obj in data.base_value %}#}
+                        {#                                    {% if value_obj.type == "context" %}#}
+                        {#                                        <div>#}
+                        {#                                            {{ value_obj.row }}{% if not forloop.last %},<br/>{% endif %}#}
+                        {#                                        </div>#}
+                        {#                                    {% else %}#}
+                        {#                                        <div class="highlight_different_value">#}
+                        {#                                            {{ value }}{% if not forloop.last %},<br/>{% endif %}#}
+                        {#                                        </div>#}
+                        {#                                    {% endif %}#}
+                        {#                                {% endfor %}#}
+                        {#                            </div>#}
+                        {#                        {% else %}#}
+                        {#                            <div class="rule_data_value"></div>#}
+                        {#                        {% endif %}#}
+                        {#                        {% if data.compare_value %}#}
+                        {#                            <div class="highlight_data_value">#}
+                        {#                                {% for value in data.compare_value %}#}
+                        {#                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}#}
+                        {#                                {% endfor %}#}
+                        {#                            </div>#}
+                        {#                        {% else %}#}
+                        {#                            <div class="rule_data_value"></div>#}
+                        {#                        {% endif %}#}
                     </div>
                     <div class="row divider_line">
                         <div class="modify_line_divider"></div>
@@ -1583,24 +1626,31 @@
                     </div>
                     <div class="row rule_data_line">
                         <div class="rule_data_title">Rule Expression</div>
-                        {% if data.base_expression %}
-                            <div class="highlight_data_value">
-                                {% for expression in data.base_expression %}
-                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="rule_data_value"></div>
-                        {% endif %}
-                        {% if data.compare_expression %}
-                            <div class="highlight_data_value">
-                                {% for expression in data.compare_expression %}
-                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="rule_data_value"></div>
-                        {% endif %}
+                        {% with data_list=data.base_expression %}
+                            {% include 'report_different_rule_data.html' %}
+                        {% endwith %}
+                        {% with data_list=data.compare_expression %}
+                            {% include 'report_different_rule_data.html' %}
+                        {% endwith %}
+
+                        {#                        {% if data.base_expression %}#}
+                        {#                            <div class="highlight_data_value">#}
+                        {#                                {% for expression in data.base_expression %}#}
+                        {#                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}#}
+                        {#                                {% endfor %}#}
+                        {#                            </div>#}
+                        {#                        {% else %}#}
+                        {#                            <div class="rule_data_value"></div>#}
+                        {#                        {% endif %}#}
+                        {#                        {% if data.compare_expression %}#}
+                        {#                            <div class="highlight_data_value">#}
+                        {#                                {% for expression in data.compare_expression %}#}
+                        {#                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}#}
+                        {#                                {% endfor %}#}
+                        {#                            </div>#}
+                        {#                        {% else %}#}
+                        {#                            <div class="rule_data_value"></div>#}
+                        {#                        {% endif %}#}
                     </div>
                     {% if not forloop.last %}
                         <div class="modify_end_divider"></div>

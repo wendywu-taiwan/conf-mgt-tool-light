@@ -49,6 +49,22 @@ class RulesetObject(BaseModel):
 
         return rule.fullValue
 
+    def get_rule_value(self, rule_key):
+        rule = self.rulesMap[rule_key]
+
+        if rule is None:
+            return ""
+
+        return rule.ruleValue
+
+    def get_rule_expression(self, rule_key):
+        rule = self.rulesMap[rule_key]
+
+        if rule is None:
+            return ""
+
+        return rule.expression
+
     def get_rules_model_array(self, name_list=None):
         array = list()
 
