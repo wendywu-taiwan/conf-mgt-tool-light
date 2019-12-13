@@ -1,5 +1,5 @@
-<div class="col-6 ruleset_name_div">
-    <h6 class="rule_set_name">{{ data.name }}</h6>
+<div id="{{ data.name }}_ruleset_list_item_div" class="col-6 ruleset_name_div">
+    <a href="#{{ data.name }}_ruleset_div"><h6 class="rule_set_name">{{ data.name }}</h6></a>
 </div>
 {% include 'report_add_count.html' %}
 {% include 'report_remove_count.html' %}

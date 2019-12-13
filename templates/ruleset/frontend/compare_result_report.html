@@ -276,6 +276,7 @@
                 margin: auto;
                 margin-left: 10px;
                 text-align: left;
+                word-break: break-word;
             }
 
             .container-compare-report .button_inactive {
@@ -1178,13 +1179,15 @@
     <!-- list each rule in add files -->
     {% for data in list_data.add_list %}
         <div class="add_list">
-            <div class="nav" data-target=".add_data">
-                <div>
-                    <i class="file_icon fas fa-plus"></i>
+            <a href="#{{ data.name }}_ruleset_list_item_div">
+                <div class="nav" data-target=".add_data">
+                    <div>
+                        <i class="file_icon fas fa-plus"></i>
+                    </div>
+                    <div id="{{ data.name }}_ruleset_div" class="nav_title file_title"> {{ data.name }}
+                    </div>
                 </div>
-                <div class="nav_title file_title"> {{ data.name }}
-                </div>
-            </div>
+            </a>
             <div class="add_rules">
                 {% for data in detail_data|get_item:data.name %}
                     <div id="process_line" class="row rule_data_line">
@@ -1248,13 +1251,15 @@
     <!-- list each rule in remove files -->
     {% for data in list_data.remove_list %}
         <div class="minus_list">
-            <div class="nav" data-target=".minus_data">
-                <div>
-                    <i class="file_icon fas fa-times"></i>
+            <a href="#{{ data.name }}_ruleset_list_item_div">
+                <div class="nav" data-target=".minus_data">
+                    <div>
+                        <i class="file_icon fas fa-times"></i>
+                    </div>
+                    <div id="{{ data.name }}_ruleset_div" class="nav_title file_title"> {{ data.name }}
+                    </div>
                 </div>
-                <div class="nav_title file_title"> {{ data.name }}
-                </div>
-            </div>
+            </a>
             <div class="removed_rules">
                 {% for data in detail_data|get_item:data.name %}
                     <div class="row rule_data_line">
@@ -1318,13 +1323,15 @@
     <!-- list each rule in modify files -->
     {% for data in list_data.modify_list %}
         <div class="modify_rule_list">
-            <div class="nav" data-target=".modify_data">
-                <div>
-                    <i class="file_icon fas fa-align-justify"></i>
+            <a href="#{{ data.name }}_ruleset_list_item_div">
+                <div class="nav" data-target=".modify_data">
+                    <div>
+                        <i class="file_icon fas fa-align-justify"></i>
+                    </div>
+                    <div id="{{ data.name }}_ruleset_div" class="nav_title file_title"> {{ data.name }}
+                    </div>
                 </div>
-                <div class="nav_title file_title"> {{ data.name }}
-                </div>
-            </div>
+            </a>
             <div class="modified_rules">
                 {% for data in diff_data|get_map_add_array:data.name %}
                     <!-- parse rule in modify add list -->

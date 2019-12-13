@@ -6,6 +6,7 @@
             {% else %}
                 <div class="modify_line_text_div">{% for object in line_object.row %}{% if object.type == "context" %}{{ object.row }}{% else %}<mark class="yellow">{{ object.row }}</mark>{% endif %}{% if forloop.last %},{% endif %}{% endfor %}</div>
             {% endif %}
+            {% if not forloop.last %}<br/>{% endif %}
         {% endfor %}
     </div>
 {% else %}
