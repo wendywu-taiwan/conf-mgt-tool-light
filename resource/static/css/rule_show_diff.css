@@ -361,16 +361,25 @@
 
     .modify_rule_list .highlight_data_value {
         border-radius: 8px;
-        background-color: #f9ba052b;
-        width: 37%;
+        width: 35%;
         font-size: 15px;
         font-family: inherit;
         font-weight: 500;
         color: #34495d;
-        margin-right: 3%;
-        margin-left: 10px;
+        margin-right: 2.5%;
+        margin-left: 2.5%;
         text-align: left;
         word-wrap: break-word;
+    }
+
+    .modify_line_text_div {
+        max-width: 100%;
+        word-wrap: break-word;
+        display: inline-block;
+    }
+
+    .highlight_data_value mark {
+        background: #ffdf54cc !important;
     }
 
     .modify_rule_list .divider_line {
@@ -743,7 +752,6 @@
 
     .modify_rule_list .highlight_data_value {
         border-radius: 8px;
-        background-color: #f9ba052b;
         width: 35%;
         font-size: 15px;
         font-family: inherit;
@@ -753,6 +761,16 @@
         margin-left: 2.5%;
         text-align: left;
         word-wrap: break-word;
+    }
+
+    .modify_line_text_div {
+        max-width: 100%;
+        word-wrap: break-word;
+        display: inline-block;
+    }
+
+    .highlight_data_value mark {
+        background: #ffdf54cc !important;
     }
 
     .modify_rule_list .divider_line {
