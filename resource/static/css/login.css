@@ -3,8 +3,8 @@ html, body {
 }
 
 #login_div {
-    width: 25%;
-    padding: 30px;
+    width: 400px;
+    padding: 2%;
     position: relative;
     top: 45%;
     margin-left: auto;
@@ -44,6 +44,7 @@ html, body {
 }
 
 #login_form_div label {
+    width: 100%;
     color: #2735659c;
     font-size: 16px;
     margin-right: 10px;
