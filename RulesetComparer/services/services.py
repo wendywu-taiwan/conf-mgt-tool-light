@@ -1,5 +1,5 @@
 import traceback
-
+from RulesetComparer.utils import rulesetUtil
 from RulesetComparer.date_model.json_builder.compare_ruleset_list_page import CompareRulesetListPageBuilder
 from RulesetComparer.task.download_ruleset import DownloadRulesetTask
 from RulesetComparer.date_model.json_builder.diff_ruleset_page import DiffRulesetPageBuilder
@@ -134,3 +134,16 @@ def ruleset_diff_backup_with_server(backup_key, backup_folder, ruleset_name):
     builder = DiffRulesetPageBuilder(parser.ruleset_name, BACKUP_ENVIRONMENT_NAME, parser.environment.name,
                                      comparer.get_diff_data())
     return builder.get_data()
+
+
+def ruleset_diff_test():
+    try:
+        compare_hash_key = "123456789"
+        ruleset_name = "RS_KR_DG_DC"
+        base_ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, "KR", "GIT", compare_hash_key)
+        compare_ruleset_object = rulesetUtil.load_ruleset_object(ruleset_name, "KR", "INT1", compare_hash_key)
+        comparer = RulesetComparer(ruleset_name, base_ruleset_object, compare_ruleset_object, is_module=True)
+        diff_data = comparer.get_diff_data()
+        info_log("ruleset_diff_test", "diff data:" + diff_data)
+    except Exception as e:
+        traceback.format_exc()

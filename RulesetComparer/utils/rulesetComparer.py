@@ -78,9 +78,6 @@ class RulesetComparer:
 
     @staticmethod
     def diff_value_expression(combined_key, source_data, target_data, source_map, target_map):
-        # if source_data == target_data:
-        #     return
-
         diff_object = StringDiffObject([source_data, target_data])
         diff_object.diff()
         source_map[combined_key] = diff_object.get_left_data()

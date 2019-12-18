@@ -355,3 +355,11 @@ KEY_DIFFERENT = "different"
 KEY_S_EQUAL = "="
 KEY_S_HASH_TAG = "#"
 KEY_S_COLON = ":"
+
+
+# difflib
+KEY_START_SIGN = "\x00"
+KEY_DELETED_SIGN = "\x00-"
+KEY_ADDED_SIGN = "\x00+"
+KEY_END_SIGN = "\x01"
+KEY_CHANGED_SIGN = "\x00^"

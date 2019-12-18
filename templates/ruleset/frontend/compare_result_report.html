@@ -1424,7 +1424,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="modify_end_divider"></div>
+                    {% if not forloop.last %}<div class="modify_end_divider"></div>{% endif %}
                 {% endfor %}
 
                 <!-- parse rule in modify remove list -->
@@ -1518,7 +1518,7 @@
                         </div>
                         <div class="rule_data_value"></div>
                     </div>
-                    <div class="modify_end_divider"></div>
+                    {% if not forloop.last %}<div class="modify_end_divider"></div>{% endif %}
                 {% endfor %}
 
                 <!-- parse rule in modify list -->
@@ -1599,33 +1599,6 @@
                         {% with data_list=data.compare_value %}
                             {% include 'report_different_rule_data.html' %}
                         {% endwith %}
-                        {##}
-                        {#                        {% if data.base_value|length > 0 %}#}
-                        {#                            <div class="highlight_data_value">#}
-                        {#                                {% for value_obj in data.base_value %}#}
-                        {#                                    {% if value_obj.type == "context" %}#}
-                        {#                                        <div>#}
-                        {#                                            {{ value_obj.row }}{% if not forloop.last %},<br/>{% endif %}#}
-                        {#                                        </div>#}
-                        {#                                    {% else %}#}
-                        {#                                        <div class="highlight_different_value">#}
-                        {#                                            {{ value }}{% if not forloop.last %},<br/>{% endif %}#}
-                        {#                                        </div>#}
-                        {#                                    {% endif %}#}
-                        {#                                {% endfor %}#}
-                        {#                            </div>#}
-                        {#                        {% else %}#}
-                        {#                            <div class="rule_data_value"></div>#}
-                        {#                        {% endif %}#}
-                        {#                        {% if data.compare_value %}#}
-                        {#                            <div class="highlight_data_value">#}
-                        {#                                {% for value in data.compare_value %}#}
-                        {#                                    {{ value }}{% if not forloop.last %},<br/>{% endif %}#}
-                        {#                                {% endfor %}#}
-                        {#                            </div>#}
-                        {#                        {% else %}#}
-                        {#                            <div class="rule_data_value"></div>#}
-                        {#                        {% endif %}#}
                     </div>
                     <div class="row divider_line">
                         <div class="modify_line_divider"></div>
@@ -1639,25 +1612,6 @@
                         {% with data_list=data.compare_expression %}
                             {% include 'report_different_rule_data.html' %}
                         {% endwith %}
-
-                        {#                        {% if data.base_expression %}#}
-                        {#                            <div class="highlight_data_value">#}
-                        {#                                {% for expression in data.base_expression %}#}
-                        {#                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}#}
-                        {#                                {% endfor %}#}
-                        {#                            </div>#}
-                        {#                        {% else %}#}
-                        {#                            <div class="rule_data_value"></div>#}
-                        {#                        {% endif %}#}
-                        {#                        {% if data.compare_expression %}#}
-                        {#                            <div class="highlight_data_value">#}
-                        {#                                {% for expression in data.compare_expression %}#}
-                        {#                                    {{ expression }}{% if not forloop.last %},<br/>{% endif %}#}
-                        {#                                {% endfor %}#}
-                        {#                            </div>#}
-                        {#                        {% else %}#}
-                        {#                            <div class="rule_data_value"></div>#}
-                        {#                        {% endif %}#}
                     </div>
                     {% if not forloop.last %}
                         <div class="modify_end_divider"></div>
