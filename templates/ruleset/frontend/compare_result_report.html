@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- This report template is same rule_show_diff html -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
@@ -1424,7 +1425,7 @@
                             {% endfor %}
                         </div>
                     </div>
-                    {% if not forloop.last %}<div class="modify_end_divider"></div>{% endif %}
+                    <div class="modify_end_divider"></div>
                 {% endfor %}
 
                 <!-- parse rule in modify remove list -->
@@ -1518,7 +1519,7 @@
                         </div>
                         <div class="rule_data_value"></div>
                     </div>
-                    {% if not forloop.last %}<div class="modify_end_divider"></div>{% endif %}
+                    <div class="modify_end_divider"></div>
                 {% endfor %}
 
                 <!-- parse rule in modify list -->

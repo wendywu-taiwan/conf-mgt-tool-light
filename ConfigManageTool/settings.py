@@ -75,6 +75,7 @@ TEMPLATES = [
                  'templates/common/component',
                  'templates/ruleset/frontend',
                  'templates/ruleset/frontend/component',
+                 'templates/ruleset/frontend/component/rule_show_diff',
                  'templates/ruleset/backend',
                  'templates/ruleset/backend/component',
                  'templates/shared_storage/frontend',

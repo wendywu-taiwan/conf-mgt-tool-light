@@ -1,0 +1,5 @@
+<div class="rule_data_value">
+    {% for object in data_list %}
+        {{ object }}{% if not forloop.last %},<br/>{% endif %}
+    {% endfor %}
+</div>

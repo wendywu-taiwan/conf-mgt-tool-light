@@ -361,13 +361,13 @@
 
     .modify_rule_list .highlight_data_value {
         border-radius: 8px;
-        width: 35%;
+        width: 37%;
         font-size: 15px;
         font-family: inherit;
         font-weight: 500;
         color: #34495d;
-        margin-right: 2.5%;
-        margin-left: 2.5%;
+        margin-right: 3%;
+        margin-left: 10px;
         text-align: left;
         word-wrap: break-word;
     }
@@ -752,13 +752,13 @@
 
     .modify_rule_list .highlight_data_value {
         border-radius: 8px;
-        width: 35%;
+        width: 37%;
         font-size: 15px;
         font-family: inherit;
         font-weight: 500;
         color: #34495d;
-        margin-right: 2.5%;
-        margin-left: 2.5%;
+        margin-right: 3%;
+        margin-left: 10px;
         text-align: left;
         word-wrap: break-word;
     }

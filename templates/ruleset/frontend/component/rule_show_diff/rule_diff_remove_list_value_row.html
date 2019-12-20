@@ -1,0 +1,7 @@
+<div class="row rule_data_line">
+    <div class="rule_data_title">{{ title }}</div>
+    {% with data_list=value %}
+        {% include 'rule_diff_environment_only_value_row.html' %}
+    {% endwith %}
+    <div class="rule_data_value"></div>
+</div>

@@ -1,0 +1,9 @@
+<div class="row rule_data_line">
+    <div class="rule_data_title">{{ title }}</div>
+    {% with data_list=base_value %}
+        {% include 'report_different_rule_data.html' %}
+    {% endwith %}
+    {% with data_list=compare_value %}
+        {% include 'report_different_rule_data.html' %}
+    {% endwith %}
+</div>
