@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_green.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="{% static '/js/adminConsole/scheduler-create.js' %}"></script>
+    <script src="{% static '/js/component/tagsinput.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -19,8 +20,14 @@
                 </div>
             </div>
         </div>
+        <div id="display_name_div" class="div_margin_bottom">
+            <div class="block_title_div">Display Name :</div>
+            <input id="display_name_input" type="text" class="border_color_green form-control"
+                   placeholder="Create a special name for your task or it will be task ID">
 
-        <div id="env_group_div" class="row no_row_margin">
+        </div>
+
+        <div id="env_group_div" class="row no_row_margin div_margin_bottom">
             <div id="base_env_select_div" class="env_select_div">
                 <div class="block_title_div">Environment :</div>
                 <div id="base_env_dropdown_div" class="btn-group env_select_dropdown_div">
@@ -59,26 +66,39 @@
             </div>
         </div>
 
-        <div id="country_select_div">
+        <div id="country_select_div" class="div_margin_bottom">
             <div class="block_title_div">Country :</div>
 
             <div id="country_check_box_div" class="row no_row_margin">
                 {% for data in countries %}
                     <div class="checkbox_input_div form-check form-check-inline">
-                        <input onclick="countryCheckboxOnChange(this)" class="form-check-input checkbox_input"
-                               type="checkbox"
-                               id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
-                        <label class="form-check-label" for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
+                        <input onclick="countryCheckboxOnChange(this)"
+                               class="vertical_align_middle form-check-input checkbox_input"
+                               type="checkbox" id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
+                        <label class="form-check-label vertical_align_middle"
+                               for="checkbox_input_{{ data.id }}"> {{ data.full_name }}</label>
+                        <div id="{{ data.id }}_add_skip_ruleset_list_div" onclick="addSkipRulesetOnClick(this)"
+                             class="add_skip_ruleset_list_div row no_row_margin">
+                            <span class="fui-plus-circle add_skip_ruleset_list_span vertical_align_middle"></span>
+                            <div class="add_skip_ruleset_list_text vertical-middle">Ruleset To Skip</div>
+                        </div>
+                        <div id="{{ data.id }}_skip_ruleset_list_input_div"
+                             class="skip_ruleset_list_input_div tagsinput-primary">
+                            <input id="{{ data.id }}_skip_ruleset_list_input" name="tagsinput" class="tagsinput"
+                                   data-role="tagsinput"
+                                   placeholder="enter ruleset"
+                                   style="display: none;">
+                        </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <div id="mail_content_select_div">
+        <div id="mail_content_select_div" class="div_margin_bottom">
             <div class="block_title_div">Mail Content :</div>
-            <div id="mail_content_checkbox_div>" class="row no_row_margin">
+            <div id="mail_content_checkbox_div" class="row no_row_margin">
                 {% for data in mail_content_types %}
-                    <div class="checkbox_input_div form-check form-check-inline">
+                    <div class="row_checkbox_input_div form-check form-check-inline">
                         <input onclick="mailContentTypeCheckboxOnChange(this)" class="form-check-input checkbox_input"
                                type="checkbox"
                                id="checkbox_input_{{ data.id }}" value="{{ data.id }}">
@@ -88,10 +108,10 @@
             </div>
         </div>
 
-        <div id="time_select_group_div" class="row no_row_margin">
+        <div id="time_select_group_div" class="row no_row_margin div_margin_bottom">
             {% include 'date_time_picker.html' %}
         </div>
-        <div id="repeat_frequency_div">
+        <div id="repeat_frequency_div" class="div_margin_bottom">
             {% include 'repeat_frequency_row.html' %}
         </div>
 

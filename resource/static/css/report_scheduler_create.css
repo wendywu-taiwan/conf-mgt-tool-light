@@ -31,9 +31,12 @@
     font-weight: 700;
 }
 
-/* environment */
-#env_group_div {
-    margin-bottom: 50px;
+#display_name_input {
+    width: 56%;
+}
+
+.div_margin_bottom {
+    margin-bottom: 40px;
 }
 
 .env_select_div {
@@ -61,12 +64,11 @@
     font-size: 15px;
 }
 
-/* country */
-#country_select_div {
-    margin-bottom: 50px;
+.checkbox_input_div {
+    width: 100%;
 }
 
-.checkbox_input_div {
+.row_checkbox_input_div {
     width: 18%;
 }
 
@@ -75,20 +77,9 @@
     height: 24px;
 }
 
-/* mail content */
-#mail_content_select_div {
-    margin-bottom: 50px;
-}
-
-/* time select */
-#time_select_group_div {
-    margin-bottom: 50px;
-}
-
 #clock_picker_div {
     width: 27%;
 }
-
 
 #mail_receiver_input_div {
     width: 56%;
@@ -102,8 +93,35 @@
     border-color: #049092;
 }
 
-/* time select */
-#repeat_frequency_div {
-    margin-bottom: 50px;
+.add_skip_ruleset_list_div{
+    margin-left: 10px;
+    display: none;
+    cursor: pointer;
 }
 
+.add_skip_ruleset_list_span {
+    color: #55a8fd;
+    margin-right: 5px;
+    font-size: 13px;
+}
+
+.add_skip_ruleset_list_text {
+    color: #55a8fd;
+    font-size: 13px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.country_check_group_div{
+    width: 20%;
+}
+
+.skip_ruleset_list_input_div{
+    margin-left: 15px;
+    width: 60%;
+    display: none;
+}
+
+.skip_ruleset_list_input_div .bootstrap-tagsinput{
+    width: 100%;
+}

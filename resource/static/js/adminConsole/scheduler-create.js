@@ -13,7 +13,7 @@ $(function () {
 });
 
 
-let baseEnvId, compareEnvId, interval, startDateTime, frequencyType;
+let baseEnvId, compareEnvId, interval, startDateTime, frequencyType, displayName;
 let countryList = [];
 let mailList = [];
 let mailContentTypeList = [];
@@ -40,7 +40,10 @@ createTask = function () {
         "mail_list": mailList,
         "frequency_type": frequencyType,
         "interval": interval,
-        "start_date_time": startDateTime
+        "start_date_time": startDateTime,
+        "display_name": displayName,
+        "skip_rulesets": generateSkipRulesetData()
+
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -77,7 +80,9 @@ updateTask = function (task_id) {
         "mail_list": mailList,
         "frequency_type": frequencyType,
         "interval": interval,
-        "start_date_time": startDateTime
+        "start_date_time": startDateTime,
+        "display_name": displayName,
+        "skip_rulesets": generateSkipRulesetData()
     };
 
     doPOST(postUrl, post_body, function (response) {
@@ -96,15 +101,15 @@ updateTask = function (task_id) {
         console.log(response);
         showErrorDialog("update task fail")
     });
-}
+};
 
 checkInputValid = function () {
+    displayName = $("#display_name_input").val();
     baseEnvId = $("#select_base_env_btn:first-child").val();
     compareEnvId = $("#select_compare_env_btn:first-child").val();
     frequencyType = getFrequencyDropdownVal();
     interval = getInterval();
     startDateTime = getNextProceedTime();
-    console.log("getNextProceedTime:"+startDateTime);
     mailList = $("#mail_receiver_input").tagsinput('items');
 
     if (!baseEnvId || !compareEnvId) {
@@ -151,6 +156,8 @@ checkInputValid = function () {
     return true;
 };
 countryCheckboxOnClick = function (countryId) {
+    let addSkipRulesetDiv = document.getElementById(countryId + "_add_skip_ruleset_list_div");
+    showFlex(addSkipRulesetDiv);
     countryList.push(countryId);
 };
 
@@ -160,13 +167,25 @@ mailContentTypeCheckboxOnClick = function (mailContentId) {
 
 countryCheckboxOnChange = function (checkboxItem) {
     let countryId = checkboxItem.value;
+    let addSkipRulesetDiv = document.getElementById(countryId + "_add_skip_ruleset_list_div");
+    let skipRulesetInputDiv = document.getElementById(countryId + "_skip_ruleset_list_input_div");
+
     if (checkboxItem.checked && !countryList.includes(countryId)) {
-        countryCheckboxOnClick(countryId)
+        countryCheckboxOnClick(countryId);
     } else {
+        clearTagsInput(countryId + "_skip_ruleset_list_input");
+        hide(addSkipRulesetDiv);
+        hide(skipRulesetInputDiv);
         countryList = countryList.filter(function (item) {
             return item !== countryId;
         })
     }
+};
+
+addSkipRulesetOnClick = function (divItem) {
+    let divId = divItem.id;
+    let countryId = split_str(divId, 0);
+    showSkipRulesetDiv(countryId);
 };
 
 mailContentTypeCheckboxOnChange = function (checkboxItem) {
@@ -178,4 +197,26 @@ mailContentTypeCheckboxOnChange = function (checkboxItem) {
             return item !== mailContentId;
         })
     }
+};
+showSkipRulesetDiv = function (countryId) {
+    let addSkipRulesetInputDiv = document.getElementById(countryId + "_add_skip_ruleset_list_div");
+    let skipRulesetInputDiv = document.getElementById(countryId + "_skip_ruleset_list_input_div");
+    hide(addSkipRulesetInputDiv);
+    showFlex(skipRulesetInputDiv);
+};
+
+generateSkipRulesetData = function () {
+    let skipRulesetsList = [];
+    for (let index in countryList) {
+        countryId = countryList[index];
+        let tagsInputId = countryId + "_skip_ruleset_list_input";
+        let skipRulesets = getValueTagsInput(tagsInputId);
+
+        let skipRulesetObject = {
+            "country_id": countryId,
+            "ruleset_list": skipRulesets
+        };
+        skipRulesetsList.push(skipRulesetObject)
+    }
+    return skipRulesetsList;
 };

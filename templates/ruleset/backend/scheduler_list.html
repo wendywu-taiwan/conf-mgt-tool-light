@@ -1,5 +1,10 @@
 {% extends "admin_console_base.html" %}
-{% load static from staticfiles %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/ruleset_report_scheduler_list.css' %}" rel="stylesheet">
+{% endblock %}
+
 {% block content %}
     <div id="task_list_container" class="custom_container admin_console_block_background">
         <div id="task_list_header_div" class="row no_row_margin">
@@ -9,22 +14,22 @@
             </div>
         </div>
         <div class="title_div row">
-            <div id="task_title_key" class="title_text vertical_align_middle">
+            <div id="task_title_key" class="display_name_width title_text vertical_align_middle">
                 ID
             </div>
-            <div id="task_title_environment" class="title_text vertical_align_middle">
+            <div id="task_title_environment" class="environment_width title_text vertical_align_middle">
                 Environment
             </div>
-            <div id="task_title_country" class="title_text vertical_align_middle">
+            <div id="task_title_country" class="country_width title_text vertical_align_middle">
                 Countries
             </div>
-            <div id="task_title_last_time" class="title_text vertical_align_middle">
+            <div id="task_title_last_time" class="proceed_time_width title_text vertical_align_middle">
                 Last Proceed Time
             </div>
-            <div id="task_title_next_time" class="title_text vertical_align_middle">
+            <div id="task_title_next_time" class="proceed_time_width title_text vertical_align_middle">
                 Next Proceed Time
             </div>
-            <div id="task_title_status" class="title_text vertical_align_middle">
+            <div id="task_title_status" class="status_width title_text vertical_align_middle">
                 Status
             </div>
             <div id="task_title_action" class="title_text vertical_align_middle">
@@ -33,8 +38,8 @@
 
         {% for task in data %}
             <div class="scheduler_task row">
-                <div id="task_key_div" class="vertical_align_middle">{{ task.task_id }}</div>
-                <div id="task_environment_div" class="vertical_align_middle">
+                <div id="task_key_div" class="display_name_width vertical_align_middle">{{ task.display_name }}</div>
+                <div id="task_environment_div" class="environment_width vertical_align_middle">
                     <div id="base_env_div" class="row">
                         <img class="task_environment_icon" src="{% static '/icons/scheduler_environment.png' %}">
                         <div class="environment_text vertical_align_middle">
@@ -49,7 +54,7 @@
                     </div>
 
                 </div>
-                <div class="country_list_div">
+                <div class="vertical_align_middle country_width">
                     <div class="row no_row_margin">
                         {% for country in task.country_list %}
                             <div class="country_image_div">
@@ -60,21 +65,21 @@
                         {% endfor %}
                     </div>
                 </div>
-                <div id="task_last_proceed_time_div" class="task_proceed_time_div">
+                <div id="task_last_proceed_time_div" class="vertical_align_middle proceed_time_width">
                     <div id="last_proceed_time" class="vertical_align_middle">
                         <div class="task_proceed_time_text">
                             {{ task.last_proceed_time }}
                         </div>
                     </div>
                 </div>
-                <div id="task_next_proceed_time_div" class="task_proceed_time_div">
+                <div id="task_next_proceed_time_div" class="vertical_align_middle proceed_time_width">
                     <div id="next_proceed_time" class="vertical_align_middle">
                         <div class="task_proceed_time_text">
                             {{ task.next_proceed_time }}
                         </div>
                     </div>
                 </div>
-                <div id="task_status_div">
+                <div id="task_status_div" class="vertical_align_middle">
                     {% if task.enable %}
                         <div id="task_status_in_progress" class="cursor_pointer"
                              onclick="stopScheduler('{{ task.task_id }}')">Running

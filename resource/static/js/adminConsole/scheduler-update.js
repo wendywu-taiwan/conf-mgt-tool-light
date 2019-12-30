@@ -13,6 +13,11 @@ $(function () {
 
 });
 
+function setDisplayName(name) {
+    $("#display_name_input").val(name);
+    $("#display_name_input").text(name);
+}
+
 function setBaseEnvSelected(id, name) {
     $("#select_base_env_btn:first-child").text(name);
     $("#select_base_env_btn:first-child").val(id);
@@ -32,6 +37,10 @@ function setMailContentTypeChecked(mail_content_type_id) {
     mailContentTypeCheckboxOnClick(mail_content_type_id);
     $("#mail_content_type_checkbox_input_" + mail_content_type_id).prop("checked", true);
 };
+
+function addTagToSkipRulesetInput(countryId, ruleset) {
+    addValueTagsInput(countryId + "_skip_ruleset_list_input", ruleset);
+}
 
 let receivers = [];
 

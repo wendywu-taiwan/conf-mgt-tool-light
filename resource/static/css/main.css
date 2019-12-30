@@ -339,8 +339,8 @@ html, body {
 }
 
 .vertical_align_middle {
-    margin-top: auto;
-    margin-bottom: auto;
+    margin-top: auto !important;
+    margin-bottom: auto !important;
 }
 
 .custom_divider {
@@ -475,4 +475,26 @@ html, body {
 
 .border-all {
     border: 0.5px solid #cccccc;
+}
+
+#task_status_in_progress {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #1abc9c;
+}
+
+#task_status_stop {
+    border: 1px solid;
+    margin-bottom: auto;
+    margin-top: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #f4817c;
 }
