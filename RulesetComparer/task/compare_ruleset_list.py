@@ -26,7 +26,11 @@ class CompareRuleListTask:
         self.baseEnv = Environment.objects.get(id=base_env_id)
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
-        self.filter_list = strip_list_string(filter_list, "\\")
+        if filter_list is None:
+            self.filter_list = list()
+        else:
+            self.filter_list = filter_list
+            self.filter_list = strip_list_string(filter_list, "\\")
 
         self.compare_env_only_rulesets = list()
         self.base_env_only_rulesets = list()
