@@ -5,7 +5,7 @@ from RulesetComparer.properties import config
 
 class CompareReportInfoBuilder(BaseBuilder):
 
-    def __init__(self, json_data, mail_content_type_list):
+    def __init__(self, json_data, mail_content_type_list, skipped_rulesets):
         try:
             self.json_data = json_data
             self.ruleset_list_json = self.json_data[key.COMPARE_RESULT_LIST_DATA]
@@ -14,6 +14,7 @@ class CompareReportInfoBuilder(BaseBuilder):
             self.normal_is_base_env = False
             self.show_ruleset_list = False
             self.show_ruleset_table = False
+            self.skipped_rulesets = skipped_rulesets
             self.parsing_environment()
             self.parsing_mail_content_type(mail_content_type_list)
             BaseBuilder.__init__(self)
@@ -92,7 +93,8 @@ class CompareReportInfoBuilder(BaseBuilder):
 
         ruleset_list = {"normal_env_only_rulesets": normal_env_only_rulesets,
                         "developer_env_only_rulesets": developer_env_only_rulesets,
-                        "different_rulesets": different_rulesets}
+                        "different_rulesets": different_rulesets,
+                        "skipped_rulesets": self.skipped_rulesets}
 
         if self.show_ruleset_list:
             ruleset_list["show"] = "true"

@@ -4,6 +4,7 @@ from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
 from common.data_object.json_builder.base import BaseBuilder
 from common.data_object.json_builder.frequency_type import FrequencyTypeBuilder
+from common.utils.utility import parse_db_string_list
 
 
 class ReportSchedulerBuilder(BaseBuilder):
@@ -14,18 +15,12 @@ class ReportSchedulerBuilder(BaseBuilder):
 
     def __generate_data__(self):
         self.result_dict[KEY_TASK_ID] = self.scheduler.id
-        self.result_dict[KEY_MAIL_LIST] = self.get_mail_list()
+        self.result_dict[KEY_MAIL_LIST] = parse_db_string_list(self.scheduler.mail_list)
         self.result_dict[KEY_FREQUENCY_TYPE] = FrequencyTypeBuilder(self.scheduler.frequency_type).get_data()
         self.result_dict[KEY_INTERVAL] = self.scheduler.interval
         self.result_dict[KEY_LAST_PROCEED_TIME] = self.get_format_time(self.scheduler.last_proceed_time)
         self.result_dict[KEY_NEXT_PROCEED_TIME] = self.get_format_time(self.scheduler.next_proceed_time)
         self.result_dict[KEY_ENABLE] = bool(self.scheduler.enable)
-
-    def get_mail_list(self):
-        try:
-            return ast.literal_eval(self.scheduler.mail_list)
-        except Exception:
-            return self.scheduler.mail_list
 
     @staticmethod
     def get_format_time(utc_date_time):

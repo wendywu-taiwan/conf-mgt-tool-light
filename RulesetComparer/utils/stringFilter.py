@@ -42,3 +42,8 @@ def folder_filter(country, folder_path, filter_keys):
         if folder_path == full_path:
             return True
     return False
+
+
+def strip_list_string(lst, strip_text):
+    new_list = [x.strip(strip_text) for x in lst]
+    return new_list

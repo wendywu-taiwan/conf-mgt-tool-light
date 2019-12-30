@@ -1,3 +1,4 @@
+import ast
 import traceback
 
 from django.http import HttpResponseBadRequest
@@ -24,6 +25,13 @@ def contains(my_list, text):
         return True
     else:
         return False
+
+
+def parse_db_string_list(db_list):
+    try:
+        return ast.literal_eval(db_list)
+    except Exception:
+        return db_list
 
 
 def get_post_request_json(request):

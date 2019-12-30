@@ -16,8 +16,15 @@ class DBReportSchedulerParser(BaseReportSchedulerParser):
             self.frequency_type = scheduler.frequency_type
             self.interval = scheduler.interval
             self.utc_time = self.get_utc_time(self.local_time)
+            self.skip_ruleset_map = self.parse_skip_rulesets_map(scheduler.skip_rulesets.all())
         except BaseException as e:
             raise e
+
+    def parse_skip_rulesets_map(self, skip_rulesets):
+        data_map = {}
+        for skip_ruleset_model in skip_rulesets:
+            data_map[skip_ruleset_model.country.id] = self.parse_text_list(skip_ruleset_model.ruleset_list)
+        return data_map
 
     def parse_country(self, country_id_list):
         return super().parse_country(country_id_list)

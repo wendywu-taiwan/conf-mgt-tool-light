@@ -37,11 +37,23 @@ RULE_MODIFIED_KEY_COMPARE_VALUE = 'compare_value'
 RULE_MODIFIED_KEY_COMPARE_EXPRESSION = 'compare_expression'
 RULE_KEY_COMBINED_KEY = 'combined_key'
 
-# view.environment_select , view.admin_console_create_task, view.rule_download_page
 ENVIRONMENT_SELECT_COUNTRY = 'countries'
 ENVIRONMENT_SELECT_ENVIRONMENT = 'environments'
+BASE_ENVIRONMENT = "base_environment"
+COMPARE_ENVIRONMENT = "compare_environment"
 SOURCE_ENVIRONMENT = 'source_environment'
 TARGET_ENVIRONMENT = 'target_environment'
+RULE_KEY_ENVIRONMENT_NAME = 'environment_name'
+RULE_KEY_ENVIRONMENT_ID = 'environment_id'
+KEY_ENVIRONMENTS = "environments"
+KEY_ENVIRONMENT = "environment"
+KEY_ENVIRONMENT_ID = "environment_id"
+KEY_SOURCE_ENV = "source_environment"
+KEY_SOURCE_ENV_ID = "source_environment_id"
+KEY_TARGET_ENV = "target_environment"
+KEY_TARGET_ENV_ID = "target_environment_id"
+KEY_LEFT_ENVIRONMENT = "left_environment"
+KEY_RIGHT_ENVIRONMENT = "right_environment"
 
 # view.rule_download_page
 RULE_NAME_LIST = 'rule_name_list'
@@ -70,8 +82,6 @@ COMPARE_RESULT_DIFF_DATA = 'diff_data'
 COMPARE_RESULT_INFO_DATA = 'info_data'
 
 # view.rule_detail, view.rule_diff
-RULE_KEY_ENVIRONMENT_NAME = 'environment_name'
-RULE_KEY_ENVIRONMENT_ID = 'environment_id'
 RULE_KEY_COUNTRY_NAME = 'country_name'
 RULE_KEY_COUNTRY_ID = 'country_id'
 RULE_KEY_COMPARE_HASH_KEY = 'compare_hash_key'
@@ -170,7 +180,6 @@ KEY_USER_NAME = "user_name"
 
 # RulesetLogListResultBuilder
 KEY_USERS = "users"
-KEY_ENVIRONMENTS = "environments"
 KEY_COUNTRIES = "countries"
 KEY_FILTER_USER_IDS = "filter_user_ids"
 KEY_FILTER_ENVIRONMENT_IDS = "filter_environment_ids"
@@ -184,9 +193,6 @@ KEY_LOG_ID = "log_id"
 KEY_REGIONS = "regions"
 KEY_COUNTRY = "country"
 KEY_COUNTRIES = "countries"
-KEY_ENVIRONMENT = "environment"
-KEY_ENVIRONMENTS = "environments"
-KEY_ENVIRONMENT_ID = "environment_id"
 KEY_COUNTRY_ID = "country_id"
 KEY_NAME = "name"
 KEY_TYPE = "type"
@@ -226,10 +232,6 @@ KEY_BACKUP_DATES = "backup_dates"
 KEY_UPDATE_TIME = "update_time"
 KEY_BASE_ENV = 'base_env'
 KEY_COMPARE_ENV = 'compare_env'
-KEY_SOURCE_ENV = "source_environment"
-KEY_SOURCE_ENV_ID = "source_environment_id"
-KEY_TARGET_ENV = "target_environment"
-KEY_TARGET_ENV_ID = "target_environment_id"
 KEY_COMMIT_SHA = "commit_sha"
 KEY_LOG_COUNT = "log_count"
 KEY_RULESET_LOG_GROUPS = "ruleset_log_groups"
@@ -268,8 +270,6 @@ KEY_FILE_PATH = "file_path"
 KEY_FILE_SIZE = "file_size"
 KEY_LEFT_FILE = "left_file"
 
-KEY_LEFT_ENVIRONMENT = "left_environment"
-KEY_RIGHT_ENVIRONMENT = "right_environment"
 KEY_REGION = "region"
 KEY_LEFT_REGION = "left_region"
 KEY_RIGHT_REGION = "right_region"
@@ -304,6 +304,9 @@ KEY_COMMON = "common"
 KEY_REQUEST_HOST = "request_host"
 KEY_URL_REGIONAL_TAG = "url_regional_tag"
 KEY_LAST_VERSION = "last version"
+KEY_DISPLAY_NAME = "display_name"
+KEY_SKIP_RULESETS = "skip_rulesets"
+KEY_RULESET_LIST = "ruleset_list"
 
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'
@@ -355,7 +358,6 @@ KEY_DIFFERENT = "different"
 KEY_S_EQUAL = "="
 KEY_S_HASH_TAG = "#"
 KEY_S_COLON = ":"
-
 
 # difflib
 KEY_START_SIGN = "\x00"
