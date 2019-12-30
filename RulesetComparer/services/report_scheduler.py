@@ -63,11 +63,12 @@ def run_scheduler_now(json_data, user):
         RulesetReportPermissionChecker(user, parser.country_list, base_env.id, compare_env.id)
 
         for country in parser.country_list:
-            task = CompareRuleListTask(base_env.id, compare_env.id, country.id)
+            skipped_rulesets = parser.skip_ruleset_map[country.id]
+            task = CompareRuleListTask(base_env.id, compare_env.id, country.id, skipped_rulesets)
 
             # generate mail content
             result_data = fileManager.load_compare_result_file(task.compare_hash_key)
-            info_builder = CompareReportInfoBuilder(result_data, parser.mail_content_type_list)
+            info_builder = CompareReportInfoBuilder(result_data, parser.mail_content_type_list, skipped_rulesets)
             content_json = info_builder.get_data()
             html_content = render_to_string('compare_info_mail_content.html', content_json)
 
@@ -93,7 +94,9 @@ def create_scheduler(json_data, user):
                                                                parser.mail_list,
                                                                parser.frequency_type,
                                                                parser.interval,
-                                                               parser.utc_time)
+                                                               parser.utc_time,
+                                                               parser.display_name,
+                                                               parser.skip_ruleset_list)
 
     parser.task_id = report_scheduler.id
     add_task_to_scheduler(parser)
@@ -112,7 +115,9 @@ def update_report_scheduler(json_data, user):
                                                                    parser.mail_list,
                                                                    parser.frequency_type,
                                                                    parser.interval,
-                                                                   parser.utc_time)
+                                                                   parser.utc_time,
+                                                                   parser.display_name,
+                                                                   parser.skip_ruleset_list)
         add_task_to_scheduler(parser)
         return report_scheduler
     except Exception as e:
@@ -122,7 +127,9 @@ def update_report_scheduler(json_data, user):
 def delete_scheduler(json_data, user):
     parser = DeleteReportSchedulerParser(json_data, user)
     RulesetReportPermissionChecker(user, parser.country_id_list, parser.base_env_id, parser.compare_env_id)
-    ReportSchedulerInfo.objects.filter(id=parser.task_id).delete()
+    scheduler = ReportSchedulerInfo.objects.get(id=parser.task_id)
+    scheduler.skip_rulesets.all().delete()
+    scheduler.delete()
 
 
 def add_task_to_scheduler(parser):

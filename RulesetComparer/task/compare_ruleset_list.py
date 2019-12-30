@@ -14,17 +14,19 @@ from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils.logger import *
 from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
+from RulesetComparer.utils.stringFilter import strip_list_string
 from RulesetComparer.utils.timeUtil import get_current_time
 
 
 class CompareRuleListTask:
     LOG_CLASS = "CompareRuleListTask"
 
-    def __init__(self, base_env_id, compare_env_id, country_id):
+    def __init__(self, base_env_id, compare_env_id, country_id, filter_list=None):
         self.compare_hash_key = hash(self)
         self.baseEnv = Environment.objects.get(id=base_env_id)
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
+        self.filter_list = strip_list_string(filter_list, "\\")
 
         self.compare_env_only_rulesets = list()
         self.base_env_only_rulesets = list()
@@ -93,12 +95,18 @@ class CompareRuleListTask:
 
     def updated_rule_list_from_server(self, environment):
         updated_list = DownloadRuleListTask(environment.id, self.country.id).get_result_data()
+        updated_list = self.filter_ruleset_list(updated_list)
         self.download_rules(environment, updated_list)
         return updated_list
 
     def updated_rule_list_from_git(self):
         git_file_path = get_rule_set_git_path(self.country.name)
-        return fileManager.get_rule_name_list(git_file_path)
+        updated_list = fileManager.get_rule_name_list(git_file_path)
+        return self.filter_ruleset_list(updated_list)
+
+    def filter_ruleset_list(self, ruleset_list):
+        new_list = list(set(ruleset_list) - set(self.filter_list))
+        return new_list
 
     def download_rules(self, env, rule_list):
         DownloadRulesetsTask(env.id, self.country.id, rule_list, self.compare_hash_key)

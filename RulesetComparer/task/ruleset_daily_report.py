@@ -18,6 +18,7 @@ class RulesetDailyReportTask(DailyReportTask):
         self.compare_env = Environment.objects.get(id=parser.compare_env_id)
         self.country_list = parser.country_list
         self.mail_content_type_list = parser.mail_content_type_list
+        self.skip_ruleset_map = parser.skip_ruleset_map
         DailyReportTask.__init__(self, parser, ReportSchedulerInfo)
 
     def set_scheduled_job(self, scheduled_job):
@@ -31,11 +32,13 @@ class RulesetDailyReportTask(DailyReportTask):
 
     def execute(self):
         for country in self.country_list:
-            task = CompareRuleListTask(self.base_env.id, self.compare_env.id, country.id)
+            country_id = str(country.id)
+            skip_rulesets = self.skip_ruleset_map[country_id]
+            task = CompareRuleListTask(self.base_env.id, self.compare_env.id, country.id, skip_rulesets)
 
             # generate mail content
             result_data = fileManager.load_compare_result_file(task.compare_hash_key)
-            info_builder = CompareReportInfoBuilder(result_data, self.mail_content_type_list)
+            info_builder = CompareReportInfoBuilder(result_data, self.mail_content_type_list, skip_rulesets)
             content_json = info_builder.get_data()
             html_content = render_to_string('compare_info_mail_content.html', content_json)
 

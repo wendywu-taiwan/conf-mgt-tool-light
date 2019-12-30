@@ -24,7 +24,8 @@ admin.site.register(MailContentType, MailContentTypeAdmin)
 
 class ReportSchedulerInfoManager(models.Manager):
     def create_task(self, base_env_id, compared_env_id, module_id,
-                    country_list, mail_content_type_list, mail_list_str, frequency_type, interval, next_proceed_time):
+                    country_list, mail_content_type_list, mail_list_str, frequency_type,
+                    interval, next_proceed_time, display_name, skip_ruleset_list):
         task = self.create(base_environment_id=base_env_id,
                            compare_environment_id=compared_env_id,
                            module_id=module_id,
@@ -33,7 +34,8 @@ class ReportSchedulerInfoManager(models.Manager):
                            interval=interval,
                            last_proceed_time=None,
                            next_proceed_time=next_proceed_time,
-                           enable=1)
+                           enable=1,
+                           display_name=display_name)
 
         for country in country_list:
             task.country_list.add(country)
@@ -41,10 +43,16 @@ class ReportSchedulerInfoManager(models.Manager):
         for mail_content_type in mail_content_type_list:
             task.mail_content_type_list.add(mail_content_type)
 
+        for skip_tuple in skip_ruleset_list:
+            country = skip_tuple[0]
+            ruleset_list = skip_tuple[1]
+            ReportSchedulerSkipRuleset.objects.create(report_scheduler=task, country=country, ruleset_list=ruleset_list)
+
         return task
 
     def update_task(self, task_id, base_env_id, compared_env_id, country_list,
-                    mail_content_type_list, mail_list_str, frequency_type, interval, next_proceed_time):
+                    mail_content_type_list, mail_list_str, frequency_type, interval, next_proceed_time, display_name,
+                    skip_ruleset_list):
         task = self.get(id=task_id)
         task.base_environment_id = base_env_id
         task.compare_environment_id = compared_env_id
@@ -52,6 +60,7 @@ class ReportSchedulerInfoManager(models.Manager):
         task.frequency_type = frequency_type
         task.interval = interval
         task.next_proceed_time = next_proceed_time
+        task.display_name = display_name
 
         task.country_list.clear()
         for country_id in country_list:
@@ -61,7 +70,14 @@ class ReportSchedulerInfoManager(models.Manager):
         for mail_content_type in mail_content_type_list:
             task.mail_content_type_list.add(mail_content_type)
 
+        task.skip_rulesets.all().delete()
         task.save()
+
+        for skip_tuple in skip_ruleset_list:
+            country = skip_tuple[0]
+            ruleset_list = skip_tuple[1]
+            ReportSchedulerSkipRuleset.objects.create(report_scheduler=task, country=country,
+                                                      ruleset_list=ruleset_list)
         return task
 
     def update_next_proceed_time(self, task_id, next_proceed_time):
@@ -121,6 +137,7 @@ class ReportSchedulerInfo(models.Model):
     next_proceed_time = models.DateTimeField(null=True)
     job_id = models.CharField(max_length=128, null=True)
     enable = models.IntegerField()
+    display_name = models.CharField(max_length=128, null=True)
 
     objects = ReportSchedulerInfoManager()
 
@@ -128,10 +145,26 @@ class ReportSchedulerInfo(models.Model):
 class ReportSchedulerInfoAdmin(admin.ModelAdmin):
     list_display = (
         'id', 'base_environment', 'compare_environment', 'module',
-        'mail_list', 'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'job_id', 'enable')
+        'mail_list', 'frequency_type', 'interval', 'last_proceed_time', 'next_proceed_time', 'job_id', 'enable',
+        'display_name')
 
 
 admin.site.register(ReportSchedulerInfo, ReportSchedulerInfoAdmin)
+
+
+# Create your models here.
+class ReportSchedulerSkipRulesetManager(models.Manager):
+    pass
+
+
+class ReportSchedulerSkipRuleset(models.Model):
+    id = models.AutoField(primary_key=True)
+    report_scheduler = models.ForeignKey(ReportSchedulerInfo, related_name='skip_rulesets',
+                                         on_delete=models.PROTECT)
+    country = models.ForeignKey(Country, on_delete=models.PROTECT)
+    ruleset_list = models.TextField()
+
+    objects = ReportSchedulerSkipRulesetManager()
 
 
 class RulesetSyncUpSchedulerManager(models.Manager):
