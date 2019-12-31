@@ -197,6 +197,12 @@
         "display_name": "Recovery",
         "icon_file_name": "task_manage_white.png",
         "module_name": "ruleset"
+      },
+      {
+        "name": "report_task",
+        "display_name": "ReportTask",
+        "icon_file_name": "task_manage_white.png",
+        "module_name": "shared_storage"
       }
     ],
     "module": [
@@ -557,7 +563,7 @@
         "update_time": "2019-12-30 10:10:00"
       },
       "function": {
-        "update_time": "2019-12-30 10:10:00"
+        "update_time": "2019-12-31 10:10:00"
       },
       "module": {
         "update_time": "2019-12-31 10:10:00"
