@@ -538,6 +538,7 @@
         "client": "ftp.audatex.com.au"
       }
     ],
+    "environment_auto_sync_permission": [],
     "update_time": {
       "auth_user": {
         "update_time": "2019-12-30 10:10:00"
@@ -589,6 +590,9 @@
       },
       "ftp_server": {
         "update_time": "2019-12-30 10:10:00"
+      },
+      "environment_auto_sync_permission": {
+        "update_time": "2019-11-18 17:50:00"
       }
     }
   }
