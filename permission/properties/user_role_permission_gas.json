@@ -1,0 +1,324 @@
+{
+  "user_role_permission": [
+    {
+      "user_name": "admin",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "wendy.wu",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "gas.admin",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "gas.developer",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "gas.quality.assurance",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "guest.01",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "guest"
+        }
+      ]
+    },
+    {
+      "user_name": "TaskManager",
+      "permission": [
+        {
+          "environment": "PROD",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "PROD2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "CAE",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT2",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "INT1",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "GIT",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "Backup",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    }
+  ],
+  "update_time": {
+    "user_role_permission": {
+      "update_time": "2019-12-30 11:30:00"
+    }
+  }
+}
