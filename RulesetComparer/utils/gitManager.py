@@ -124,3 +124,5 @@ def print_commit(commit, env):
                                      commit.author.name,
                                      commit.author.email))
     print(str("authored_datetime:{}".format(commit.authored_datetime)))
+    print(str("committed_datetime:{}".format(commit.committed_datetime)))
+
