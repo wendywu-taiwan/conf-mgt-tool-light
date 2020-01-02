@@ -55,7 +55,7 @@ class GitManager:
             print_commit(local_commit, "local latest commit")
             print_commit(remote_commit, "remote latest commit")
             info_log(self.LOG_CLASS, "\ncompare local and remote commit time ...")
-            local_commit_time = str(local_commit.authored_datetime)
+            local_commit_time = str(local_commit.committed_datetime)
             remote_commit_time = str(remote_commit.committed_datetime)
 
             return_time = compare_git_time(local_commit_time, remote_commit_time)
