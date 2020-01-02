@@ -63,7 +63,11 @@ def run_scheduler_now(json_data, user):
         RulesetReportPermissionChecker(user, parser.country_list, base_env.id, compare_env.id)
 
         for country in parser.country_list:
-            skipped_rulesets = parser.skip_ruleset_map[country.id]
+            country_id = str(country.id)
+            if country_id in parser.skip_ruleset_map:
+                skipped_rulesets = parser.skip_ruleset_map[country_id]
+            else:
+                skipped_rulesets = list()
             task = CompareRuleListTask(base_env.id, compare_env.id, country.id, skipped_rulesets)
 
             # generate mail content

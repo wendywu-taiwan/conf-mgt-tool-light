@@ -21,3 +21,4 @@ shared_storage/tmp_file
 auth_data_apac.json
 auth_data_nl.json
 shared_storage/migrations
+auth_data_gas.json
