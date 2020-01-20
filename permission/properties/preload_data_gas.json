@@ -125,7 +125,7 @@
       {
         "full_name": "git",
         "name": "GIT",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "system backup",
@@ -560,7 +560,7 @@
         "update_time": "2019-12-30 10:10:00"
       },
       "environment": {
-        "update_time": "2019-12-30 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "function": {
         "update_time": "2019-12-31 10:10:00"
