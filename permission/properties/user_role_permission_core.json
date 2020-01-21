@@ -1,0 +1,130 @@
+{
+  "region": "core",
+  "user_role_permission": [
+    {
+      "user_name": "admin",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "wendy.wu",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "keith.chung",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "core.admin",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "core.developer",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "developer"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "developer"
+        }
+      ]
+    },
+    {
+      "user_name": "core.quality.assurance",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "quality_assurance"
+        }
+      ]
+    },
+    {
+      "user_name": "TaskManager",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "superuser"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "superuser"
+        }
+      ]
+    },
+    {
+      "user_name": "guest.01",
+      "permission": [
+        {
+          "environment": "i1ref",
+          "country": "all",
+          "role_type": "guest"
+        },
+        {
+          "environment": "i2ref",
+          "country": "all",
+          "role_type": "guest"
+        }
+      ]
+    }
+  ],
+  "update_time": {
+    "user_role_permission": {
+      "update_time": "2020-01-20 10:20:00"
+    }
+  }
+}

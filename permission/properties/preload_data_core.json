@@ -1,5 +1,5 @@
 {
-  "region": "nl",
+  "region": "core",
   "data": {
     "auth_user": [
       {
@@ -25,27 +25,36 @@
       },
       {
         "model": "auth.user",
-        "username": "nl.admin",
+        "username": "keith.chung",
         "password": "audatex",
-        "email": "Rob.Gerbenzon@solera.nl",
+        "email": "Keith.Chuang@solera.com",
         "is_superuser": false,
         "is_staff": true,
         "is_active": true
       },
       {
         "model": "auth.user",
-        "username": "nl.developer",
+        "username": "core.admin",
         "password": "audatex",
-        "email": "Rob.Gerbenzon@solera.nl",
+        "email": "Keith.Chuang@solera.com",
         "is_superuser": false,
         "is_staff": true,
         "is_active": true
       },
       {
         "model": "auth.user",
-        "username": "nl.quality.assurance",
+        "username": "core.developer",
         "password": "audatex",
-        "email": "Rob.Gerbenzon@solera.nl",
+        "email": "Keith.Chuang@solera.com",
+        "is_superuser": false,
+        "is_staff": true,
+        "is_active": true
+      },
+      {
+        "model": "auth.user",
+        "username": "core.quality.assurance",
+        "password": "audatex",
+        "email": "Keith.Chuang@solera.com",
         "is_superuser": false,
         "is_staff": true,
         "is_active": true
@@ -81,16 +90,16 @@
     ],
     "country": [
       {
-        "full_name": "Netherlands",
-        "name": "NL",
-        "icon_file_name": "netherlands.png"
+        "full_name": "Great Britain",
+        "name": "GB",
+        "icon_file_name": "united-kingdom.png"
       }
     ],
     "environment": [
       {
         "full_name": "production",
         "name": "PROD",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "production2",
@@ -100,7 +109,7 @@
       {
         "full_name": "cae",
         "name": "CAE",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "ct",
@@ -110,12 +119,12 @@
       {
         "full_name": "int1",
         "name": "INT1",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "int2",
         "name": "INT2",
-        "active": 1
+        "active": 0
       },
       {
         "full_name": "int3",
@@ -128,6 +137,16 @@
         "active": 0
       },
       {
+        "full_name": "i1ref",
+        "name": "i1ref",
+        "active": 1
+      },
+      {
+        "full_name": "i2ref",
+        "name": "i2ref",
+        "active": 1
+      },
+      {
         "full_name": "system backup",
         "name": "Backup",
         "active": 0
@@ -135,20 +154,12 @@
     ],
     "b2b_client": [
       {
-        "data_center": "NL",
-        "url": "http://www-int1.audaflow.nl/b2b/services/"
+        "data_center": "CORE",
+        "url": "http://www-i1ref.audatex.net/b2b/services/"
       },
       {
-        "data_center": "NL",
-        "url": "http://www-int2.audaflow.nl/b2b/services/"
-      },
-      {
-        "data_center": "NL",
-        "url": "http://www.audaflow.nl/b2b/services/"
-      },
-      {
-        "data_center": "NL",
-        "url": "http://www-a.audaflow.nl/b2b/services/"
+        "data_center": "CORE",
+        "url": "http://www-i2ref.audatex.net/b2b/services/"
       }
     ],
     "function": [
@@ -246,37 +257,23 @@
     ],
     "data_center": [
       {
-        "name": "NL"
+        "name": "CORE"
       }
     ],
     "b2b_server": [
       {
         "country_name": [
-          "NL"
+          "GB"
         ],
-        "environment_name": "INT1",
-        "b2b_client_url": "http://www-int1.audaflow.nl/b2b/services/"
+        "environment_name": "i1ref",
+        "b2b_client_url": "http://www-i1ref.audatex.net/b2b/services/"
       },
       {
         "country_name": [
-          "NL"
+          "GB"
         ],
-        "environment_name": "INT2",
-        "b2b_client_url": "http://www-int2.audaflow.nl/b2b/services/"
-      },
-      {
-        "country_name": [
-          "NL"
-        ],
-        "environment_name": "PROD",
-        "b2b_client_url": "http://www.audaflow.nl/b2b/services/"
-      },
-      {
-        "country_name": [
-          "NL"
-        ],
-        "environment_name": "CAE",
-        "b2b_client_url": "http://www-a.audaflow.nl/b2b/services/"
+        "environment_name": "i2ref",
+        "b2b_client_url": "http://www-i2ref.audatex.net/b2b/services/"
       }
     ],
     "ruleset_action": [
@@ -332,7 +329,7 @@
       },
       {
         "name": "NL",
-        "active": 1
+        "active": 0
       },
       {
         "name": "CN",
@@ -345,6 +342,10 @@
       {
         "name": "AU",
         "active": 0
+      },
+      {
+        "name": "CORE",
+        "active": 1
       }
     ],
     "ftp_client": [
@@ -370,6 +371,10 @@
       },
       {
         "url": "ftp.audatex.net",
+        "port": 22223
+      },
+      {
+        "url": "ftp-int.audatex.net",
         "port": 22223
       }
     ],
@@ -513,63 +518,73 @@
         "region": "AU",
         "environment": "CAE",
         "client": "ftp.audatex.com.au"
+      },
+      {
+        "region": "CORE",
+        "environment": "i1ref",
+        "client": "ftp-int.audatex.net"
+      },
+      {
+        "region": "CORE",
+        "environment": "i2ref",
+        "client": "ftp-int.audatex.net"
       }
     ],
     "environment_auto_sync_permission": [],
     "update_time": {
       "auth_user": {
-        "update_time": "2019-11-08 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "mail_content_type": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "country": {
-        "update_time": "2019-11-08 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "environment": {
-        "update_time": "2019-11-08 14:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "function": {
-        "update_time": "2019-12-02 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "module": {
-        "update_time": "2019-11-18 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "role_type": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "role_permission": {
-        "update_time": "2019-11-08 14:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "data_center": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "b2b_client": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "b2b_service": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "b2b_server": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "ruleset_action": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "frequency_type": {
-        "update_time": "2019-11-07 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "ftp_region": {
-        "update_time": "2019-11-08 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "ftp_client": {
-        "update_time": "2019-11-08 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "ftp_server": {
-        "update_time": "2019-11-08 10:10:00"
+        "update_time": "2020-01-20 10:10:00"
       },
       "environment_auto_sync_permission": {
-        "update_time": "2019-11-18 17:50:00"
+        "update_time": "2020-01-20 10:10:00"
       }
     }
   }
