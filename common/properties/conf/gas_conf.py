@@ -5,5 +5,6 @@ STATIC_URL = "/gas/static/"
 URL_PRE_PATH = "gas/"
 PRELOAD_DATA = "preload_data_gas.json"
 AUTH_DATA = "auth_data_gas.json"
+ROLE_FUNCTION_PERMISSION_DATA = "role_function_permission_gas.json"
 USER_ROLE_PERMISSION_DATA = "user_role_permission_gas.json"
 

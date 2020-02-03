@@ -8,7 +8,6 @@ FILE_PATH = {
     "compare_result": "/RulesetComparer/compare_result",
     "preload_data": "/RulesetComparer/properties/jsondata/preload_data.json",
     "permission_properties": "/permission/properties",
-    "role_function_permission_data": "/permission/properties/role_function_permission.json",
     "user_role_permission_data": "/permission/properties/user_role_permission.json",
     "auth_data": "/RulesetComparer/properties/jsondata/auth_data.json",
     "server_log": "/RulesetComparer/serverlog",

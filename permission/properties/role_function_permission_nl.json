@@ -1,0 +1,1897 @@
+{
+  "role_function_permission": [
+    {
+      "environment_name": "PROD",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "PROD2",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "CAE",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "false",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "CT",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "INT1",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "INT2",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "GIT",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "environment_name": "Backup",
+      "country_name": "all",
+      "role_module_permission": [
+        {
+          "module_name": "ruleset",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "false",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "false"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "server_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "ruleset_log",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "auto_sync_task",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "recovery",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "setting",
+          "permissions": [
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                {
+                  "function_name": "user_role",
+                  "visible": "true",
+                  "editable": "true"
+                },
+                {
+                  "function_name": "role_permission",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "shared_storage",
+          "permissions": [
+            {
+              "role_type": "developer",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "quality_assurance",
+              "function_permission": [
+                {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            },
+            {
+              "role_type": "support",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "guest",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "false"
+                }
+              ]
+            },
+            {
+              "role_type": "superuser",
+              "function_permission": [
+                 {
+                  "function_name": "report_task",
+                  "visible": "true",
+                  "editable": "true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "update_time": {
+    "role_function_permission": {
+      "update_time": "2020-02-02 10:10:00"
+    }
+  }
+}
