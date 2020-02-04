@@ -379,6 +379,12 @@ html, body {
     box-shadow: 4px 4px 8px 0 rgba(50, 50, 50, .08);
 }
 
+.admin_console_page_title_div{
+    font-size: 18px;
+    font-weight: 800;
+    color: #088587;
+}
+
 .white_block_div {
     background-color: white;
     box-shadow: 4px 8px 8px 0 rgba(50, 50, 50, .08);
@@ -498,3 +504,5 @@ html, body {
     font-size: 14px;
     color: #f4817c;
 }
+
+

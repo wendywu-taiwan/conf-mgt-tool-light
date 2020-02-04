@@ -1,0 +1,150 @@
+{% extends "admin_console_base.html" %}
+{% load staticfiles %}
+
+{% block resource %}
+    <link href="{% static '/css/git_country_path_list.css' %}" rel="stylesheet">
+{% endblock %}
+{% block content %}
+    <div id="git_path_list_container" class="custom_container admin_console_block_background">
+        <div id="header_div" class="row no-row-margin">
+            <div class="component_title">Git Path List</div>
+            <div id="edit_button_div">
+                <a id="edit_button" onclick="" class="link-btn btn btn-block btn-lg btn-primary">Edit</a>
+            </div>
+        </div>
+        <div id="list_title_div" class="row no-row-margin">
+            <div id="id_title_div" class="id_width title_text vertical_align_middle">
+                ID
+            </div>
+            <div id="module_title_div" class="module_width title_text vertical_align_middle">
+                Module
+            </div>
+            <div id="country_title_div" class="country_width title_text vertical_align_middle">
+                Country
+            </div>
+            <div id="path_title_div" class="path_width title_text vertical_align_middle">
+                Path
+            </div>
+        </div>
+        <div id="list_content_div">
+            <div class="country_row_div row no-row-margin">
+                <div class="id_content_div id_width content_text vertical_align_middle">
+                    1
+                </div>
+                <div class="module_content_div module_width content_text vertical_align_middle">
+                    Ruleset
+                </div>
+                <div class="country_content_div vertical_align_middle country_width">
+                    <div class="row no_row_margin">
+                        <img class="task_nation_flag"
+                             src="{% static '/icons/national_flag/taiwan.png' %}">
+                        <div class="content_text country_name_tips">Taiwan</div>
+                    </div>
+                </div>
+                <div class="path_content_div path_width content_text vertical_align_middle">
+                    RulesetComparer/rulesets/Git/TW
+                </div>
+            </div>
+            <div class="custom_divider"></div>
+            <div class="country_row_div row no-row-margin">
+                <div id="id_title_div" class="id_content_div id_width content_text vertical_align_middle">
+                    2
+                </div>
+                <div id="module_title_div" class="module_content_div module_width content_text vertical_align_middle">
+                    Ruleset
+                </div>
+                <div class="country_content_div country_width vertical_align_middle">
+                    <div class="row no_row_margin">
+                        <img class="task_nation_flag"
+                             src="{% static '/icons/national_flag/japan.png' %}">
+                        <div class="content_text country_name_tips">Japan</div>
+                    </div>
+                </div>
+                <div class="path_content_div path_width content_text vertical_align_middle">
+                    SharedStorage/rulesets/Git/Japan
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function deleteScheduler(task_id) {
+            warningDialog("Delete scheduler?", "deleted scheduler can't not been recovered", "Delete",
+                function () {
+                    showWaitingDialog();
+
+                    let post_body = {
+                        "id": task_id
+                    };
+
+                    doPOST("{% url 'RulesetComparer:delete-rulesets-sync-job' %}", post_body, function (response) {
+                        let statusCode = response["status_code"];
+                        let message = response["message"];
+
+                        if (response == null || statusCode != 200) {
+                            showErrorDialog(message);
+                        } else {
+                            successDialog("delete task success", function () {
+                                console.log(response);
+                                window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                            });
+                        }
+                    }, function (response) {
+                        console.log(response);
+                        showErrorDialog("delete task fail")
+                    });
+                })
+        }
+
+        function stopScheduler(taskId) {
+            warningDialog("stop scheduler?", "the scheduler will stop auto sync rulesets", "Stop", function () {
+                postUpdateSchedulerStatus(taskId, false);
+            });
+        }
+
+        function restartScheduler(taskId) {
+            warningDialog("restart scheduler?", "the scheduler will start auto sync rulesets", "Restart", function () {
+                postUpdateSchedulerStatus(taskId, true);
+            });
+        }
+
+        function postUpdateSchedulerStatus(task_id, status) {
+            showWaitingDialog();
+
+            let post_body = {
+                "task_id": task_id,
+                "enable": status
+            };
+
+            doPOST("{% url 'RulesetComparer:update-rulesets-sync-job-status' %}", post_body, function (response) {
+                let statusCode = response["status_code"];
+                let message = response["message"];
+
+                if (response == null || statusCode != 200) {
+                    showErrorDialog(message);
+                } else {
+                    successDialog("update scheduler success", function () {
+                        console.log(response);
+                        window.location = "{% url 'RulesetComparer:sync-scheduler-list' %}";
+                    });
+                }
+            }, function (response) {
+                console.log(response);
+                showErrorDialog("update scheduler fail")
+            });
+        }
+
+        function createSchedulerPage() {
+            showWaitingDialog();
+
+            doGET("{% url 'RulesetComparer:sync-scheduler-create' %}", function (response) {
+                successResponse(response, function () {
+                    window.location = "{% url 'RulesetComparer:sync-scheduler-create' %}";
+                });
+            }, function (response) {
+                errorResponse(response);
+            });
+        }
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,74 @@
+#git_path_list_container {
+    padding: 20px;
+    height: 100%;
+    padding-bottom: 10px;
+}
+
+#header_div {
+    margin-bottom: 15px;
+}
+
+#edit_button_div {
+    margin-left: auto;
+}
+
+#edit_button {
+    font-size: 16px;
+}
+
+#list_title_div {
+    background: #eaeef0;
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 50px;
+    padding-left: 15px;
+}
+
+.country_row_div {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 10px;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+
+.title_text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #849aa4;
+}
+
+.content_text {
+    font-size: 14px;
+    font-family: inherit;
+    word-break: break-word;
+}
+
+.id_width {
+    width: 8%;
+    margin-right: 2%;
+}
+
+.module_width {
+    width: 13%;
+    margin-right: 2%;
+}
+
+.country_width {
+    width: 13%;
+    margin-right: 2%;
+}
+
+.path_width {
+    width: 60%;
+}
+
+.task_nation_flag {
+    width: 32px;
+}
+
+.country_name_tips {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+}
