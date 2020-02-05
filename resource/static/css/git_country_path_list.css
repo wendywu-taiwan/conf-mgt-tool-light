@@ -55,8 +55,17 @@
 }
 
 .country_width {
-    width: 13%;
+    width: 16%;
     margin-right: 2%;
+}
+
+.repo_width{
+    width: 30%;
+    margin-right: 2%;
+}
+
+.folder_width{
+    width: 15%;
 }
 
 .path_width {
@@ -71,4 +80,23 @@
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
+}
+
+.path_content_div {
+    display: block;
+}
+.path_input_div{
+    display: none;
+}
+
+.path_input {
+    height: 10%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: unset;
+    border-width: 0.5px;
+    width: 95%;
+    font-size: 14px;
+    border-color: #c4cbce;
 }
