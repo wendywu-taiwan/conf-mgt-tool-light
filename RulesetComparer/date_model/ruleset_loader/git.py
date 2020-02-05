@@ -2,6 +2,7 @@ from RulesetComparer.date_model.ruleset_loader.base import BaseRulesetLoader
 from RulesetComparer.utils.gitManager import GitManager
 from RulesetComparer.utils.rulesetUtil import *
 from RulesetComparer.models import Country
+from common.services.git_manage_services import get_ruleset_git_path
 
 
 class GitRulesetLoader(BaseRulesetLoader):
@@ -19,11 +20,11 @@ class GitRulesetLoader(BaseRulesetLoader):
 
     def __check_update__(self):
         if self.check_update:
-            manager = GitManager(get_ruleset_git_root_path(), settings.GIT_BRANCH_DEVELOP)
+            manager = GitManager(get_ruleset_git_path(self.country.name), settings.GIT_BRANCH_DEVELOP)
             manager.pull()
 
     def __parse_ruleset_path__(self):
-        self.ruleset_path = get_rule_set_git_path(self.country.name)
+        self.ruleset_path = get_ruleset_git_country_path(self.country.name)
 
     def __parse_ruleset_path_info__(self):
         pass

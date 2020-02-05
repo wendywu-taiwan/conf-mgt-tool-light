@@ -21,6 +21,7 @@ from RulesetComparer.date_model.json_builder.reocover_ruleset_result import Reco
 from RulesetComparer.properties.key import STATUS_SUCCESS, STATUS_FAILED
 from RulesetComparer.date_model.json_builder.diff_update_ruleset import DiffUpdateRulesetBuilder
 from RulesetComparer.date_model.json_builder.diff_create_ruleset import DiffCreateRulesetBuilder
+from common.services.git_manage_services import get_ruleset_git_path, get_ruleset_git_country_path
 
 
 def create_ruleset_test():
@@ -180,7 +181,7 @@ def backup_rulesets(backup_key, sync_up_pre_json):
         server_rs_backup_path = get_backup_path_server_version(backup_key)
 
         if source_env_name == GIT_NAME:
-            source_rs_path = get_rule_set_git_path(country_name)
+            source_rs_path = get_ruleset_git_country_path(country_name)
         else:
             source_rs_path = get_rule_set_path(source_env_name, country_name, compare_key)
         source_rs_backup_path = get_backup_path_applied_version(backup_key)

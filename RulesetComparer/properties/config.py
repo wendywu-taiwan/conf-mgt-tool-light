@@ -117,18 +117,6 @@ def get_sync_pre_data_path(backup_key):
     return FILE_PATH.get("ruleset_backup_pre_sync_data") + "/" + backup_key
 
 
-def get_ruleset_git_root_path():
-    return get_rule_set_git_path("")
-
-
-def get_rule_set_git_path(country):
-    return FILE_PATH.get("rule_set_git") % country
-
-
-def get_rs_in_git_path(country, ruleset_name):
-    return FILE_PATH.get("rule_set_git") % country + "/" + ruleset_name
-
-
 def get_file_path(path_key):
     return FILE_PATH.get(path_key)
 

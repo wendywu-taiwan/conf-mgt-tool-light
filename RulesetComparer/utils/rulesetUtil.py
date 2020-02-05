@@ -4,9 +4,10 @@ from shutil import copyfile
 from RulesetComparer.utils.logger import *
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils.fileManager import load_file, create_folder
-from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_git_path, get_rule_set_full_file_name
+from RulesetComparer.properties.config import get_rule_set_path, get_rule_set_full_file_name
 from RulesetComparer.properties import config
 from RulesetComparer.date_model.xml.ruleset import RulesetObject
+from common.services.git_manage_services import get_ruleset_git_path, get_ruleset_git_country_path
 
 
 def load_rule_file_with_path(path, ruleset_name):
@@ -35,7 +36,8 @@ def load_server_ruleset_with_name(env_name, country_name, compare_key, rule_set_
 
 
 def load_git_ruleset_with_name(country_name, rule_set_name):
-    file_path = get_rule_set_git_path(country_name)
+
+    file_path = get_ruleset_git_country_path(country_name)
     return load_rule_file_with_path(file_path, rule_set_name)
 
 

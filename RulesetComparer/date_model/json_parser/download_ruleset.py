@@ -3,6 +3,7 @@ from RulesetComparer.properties.config import *
 from RulesetComparer.models import Environment, Country
 from RulesetComparer.utils import timeUtil
 from RulesetComparer.utils.gitManager import GitManager
+from common.services.git_manage_services import get_ruleset_git_path, get_ruleset_git_country_path
 
 
 class DownloadRulesetParser:
@@ -35,8 +36,8 @@ class DownloadRulesetParser:
                 self.ruleset_resource_path = get_backup_path_server_version(self.backup_key)
         elif self.environment.name == GIT_NAME:
             # update git ruleset
-            GitManager(get_ruleset_git_root_path(), settings.GIT_BRANCH_DEVELOP).pull()
-            self.ruleset_resource_path = get_rule_set_git_path(self.country.name)
+            GitManager(get_ruleset_git_path(self.country.name), settings.GIT_BRANCH_DEVELOP).pull()
+            self.ruleset_resource_path = get_ruleset_git_country_path(self.country.name)
         else:
             if self.compare_hash_key is None:
                 self.compare_hash_key = hash(timeUtil.get_current_timestamp())

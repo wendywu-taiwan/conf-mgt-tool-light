@@ -16,6 +16,7 @@ from RulesetComparer.utils.ruleListComparer import RuleListComparer
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.utils.stringFilter import strip_list_string
 from RulesetComparer.utils.timeUtil import get_current_time
+from common.services.git_manage_services import get_ruleset_git_path, get_ruleset_git_country_path
 
 
 class CompareRuleListTask:
@@ -26,6 +27,7 @@ class CompareRuleListTask:
         self.baseEnv = Environment.objects.get(id=base_env_id)
         self.comparedEnv = Environment.objects.get(id=compare_env_id)
         self.country = Country.objects.get(id=country_id)
+
         if filter_list is None:
             self.filter_list = list()
         else:
@@ -76,8 +78,7 @@ class CompareRuleListTask:
         if self.git_environment == key.NO_ENVIRONMENT_GIT:
             return
 
-        path = get_rule_set_git_path("")
-        manager = GitManager(path, settings.GIT_BRANCH_DEVELOP)
+        manager = GitManager(get_ruleset_git_path(self.country.name), settings.GIT_BRANCH_DEVELOP)
         if manager.status == GitManager.STATUS_NEED_PULL:
             manager.pull()
 
@@ -104,7 +105,7 @@ class CompareRuleListTask:
         return updated_list
 
     def updated_rule_list_from_git(self):
-        git_file_path = get_rule_set_git_path(self.country.name)
+        git_file_path = get_ruleset_git_country_path(self.country.name)
         updated_list = fileManager.get_rule_name_list(git_file_path)
         return self.filter_ruleset_list(updated_list)
 

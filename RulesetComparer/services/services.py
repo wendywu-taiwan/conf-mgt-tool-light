@@ -30,6 +30,7 @@ from django.template.loader import get_template
 
 from RulesetComparer.utils.rulesetComparer import RulesetComparer
 from RulesetComparer.date_model.json_builder.server_log_page import ServerLogPageBuilder
+from common.services.git_manage_services import get_ruleset_git_path, get_ruleset_git_country_path
 
 
 def server_log_page(user, log_type):
@@ -68,7 +69,7 @@ def get_filtered_ruleset_page_data(json_data):
     parser = GetFilteredRulesetParser(json_data)
 
     if parser.is_git:
-        git_file_path = get_rule_set_git_path(parser.country.name)
+        git_file_path = get_ruleset_git_country_path(parser.country.name)
         rule_name_list = fileManager.get_rule_name_list(git_file_path)
     else:
         task = DownloadRuleListTask(parser.environment.id, parser.country.id)
