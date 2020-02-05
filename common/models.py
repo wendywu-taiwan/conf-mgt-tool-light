@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib import admin
+from permission.models import Module, Country
 
 
 # Create your models here.
@@ -39,3 +40,18 @@ class FrequencyTypeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(FrequencyType, FrequencyTypeAdmin)
+
+
+class GitCountryPath(models.Model):
+    id = models.AutoField(primary_key=True)
+    module = models.ForeignKey(Module, related_name='module_git_path', on_delete=models.PROTECT)
+    country = models.ForeignKey(Country, related_name='country_git_path', on_delete=models.PROTECT)
+    repo_path = models.CharField(max_length=128, null=True)
+    folder = models.CharField(max_length=128, null=True)
+
+
+class GitCountryPathAdmin(admin.ModelAdmin):
+    list_display = ('id', 'module', 'country', 'repo_path', 'folder')
+
+
+admin.site.register(GitCountryPath, GitCountryPathAdmin)

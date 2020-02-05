@@ -2,11 +2,12 @@ import traceback
 from RulesetComparer.utils import fileManager
 from RulesetComparer.properties import config
 from RulesetComparer.utils.logger import *
-from common.properties.config import PRELOAD_DATA_PATH, USER_ROLE_PERMISSION_DATA_PATH,ROLE_FUNCTION_PERMISSION_DATA_PATH
+from common.properties.config import PRELOAD_DATA_PATH, USER_ROLE_PERMISSION_DATA_PATH, \
+    ROLE_FUNCTION_PERMISSION_DATA_PATH
 from permission.models import Environment, Country, Module, Function, DataCenter, B2BServer, B2BService, B2BClient, \
     RoleType, RolePermission, RoleFunctionPermission, UserRolePermission, FTPRegion, FTPClient, FTPServer, \
     EnvironmentAutoSyncPermission
-from common.models import DataUpdateTime, FrequencyType
+from common.models import DataUpdateTime, FrequencyType, GitCountryPath
 from RulesetComparer.models import MailContentType, RulesetAction
 from django.contrib.auth.models import User
 
@@ -396,6 +397,20 @@ def init_environment_auto_sync_permission(data):
     return True
 
 
+def init_git_country_path():
+    info_log(LOG_CLASS, "init_git_country_path")
+    if GitCountryPath.objects.count() > 0:
+        info_log(LOG_CLASS, "git country path has data, return")
+        return
+
+    countries = Country.objects.all()
+    modules = [KEY_M_RULESET, KEY_M_SHARED_STORAGE]
+    for country in countries:
+        for module in modules:
+            module = Module.objects.get(name=module)
+            GitCountryPath.objects.create(country=country, module=module)
+
+
 operator = {
     KEY_AUTH_USER: init_auth_user_data,
     KEY_ENVIRONMENT: init_environment_data,
@@ -447,6 +462,7 @@ def init_data():
 
         update_data(role_function_permission_data, KEY_ROLE_FUNCTION_PERMISSION)
         update_data(user_role_permission_data, KEY_USER_ROLE_PERMISSION)
+        init_git_country_path()
     except Exception as e:
         error_log(traceback.format_exc())
         raise e

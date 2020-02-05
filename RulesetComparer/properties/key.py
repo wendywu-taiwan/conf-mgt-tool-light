@@ -307,6 +307,8 @@ KEY_LAST_VERSION = "last version"
 KEY_DISPLAY_NAME = "display_name"
 KEY_SKIP_RULESETS = "skip_rulesets"
 KEY_RULESET_LIST = "ruleset_list"
+KEY_GIT_COUNTRY_PATH_LIST = "git_country_path_list"
+KEY_REPO_PATH = "repo_path"
 
 KEY_SIDE = "side"
 REQUEST_GET = 'GET'
@@ -335,6 +337,7 @@ KEY_F_RULESET_LOG = "ruleset_log"
 KEY_F_SERVER_LOG = "server_log"
 KEY_F_USER_ROLE = "user_role"
 KEY_F_ROLE_PERMISSION = "role_permission"
+KEY_F_GIT_PATH_MANGER = "git_path_manager"
 
 # File Type key
 KEY_FOLDER = "folder"
