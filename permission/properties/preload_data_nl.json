@@ -164,6 +164,12 @@
         "icon_file_name": "server_log_white.png",
         "module_name": "setting"
       },
+             {
+        "name": "git_path_manager",
+        "display_name": "Git Path Manager",
+        "icon_file_name": "server_log_white.png",
+        "module_name": "setting"
+      },
       {
         "name": "server_log",
         "display_name": "Server Log",
@@ -530,7 +536,7 @@
         "update_time": "2019-11-08 14:10:00"
       },
       "function": {
-        "update_time": "2019-12-02 10:10:00"
+        "update_time": "2020-02-05 10:10:00"
       },
       "module": {
         "update_time": "2019-11-18 10:10:00"
