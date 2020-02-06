@@ -1,15 +1,15 @@
-from RulesetComparer.date_model.json_builder.admin_console_base import AdminConsoleRulesetBuilder
 from RulesetComparer.properties.key import KEY_MODULE_DATA, KEY_GIT_COUNTRY_PATH_LIST, KEY_ID, \
     KEY_COUNTRY, KEY_REPO_PATH, KEY_FOLDER
 from common.data_object.json_builder.country import CountryBuilder
 from common.data_object.json_builder.module import ModuleBuilder
+from permission.data_object.json_builder.base import SettingBaseBuilder
 from permission.models import Module, Country
 
 
-class GitCountryPathListBuilder(AdminConsoleRulesetBuilder):
+class GitCountryPathListBuilder(SettingBaseBuilder):
     def __init__(self, user, git_country_paths):
         self.git_country_paths = git_country_paths
-        AdminConsoleRulesetBuilder.__init__(self, user)
+        SettingBaseBuilder.__init__(self, user)
 
     def __generate_data__(self):
         self.result_dict[KEY_GIT_COUNTRY_PATH_LIST] = self.generate_git_country_path_data()

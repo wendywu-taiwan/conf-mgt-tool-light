@@ -3,12 +3,17 @@ from django.http import HttpResponseBadRequest, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from rest_framework.utils import json
+
+from RulesetComparer.date_model.json_builder.git_country_path_list import GitCountryPathListBuilder
 from RulesetComparer.properties.key import *
 from RulesetComparer.utils.logger import error_log
 from common.data_object.json_builder.response import ResponseBuilder
 from common.data_object.error.error import PermissionDeniedError
 from common.data_object.error.message import PERMISSION_DENIED_MESSAGE
 from common.data_object.error.status import PERMISSION_DENIED
+from common.models import GitCountryPath
+from common.services.git_manage_services import update_git_country_path
+from common.views import page_permission_check, action_permission_check
 from permission.utils.permission_manager import check_function_visibility
 from permission.services.user_role import get_user_role_list, get_user_role_edit, edit_user_role_data
 from permission.data_object.json_builder.setting_info import SettingInfoBuilder
@@ -99,6 +104,34 @@ def edit_role_permission(request):
         return JsonResponse(data=result)
 
     return permission_check(request, after_check)
+
+
+@login_required
+def admin_console_git_country_path_list_page(request):
+    def check_visibility():
+        pass
+        check_function_visibility(request, KEY_F_GIT_PATH_MANGER, KEY_M_SETTING)
+
+    def get_visible_data():
+        return GitCountryPath.objects.filter(module__name=KEY_M_RULESET).values()
+
+    def after_check(visible_data):
+        check_function_visibility(request, KEY_F_GIT_PATH_MANGER, KEY_M_SETTING)
+        data = GitCountryPathListBuilder(request.user, visible_data).get_data()
+        return render(request, "git_country_path_list.html", data)
+
+    return page_permission_check(request, check_visibility, get_visible_data, after_check)
+
+
+@login_required
+def admin_console_git_country_path_edit(request):
+    def after_check():
+        request_json = get_post_request_json(request)
+        result_data = update_git_country_path(request_json)
+        result = ResponseBuilder(data=result_data).get_data()
+        return JsonResponse(data=result)
+
+    return action_permission_check(request, after_check)
 
 
 def get_post_request_json(request):

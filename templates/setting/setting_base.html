@@ -9,6 +9,7 @@
     <link href="{% static '/css/bootstrap-clockpicker.min.css' %}" rel="stylesheet">
     <link href="{% static '/css/admin_console.css' %}" rel="stylesheet">
     <link href="{% static '/css/main.css' %}" rel="stylesheet">
+    <link href="{% static '/css/setting_base.css' %}" rel="stylesheet">
     <link href="{% static '/css/sweetalert.css' %}" rel="stylesheet">
     <script src="{% static '/js/jquery-3.3.1.min.js' %}"></script>
     <script src="{% static '/js/sweetalert.min.js' %}"></script>
@@ -57,6 +58,28 @@
                         <div id="ruleset_log_div">
                             <a href="{% url 'permission:role-permission-list-page' %}">
                                 <div class="sub_function_text vertical_align_middle">Role Permission</div>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+            {% if navigation_info.functions_data.git_path_manager.visible %}
+                <div id="configuration_div" class="function_div">
+                    <a data-toggle="collapse" href="#configuration_list_div" role="button" aria-expanded="false"
+                       aria-controls="configuration_list_div">
+                        <div class="row no-row-margin">
+                            <div class="function_icon_div">
+                                <img class="function_icon" src="{% static '/icons/server_log_white.png' %}">
+                            </div>
+                            <div class="function_text vertical_align_middle">Configuration</div>
+                        </div>
+                    </a>
+                </div>
+                <div id="configuration_list_div" class="manager_list_div collapse multi-collapse">
+                    {% if navigation_info.functions_data.git_path_manager.visible %}
+                        <div id="server_log_div">
+                            <a href="{% url 'permission:git-country-path-list' %}">
+                                <div class="sub_function_text vertical_align_middle">Git Path Manager</div>
                             </a>
                         </div>
                     {% endif %}

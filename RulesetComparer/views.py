@@ -2,7 +2,6 @@ import os
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404, JsonResponse
 from django.shortcuts import render
-from django.template.loader import render_to_string
 
 from common.views import page_permission_check, page_error_check, action_permission_check, action_error_check
 from common.data_object.json_builder.country import CountriesBuilder
@@ -16,11 +15,14 @@ from RulesetComparer.date_model.json_builder.report_scheduler_create_page import
 from RulesetComparer.date_model.json_builder.report_scheduler_update_page import ReportSchedulerUpdatePageBuilder
 from RulesetComparer.date_model.json_builder.sync_scheduler_create_page import SyncSchedulerCreatePageBuilder
 from RulesetComparer.date_model.json_builder.sync_scheduler_update_page import SyncSchedulerUpdatePageBuilder
+from RulesetComparer.date_model.json_builder.git_country_path_list import GitCountryPathListBuilder
 from permission.utils.page_visibility import *
 from permission.utils.permission_manager import enable_environments, enable_countries
 from common.utils.utility import get_union, contains
 from common.data_object.error.error import PermissionDeniedError, NoAvailableDataError
 from common.data_object.error.status import *
+from common.models import GitCountryPath
+from common.services.git_manage_services import update_git_country_path
 from RulesetComparer.date_model.json_parser.create_ruleset_sync_scheduler import CreateRulesetSyncSchedulerParser
 from RulesetComparer.models import Country, Module, RulesetSyncUpScheduler
 from RulesetComparer.utils.threadManager import *

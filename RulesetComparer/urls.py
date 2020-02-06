@@ -50,8 +50,6 @@ ruleset_comparer_pattern = [
 
 admin_console_ruleset_pattern = [
     path('', views.admin_console_page, name="ruleset-admin-console-index"),
-    path('git/country_path/list', views.admin_console_git_country_path_list_page, name="git-country-path-list"),
-    path('git/country_path/edit', views.admin_console_git_country_path_edit, name="git-country-path-edit"),
     path('server_log', views.admin_console_server_log_page, name="server-log"),
     path('server_log/<int:log_type>', views.admin_console_server_log_page, name="server-log-type"),
     path('scheduler/list', views.admin_console_report_scheduler_list_page, name="report-scheduler-list"),

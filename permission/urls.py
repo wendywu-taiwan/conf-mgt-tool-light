@@ -20,10 +20,18 @@ role_permission_pattern = [
     path('role', views.setting_role_permission_list_page, name="role-permission-list-page"),
     path('role/edit/<str:environment_id>', views.setting_role_permission_edit_page, name="role-permission-edit-page"),
     path('role/edit', views.edit_role_permission, name="role-permission-edit"),
+
+]
+
+configuration_pattern = [
+    path('git/country_path/list', views.admin_console_git_country_path_list_page, name="git-country-path-list"),
+    path('git/country_path/edit', views.admin_console_git_country_path_edit, name="git-country-path-edit"),
 ]
 
 urlpatterns = [
     path('admin_console/permission/', include(permission_pattern)),
     path('admin_console/permission/', include(role_permission_pattern)),
     path('admin_console/permission/', include(user_role_pattern)),
+    path('admin_console/configuration/', include(configuration_pattern)),
+
 ]

@@ -1,4 +1,4 @@
-{% extends "admin_console_base.html" %}
+{% extends "setting_base.html" %}
 {% load staticfiles %}
 
 {% block resource %}
@@ -76,7 +76,7 @@
     </div>
     <script>
         $(function () {
-            editPathUrl = "{% url 'RulesetComparer:git-country-path-edit' %}";
+            editPathUrl = "{% url 'permission:git-country-path-edit' %}";
             '{% for git_country_path in git_country_path_list %}'
                 gitPathIds.push('{{ git_country_path.id }}');
                 '{% endfor %}'

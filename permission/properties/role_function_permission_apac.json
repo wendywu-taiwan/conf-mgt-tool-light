@@ -1590,6 +1590,11 @@
                   "function_name": "role_permission",
                   "visible": "true",
                   "editable": "true"
+                },
+                {
+                  "function_name": "git_path_manager",
+                  "visible": "true",
+                  "editable": "true"
                 }
               ]
             }
@@ -1891,7 +1896,7 @@
   ],
   "update_time": {
     "role_function_permission": {
-      "update_time": "2020-02-02 10:10:00"
+      "update_time": "2020-02-05 10:10:00"
     }
   }
 }
